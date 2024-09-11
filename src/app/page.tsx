@@ -1,9 +1,9 @@
-import supabase from "@/lib/supabase/client";
+import Login from "../components/Login";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-       Shoes Rack APP
+    <main className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
+       <Login />
     </main>
   );
 }
