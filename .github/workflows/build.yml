@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: build
+    name: Build
     runs-on: ubuntu-latest
 
     steps: 
@@ -19,9 +19,8 @@ jobs:
       with: 
         node-version: 20
 
-    # Using bahmutov/npm-install for caching dependencies so the next time the workflow runs, it can pick from the cache.
     - name: Install dependencies
-      uses: npm install
+      run: npm install
 
     - name: Build project
       run: npm run build
