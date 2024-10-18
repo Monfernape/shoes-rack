@@ -1,0 +1,28 @@
+name: Builds
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: build
+    runs-on: ubantu-latest
+
+    steps: 
+    - name: checkout repo
+      uses: actions/checkout@v4
+
+    - name: setup node
+      uses: actions/checkout@v4
+      with: 
+        node-version: 20
+
+    # we can use simple `npm install` but we are using this package that cache our all dependencies , so next time when our workfolw runs , this pick from cache
+    - name: install dependencies
+      uses: bahmutov/npm-install@latest
+
+    - name: build project
+      run: npm run build
+      
