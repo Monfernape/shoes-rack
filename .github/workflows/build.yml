@@ -8,21 +8,20 @@ on:
 jobs:
   build:
     name: build
-    runs-on: ubantu-latest
+    runs-on: ubuntu-latest
 
     steps: 
-    - name: checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: setup node
-      uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with: 
         node-version: 20
 
-    # we can use simple `npm install` but we are using this package that cache our all dependencies , so next time when our workfolw runs , this pick from cache
-    - name: install dependencies
+    # Using bahmutov/npm-install for caching dependencies so the next time the workflow runs, it can pick from the cache.
+    - name: Install dependencies
       uses: bahmutov/npm-install@latest
 
-    - name: build project
+    - name: Build project
       run: npm run build
-      
