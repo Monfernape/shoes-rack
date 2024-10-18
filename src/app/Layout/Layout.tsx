@@ -7,7 +7,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Sidebar } from '../components/Sidebar'
-import { routes_title } from '@/lib/Routes'
+import { routes_title } from '@/lib/routes'
 import { usePathname } from 'next/navigation'
 
 type UserRole = "Incharge" | "member" | "Shift-Incharge";

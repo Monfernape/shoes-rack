@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Routes } from '@/lib/Routes'
+import { Routes } from '@/lib/routes'
 import { Cross1Icon, DashboardIcon, ExclamationTriangleIcon, ExitIcon, GearIcon, HamburgerMenuIcon, PersonIcon } from '@radix-ui/react-icons'
 import { BackpackIcon, BellIcon, CalendarIcon, ClipboardIcon, HandCoinsIcon } from 'lucide-react'
 import Link from 'next/link'
