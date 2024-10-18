@@ -21,7 +21,7 @@ jobs:
 
     # Using bahmutov/npm-install for caching dependencies so the next time the workflow runs, it can pick from the cache.
     - name: Install dependencies
-      uses: bahmutov/npm-install
+      uses: npm install
 
     - name: Build project
       run: npm run build
