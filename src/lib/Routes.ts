@@ -1,66 +1,66 @@
 export enum Routes {
-    dashboard = "/dashboard",
-    notification = "/notification",
-    attendance = "/attendance",
-    mark_attendance = "/mark-attendance",
-    fund = "/fund",
-    member = "/member",
-    add_member = "/add-member",
-    shift_incharge = "/shift-incharge",
-    add_shift_incharge = "/add-shift-incharge",
-    missing_shoes = "/missing-shoes",
-    add_missing_shoes = "/add-missing-shoes",
-    leave_request = "/leave-request",
-    add_leave_request = "/add-leave-request",
+    Dashboard = "/dashboard",
+    Notification = "/notification",
+    Attendance = "/attendance",
+    MarkAttendance = "/mark-attendance",
+    Fund = "/fund",
+    Member = "/member",
+    AddMember = "/add-member",
+    ShiftIncharge = "/shift-incharge",
+    AddShiftIncharge = "/add-shift-incharge",
+    MissingShoes = "/missing-shoes",
+    AddMissingShoes = "/add-missing-shoes",
+    LeaveRequest = "/leave-request",
+    AddLeaveRequest = "/add-leave-request",
 }
 
-export const routes_title = [
+export const RoutesTitle = [
     {
         name: "Dashboard",
         route: "/dashboard",
     },
     {
         name: "Notifications",
-        route: Routes.notification,
+        route: Routes.Notification,
     },
     {
         name: "Attendance",
-        route: Routes.attendance,
+        route: Routes.Attendance,
     },
     {
         name: "Members",
-        route: Routes.member,
+        route: Routes.Member,
     },
     {
         name: "Shift Incharge",
-        route: Routes.shift_incharge,
+        route: Routes.ShiftIncharge,
     },
     {
         name: "Leave Requests",
-        route: Routes.mark_attendance,
+        route: Routes.LeaveRequest,
     },
     {
         name: "Missing Shoes",
-        route: Routes.missing_shoes,
+        route: Routes.MissingShoes,
     },
     {
         name: "Funds",
-        route: Routes.fund,
+        route: Routes.Fund,
     },
     {
         name: "New Member",
-        route: Routes.add_member,
+        route: Routes.AddMember,
     },
     {
         name: "New Shift Incharge",
-        route: Routes.add_shift_incharge,
+        route: Routes.AddShiftIncharge,
     },
     {
         name: "New Leave Request",
-        route: Routes.add_leave_request,
+        route: Routes.AddLeaveRequest,
     },
     {
         name: "New Missing Sheos",
-        route: Routes.add_missing_shoes,
+        route: Routes.AddMissingShoes,
     },
 ];

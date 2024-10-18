@@ -7,8 +7,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Sidebar } from '../components/Sidebar'
-import { routes_title } from '@/lib/routes'
 import { usePathname } from 'next/navigation'
+import { RoutesTitle } from '@/lib/routes'
 
 type UserRole = "Incharge" | "member" | "Shift-Incharge";
 
@@ -46,7 +46,7 @@ export function Layout({ children }: { children: React.ReactNode, }) {
                             }
                             <h2 className={`text-xl font-semibold text-gray-800 truncate hidden lg:block`}>
                              {
-                                routes_title.find(x => x.route === pathname)?.name
+                                RoutesTitle.find(x => x.route === pathname)?.name
                              }
                             </h2>
                         </div>

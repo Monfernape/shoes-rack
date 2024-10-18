@@ -1,66 +1,20 @@
 import { Button } from '@/components/ui/button'
-import { Routes } from '@/lib/routes'
-import { Cross1Icon, DashboardIcon, ExclamationTriangleIcon, ExitIcon, GearIcon, HamburgerMenuIcon, PersonIcon } from '@radix-ui/react-icons'
-import { BackpackIcon, BellIcon, CalendarIcon, ClipboardIcon, HandCoinsIcon } from 'lucide-react'
+import { Cross1Icon, ExitIcon, GearIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import React from 'react'
+import { incharge_routes } from '../layout/SidebarRoute'
 
 
-interface Sidebar {
+interface Props {
     sidebarOpen: Boolean,
     toggleSidebar: () => void,
     userRole: String,
 }
 
-export const incharge_routes = [
-    {
-        name: "Dashboard",
-        route: Routes.dashboard,
-        icon: <DashboardIcon className="w-5 h-5 mr-3"/>
-    },
-    {
-        name: "Notifications",
-        route: Routes.notification,
-        icon: <BellIcon className="w-5 h-5 mr-3"/>
-    },
-    {
-        name: "Attendance",
-        route: Routes.attendance,
-        icon: <CalendarIcon className="w-5 h-5 mr-3"/>
-    },
-    {
-        name: "Members",
-        route: Routes.member,
-        icon: <PersonIcon className="w-5 h-5 mr-3"/>
-    },
-    {
-        name: "Shift Incharge",
-        route: Routes.shift_incharge,
-        icon: <PersonIcon className="w-5 h-5 mr-3"/>
-    },
-    {
-        name: "Leave Requests",
-        route: Routes.mark_attendance,
-        icon: <ClipboardIcon className="w-5 h-5 mr-3"/>
-    },
-    {
-        name: "Missing Shoes",
-        route: Routes.missing_shoes,
-        icon: <ExclamationTriangleIcon className="w-5 h-5 mr-3"/>
-    },
-    {
-        name: "Funds",
-        route: Routes.fund,
-        icon: <HandCoinsIcon className="w-5 h-5 mr-3"/>
-    },
-];
-
 export const Sidebar = ({
     sidebarOpen,
     toggleSidebar,
-}: Sidebar) => {
-    const router = useRouter();
+}: Props) => {
     return (
         <aside
             className={`
@@ -79,13 +33,11 @@ export const Sidebar = ({
                     <ul className="p-2 space-y-2">
                         {
                             incharge_routes.map((x) => (
-                                <li
-                                    key={x.route}
-                                    onClick={() => router.push(x.route)}
-                                    className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-                                >
+                                <li key={x.route}>
+                                <Link href={x.route} className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
                                     {x.icon}
                                     <span className="text-sm">{x.name}</span>
+                                </Link>
                                 </li>
                             ))
                         }
