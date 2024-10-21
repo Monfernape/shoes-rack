@@ -31,7 +31,7 @@ export const RoutesTitle = [
     route: Routes.Member,
   },
   {
-    name: "Shift Incharge",
+    name: "Shift incharge",
     route: Routes.ShiftIncharge,
   },
   {

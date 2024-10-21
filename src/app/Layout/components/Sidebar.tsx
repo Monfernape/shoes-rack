@@ -3,12 +3,14 @@ import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React from "react";
 import { SideBarRoutes } from "./SidebarRoute";
+
 interface Props {
   isSidebarOpen: Boolean;
   toggleSidebar: () => void;
 }
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
+  const sideBarRoutes = SideBarRoutes()
   return (
     <aside
       className={`
@@ -23,7 +25,6 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
           <h1
             className={`text-xl font-semibold text-gray-800 truncate sm:block`}
           >
-            {" "}
             Shoes Rack
           </h1>
           <Button
@@ -37,14 +38,14 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           <ul className="p-2 space-y-2">
-            {SideBarRoutes().map((x) => (
-              <li key={x.route}>
+            {sideBarRoutes.map((r) => (
+              <li key={r.route}>
                 <Link
-                  href={x.route}
+                  href={r.route}
                   className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                 >
-                  {x.icon}
-                  <span className="text-sm">{x.name}</span>
+                  {r.icon}
+                  <span className="text-sm">{r.name}</span>
                 </Link>
               </li>
             ))}

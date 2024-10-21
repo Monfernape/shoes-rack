@@ -46,7 +46,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     pathname === "/login" ? "block" : "hidden"
                   }`}
                 >
-                  {" "}
                   Shoes Rack
                 </h1>
               )}

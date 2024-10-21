@@ -69,13 +69,13 @@ const incharge_routes = [
 
 
 export const SideBarRoutes = () => {
-    const [userRole, setUserRole] = useState<UserRole | null>("Incharge");
+    const [userRole, setUserRole] = useState<UserRole | null>("incharge");
   
     const getRoutesByRole = () => {
       switch (userRole) {
-        case "Incharge":
+        case "incharge":
           return incharge_routes;
-        case "Shift-Incharge":
+        case "shift-incharge":
           return shift_incharge_routes;
         case "member":
         default:

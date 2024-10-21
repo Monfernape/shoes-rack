@@ -1,1 +1,1 @@
-export type UserRole = "Incharge" | "member" | "Shift-Incharge";
+export type UserRole = "incharge" | "member" | "shift-incharge";
