@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button } from "@/components/ui/button"
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 interface Action {
   title: string;
   id: number;
+  icon: ReactNode;
   onClick: () => void;
 }
 
@@ -28,19 +29,20 @@ const ActionsMenu: React.FC<TableActionsMenuProps> = ({ actions }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="end"
-        className="w-48 bg-white border rounded shadow-lg"
-      >
-        {actions.map((action, index) => (
-          <DropdownMenuItem
-            key={index}
-            onClick={action.onClick}
-            className="cursor-pointer px-4 py-2 hover:bg-gray-100 focus:outline-none focus-visible:ring-0"
-          >
-            {action.title}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
+  align="end"
+  className="w-48 bg-white border rounded shadow-lg"
+>
+  {actions.map((action, index) => (
+    <DropdownMenuItem
+      key={index}
+      onClick={action.onClick}
+      className="cursor-pointer px-4 py-2 hover:bg-gray-100 focus:outline-none focus-visible:ring-0 flex items-center space-x-2" 
+    >
+      {action.icon}
+      <span>{action.title}</span>
+    </DropdownMenuItem>
+  ))}
+</DropdownMenuContent>
     </DropdownMenu>
   );
 };
