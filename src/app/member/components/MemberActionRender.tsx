@@ -20,10 +20,10 @@ const MemberActionRender = () => {
   };
 
   const actions = [
-    { title: 'View Details', onClick: handleViewDetails },
-    { title: 'Edit Info', onClick: handleEditInfo },
-    { title: 'Delete Member', onClick: handleDeleteMember },
-    { title: 'Resend Invite', onClick: handleResendInvite },
+    { title: 'View Details', id: 1, onClick: handleViewDetails },
+    { title: 'Edit Info' , id: 2, onClick: handleEditInfo },
+    { title: 'Delete Member', id: 3, onClick: handleDeleteMember },
+    { title: 'Resend Invite', id: 4, onClick: handleResendInvite },
   ];
 
   return (

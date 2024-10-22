@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 interface Action {
   title: string;
+  id: number;
   onClick: () => void;
 }
 
@@ -30,7 +31,7 @@ const ActionsMenu: React.FC<TableActionsMenuProps> = ({ actions }) => {
         align="end"
         className="w-48 bg-white border rounded shadow-lg"
       >
-        {actions?.map((action, index) => (
+        {actions.map((action, index) => (
           <DropdownMenuItem
             key={index}
             onClick={action.onClick}
