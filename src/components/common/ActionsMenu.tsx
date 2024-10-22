@@ -11,11 +11,11 @@ interface Action {
   onClick: () => void;
 }
 
-interface TableActionsMenuProps {
+interface Props {
   actions: Action[];
 }
 
-const ActionsMenu: React.FC<TableActionsMenuProps> = ({ actions }) => {
+const ActionsMenu = ({ actions }:Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,7 +34,7 @@ const ActionsMenu: React.FC<TableActionsMenuProps> = ({ actions }) => {
 >
   {actions.map((action, index) => (
     <DropdownMenuItem
-      key={index}
+      key={action.id}
       onClick={action.onClick}
       className="cursor-pointer px-4 py-2 hover:bg-gray-100 focus:outline-none focus-visible:ring-0 flex items-center space-x-2" 
     >

@@ -1,13 +1,14 @@
-import ActionsMenu from '@/app/layout/components/ActionsMenu';
+import ActionsMenu from '@/components/common/ActionsMenu';
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import React from 'react';
 
-interface MemberActionRenderProps {
+// When we will implement in table we will update this type
+type Props ={
   role: string;
   status: string;
 }
 
-const MemberActionRender: React.FC<MemberActionRenderProps> = ({ role = 'shift_incharge', status = 'active' }) => {
+const MemberTableActionRender = ({ role = 'shift_incharge', status = 'active' }:Props) => {
   const handleViewDetails = () => {
     console.log('Viewing details...');
   };
@@ -57,4 +58,4 @@ const MemberActionRender: React.FC<MemberActionRenderProps> = ({ role = 'shift_i
   return <ActionsMenu actions={actionMenu} />;
 };
 
-export default MemberActionRender
+export default MemberTableActionRender
