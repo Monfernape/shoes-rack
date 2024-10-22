@@ -19,7 +19,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   
 
   return (
-    <div className="bg-gray-100 flex ">
+    <div className="flex">
       {(pathname !== "/login" || isSidebarOpen)&& (
         <Sidebar
           isSidebarOpen={isSidebarOpen}
@@ -27,55 +27,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
       )}
       <div className="flex flex-col w-full h-screen">
-        <header className="bg-white shadow-sm sticky top-0">
-          <div className="flex items-center justify-between px-4 py-4">
-            <div className="flex items-center">
-              {pathname !== "/login" && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={toggleSidebar}
-                  className="mr-2 lg:hidden"
-                >
-                  <HamburgerMenuIcon className="h-6 w-6 text-black" />
-                </Button>
-              )}
-              {(!isTilleHide) && (
-                <h1
-                  className={`text-xl font-semibold text-gray-800 truncate lg:${
-                    pathname === "/login" ? "block" : "hidden"
-                  }`}
-                >
-                  Shoes Rack
-                </h1>
-              )}
-              <h2
-                className={`text-xl font-semibold text-gray-800 truncate hidden lg:block`}
-              >
-                {RoutesTitle.find((x) => x.route === pathname)?.name}
-              </h2>
-            </div>
-            {pathname !== "/login" && (
-              <div className="flex items-center space-x-2">
-                <div className="relative">
-                  <Input
-                    type="search"
-                    placeholder="Search..."
-                    onFocus={() => {
-                      setIsTitleHide(true);
-                    }}
-                    onBlur={() => {
-                      setIsTitleHide(false);
-                    }}
-                    className="pl-10 pr-4 py-2 w-12 focus-visible:w-64 sm:w-40 md:w-60 rounded-full text-sm"
-                  />
-                  <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-5 h-5" />
-                </div>
-              </div>
-            )}
-          </div>
-        </header>
+        <div className="lg:ml-48">
         {children}
+        </div>
       </div>
     </div>
   );

@@ -58,17 +58,14 @@ export function DataTabel({
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
+      <div className="rounded-md">
         <Table>
-          <TableHeader className="bg-gray-800">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead
-                     key={header.id}
-                     className="text-white"
-                     >
+                    <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -112,12 +109,8 @@ export function DataTabel({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        {/* <div className="flex-1 text-sm text-gray-800"> */}
-          {/* {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div> */}
-            <div className="flex-1 text-sm text-gray-800">
-      {startIndex}-{endIndex} of {totalRows} row(s) selected.
+            <div className="flex-1 text-xs text-tabel-thead">
+            {startIndex}-{endIndex} of {totalRows} row(s) selected.
     </div>
         <div className="space-x-2">
           <Button

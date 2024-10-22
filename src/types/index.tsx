@@ -8,3 +8,8 @@ export interface Member {
   role: UserRole;
   status: UserStatus;
 }
+
+export interface BreadcrumbLinkType {
+  href: string;
+  label: string;
+}
