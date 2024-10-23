@@ -7,8 +7,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import MemberTableActionRender from "./MemberActionRender";
 
-
-const membersData = [
+const membersData: Member[] = [
   {
     id: 1,
     name: "Alice Johnson",
@@ -136,85 +135,35 @@ export const MemberList = () => {
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <span
-            className="flex cursor-pointer"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <CaretSortIcon className="ml-2 h-4 w-4" />
-          </span>
-        );
-      },
+      header: "Name",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("name")}</div>
       ),
     },
     {
       accessorKey: "phone",
-      header: ({ column }) => {
-        return (
-          <span
-            className="flex cursor-pointer"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Phone
-            <CaretSortIcon className="ml-2 h-4 w-4" />
-          </span>
-        );
-      },
+      header: "Phone",
       cell: ({ row }) => (
         <div>{row.getValue("phone")}</div>
       ),
     },
     {
       accessorKey: "shift",
-      header: ({ column }) => {
-        return (
-          <span
-            className="flex cursor-pointer"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Shift
-            <CaretSortIcon className="ml-2 h-4 w-4" />
-          </span>
-        );
-      },
+      header: "Shift",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("shift")}</div>
       ),
     },
     {
       accessorKey: "role",
-      header: ({ column }) => {
-        return (
-          <span
-            className="flex cursor-pointer"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Role
-            <CaretSortIcon className="ml-2 h-4 w-4" />
-          </span>
-        );
-      },
+      header: "Role",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("role")}</div>
       ),
     },
     {
       accessorKey: "status",
-      header: ({ column }) => {
-        return (
-          <span
-            className="flex cursor-pointer"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Status
-            <CaretSortIcon className="ml-2 h-4 w-4" />
-          </span>
-        );
-      },
+      header: "Status",
       cell: ({ row }) => (
         <Badge className={`capitalize ${row.getValue("status") === "active"?  
         "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active" :   
@@ -238,11 +187,12 @@ export const MemberList = () => {
       },
     },
   ];
-
+  
   return <div>
     <DataTabel
       data={membersData}
       columns={columns}
+      isGroupData={true}
     />
   </div>;
 };

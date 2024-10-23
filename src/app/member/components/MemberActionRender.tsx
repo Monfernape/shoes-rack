@@ -16,7 +16,6 @@ type Props ={
 
 const MemberTableActionRender = ({ memberData }:Props) => {
   const {role , status } = memberData
-  console.log({ memberData })
   const handleViewDetails = () => {
     console.log('Viewing details...');
   };
