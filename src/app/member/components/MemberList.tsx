@@ -5,6 +5,7 @@ import { Member} from "@/types";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
+import MemberTableActionRender from "./MemberActionRender";
 
 
 const membersData = [
@@ -131,7 +132,7 @@ const membersData = [
 ];
 
 export const MemberList = () => {
-
+  
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -230,8 +231,10 @@ export const MemberList = () => {
           </span>
         );
       },
-      cell: () => {
-        return "Actions";
+      cell: ({ row }) => {
+        return <MemberTableActionRender
+        memberData={row.original}
+        />;
       },
     },
   ];

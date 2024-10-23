@@ -2,13 +2,21 @@ import ActionsMenu from '@/components/common/ActionsMenu';
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import React from 'react';
 
-// When we will implement in table we will update this type
-type Props ={
+interface MemberData {
+  id: number;
+  name: string;
+  phone: string;
+  // shift: string;
   role: string;
   status: string;
 }
+type Props ={
+  memberData: MemberData;
+}
 
-const MemberTableActionRender = ({ role = 'shift_incharge', status = 'active' }:Props) => {
+const MemberTableActionRender = ({ memberData }:Props) => {
+  const {role , status } = memberData
+  console.log({ memberData })
   const handleViewDetails = () => {
     console.log('Viewing details...');
   };
@@ -45,7 +53,7 @@ const MemberTableActionRender = ({ role = 'shift_incharge', status = 'active' }:
             ? [...viewInfo, ...resendInvite] 
             : [...viewInfo];
     
-        case 'shift_incharge':
+        case 'shift-incharge':
         case 'incharge':
         case 'super_admin':
           return [...viewInfo, ...baseActions, ...resendInvite];
