@@ -19,21 +19,26 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 
 const formSchema = z.object({
-  phoneNumber: z.string()
-  .min(1, "Phone number is required")
-  .max(12, "Phone number must be at most 12 characters long"),
-  password: z.string()
+  phoneNumber: z
+    .string()
+    .min(1, "Phone number is required")
+    .max(12, "Phone number must be at most 12 characters long"),
+  password: z
+    .string()
     .min(8, "Password must be at least 8 characters long")
     .max(50, "Password must be at most 50 characters long")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[a-z]/, "Password must contain at least one lowercase letter")
     .regex(/[0-9]/, "Password must contain at least one digit")
-    .regex(/[@#$%^&*()_+!~`|{}\[\]:;'"<>,.?/]/, "Password must contain at least one special character"),
+    .regex(
+      /[@#$%^&*()_+!~`|{}\[\]:;'"<>,.?/]/,
+      "Password must contain at least one special character"
+    ),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const LoginPage = ()=>{
+export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<FormValues>({
@@ -72,10 +77,12 @@ export const LoginPage = ()=>{
                         <Input
                           id="phoneNumber"
                           type="text"
-                           placeholder="0300-0000000"
+                          placeholder="0300-0000000"
                           {...field}
-                          value={formatPhoneNumber(field.value)}
-                          onChange={(e) => field.onChange(formatPhoneNumber(e.target.value))}
+                          value={field.value}
+                          onChange={(e) =>
+                            field.onChange(formatPhoneNumber(e.target.value))
+                          }
                           className="pl-12"
                         />
                         <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -105,7 +112,7 @@ export const LoginPage = ()=>{
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <button
                           type="button"
-                          onClick={() => setShowPassword(prev => !prev)}
+                          onClick={() => setShowPassword((prev) => !prev)}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                         >
                           {showPassword ? <EyeOff /> : <Eye />}
@@ -133,4 +140,4 @@ export const LoginPage = ()=>{
       </div>
     </div>
   );
-}
+};

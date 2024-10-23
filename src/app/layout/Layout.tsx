@@ -16,17 +16,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-  
 
   return (
-    <div className="bg-gray-100 flex ">
-      {(pathname !== "/login" || isSidebarOpen)&& (
-        <Sidebar
-          isSidebarOpen={isSidebarOpen}
-          toggleSidebar={toggleSidebar}
-        />
+    <div className="bg-gray-100 flex overflow-hidden ">
+      {(pathname !== "/login" || isSidebarOpen) && (
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       )}
-      <div className="flex flex-col w-full h-screen">
+      <div className="flex flex-col w-full h-screen overflow-auto">
         <header className="bg-white shadow-sm sticky top-0">
           <div className="flex items-center justify-between px-4 py-4">
             <div className="flex items-center">
@@ -40,7 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <HamburgerMenuIcon className="h-6 w-6 text-black" />
                 </Button>
               )}
-              {(!isTilleHide) && (
+              {!isTilleHide && (
                 <h1
                   className={`text-xl font-semibold text-gray-800 truncate lg:${
                     pathname === "/login" ? "block" : "hidden"
