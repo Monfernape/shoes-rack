@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ActionsMenu from '@/components/common/ActionsMenu';
+import ActionsMenu from '@/components/common/ActionMenu/ActionsMenu';
 import userEvent from "@testing-library/user-event";
 import { it, describe, expect, vi } from 'vitest'; 
 import { Info } from 'lucide-react';

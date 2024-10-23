@@ -17,27 +17,27 @@ import {
     {
       name: "Dashboard",
       route: Routes.Dashboard,
-      icon: <DashboardIcon className="w-5 h-5 mr-3" />,
+      icon: <DashboardIcon className="w-3.5 h-3.5 mr-3" />,
     },
     {
       name: "Notifications",
       route: Routes.Notification,
-      icon: <BellIcon className="w-5 h-5 mr-3" />,
+      icon: <BellIcon className="w-3.5 h-3.5 mr-3" />,
     },
     {
       name: "Attendance",
       route: Routes.Attendance,
-      icon: <CalendarIcon className="w-5 h-5 mr-3" />,
+      icon: <CalendarIcon className="w-3.5 h-3.5 mr-3" />,
     },
     {
       name: "Leave Requests",
       route: Routes.LeaveRequest,
-      icon: <ClipboardIcon className="w-5 h-5 mr-3" />,
+      icon: <ClipboardIcon className="w-3.5 h-3.5 mr-3" />,
     },
     {
       name: "Missing Shoes",
       route: Routes.MissingShoes,
-      icon: <ExclamationTriangleIcon className="w-5 h-5 mr-3" />,
+      icon: <ExclamationTriangleIcon className="w-3.5 h-3.5 mr-3" />,
     },
   ];
   const shift_incharge_routes = [
@@ -45,17 +45,17 @@ import {
     {
       name: "Members",
       route: Routes.Member,
-      icon: <PersonIcon className="w-5 h-5 mr-3" />,
+      icon: <PersonIcon className="w-3.5 h-3.5 mr-3" />,
     },
     {
       name: "Leave Requests",
       route: Routes.LeaveRequest,
-      icon: <ClipboardIcon className="w-5 h-5 mr-3" />,
+      icon: <ClipboardIcon className="w-3.5 h-3.5 mr-3" />,
     },
     {
       name: "Missing Shoes",
       route: Routes.MissingShoes,
-      icon: <ExclamationTriangleIcon className="w-5 h-5 mr-3" />,
+      icon: <ExclamationTriangleIcon className="w-3.5 h-3.5 mr-3" />,
     },
   ];
   const incharge_routes = [
@@ -63,7 +63,7 @@ import {
     {
       name: "Funds",
       route: Routes.Fund,
-      icon: <HandCoinsIcon className="w-5 h-5 mr-3" />,
+      icon: <HandCoinsIcon className="w-3.5 h-3.5 mr-3" />,
     },
   ];
   
