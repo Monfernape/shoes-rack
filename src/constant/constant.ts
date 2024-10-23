@@ -16,6 +16,7 @@ export enum Status {
   Active = "active",
   Inactive = "inactive",
 }
+
 export const User = [
   {
     role: "Member",
