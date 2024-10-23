@@ -76,7 +76,6 @@ export const LoginPage = () => {
                 )}
               />
             </div>
-
             <Button type="submit" className="w-full bg-gray-800">
               Log in
             </Button>
