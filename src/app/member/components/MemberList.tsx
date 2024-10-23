@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import React from "react";
-import { DataTabel } from "@/app/common/DataTabel/Tabel";
-import { Member} from "@/types";
+import { DataTabel } from "@/components/common/DataTabel/Tabel";
+import { Member } from "@/types";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
@@ -131,7 +131,6 @@ const membersData: Member[] = [
 ];
 
 export const MemberList = () => {
-  
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -143,9 +142,7 @@ export const MemberList = () => {
     {
       accessorKey: "phone",
       header: "Phone",
-      cell: ({ row }) => (
-        <div>{row.getValue("phone")}</div>
-      ),
+      cell: ({ row }) => <div>{row.getValue("phone")}</div>,
     },
     {
       accessorKey: "shift",
@@ -165,34 +162,32 @@ export const MemberList = () => {
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => (
-        <Badge className={`capitalize ${row.getValue("status") === "active"?  
-        "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active" :   
-        "bg-status-invited-background text-status-invited hover:bg-status-invited-background hover:text-status-invited"}`}>{row.getValue("status")}</Badge>
+        <Badge
+          className={`capitalize ${
+            row.getValue("status") === "active"
+              ? "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active"
+              : "bg-status-invited-background text-status-invited hover:bg-status-invited-background hover:text-status-invited"
+          }`}
+        >
+          {row.getValue("status")}
+        </Badge>
       ),
     },
     {
       id: "actions",
       enableHiding: false,
       header: () => {
-        return (
-          <span>
-            Action
-          </span>
-        );
+        return <span>Action</span>;
       },
       cell: ({ row }) => {
-        return <MemberTableActionRender
-        memberData={row.original}
-        />;
+        return <MemberTableActionRender memberData={row.original} />;
       },
     },
   ];
-  
-  return <div>
-    <DataTabel
-      data={membersData}
-      columns={columns}
-      isGroupData={true}
-    />
-  </div>;
+
+  return (
+    <div>
+      <DataTabel data={membersData} columns={columns} isGroupData={true} />
+    </div>
+  );
 };

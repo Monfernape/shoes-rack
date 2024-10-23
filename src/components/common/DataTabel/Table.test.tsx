@@ -133,16 +133,12 @@ const columns: ColumnDef<Member>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("name")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "phone",
     header: "Phone",
-    cell: ({ row }) => (
-      <div>{row.getValue("phone")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("phone")}</div>,
   },
   {
     accessorKey: "shift",
@@ -154,39 +150,36 @@ const columns: ColumnDef<Member>[] = [
   {
     accessorKey: "role",
     header: "Role",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("role")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("role")}</div>,
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <Badge className={`capitalize ${row.getValue("status") === "active"?  
-      "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active" :   
-      "bg-status-invited-background text-status-invited hover:bg-status-invited-background hover:text-status-invited"}`}>{row.getValue("status")}</Badge>
+      <Badge
+        className={`capitalize ${
+          row.getValue("status") === "active"
+            ? "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active"
+            : "bg-status-invited-background text-status-invited hover:bg-status-invited-background hover:text-status-invited"
+        }`}
+      >
+        {row.getValue("status")}
+      </Badge>
     ),
   },
   {
     id: "actions",
     enableHiding: false,
     header: () => {
-      return (
-        <span>
-          Action
-        </span>
-      );
+      return <span>Action</span>;
     },
     cell: ({ row }) => {
-      return <MemberTableActionRender
-      memberData={row.original}
-      />;
+      return <MemberTableActionRender memberData={row.original} />;
     },
   },
 ];
 
 test("Page", () => {
-  render(<DataTabel data={membersData} columns={columns} isGroupData={true}/>);
+  render(<DataTabel data={membersData} columns={columns} isGroupData={true} />);
   expect(screen.getByText("Alice Johnson")).toBeDefined();
 });
-

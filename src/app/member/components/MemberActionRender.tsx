@@ -1,4 +1,4 @@
-import ActionsMenu from '@/components/common/ActionsMenu';
+import ActionsMenu from '@/components/common/ActionMenu/ActionsMenu';
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import React from 'react';
 
