@@ -52,7 +52,6 @@ const MemberTableActionRender = ({ memberInfo }:Props) => {
           return status === 'inactive' 
             ? [...viewInfo, ...resendInvite] 
             : [...viewInfo];
-    
         case MemberRole.ShiftIncharge:
         case MemberRole.Incharge:
         case MemberRole.SuperAdmin:

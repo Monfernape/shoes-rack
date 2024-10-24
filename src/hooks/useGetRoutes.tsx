@@ -1,17 +1,19 @@
+
+import { useMemo } from "react";
+import { UserRole } from "@/types";
+import { MemberRole, Routes } from "@/lib/routes";
+
 import {
   DashboardIcon,
   ExclamationTriangleIcon,
   PersonIcon,
 } from "@radix-ui/react-icons";
-import { Routes } from "../../../lib/routes";
 import {
   BellIcon,
   CalendarIcon,
   ClipboardIcon,
   HandCoinsIcon,
 } from "lucide-react";
-import { useState } from "react";
-import { UserRole } from "@/types";
 
 export const member_routes = [
   {
@@ -68,3 +70,20 @@ export const incharge_routes = [
     icon: <HandCoinsIcon />,
   },
 ];
+
+
+export const useGetRoutes = (userRole: UserRole) => {
+  const routes = useMemo(() => {
+    switch (userRole) {
+      case MemberRole.Incharge:
+        return incharge_routes;
+      case MemberRole.ShiftIncharge:
+        return shift_incharge_routes;
+      case MemberRole.Member:
+      default:
+        return member_routes;
+    }
+  }, [userRole]);
+
+  return routes;
+};
