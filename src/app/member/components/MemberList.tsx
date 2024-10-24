@@ -1,12 +1,25 @@
 "use client";
 import React from "react";
-import { DataTabel } from "@/components/common/DataTabel/DataTabel";
 import { Member } from "@/types";
-import { ColumnDef } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import MemberTableActionRender from "./MemberActionRender";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import useGroupedData from "@/hooks/useGroupedData";
 
-const membersData: Member[] = [
+const members: Member[] = [
   {
     id: 1,
     name: "Alice Johnson",
@@ -184,9 +197,61 @@ export const MemberList = () => {
     },
   ];
 
+  const table = useReactTable({
+    data: members,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const groupedData = useGroupedData(members, "shift");
+
   return (
-    <div>
-      <DataTabel data={membersData} columns={columns} isGrouped={true} groupByField={"shift"} />
-    </div>
+    <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <TableHead key={header.id}>
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext()
+                )}
+              </TableHead>
+            ))}
+          </TableRow>
+        ))}
+      </TableHeader>
+
+      <TableBody>
+        {groupedData.map((shiftGroup, index) => (
+          <React.Fragment key={`${shiftGroup}-${index}`}>
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
+              >
+                Shift {shiftGroup.shift}
+              </TableCell>
+            </TableRow>
+            {shiftGroup.row.map((row) => (
+              <TableRow key={row.id}>
+                {table
+                  .getRowModel()
+                  .rows.find((r) => r.original === row)
+                  ?.getVisibleCells()
+                  .map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+              </TableRow>
+            ))}
+          </React.Fragment>
+        ))}
+      </TableBody>
+    </Table>
   );
 };

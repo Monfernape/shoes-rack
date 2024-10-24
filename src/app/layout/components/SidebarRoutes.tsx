@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { UserRole } from "@/types";
 
-const member_routes = [
+export const member_routes = [
   {
     name: "Dashboard",
     route: Routes.Dashboard,
@@ -40,7 +40,8 @@ const member_routes = [
     icon: <ExclamationTriangleIcon />,
   },
 ];
-const shift_incharge_routes = [
+
+export const shift_incharge_routes = [
   ...member_routes,
   {
     name: "Members",
@@ -58,7 +59,8 @@ const shift_incharge_routes = [
     icon: <ExclamationTriangleIcon />,
   },
 ];
-const incharge_routes = [
+
+export const incharge_routes = [
   ...shift_incharge_routes,
   {
     name: "Funds",
@@ -66,20 +68,3 @@ const incharge_routes = [
     icon: <HandCoinsIcon />,
   },
 ];
-
-export const getRoutesByUserRole = () => {
-  const [userRole, setUserRole] = useState<UserRole | null>("incharge");
-
-  const getRoutes = () => {
-    switch (userRole) {
-      case "incharge":
-        return incharge_routes;
-      case "shift-incharge":
-        return shift_incharge_routes;
-      case "member":
-      default:
-        return member_routes;
-    }
-  };
-  return getRoutes();
-};

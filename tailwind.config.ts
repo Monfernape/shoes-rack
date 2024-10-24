@@ -64,7 +64,7 @@ const config: Config = {
           DEFAULT:"hsl(var(--sidebar-background))",
           background:"hsl(var(--sidebar-background))",
         },
-        tabel:{
+        table:{
          thead:{
           DEFAULT:"hsl(var(--head-color))",
          },
