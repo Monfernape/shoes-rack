@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React from "react";
-import { SideBarRoutes } from "./SidebarRoutes";
+import { getRoutesByUserRole } from "./SidebarRoutes";
 
 interface Props {
   isSidebarOpen: Boolean;
@@ -10,7 +10,8 @@ interface Props {
 }
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
-  const sideBarRoutes = SideBarRoutes();
+  const roleBasedRoutes = getRoutesByUserRole();
+
   return (
     <aside
       className={`
@@ -38,13 +39,15 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           <ul className="p-2 space-y-2 text-xs">
-            {sideBarRoutes.map((r) => (
+            {roleBasedRoutes.map((r) => (
               <li key={r.route}>
                 <Link
                   href={r.route}
                   className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                 >
-                  {r.icon}
+                  <span className="text-xs mr-3">
+                    {React.cloneElement(r.icon, { className: "w-3.5 h-3.5" })}
+                  </span>
                   <span className="text-xs">{r.name}</span>
                 </Link>
               </li>

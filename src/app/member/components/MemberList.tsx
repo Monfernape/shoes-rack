@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
-import { DataTabel } from "@/components/common/DataTabel/Tabel";
+import { DataTabel } from "@/components/common/DataTabel/DataTabel";
 import { Member } from "@/types";
-import { CaretSortIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import MemberTableActionRender from "./MemberActionRender";
@@ -180,14 +179,14 @@ export const MemberList = () => {
         return <span>Action</span>;
       },
       cell: ({ row }) => {
-        return <MemberTableActionRender memberData={row.original} />;
+        return <MemberTableActionRender memberInfo={row.original} />;
       },
     },
   ];
 
   return (
     <div>
-      <DataTabel data={membersData} columns={columns} isGroupData={true} />
+      <DataTabel data={membersData} columns={columns} isGrouped={true} groupByField={"shift"} />
     </div>
   );
 };

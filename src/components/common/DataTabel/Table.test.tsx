@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { DataTabel } from "./Tabel";
+import { DataTabel } from "./DataTabel";
 import { Badge } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Member } from "@/types";
@@ -174,12 +174,12 @@ const columns: ColumnDef<Member>[] = [
       return <span>Action</span>;
     },
     cell: ({ row }) => {
-      return <MemberTableActionRender memberData={row.original} />;
+      return <MemberTableActionRender memberInfo={row.original} />;
     },
   },
 ];
 
 test("Page", () => {
-  render(<DataTabel data={membersData} columns={columns} isGroupData={true} />);
+  render(<DataTabel data={membersData} columns={columns} isGrouped={true} groupByField={"shift"} />);
   expect(screen.getByText("Alice Johnson")).toBeDefined();
 });

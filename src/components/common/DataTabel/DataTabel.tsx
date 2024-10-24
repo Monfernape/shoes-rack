@@ -2,6 +2,7 @@
 
 import React from "react";
 import {
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -14,23 +15,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Member } from "@/types";
 import useGroupedData from "@/hooks/use-group-data";
 
-type DataTableProps = {
-  data: Member[];
-  columns: any;
-  isGroupData: boolean;
+type DataTableProps<T extends Record<string, any>> = {
+  data: T[];
+  columns: ColumnDef<T>[];
+  isGrouped: boolean;
+  groupByField: string;
 };
 
-export const DataTabel = ({ data, columns, isGroupData }: DataTableProps) => {
+export const DataTabel = <T extends Record<string, any>>({
+  data,
+  columns,
+  isGrouped,
+  groupByField,
+}: DataTableProps<T>) => {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const groupedData = useGroupedData(data, "shift");
+  const groupedData = useGroupedData(data, groupByField);
 
   return (
     <div>
@@ -51,7 +57,7 @@ export const DataTabel = ({ data, columns, isGroupData }: DataTableProps) => {
         </TableHeader>
 
         <TableBody>
-          {isGroupData
+          {isGrouped
             ? groupedData.map((shiftGroup, index) => (
                 <React.Fragment key={`${shiftGroup}-${index}`}>
                   <TableRow>
