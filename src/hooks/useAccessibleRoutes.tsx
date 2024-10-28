@@ -15,7 +15,7 @@ import {
   HandCoinsIcon,
 } from "lucide-react";
 
-export const member_routes = [
+export const MEMBER_ROUTES = [
   {
     name: "Dashboard",
     route: Routes.Dashboard,
@@ -43,8 +43,8 @@ export const member_routes = [
   },
 ];
 
-export const shift_incharge_routes = [
-  ...member_routes,
+export const SHIFT_INCHARGE_ROUTES = [
+  ...MEMBER_ROUTES,
   {
     name: "Members",
     route: Routes.Member,
@@ -62,8 +62,8 @@ export const shift_incharge_routes = [
   },
 ];
 
-export const incharge_routes = [
-  ...shift_incharge_routes,
+export const INCHARGE_ROUTES = [
+  ...SHIFT_INCHARGE_ROUTES,
   {
     name: "Funds",
     route: Routes.Fund,
@@ -72,16 +72,16 @@ export const incharge_routes = [
 ];
 
 
-export const useGetRoutes = (userRole: UserRole) => {
+export const useAccessibleRoutes = (userRole: UserRole) => {
   const routes = useMemo(() => {
     switch (userRole) {
       case MemberRole.Incharge:
-        return incharge_routes;
+        return INCHARGE_ROUTES;
       case MemberRole.ShiftIncharge:
-        return shift_incharge_routes;
+        return SHIFT_INCHARGE_ROUTES;
       case MemberRole.Member:
       default:
-        return member_routes;
+        return MEMBER_ROUTES;
     }
   }, [userRole]);
 

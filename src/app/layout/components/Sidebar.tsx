@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useGetRoutes } from "@/hooks/useGetRoutes";
+import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React from "react";
@@ -11,7 +11,7 @@ interface Props {
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
 // TODO : role will be dynamic after user login 
-  const roleBasedRoutes = useGetRoutes("incharge");
+  const roleBasedRoutes = useAccessibleRoutes("incharge");
 
   return (
     <aside

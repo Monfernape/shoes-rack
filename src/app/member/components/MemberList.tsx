@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGroupedData from "@/hooks/useGroupedData";
+import { UserStatus } from "@/lib/routes";
 
 const members: Member[] = [
   {
@@ -176,7 +177,7 @@ export const MemberList = () => {
       cell: ({ row }) => (
         <Badge
           className={`capitalize ${
-            row.getValue("status") === "active"
+            row.getValue("status") ===  UserStatus.Active
               ? "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active"
               : "bg-status-invited-background text-status-invited hover:bg-status-invited-background hover:text-status-invited"
           }`}

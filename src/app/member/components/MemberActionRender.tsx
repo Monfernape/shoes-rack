@@ -7,7 +7,6 @@ interface MemberInfo {
   id: number;
   name: string;
   phone: string;
-  shift: string;
   role: string;
   status: string;
 }
