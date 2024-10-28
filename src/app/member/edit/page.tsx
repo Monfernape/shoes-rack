@@ -1,8 +1,8 @@
 import React from "react";
-import { UserForm } from "../components/MemberEditPage";
+import { MemberEditPage } from "../components/MemberEditPage";
 
 const page = () => {
-  return <UserForm />;
+  return <MemberEditPage />;
 };
 
 export default page;

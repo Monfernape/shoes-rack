@@ -17,9 +17,6 @@ function Calendar({
 }: CalendarProps) {
   return (
     <DayPicker
-      // captionLayout="dropdown"
-      // fromYear={2015}
-      // toYear={2025}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{

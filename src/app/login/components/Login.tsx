@@ -15,7 +15,7 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Phone } from "lucide-react";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 
 const formSchema = z.object({
@@ -53,6 +53,10 @@ export const LoginPage = () => {
     console.log(values);
   }
 
+  const handlePassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl overflow-hidden max-w-md w-full">
@@ -85,7 +89,7 @@ export const LoginPage = () => {
                           }
                           className="pl-12"
                         />
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -112,7 +116,7 @@ export const LoginPage = () => {
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <button
                           type="button"
-                          onClick={() => setShowPassword((prev) => !prev)}
+                          onClick={() => handlePassword()}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                         >
                           {showPassword ? <EyeOff /> : <Eye />}

@@ -6,7 +6,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -14,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
+import { User, UserRole } from "@/constant/constant";
+import { onSubmit } from "./memberActions";
 import {
   Select,
   SelectContent,
@@ -23,9 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Duties, ShiftTiming, User, UserRole } from "@/constant/constant";
-import { onSubmit } from "../../../actions/memberActions";
 
 import {
   Popover,
@@ -50,7 +48,7 @@ export const formSchema = z.object({
   phone: z
     .string({ message: "Phone is required" })
     .regex(phoneValidator, "phone number is not valid"),
-  date_of_birth: z
+  date_of_birth: z.coerce
     .date()
     .min(
       new Date("01-01-1990"),
@@ -61,25 +59,25 @@ export const formSchema = z.object({
       "You can not suitable for this job because your are under age"
     ),
   cnic: z.string().regex(cnicValidator, "CNIC is not valid"),
-  shift: z.nativeEnum(ShiftTiming, {
-    errorMap: () => {
-      return { message: "Please select your user type" };
-    },
-  }),
-  address: z
-    .string({ message: "Name is required" })
-    .min(10, "Name should have at least 10 characters"),
+  // shift: z.nativeEnum(ShiftTiming, {
+  //   errorMap: () => {
+  //     return { message: "Please select your user type" };
+  //   },
+  // }),
+  // address: z
+  //   .string({ message: "Address is required" })
+  //   .min(10, "Name should have at least 10 characters"),
   role: z.nativeEnum(UserRole, {
     errorMap: () => {
       return { message: "Please select your user type" };
     },
   }),
-  ehad_start_date: z
-    .date()
-    .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
+  // ehad_start_date: z
+  //   .date()
+  //   .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
 });
 
-export const UserForm = () => {
+export const MemberEditPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -87,15 +85,20 @@ export const UserForm = () => {
       phone: "",
       date_of_birth: new Date(),
       cnic: "",
-      shift: undefined,
-      address: "",
+      // shift: undefined,
+      // address: "",
       role: undefined,
-      ehad_start_date: new Date(),
+      // ehad_start_date: new Date(),
     },
     mode: "onBlur",
   });
-  const handleSubmittion = (values: z.infer<typeof formSchema>) => {
-    onSubmit(values);
+  const handleSubmittion = async (values: z.infer<typeof formSchema>) => {
+    // const data = await onSubmit(values);
+    // if (data) {
+    //   console.log("Data received", data);
+    // }
+    console.log("values", values);
+    formSchema.parse(values);
     form.reset();
   };
   const {
@@ -105,8 +108,12 @@ export const UserForm = () => {
     <FormWrapper>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmittion)}
-          className="space-y-4  "
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmittion(form.getValues());
+          }}
+          className="space-y-4"
+          data-testid="form-valid"
         >
           <h4 className="text-xl text-black text-bold">Information</h4>
           <FormField
@@ -120,13 +127,14 @@ export const UserForm = () => {
                   placeholder="Enter Your Name"
                   {...field}
                   data-testid="name"
+                  name="name"
                   className={
                     errors?.name &&
                     "border-red-500 border focus-visible:ring-0 "
                   }
                 />
 
-                <FormMessage />
+                <FormMessage data-testid="name-error" />
               </FormItem>
             )}
           />
@@ -147,7 +155,7 @@ export const UserForm = () => {
                     }
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage data-testId="phone_error" />
               </FormItem>
             )}
           />
@@ -168,7 +176,7 @@ export const UserForm = () => {
                     }
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage data-testId="cnic_error" />
               </FormItem>
             )}
           />
@@ -206,16 +214,16 @@ export const UserForm = () => {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      data-testid="calender"
                     />
                   </PopoverContent>
                 </Popover>
-
-                <FormMessage />
+                <FormMessage data-testId="date_of_birth_error" />
               </FormItem>
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="address"
             render={({ field }) => (
@@ -232,12 +240,12 @@ export const UserForm = () => {
                     data-testid="address"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage data-testId="address_error" />
               </FormItem>
             )}
-          />
+          /> */}
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="ehad_start_date"
             render={({ field }) => (
@@ -276,12 +284,12 @@ export const UserForm = () => {
                   </PopoverContent>
                 </Popover>
 
-                <FormMessage />
+                <FormMessage data-testId="ehad_duration_error" />
               </FormItem>
             )}
-          />
+          /> */}
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="shift"
             render={({ field }) => (
@@ -292,19 +300,16 @@ export const UserForm = () => {
                     {...field}
                     value={field.value}
                     onValueChange={field.onChange}
+                    data-testid="shift"
                   >
                     <SelectTrigger className="flex-1">
-                      <SelectValue placeholder="select shift " />
+                      <SelectValue placeholder="select shift" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Role</SelectLabel>
                         {Duties.map((shift) => (
-                          <SelectItem
-                            data-testid="shift"
-                            key={shift.value}
-                            value={shift.value}
-                          >
+                          <SelectItem key={shift.value} value={shift.value}>
                             {shift.time}
                           </SelectItem>
                         ))}
@@ -312,10 +317,10 @@ export const UserForm = () => {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormMessage />
+                <FormMessage data-testId="shift_error" />
               </FormItem>
             )}
-          />
+          /> */}
 
           <FormField
             control={form.control}
@@ -329,15 +334,16 @@ export const UserForm = () => {
                     value={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger className="flex-1">
+                    <SelectTrigger className="flex-1" data-testid="role">
                       <SelectValue placeholder="select role" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
+                    <SelectContent data-testid="role">
+                      <SelectGroup data-testid="select">
                         <SelectLabel>Role</SelectLabel>
                         {User.map((user) => (
                           <SelectItem
-                            data-testid="select-option"
+                            data-testid="role-option"
+                            className="flex-1"
                             key={user.value}
                             value={user.value}
                           >
@@ -348,12 +354,14 @@ export const UserForm = () => {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormMessage />
+                <FormMessage data-testid="role_error" />
               </FormItem>
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit" data-testId="submit">
+            Submit
+          </Button>
         </form>
       </Form>
     </FormWrapper>
