@@ -1,14 +1,21 @@
-import ActionsMenu from '@/components/common/ActionsMenu';
+import ActionsMenu from '@/common/ActionMenu/ActionsMenu';
+import { MemberRole } from '@/lib/routes';
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import React from 'react';
 
-// When we will implement in table we will update this type
-type Props ={
+interface MemberInfo {
+  id: number;
+  name: string;
+  phone: string;
   role: string;
   status: string;
 }
+type Props ={
+  memberInfo: MemberInfo;
+}
 
-const MemberTableActionRender = ({ role = 'shift_incharge', status = 'active' }:Props) => {
+const MemberTableActionRender = ({ memberInfo }:Props) => {
+  const {role , status } = memberInfo
   const handleViewDetails = () => {
     console.log('Viewing details...');
   };
@@ -40,14 +47,13 @@ const MemberTableActionRender = ({ role = 'shift_incharge', status = 'active' }:
 
     const actionMenu = React.useMemo(() => {
       switch (role) {
-        case 'member':
+        case MemberRole.Member:
           return status === 'inactive' 
             ? [...viewInfo, ...resendInvite] 
             : [...viewInfo];
-    
-        case 'shift_incharge':
-        case 'incharge':
-        case 'super_admin':
+        case MemberRole.ShiftIncharge:
+        case MemberRole.Incharge:
+        case MemberRole.SuperAdmin:
           return [...viewInfo, ...baseActions, ...resendInvite];
     
         default:
