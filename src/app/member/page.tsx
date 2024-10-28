@@ -1,9 +1,14 @@
 import React from "react";
 import { MemberList } from "./components/MemberList";
+import { MemeberHeader } from "./components/MemeberHeader";
+
 const Page = () => {
   return (
-    <div className="p-8">
-      <MemberList />
+    <div>
+      <MemeberHeader />
+      <div className="p-2 lg:p-4">
+        <MemberList />
+      </div>
     </div>
   );
 };

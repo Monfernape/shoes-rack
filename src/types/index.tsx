@@ -9,7 +9,7 @@ export interface Member {
   status: UserStatus;
 }
 
-export interface BreadcrumbLinkType {
+export interface BreadcrumbsTypes {
   href: string;
   label: string;
 }
