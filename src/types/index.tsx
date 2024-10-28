@@ -18,6 +18,10 @@ export type UserInfo = {
   role: UserRole;
   status: UserStatus;
 }
+export interface BreadcrumbsTypes {
+  href: string;
+  label: string;
+}
 
 export type UserDetails = {
   name: string;
