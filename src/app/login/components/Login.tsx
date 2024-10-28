@@ -36,6 +36,10 @@ export const LoginPage = () => {
     console.log(values);
   }
 
+  const handlePassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
     <div className="h-full flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl overflow-hidden max-w-md w-full">
