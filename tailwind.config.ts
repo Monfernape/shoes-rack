@@ -51,6 +51,28 @@ const config: Config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        status: {
+          active: {
+            DEFAULT: "hsl(var(--status-active))",
+            background: "hsla(var(--status-active-backgroud))",
+          },
+          invited: {
+            DEFAULT: "hsl(var(--status-invited))",
+            background: "hsla(var(--status-invited-background))",
+          },
+        },
+        sidebar:{
+          DEFAULT:"hsl(var(--sidebar-background))",
+          background:"hsl(var(--sidebar-background))",
+        },
+        table:{
+         thead:{
+          DEFAULT:"hsl(var(--head-color))",
+         },
+         trow:{
+          DEFAULT:"hsl(var(--row-color))",
+         }
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -58,7 +58,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="h-full flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl overflow-hidden max-w-md w-full">
         <div className="bg-gray-800 p-8 text-center">
           <h2 className="text-2xl font-bold text-white">Welcome Back</h2>

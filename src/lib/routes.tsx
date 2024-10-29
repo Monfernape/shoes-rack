@@ -11,52 +11,22 @@ export enum Routes {
   AddMissingShoes = "/add-missing-shoes",
   LeaveRequest = "/leave-request",
   AddLeaveRequest = "/add-leave-request",
-  MemberEditRequest = "/member/edit",
 }
 
-export const RoutesTitle = [
-  {
-    name: "Dashboard",
-    route: "/dashboard",
-  },
-  {
-    name: "Notifications",
-    route: Routes.Notification,
-  },
-  {
-    name: "Attendance",
-    route: Routes.Attendance,
-  },
-  {
-    name: "Members",
-    route: Routes.Member,
-  },
-  {
-    name: "Shift incharge",
-    route: Routes.ShiftIncharge,
-  },
-  {
-    name: "Leave Requests",
-    route: Routes.LeaveRequest,
-  },
-  {
-    name: "Missing Shoes",
-    route: Routes.MissingShoes,
-  },
-  {
-    name: "Funds",
-    route: Routes.Fund,
-  },
-  {
-    name: "New Member",
-    route: Routes.AddMember,
-  },
-  {
-    name: "New Leave Request",
-    route: Routes.AddLeaveRequest,
-  },
-  {
-    name: "New Missing Sheos",
-    route: Routes.AddMissingShoes,
-  },
-];
+export enum MemberRole {
+  Incharge = "incharge",
+  ShiftIncharge = "shift-incharge",
+  Member = "member",
+  SuperAdmin = "super_admin",
+}
+
+export enum UserRole {
+  Incharge = "incharge",
+  Member = "member",
+  ShiftIncharge = "shift-incharge",
+}
+
+export enum UserStatus {
+  Active = "active",
+  Invited = "invited",
+}

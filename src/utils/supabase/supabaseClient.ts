@@ -1,7 +1,6 @@
 "use server";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-
 const createFetch =
   (options: Pick<RequestInit, "next" | "cache">) =>
   (url: RequestInfo | URL, init?: RequestInit) => {
@@ -10,7 +9,6 @@ const createFetch =
       ...options,
     });
   };
-
 export async function getSupabaseClient() {
   return createServerComponentClient(
     { cookies },

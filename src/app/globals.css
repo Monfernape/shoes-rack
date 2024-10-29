@@ -49,6 +49,13 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --status-active: 138, 60%, 40%;
+    --status-active-backgroud: 144, 67%, 36%, 0.2;
+    --status-invited: 39, 100%, 50%;
+    --status-invited-background: 39, 100%, 50%, 0.2;
+    --sidebar-background: 220, 27%, 98%;
+    --head-color: 211, 20%, 44%;
+    --row-color: 218, 5%, 44%;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -75,6 +82,11 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --status-active: 138, 60%, 40%;
+    --status-active-backgroud: 144, 67%, 36%, 0.2;
+    --status-invited: 39, 100%, 50%;
+    --status-invited-background: 39, 100%, 50%, 0.2;
+    --sidebar: 220, 27%, 98%;
   }
 }
 
