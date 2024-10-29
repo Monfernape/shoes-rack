@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const BREAK_POINTS = {
   sm: "(max-width: 640px)",
@@ -8,20 +8,20 @@ const BREAK_POINTS = {
 };
 
 const useMediaQuery = (query: keyof typeof BREAK_POINTS): boolean => {
-  const [matches, setMatches] = useState<boolean>(false);
+  const mediaQueryString = useMemo(() => BREAK_POINTS[query], [query]);
+  const [matches, setMatches] = useState<boolean>(window.matchMedia(mediaQueryString).matches);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(BREAK_POINTS[query]);
-     // Define the listener as a separate function to avoid recreating it on each render
+    const mediaQuery = window.matchMedia(mediaQueryString);
+    
     const handleChange = () => setMatches(mediaQuery.matches);
 
+    // Set the initial match state
     setMatches(mediaQuery.matches);
-    // Use 'change' instead of 'resize' for better performance
     mediaQuery.addEventListener("change", handleChange);
-     // Cleanup function to remove the event listener
+    
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [query]); // Only recreate the listener when 'matches' or 'query' changes
-
+  }, [mediaQueryString]); // Recreate the listener only when the media query string changes
 
   return matches;
 };

@@ -8,12 +8,13 @@ import React, { useState } from "react";
 import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
 import useMediaQuery from "@/hooks/use-media-query";
 import { Plus } from "lucide-react";
+import { Routes } from "@/lib/routes";
 export const MemeberHeader = () => {
   const pathname = usePathname();
-  const is_md = useMediaQuery("md");
+  const isMediumScreen = useMediaQuery("md");
 
   const [isSidebarOpen, setSidebarOpen] = useState<Boolean>(false);
-  const [isTilleHide, setIsTitleHide] = useState<Boolean>(false);
+  const [isTitleHide, setIsTitleHide] = useState<Boolean>(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -27,7 +28,7 @@ export const MemeberHeader = () => {
       <header className="bg-white shadow-sm sticky top-0">
         <div className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center">
-            {pathname !== "/login" && (
+            {pathname !== Routes.Login && (
               <Button
                 variant="ghost"
                 size="icon"
@@ -39,13 +40,13 @@ export const MemeberHeader = () => {
             )}
             <h1
               className={`${
-                !isTilleHide ? "block" : "hidden"
+                !isTitleHide ? "block" : "hidden"
               } text-sm font-semibold text-gray-800 truncate md:block`}
             >
               <MemberBreadCrumbs />
             </h1>
           </div>
-          {pathname !== "/login" && (
+          {pathname !== Routes.Login && (
             <div className="flex items-center space-x-2">
               <div className="relative">
                 <Input
@@ -59,13 +60,13 @@ export const MemeberHeader = () => {
                     setIsTitleHide(false);
                   }}
                   className={`pr-4 py-2 h-7 ${
-                    isTilleHide ? "w-32 pl-10" : "w-2 pl-6"
+                    isTitleHide ? "w-32 pl-10" : "w-2 pl-6"
                   } md:w-60 md:pl-10 rounded text-xs`}
                 />
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
               <Button data-testid="addMemberButton" className="h-7">
-                <Plus /> {!is_md ? "Add Member" : null}
+                <Plus /> {!isMediumScreen ? "Add Member" : null}
               </Button>
             </div>
           )}
