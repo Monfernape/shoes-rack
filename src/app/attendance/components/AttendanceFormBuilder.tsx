@@ -15,7 +15,9 @@ import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/lib/routes";
 const attendanceSchema = z
   .object({
-    memberId: z.number().positive("Please select a user"),
+    memberId: z.number({
+      required_error: 'Please select user name',
+    }),
     startTime: z.string().nonempty({ message: "Start time is required" }),
     endTime: z.string().nonempty({ message: "End time is required" }),
   })
