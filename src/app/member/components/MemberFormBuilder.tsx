@@ -219,7 +219,6 @@ export const MemberFormBuilder = () => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="date_of_birth"
