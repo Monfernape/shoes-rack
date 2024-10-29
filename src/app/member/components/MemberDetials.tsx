@@ -3,10 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { UserAvatar } from "@/common/Avatar/UserAvatar";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import { Briefcase, MapPin, Phone, Shield, User } from "lucide-react";
-import { UserDetails } from "../detials/[...slug]/page";
-
-
-
+import { UserDetails } from "../details/[...slug]/page";
 
 export const MemberDetials = ({
     userInfo
