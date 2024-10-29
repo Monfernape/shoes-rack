@@ -20,3 +20,15 @@ export enum MemberRole {
   Member = "member",
   SuperAdmin = "super_admin",
 }
+
+export enum UserRole {
+  Incharge = "incharge",
+  Member = "member",
+  ShiftIncharge = "shift-incharge"
+}
+
+export enum UserStatus {
+  Active = "active",
+  Invited = "invited"
+}
+

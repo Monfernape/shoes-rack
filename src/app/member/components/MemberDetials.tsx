@@ -16,7 +16,7 @@ export const MemberDetials = ({
       <Card>
         <CardHeader className="flex flex-col justify-between md:flex-row">
           <div className="flex flex-row items-center space-x-4">
-            <UserAvatar user_name="Nadir Hussain" />
+            <UserAvatar user_name={userInfo.name} />
             <div className="flex flex-col space-y-1">
               <h2 className="text-sm font-semibold text-gray-700">
                 {userInfo.name}
