@@ -6,8 +6,12 @@ import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
+import useMediaQuery from "@/hooks/use-media-query";
+import { Plus } from "lucide-react";
 export const MemeberHeader = () => {
   const pathname = usePathname();
+  const is_md = useMediaQuery("md");
+
   const [isSidebarOpen, setSidebarOpen] = useState<Boolean>(false);
   const [isTilleHide, setIsTitleHide] = useState<Boolean>(false);
 
@@ -36,7 +40,7 @@ export const MemeberHeader = () => {
             <h1
               className={`${
                 !isTilleHide ? "block" : "hidden"
-              } text-sm font-semibold text-gray-800 truncate lg:block`}
+              } text-sm font-semibold text-gray-800 truncate md:block`}
             >
               <MemberBreadCrumbs />
             </h1>
@@ -53,11 +57,16 @@ export const MemeberHeader = () => {
                   onBlur={() => {
                     setIsTitleHide(false);
                   }}
-                  className="pl-10 pr-4 py-2 w-12 h-7 sm:w-40 md:w-60 rounded text-xs"
+                  className={`pr-4 py-2 h-7 ${
+                    isTilleHide ? "w-32 pl-10" : "w-2 pl-6"
+                  } md:w-60 md:pl-10 rounded text-xs`}
                 />
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
-              <Button className="h-7">Add Member</Button>
+              <Button className="h-7">
+                {" "}
+                <Plus /> {!is_md ? "Add Member" : null}
+              </Button>
             </div>
           )}
         </div>
