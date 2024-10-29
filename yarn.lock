@@ -22,6 +22,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@antfu/ni@^0.21.4":
   version "0.21.12"
   resolved "https://registry.yarnpkg.com/@antfu/ni/-/ni-0.21.12.tgz#54d33cf0e6d35cb2ec12ab3d5092e4904540b7c0"
@@ -34,6 +35,8 @@
 =======
 =======
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+>>>>>>> 18062fe (work on header unit testing)
 "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.25.7", "@babel/code-frame@^7.25.9":
   version "7.26.0"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.26.0.tgz#9374b5cd068d128dac0b94ff482594273b1c2815"
@@ -72,6 +75,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@babel/generator@^7.25.9", "@babel/generator@^7.26.0":
   version "7.26.2"
   resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.26.2.tgz#87b75813bec87916210e5e01939a4c823d6bb74f"
@@ -79,6 +83,8 @@
 =======
 =======
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+>>>>>>> 18062fe (work on header unit testing)
 "@babel/generator@^7.25.7", "@babel/generator@^7.25.9":
   version "7.26.0"
   resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.26.0.tgz#505cc7c90d92513f458a477e5ef0703e7c91b8d7"
@@ -91,6 +97,7 @@
     "@jridgewell/trace-mapping" "^0.3.25"
     jsesc "^3.0.2"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@babel/helper-annotate-as-pure@^7.25.9":
@@ -107,6 +114,9 @@
 =======
 "@babel/helper-compilation-targets@^7.25.7":
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+"@babel/helper-compilation-targets@^7.25.7":
+>>>>>>> 18062fe (work on header unit testing)
   version "7.25.9"
   resolved "https://registry.yarnpkg.com/@babel/helper-compilation-targets/-/helper-compilation-targets-7.25.9.tgz#55af025ce365be3cdc0c1c1e56c6af617ce88875"
   integrity sha512-j9Db8Suy6yV/VHa4qzrj9yZfZxhLWQdVnRlXxmKLYlhWUVB1sB2G5sxuWYXk/whHD9iW76PmNzxZ4UCnTQTVEQ==
@@ -209,6 +219,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@babel/parser@^7.1.0", "@babel/parser@^7.20.7", "@babel/parser@^7.22.6", "@babel/parser@^7.25.9", "@babel/parser@^7.26.0", "@babel/parser@^7.26.2":
   version "7.26.2"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.26.2.tgz#fd7b6f487cfea09889557ef5d4eeb9ff9a5abd11"
@@ -216,6 +227,8 @@
 =======
 =======
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+>>>>>>> 18062fe (work on header unit testing)
 "@babel/parser@^7.1.0", "@babel/parser@^7.20.7", "@babel/parser@^7.25.8", "@babel/parser@^7.25.9", "@babel/parser@^7.26.0":
   version "7.26.1"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.26.1.tgz#44e02499960df2cdce2c456372a3e8e0c3c5c975"
@@ -1192,6 +1205,14 @@
     lodash "^4.17.21"
     redent "^3.0.0"
 
+"@testing-library/react-hooks@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-hooks/-/react-hooks-8.0.1.tgz#0924bbd5b55e0c0c0502d1754657ada66947ca12"
+  integrity sha512-Aqhl2IVmLt8IovEVarNDFuJDVWVvhnr9/GCU6UUnrYXwgDFF9h2L2o2P9KBni1AST5sT6riAyoukFLyjQUgD/g==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    react-error-boundary "^3.1.0"
+
 "@testing-library/react@^16.0.1":
   version "16.0.1"
   resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-16.0.1.tgz#29c0ee878d672703f5e7579f239005e4e0faa875"
@@ -1204,6 +1225,7 @@
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.2.tgz#db7257d727c891905947bd1c1a99da20e03c2ebd"
   integrity sha512-YAh82Wh4TIrxYLmfGcixwD18oIjyC1pFQC2Y01F2lzV2HTMiYrI0nze0FD0ocB//CKS/7jIUgae+adPqxK5yCQ==
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@ts-morph/common@~0.19.0":
@@ -1220,6 +1242,8 @@
 >>>>>>> 40df19e (Add Toaster)
 =======
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+>>>>>>> 18062fe (work on header unit testing)
 "@types/aria-query@^5.0.1":
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-5.0.4.tgz#1a31c3d378850d2778dabb6374d036dcba4ba708"
@@ -1763,6 +1787,7 @@ camelcase-css@^2.0.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 caniuse-lite@^1.0.30001579, caniuse-lite@^1.0.30001669:
   version "1.0.30001677"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001677.tgz#27c2e2c637e007cfa864a16f7dfe7cde66b38b5f"
@@ -1770,11 +1795,18 @@ caniuse-lite@^1.0.30001579, caniuse-lite@^1.0.30001669:
 =======
 =======
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+>>>>>>> 18062fe (work on header unit testing)
 caniuse-lite@^1.0.30001579:
   version "1.0.30001673"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001673.tgz#5aa291557af1c71340e809987367410aab7a5a9e"
   integrity sha512-WTrjUCSMp3LYX0nE12ECkV0a+e6LC85E0Auz75555/qr78Oc8YWhEPNfDd6SHdtlCMSzqtuXY0uyEMNRcsKpKw==
 >>>>>>> 40df19e (Add Toaster)
+
+caniuse-lite@^1.0.30001663:
+  version "1.0.30001674"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001674.tgz#eb200a716c3e796d33d30b9c8890517a72f862c8"
+  integrity sha512-jOsKlZVRnzfhLojb+Ykb+gyUSp9Xb57So+fAiFlLzzTKpqg8xxSav0e40c8/4F/v9N8QSvrRRaLeVzQbLqomYw==
 
 caniuse-lite@^1.0.30001663:
   version "1.0.30001674"
@@ -2144,6 +2176,7 @@ eastasianwidth@^0.2.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 electron-to-chromium@^1.5.41:
   version "1.5.51"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.51.tgz#bb99216fed4892d131a8585a8593b00739310163"
@@ -2151,14 +2184,19 @@ electron-to-chromium@^1.5.41:
 =======
 =======
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+>>>>>>> 18062fe (work on header unit testing)
 electron-to-chromium@^1.5.28:
   version "1.5.49"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.49.tgz#9358f514ab6eeed809a8689f4b39ea5114ae729c"
   integrity sha512-ZXfs1Of8fDb6z7WEYZjXpgIRF6MEu8JdeGA0A40aZq6OQbS+eJpnnV49epZRna2DU/YsEjSQuGtQPPtvt6J65A==
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 40df19e (Add Toaster)
 =======
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+>>>>>>> 18062fe (work on header unit testing)
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -3992,6 +4030,7 @@ pretty-format@^27.0.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 prompts@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/prompts/-/prompts-2.4.2.tgz#7b57e73b3a48029ad10ebd44f74b01722a4cb069"
@@ -4004,6 +4043,8 @@ prompts@^2.4.2:
 >>>>>>> 40df19e (Add Toaster)
 =======
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+>>>>>>> 18062fe (work on header unit testing)
 prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
@@ -4035,6 +4076,13 @@ react-dom@^18:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.2"
+
+react-error-boundary@^3.1.0:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-3.1.4.tgz#255db92b23197108757a888b01e5b729919abde0"
+  integrity sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
 
 react-hook-form@^7.53.0:
   version "7.53.1"
@@ -4887,6 +4935,7 @@ undici-types@~6.19.2, undici-types@~6.19.8:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 universalify@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.1.tgz#168efc2180964e6386d061e094df61afe239b18d"
@@ -4899,6 +4948,9 @@ update-browserslist-db@^1.1.0:
 =======
 update-browserslist-db@^1.1.0:
 >>>>>>> e071e0b041e259784ae1f219483b6fc80cbca5e3
+=======
+update-browserslist-db@^1.1.0:
+>>>>>>> 18062fe (work on header unit testing)
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.1.1.tgz#80846fba1d79e82547fb661f8d141e0945755fe5"
   integrity sha512-R8UzCaa9Az+38REPiJ1tXlImTJXlVfgHZsglwBD/k6nj76ctsH1E3q4doGrukiLQd3sGQYu56r5+lo5r94l29A==
