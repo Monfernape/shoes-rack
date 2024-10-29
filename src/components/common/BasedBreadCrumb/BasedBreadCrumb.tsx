@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
 import { BreadcrumbsTypes } from "@/types";
-// import useMediaQuery from '@/hooks/use-media-query'
+import useMediaQuery from "@/hooks/use-media-query";
 
 interface Props {
   breadcrumbs: BreadcrumbsTypes[];
@@ -18,15 +18,16 @@ interface Props {
 
 export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
   const pathname = usePathname();
-  // const isDesktop = useMediaQuery("(min-width: 768px)")
+  const is_sm = useMediaQuery("sm");
 
   const updatedBreadCrumbs = useMemo(() => {
-    const currenLinkIndex = breadcrumbs.findIndex(
-      (x) => x.href === pathname
-    );
-    const updatedLinks = breadcrumbs.slice(0, currenLinkIndex + 1);
+    const currenLinkIndex = breadcrumbs.findIndex((x) => x.href === pathname);
+    let updatedLinks = breadcrumbs.slice(0, currenLinkIndex + 1);
+    if (is_sm) {
+      updatedLinks = breadcrumbs.slice(-1);
+    }
     return updatedLinks;
-  }, [pathname]);
+  }, [pathname, is_sm]);
 
   return (
     <div>
@@ -43,7 +44,7 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
                       : "transition-colors"
                   }`}
                 >
-                  <Link href={breadcrumb.href} data-testid="mytest" role="link" >
+                  <Link href={breadcrumb.href} data-testid="mytest" role="link">
                     {breadcrumb.label}
                   </Link>
                 </BreadcrumbLink>
