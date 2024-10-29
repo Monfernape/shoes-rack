@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
-import { Duties, ShiftTiming, User, UserRole } from "@/constant/constant";
+import { SHIFT, UserRole } from "@/constant/constant";
 
 import {
   Select,
@@ -41,18 +41,55 @@ import {
   CNIC_VALIDATOR_REGEX,
   PHONENUMBER_VALIDATOR_REGEX,
 } from "../../../../regex";
-import { onSubmit } from "./memberActions";
+import { createUser } from "../actions/createUserAction";
+import { UserFormSchema } from "@/types";
 
-export const formSchema = z.object({
-  name: z.string({ message: "Name is required" }),
+const USER_ROLES = [
+  {
+    role: "Member",
+    value: UserRole.Member,
+  },
+  {
+    role: "Incharge",
+    value: UserRole.Incharge,
+  },
+  {
+    role: "Shift Incharge",
+    value: UserRole.ShiftIncharge,
+  },
+];
+
+const DUTIES = [
+  {
+    time: "Shift 12:00am to 00:06am",
+    value: SHIFT.ShiftA,
+  },
+  {
+    time: "Shift 00:06am to 00:12pm",
+    value: SHIFT.ShiftB,
+  },
+  {
+    time: "Shift 00:12pm to 00:06pm",
+    value: SHIFT.ShiftC,
+  },
+  {
+    time: "Shift 00:06pm to 00:12am",
+    value: SHIFT.ShiftD,
+  },
+];
+
+export const userBuilderSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
   phoneNumber: z
     .string({ message: "Phone is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   date_of_birth: z.coerce
     .date()
-    .min(new Date(Date.now() - 1 * 365 * 24 * 60 * 60 * 1000), "over age"),
+    .max(new Date(Date.now() - 16 * 365 * 24 * 60 * 60 * 1000), "under age"),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
-  shift: z.nativeEnum(ShiftTiming, {
+  shift: z.enum(["shift_a", "shift_b", "shift_c", "shift_d"], {
     errorMap: () => {
       return { message: "Select shift timing " };
     },
@@ -60,7 +97,7 @@ export const formSchema = z.object({
   address: z
     .string({ message: "Address is required" })
     .min(10, "Address should have at least 10 characters"),
-  role: z.nativeEnum(UserRole, {
+  role: z.enum(["member", "incharge", "shift_incharge"], {
     errorMap: () => {
       return { message: "Select user role" };
     },
@@ -70,9 +107,9 @@ export const formSchema = z.object({
     .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
 });
 
-export const MemberEditPage = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export const MemberFormBuilder = () => {
+  const form = useForm<z.infer<typeof userBuilderSchema>>({
+    resolver: zodResolver(userBuilderSchema),
     defaultValues: {
       name: "",
       phoneNumber: "",
@@ -95,11 +132,10 @@ export const MemberEditPage = () => {
     replacement: { _: /\d/ },
   });
 
-  const handleSubmittion = async (values: z.infer<typeof formSchema>) => {
-    console.log("values", values);
-    onSubmit(values);
-    // formSchema.parse(values);
-    // form.reset();
+  const handleSubmittion = async (
+    values: z.infer<typeof userBuilderSchema>
+  ) => {
+    createUser(values);
   };
   const {
     formState: { errors },
@@ -108,10 +144,8 @@ export const MemberEditPage = () => {
     <FormWrapper>
       <Form {...form}>
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmittion(form.getValues());
-          }}
+          action={form.handleSubmit(handleSubmittion)}
+          // onSubmit={form.handleSubmit(handleSubmittion)}
           className="space-y-4"
           data-testid="form-valid"
         >
@@ -310,7 +344,7 @@ export const MemberEditPage = () => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Role</SelectLabel>
-                        {Duties.map((shift) => (
+                        {DUTIES.map((shift) => (
                           <SelectItem key={shift.value} value={shift.value}>
                             {shift.time}
                           </SelectItem>
@@ -342,7 +376,7 @@ export const MemberEditPage = () => {
                     <SelectContent data-testid="role">
                       <SelectGroup data-testid="select">
                         <SelectLabel>Role</SelectLabel>
-                        {User.map((user) => (
+                        {USER_ROLES.map((user) => (
                           <SelectItem
                             data-testid="role-option"
                             className="flex-1"

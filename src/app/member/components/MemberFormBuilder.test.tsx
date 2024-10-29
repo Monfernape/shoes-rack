@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { MemberEditPage } from "./MemberEditPage";
 
 import { format } from "date-fns";
+import { MemberFormBuilder } from "./MemberFormBuilder";
 
 type TestElement = Document | Element | Window | Node;
 
@@ -33,7 +33,7 @@ const formTargets = [
 ];
 describe("UserForm", () => {
   it("validates the form fields", async () => {
-    render(<MemberEditPage />);
+    render(<MemberFormBuilder />);
     // Inputs
     formTargets.map((target) => {
       const input = screen.getByTestId(target.testId);

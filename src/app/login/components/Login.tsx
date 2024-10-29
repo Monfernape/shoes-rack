@@ -13,7 +13,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Phone as PhoneIcon } from "lucide-react";
-import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 
 const userSchema = z.object({
   phoneNumber: z
