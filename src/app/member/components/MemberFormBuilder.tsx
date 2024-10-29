@@ -142,8 +142,8 @@ export const MemberFormBuilder = () => {
     <FormWrapper>
       <Form {...form}>
         <form
-          action={form.handleSubmit(handleSubmittion)}
-          // onSubmit={form.handleSubmit(handleSubmittion)}
+          // action={form.handleSubmit(handleSubmittion)}
+          onSubmit={form.handleSubmit(handleSubmittion)}
           className="space-y-4"
           data-testid="form-valid"
         >
