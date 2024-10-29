@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Member } from "@/types";
+import { UserInfo } from "@/types";
 import {
   ColumnDef,
   flexRender,
@@ -20,7 +20,7 @@ import {
 import useGroupedData from "@/hooks/useGroupedData";
 import { UserStatus } from "@/lib/routes";
 
-const members: Member[] = [
+const members: UserInfo[] = [
   {
     id: 1,
     name: "Alice Johnson",
@@ -144,7 +144,7 @@ const members: Member[] = [
 ];
 
 export const MemberList = () => {
-  const columns: ColumnDef<Member>[] = [
+  const columns: ColumnDef<UserInfo>[] = [
     {
       accessorKey: "name",
       header: "Name",
