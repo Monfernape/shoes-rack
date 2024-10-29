@@ -12,12 +12,10 @@ import {
 } from "@/components/ui/select";
 import { useMemo } from "react";
 import { User } from "@/types";
-
+import { MemberRole, UserStatus } from "@/lib/routes";
 const attendanceSchema = z
   .object({
-    memberId: z.number().refine((val) => val > 0, {
-      message: "Please select a user",
-    }),
+    memberId: z.number().positive("Please select a user"),
     startTime: z.string().nonempty({ message: "Start time is required" }),
     endTime: z.string().nonempty({ message: "End time is required" }),
   })
@@ -129,20 +127,21 @@ const AttendanceFormBuilder = () => {
   } = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
-      memberId: loginUser.role === "member" ? loginUser.id : undefined,
+      memberId: loginUser.role === MemberRole.Member ? loginUser.id : undefined,
     },
   });
 
   const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    event.currentTarget.showPicker(); 
+    event.currentTarget.showPicker();
   };
 
   const roleBaseMembers = useMemo(() => {
     return members
       .filter(
         (member) =>
-          member.status === "active" &&
-          (loginUser.role === "incharge" || member.shift === loginUser.shift)
+          member.status === UserStatus.Active &&
+          (loginUser.role === MemberRole.Incharge ||
+            member.shift === loginUser.shift)
       )
       .map(({ id, name }) => ({
         id,
@@ -151,16 +150,26 @@ const AttendanceFormBuilder = () => {
   }, []);
 
   const onSubmit = (values: AttendanceFormValues) => {
-    console.log({values});
+    console.log({ values });
     const payload = {
       ...values,
-      // status: "pending", // we will add this status pending in the sever action 
-    }
+      // status: "pending", // we will add this status pending in the sever action
+    };
   };
 
   const handleUserSelect = (value: string) => {
     const userId = Number(value);
     setValue("memberId", userId, { shouldValidate: true });
+  };
+  const getSelectedUserName = () => {
+    if (loginUser.role === MemberRole.Member) {
+      return loginUser.name;
+    }
+    const selectedMemberId = getValues("memberId");
+    const selectedMember = roleBaseMembers.find(
+      (member) => member.id === selectedMemberId
+    );
+    return selectedMember?.name;
   };
 
   return (
@@ -172,31 +181,18 @@ const AttendanceFormBuilder = () => {
           <label htmlFor="user" className="text-sm font-medium">
             User name
           </label>
-          <Select onValueChange={handleUserSelect}>
+          <Select
+            value={getValues("memberId")?.toString() || ""}
+            onValueChange={handleUserSelect}
+          >
             <SelectTrigger
               className={`mt-1 border rounded-md p-2 ${
                 errors.memberId ? "border-red-500" : "border-gray-300"
               }`}
               disabled={loginUser.role === "member"}
             >
-              <SelectValue
-                placeholder={
-                  loginUser.role === "member" ? loginUser.name : "select a user"
-                }
-              >
-                {loginUser.role !== "member" && (
-                  <span data-testid="selectUser">
-                    {(() => {
-                      const selectedMemberId = getValues("memberId");
-                      const selectedMember = roleBaseMembers.find(
-                        (member) => member.id === selectedMemberId
-                      );
-                      return selectedMember
-                        ? selectedMember.name
-                        : "select a user";
-                    })()}
-                  </span>
-                )}
+              <SelectValue placeholder={"select a user"}>
+                {getSelectedUserName()}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -207,8 +203,11 @@ const AttendanceFormBuilder = () => {
               ))}
             </SelectContent>
           </Select>
+
           {errors.memberId && (
-            <p className="text-red-500 text-sm mt-1">{errors.memberId.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.memberId.message}
+            </p>
           )}
         </div>
 
