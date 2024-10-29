@@ -85,9 +85,7 @@ export const userBuilderSchema = z.object({
   phoneNumber: z
     .string({ message: "Phone is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  date_of_birth: z.coerce
-    .date()
-    .max(new Date(Date.now() - 16 * 365 * 24 * 60 * 60 * 1000), "under age"),
+  date_of_birth: z.coerce.date().max(new Date(Date.now()), "under age"),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
   shift: z.enum(["shift_a", "shift_b", "shift_c", "shift_d"], {
     errorMap: () => {
@@ -115,10 +113,10 @@ export const MemberFormBuilder = () => {
       phoneNumber: "",
       date_of_birth: new Date(),
       cnic: "",
-      shift: undefined,
+      // shift: undefined,
       address: "",
       role: undefined,
-      ehad_start_date: new Date(),
+      // ehad_start_date: new Date(),
     },
     mode: "onBlur",
   });
@@ -162,10 +160,7 @@ export const MemberFormBuilder = () => {
                   {...field}
                   data-testid="name"
                   name="name"
-                  className={
-                    errors?.name &&
-                    "border-red-500 border focus-visible:ring-0 "
-                  }
+                  inputError={errors?.name && true}
                 />
 
                 <FormMessage data-testid="name-error" />
@@ -184,10 +179,7 @@ export const MemberFormBuilder = () => {
                     {...field}
                     data-testid="phone"
                     ref={phoneNumberMask}
-                    className={
-                      errors?.phoneNumber &&
-                      "border-red-500 border focus-visible:ring-0 "
-                    }
+                    inputError={errors?.phoneNumber && true}
                   />
                 </FormControl>
                 <FormMessage data-testId="phone_error" />
@@ -206,10 +198,7 @@ export const MemberFormBuilder = () => {
                     {...field}
                     data-testid="cnic"
                     ref={cnicMask}
-                    className={
-                      errors?.cnic &&
-                      "border-red-500 border focus-visible:ring-0 "
-                    }
+                    inputError={errors?.cnic && true}
                   />
                 </FormControl>
                 <FormMessage data-testId="cnic_error" />
@@ -249,8 +238,11 @@ export const MemberFormBuilder = () => {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
-                      data-testid="calender"
+                      onSelect={() => {
+                        console.log("Value", field.value);
+                        field.onChange;
+                      }}
+                      data-testid="date-picker"
                     />
                   </PopoverContent>
                 </Popover>
@@ -311,7 +303,7 @@ export const MemberFormBuilder = () => {
                       <CalendarIcon className="ml-auto w-3.5 h-3.5" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="w-auto p-0" data-testid="calender">
                     <Calendar
                       mode="single"
                       selected={field.value}
