@@ -12,7 +12,6 @@ describe("AttendanceFormBuilder", () => {
   it("selection value", async () => {
     render(<AttendanceFormBuilder />);
 
-
     expect(screen.getByText('Attendance Form')).toBeDefined();
 
     const selectTrigger = screen.getByText(/select a user/i);
@@ -44,36 +43,4 @@ describe("AttendanceFormBuilder", () => {
 
     expect(new Date(`1970-01-01T${endInput.value}:00`) > new Date(`1970-01-01T${startInput.value}:00`)).toBe(true);
   });
-
-    const option = await screen.findByLabelText(/Ian Malcolm/i);
-    fireEvent.click(option);
-
-  
-    await waitFor(() => {
-      expect(screen.queryByText("Ian Malcolm")).toBeDefined();
-    });
-
-  });
-
-
-  it("ensures end time is greater than start time", async () => {
-    render(<AttendanceFormBuilder />);
-  
-
-    const startInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
-    fireEvent.change(startInput, { target: { value: "10:00" } });
-  
-   
-    expect(startInput.value).toBe("10:00");
-  
-
-    const endInput = screen.getByLabelText(/End Time/i) as HTMLInputElement;
-    fireEvent.change(endInput, { target: { value: "12:00" } });
-  
-
-    expect(endInput.value).toBe("12:00");
-  
-    
-    expect(new Date(`1970-01-01T${endInput.value}:00`) > new Date(`1970-01-01T${startInput.value}:00`)).toBe(true);
-  })
 });
