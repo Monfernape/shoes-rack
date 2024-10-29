@@ -51,6 +51,7 @@ export const MemeberHeader = () => {
                 <Input
                   type="search"
                   placeholder="Search..."
+                  data-testid="searchInput"
                   onFocus={() => {
                     setIsTitleHide(true);
                   }}
@@ -63,8 +64,7 @@ export const MemeberHeader = () => {
                 />
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
-              <Button className="h-7">
-                {" "}
+              <Button data-testid="addMemberButton" className="h-7">
                 <Plus /> {!is_md ? "Add Member" : null}
               </Button>
             </div>

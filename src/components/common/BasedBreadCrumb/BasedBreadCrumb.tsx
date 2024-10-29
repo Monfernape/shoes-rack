@@ -18,16 +18,16 @@ interface Props {
 
 export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
   const pathname = usePathname();
-  const is_sm = useMediaQuery("sm");
+  // const is_sm = useMediaQuery("sm");
 
   const updatedBreadCrumbs = useMemo(() => {
     const currenLinkIndex = breadcrumbs.findIndex((x) => x.href === pathname);
     let updatedLinks = breadcrumbs.slice(0, currenLinkIndex + 1);
-    if (is_sm) {
-      updatedLinks = breadcrumbs.slice(-1);
-    }
+    // if (is_sm) {
+    //   updatedLinks = breadcrumbs.slice(-1);
+    // }
     return updatedLinks;
-  }, [pathname, is_sm]);
+  }, [pathname]);
 
   return (
     <div>
