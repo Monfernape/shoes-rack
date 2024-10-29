@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useMask } from "@react-input/mask";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,8 +14,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
-import { User, UserRole } from "@/constant/constant";
-import { onSubmit } from "./memberActions";
+import { Duties, ShiftTiming, User, UserRole } from "@/constant/constant";
+
 import {
   Select,
   SelectContent,
@@ -35,46 +36,38 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import FormWrapper from "../../../common/FormWrapper";
 import { Label } from "@/components/ui/label";
-
-const phoneValidator =
-  /^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{2})((-?)|( ?))([0-9]{7})$/gm;
-const cnicValidator =
-  /^(3)([0-9]{1})([0-9]{3})((-?)|( ?))([0-9]{7})((-?)|( ?))([0-9]{1})$/gm;
+import { Textarea } from "@/components/ui/textarea";
+import {
+  CNIC_VALIDATOR_REGEX,
+  PHONENUMBER_VALIDATOR_REGEX,
+} from "../../../../regex";
+import { onSubmit } from "./memberActions";
 
 export const formSchema = z.object({
-  name: z
-    .string({ message: "Name is required" })
-    .min(3, "Name should have at least 3 characters"),
-  phone: z
+  name: z.string({ message: "Name is required" }),
+  phoneNumber: z
     .string({ message: "Phone is required" })
-    .regex(phoneValidator, "phone number is not valid"),
+    .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   date_of_birth: z.coerce
     .date()
-    .min(
-      new Date("01-01-1990"),
-      "You can not suitable for this job because your are over age"
-    )
-    .max(
-      new Date(),
-      "You can not suitable for this job because your are under age"
-    ),
-  cnic: z.string().regex(cnicValidator, "CNIC is not valid"),
-  // shift: z.nativeEnum(ShiftTiming, {
-  //   errorMap: () => {
-  //     return { message: "Please select your user type" };
-  //   },
-  // }),
-  // address: z
-  //   .string({ message: "Address is required" })
-  //   .min(10, "Name should have at least 10 characters"),
-  role: z.nativeEnum(UserRole, {
+    .min(new Date(Date.now() - 1 * 365 * 24 * 60 * 60 * 1000), "over age"),
+  cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
+  shift: z.nativeEnum(ShiftTiming, {
     errorMap: () => {
-      return { message: "Please select your user type" };
+      return { message: "Select shift timing " };
     },
   }),
-  // ehad_start_date: z
-  //   .date()
-  //   .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
+  address: z
+    .string({ message: "Address is required" })
+    .min(10, "Address should have at least 10 characters"),
+  role: z.nativeEnum(UserRole, {
+    errorMap: () => {
+      return { message: "Select user role" };
+    },
+  }),
+  ehad_start_date: z
+    .date()
+    .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
 });
 
 export const MemberEditPage = () => {
@@ -82,24 +75,31 @@ export const MemberEditPage = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      phone: "",
+      phoneNumber: "",
       date_of_birth: new Date(),
       cnic: "",
-      // shift: undefined,
-      // address: "",
+      shift: undefined,
+      address: "",
       role: undefined,
-      // ehad_start_date: new Date(),
+      ehad_start_date: new Date(),
     },
     mode: "onBlur",
   });
+
+  const phoneNumberMask = useMask({
+    mask: "03__-_______",
+    replacement: { _: /\d/ },
+  });
+  const cnicMask = useMask({
+    mask: "3____-_______-_",
+    replacement: { _: /\d/ },
+  });
+
   const handleSubmittion = async (values: z.infer<typeof formSchema>) => {
-    // const data = await onSubmit(values);
-    // if (data) {
-    //   console.log("Data received", data);
-    // }
     console.log("values", values);
-    formSchema.parse(values);
-    form.reset();
+    onSubmit(values);
+    // formSchema.parse(values);
+    // form.reset();
   };
   const {
     formState: { errors },
@@ -124,7 +124,7 @@ export const MemberEditPage = () => {
                 <Label>Name</Label>
 
                 <Input
-                  placeholder="Enter Your Name"
+                  placeholder="Enter Name"
                   {...field}
                   data-testid="name"
                   name="name"
@@ -140,7 +140,7 @@ export const MemberEditPage = () => {
           />
           <FormField
             control={form.control}
-            name="phone"
+            name="phoneNumber"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <Label>Phone number</Label>
@@ -149,8 +149,9 @@ export const MemberEditPage = () => {
                     placeholder="0300-0000000"
                     {...field}
                     data-testid="phone"
+                    ref={phoneNumberMask}
                     className={
-                      errors?.phone &&
+                      errors?.phoneNumber &&
                       "border-red-500 border focus-visible:ring-0 "
                     }
                   />
@@ -170,6 +171,7 @@ export const MemberEditPage = () => {
                     placeholder="30000-0000000-0"
                     {...field}
                     data-testid="cnic"
+                    ref={cnicMask}
                     className={
                       errors?.cnic &&
                       "border-red-500 border focus-visible:ring-0 "
@@ -223,7 +225,7 @@ export const MemberEditPage = () => {
             )}
           />
 
-          {/* <FormField
+          <FormField
             control={form.control}
             name="address"
             render={({ field }) => (
@@ -231,7 +233,7 @@ export const MemberEditPage = () => {
                 <Label>Address</Label>
                 <FormControl>
                   <Textarea
-                    placeholder="Enter Your Address"
+                    placeholder="Enter Address"
                     {...field}
                     className={`resize-none ${
                       errors?.address &&
@@ -243,9 +245,9 @@ export const MemberEditPage = () => {
                 <FormMessage data-testId="address_error" />
               </FormItem>
             )}
-          /> */}
+          />
 
-          {/* <FormField
+          <FormField
             control={form.control}
             name="ehad_start_date"
             render={({ field }) => (
@@ -287,9 +289,9 @@ export const MemberEditPage = () => {
                 <FormMessage data-testId="ehad_duration_error" />
               </FormItem>
             )}
-          /> */}
+          />
 
-          {/* <FormField
+          <FormField
             control={form.control}
             name="shift"
             render={({ field }) => (
@@ -320,7 +322,7 @@ export const MemberEditPage = () => {
                 <FormMessage data-testId="shift_error" />
               </FormItem>
             )}
-          /> */}
+          />
 
           <FormField
             control={form.control}
