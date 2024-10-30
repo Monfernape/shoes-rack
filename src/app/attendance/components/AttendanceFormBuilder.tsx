@@ -1,6 +1,9 @@
+"use client";
+
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,13 +13,21 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { useMemo } from "react";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/lib/routes";
+
 const attendanceSchema = z
   .object({
     memberId: z.number({
-      required_error: 'Please select user name',
+      required_error: "Please select user name",
     }),
     startTime: z.string().nonempty({ message: "Start time is required" }),
     endTime: z.string().nonempty({ message: "End time is required" }),
@@ -30,7 +41,7 @@ const attendanceSchema = z
       return endTime <= nextTwoHours;
     },
     {
-      message: "End time must be later than start time",
+      message: "End time must be later then start time",
       path: ["endTime"],
     }
   );
@@ -120,22 +131,14 @@ const members = [
 ];
 
 const AttendanceFormBuilder = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    getValues,
-  } = useForm<AttendanceFormValues>({
+  const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
       memberId: loginUser.role === MemberRole.Member ? loginUser.id : undefined,
+      startTime: "",
+      endTime: "",
     },
   });
-
-  const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    event.currentTarget.showPicker();
-  };
 
   const roleBaseMembers = useMemo(() => {
     return members
@@ -151,113 +154,89 @@ const AttendanceFormBuilder = () => {
       }));
   }, []);
 
-  const onSubmit = (values: AttendanceFormValues) => {
-    console.log({ values });
-    const payload = {
-      ...values,
-      // status: "pending", // we will add this status pending in the sever action
-    };
+  const handleUserSelect = (value: string) => {
+    form.setValue("memberId", Number(value), { shouldValidate: true });
   };
 
-  const handleUserSelect = (value: string) => {
-    const userId = Number(value);
-    setValue("memberId", userId, { shouldValidate: true });
-  };
-  const getSelectedUserName = () => {
-    if (loginUser.role === MemberRole.Member) {
-      return loginUser.name;
-    }
-    const selectedMemberId = getValues("memberId");
-    const selectedMember = roleBaseMembers.find(
-      (member) => member.id === selectedMemberId
-    );
-    return selectedMember?.name;
+  const onSubmit = async (values: AttendanceFormValues) => {
+    console.log({ values });
   };
 
   return (
-    <div className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md">
-      <h1 className="text-2xl font-bold text-center mb-6">Attendance Form</h1>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6">
+        <h1 className="text-2xl font-bold text-center mb-6">Attendance Form</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        <div className="flex flex-col">
-          <label htmlFor="user" className="text-sm font-medium">
-            User name
-          </label>
-          <Select
-            value={getValues("memberId")?.toString() || ""}
-            onValueChange={handleUserSelect}
-          >
-            <SelectTrigger
-              className={`mt-1 border rounded-md p-2 ${
-                errors.memberId ? "border-red-500" : "border-gray-300"
-              }`}
-              disabled={loginUser.role === "member"}
-            >
-              <SelectValue placeholder={"select a user"}>
-                {getSelectedUserName()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              {roleBaseMembers.map((user) => (
-                <SelectItem key={user.id} value={user.id.toString()}>
-                  {user.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {errors.memberId && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.memberId.message}
-            </p>
+        <FormField
+          control={form.control}
+          name="memberId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>User Name</FormLabel>
+              <FormControl>
+                <Select
+                  value={field.value?.toString() || ""}
+                  onValueChange={handleUserSelect}
+                  disabled={loginUser.role === "member"}
+                >
+                  <SelectTrigger className={`border rounded-md p-2 ${form.formState.errors.memberId ? "border-red-500" : "border-gray-300"}`}>
+                    <SelectValue placeholder="Select a user">{field.value ? roleBaseMembers.find(m => m.id === field.value)?.name : "Select a user"}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {roleBaseMembers.map((user) => (
+                      <SelectItem key={user.id} value={user.id.toString()}>
+                        {user.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
+        />
 
-        <div className="flex flex-col">
-          <label htmlFor="startTime" className="text-sm font-medium">
-            Start Time
-          </label>
-          <Input
-            type="time"
-            id="startTime"
-            {...register("startTime")}
-            className={`mt-1 border rounded-md p-2 ${
-              errors.startTime ? "border-red-500" : "border-gray-300"
-            }`}
-            onClick={handleClick}
-          />
-          {errors.startTime && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.startTime.message}
-            </p>
+        <FormField
+          control={form.control}
+          name="startTime"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Start Time</FormLabel>
+              <FormControl>
+                <Input
+                  type="time"
+                  {...field}
+                  onClick={(event) => event.currentTarget.showPicker()}
+                  className={`border rounded-md p-2 ${form.formState.errors.startTime ? "border-red-500" : "border-gray-300"}`}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
+        />
 
-        <div className="flex flex-col">
-          <label htmlFor="endTime" className="text-sm font-medium">
-            End Time
-          </label>
-          <Input
-            type="time"
-            id="endTime"
-            {...register("endTime")}
-            className={`mt-1 border rounded-md p-2 ${
-              errors.endTime ? "border-red-500" : "border-gray-300"
-            }`}
-            onClick={handleClick}
-          />
-          {errors.endTime && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.endTime.message}
-            </p>
+        <FormField
+          control={form.control}
+          name="endTime"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>End Time</FormLabel>
+              <FormControl>
+                <Input
+                  type="time"
+                  {...field}
+                  onClick={(event) => event.currentTarget.showPicker()}
+                  className={`border rounded-md p-2 ${form.formState.errors.endTime ? "border-red-500" : "border-gray-300"}`}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
+        />
 
-        <Button type="submit" className="text-white rounded-md p-3 transition">
-          Submit
-        </Button>
+        <Button type="submit" className="w-full text-white rounded-md p-3 transition">Submit</Button>
       </form>
-    </div>
+    </Form>
   );
 };
 
