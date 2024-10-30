@@ -1,2 +1,2 @@
 // here will members related server action
-export const memberAction = () => {}
+export const memberAction = {};
