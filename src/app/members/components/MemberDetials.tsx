@@ -8,8 +8,8 @@ import {
   Phone as PhoneIcon, 
   Shield as ShieldIcon,
   User as UserIcon } from "lucide-react";
-import { UserDetails } from "../details/[...slug]/page";
 import { MemberRole } from "@/lib/Constants";
+import { UserDetails } from "@/types";
 
 export const MemberDetials = ({
     userInfo

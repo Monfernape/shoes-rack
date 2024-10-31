@@ -1,17 +1,6 @@
 import React from 'react'
 import { MemberDetials } from '../../components/MemberDetials'
-
-export type UserDetails = {
-  name: string;
-  phone: string;
-  age: number;
-  cnic: string;
-  ehadDuration: string;
-  shift: string;
-  role: "incharge"| "member" | "superadmin";
-  address: string;
-  status: "active" | "inactive";
-};
+import { UserDetails } from '@/types';
 
 const userInfo: UserDetails = {
   name: "Ahmed Khan",
