@@ -9,19 +9,20 @@ const BREAK_POINTS = {
 
 const useMediaQuery = (query: keyof typeof BREAK_POINTS): boolean => {
   const mediaQueryString = useMemo(() => BREAK_POINTS[query], [query]);
-  const [matches, setMatches] = useState<boolean>(window.matchMedia(mediaQueryString).matches);
+  const [matches, setMatches] = useState<boolean>(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(mediaQueryString);
-    
-    const handleChange = () => setMatches(mediaQuery.matches);
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia(mediaQueryString);
+      const handleChange = () => setMatches(mediaQuery.matches);
 
-    // Set the initial match state
-    setMatches(mediaQuery.matches);
-    mediaQuery.addEventListener("change", handleChange);
-    
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [mediaQueryString]); // Recreate the listener only when the media query string changes
+      // Set the initial match state
+      setMatches(mediaQuery.matches);
+      mediaQuery.addEventListener("change", handleChange);
+      
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+  }, [mediaQueryString]);  // Recreate the listener only when the media query string changes
 
   return matches;
 };
