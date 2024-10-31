@@ -1,5 +1,5 @@
 import ActionsMenu from '@/common/ActionMenu/ActionsMenu';
-import { MemberRole } from '@/lib/routes';
+import { MemberRole } from '@/lib/Constants';
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import React from 'react';
 

@@ -4,7 +4,7 @@ export enum Routes {
   Attendance = "/attendance",
   MarkAttendance = "/mark-attendance",
   Fund = "/fund",
-  Member = "/member",
+  Member = "/members",
   AddMember = "/member/add",
   MemberDetials = "member/detials/:id",
   ShiftIncharge = "/shift-incharge",
@@ -24,11 +24,13 @@ export enum MemberRole {
 export enum UserRole {
   Incharge = "incharge",
   Member = "member",
-  ShiftIncharge = "shift-incharge"
+  ShiftIncharge = "shift-incharge",
 }
 
 export enum UserStatus {
   Active = "active",
-  Invited = "invited"
+  Inactive = "inactive",
+  pending = "pending",
+  accept = "accept",
+  rejected = "rejected",
 }
-

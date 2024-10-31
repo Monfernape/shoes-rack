@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGroupedData from "@/hooks/useGroupedData";
-import { UserStatus } from "@/lib/routes";
+import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 
 const members: Member[] = [
   {
@@ -35,7 +35,7 @@ const members: Member[] = [
     phone: "555-5678",
     shift: "B",
     role: "member",
-    status: "invited",
+    status: "pending",
   },
   {
     id: 3,
@@ -59,7 +59,7 @@ const members: Member[] = [
     phone: "555-2468",
     shift: "A",
     role: "incharge",
-    status: "invited",
+    status: "inactive",
   },
   {
     id: 6,
@@ -83,7 +83,7 @@ const members: Member[] = [
     phone: "555-3698",
     shift: "B",
     role: "member",
-    status: "invited",
+    status: "inactive",
   },
   {
     id: 9,
@@ -107,7 +107,7 @@ const members: Member[] = [
     phone: "555-7531",
     shift: "D",
     role: "shift-incharge",
-    status: "invited",
+    status: "inactive",
   },
   {
     id: 12,
@@ -131,7 +131,7 @@ const members: Member[] = [
     phone: "555-8642",
     shift: "B",
     role: "shift-incharge",
-    status: "invited",
+    status: "inactive",
   },
   {
     id: 15,
@@ -175,15 +175,7 @@ export const MemberList = () => {
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => (
-        <Badge
-          className={`capitalize ${
-            row.getValue("status") ===  UserStatus.Active
-              ? "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active"
-              : "bg-status-invited-background text-status-invited hover:bg-status-invited-background hover:text-status-invited"
-          }`}
-        >
-          {row.getValue("status")}
-        </Badge>
+         <UserStatusBadge status={row.getValue("status")} />
       ),
     },
     {

@@ -6,6 +6,7 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/common/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -53,13 +54,25 @@ const config: Config = {
         status: {
           active: {
             DEFAULT: "hsl(var(--status-active))",
-            background: "hsla(var(--status-active-backgroud))",
+            background: "hsla(var(--status-active-background))",
           },
-          invited: {
-            DEFAULT: "hsl(var(--status-invited))",
-            background: "hsla(var(--status-invited-background))",
+          pending: {
+            DEFAULT: "hsl(var(--status-pending))",
+            background: "hsla(var(--status-pending-background))",
           },
-        },
+          inactive: {
+            DEFAULT: "hsl(var(--status-inactive))",
+            background: "hsla(var(--status-inactive-background))",
+          },
+          accept: {
+            DEFAULT: "hsl(var(--status-accept))",
+            background: "hsla(var(--status-accept-background))",
+          },
+          rejected: {
+            DEFAULT: "hsl(var(--status-rejected))",
+            background: "hsla(var(--status-rejected-background))",
+          },
+        },        
         sidebar:{
           DEFAULT:"hsl(var(--sidebar-background))",
           background:"hsl(var(--sidebar-background))",

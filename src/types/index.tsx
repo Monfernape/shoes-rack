@@ -1,5 +1,7 @@
 export type UserRole = "incharge" | "member" | "shift-incharge";
-export type UserStatus = "active" | "invited";
+export type UserStatus = "active" | "inactive" | "pending";
+
+
 export interface Member {
   shift: string;
   id: number;
