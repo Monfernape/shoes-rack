@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
-// TODO : role will be dynamic after user login 
+  // TODO : role will be dynamic after user login
   const roleBasedRoutes = useAccessibleRoutes("incharge");
 
   return (
