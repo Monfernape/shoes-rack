@@ -1,9 +1,13 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { MemberList } from "./components/MemberList";
-const Page = () => {
+import { getMembers } from "@/app/member/actions/getMembers";
+
+const Page = async () => {
+  const { data, error } = await getMembers();
+
   return (
     <div className="p-8">
-      <MemberList />
+      <MemberList data={data} error={error?.message} />
     </div>
   );
 };

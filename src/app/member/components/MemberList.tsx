@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Member } from "@/types";
 import {
   ColumnDef,
@@ -19,131 +19,14 @@ import {
 } from "@/components/ui/table";
 import useGroupedData from "@/hooks/useGroupedData";
 import { UserStatus } from "@/lib/routes";
+import { useToast } from "@/hooks/use-toast";
 
-const members: Member[] = [
-  {
-    id: 1,
-    name: "Alice Johnson",
-    phone: "555-1234",
-    shift: "A",
-    role: "incharge",
-    status: "active",
-  },
-  {
-    id: 2,
-    name: "Bob Smith",
-    phone: "555-5678",
-    shift: "B",
-    role: "member",
-    status: "invited",
-  },
-  {
-    id: 3,
-    name: "Charlie Brown",
-    phone: "555-8765",
-    shift: "C",
-    role: "shift-incharge",
-    status: "active",
-  },
-  {
-    id: 4,
-    name: "Diana Prince",
-    phone: "555-4321",
-    shift: "D",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 5,
-    name: "Ethan Hunt",
-    phone: "555-2468",
-    shift: "A",
-    role: "incharge",
-    status: "invited",
-  },
-  {
-    id: 6,
-    name: "Fiona Gallagher",
-    phone: "555-1357",
-    shift: "B",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 7,
-    name: "George Banks",
-    phone: "555-2469",
-    shift: "B",
-    role: "shift-incharge",
-    status: "active",
-  },
-  {
-    id: 8,
-    name: "Hannah Baker",
-    phone: "555-3698",
-    shift: "B",
-    role: "member",
-    status: "invited",
-  },
-  {
-    id: 9,
-    name: "Ian Malcolm",
-    phone: "555-2580",
-    shift: "C",
-    role: "incharge",
-    status: "active",
-  },
-  {
-    id: 10,
-    name: "Jack Sparrow",
-    phone: "555-1597",
-    shift: "C",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 11,
-    name: "Kara Danvers",
-    phone: "555-7531",
-    shift: "D",
-    role: "shift-incharge",
-    status: "invited",
-  },
-  {
-    id: 12,
-    name: "Leo Messi",
-    phone: "555-9876",
-    shift: "A",
-    role: "incharge",
-    status: "active",
-  },
-  {
-    id: 13,
-    name: "Mia Wallace",
-    phone: "555-4327",
-    shift: "B",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 14,
-    name: "Nina Simone",
-    phone: "555-8642",
-    shift: "B",
-    role: "shift-incharge",
-    status: "invited",
-  },
-  {
-    id: 15,
-    name: "Oscar Isaac",
-    phone: "555-3214",
-    shift: "A",
-    role: "member",
-    status: "active",
-  },
-];
-
-export const MemberList = () => {
+interface MemberProps {
+  data: Member[];
+  error?: string;
+}
+export const MemberList = ({ data, error }: MemberProps) => {
+  const { toast } = useToast();
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -177,7 +60,7 @@ export const MemberList = () => {
       cell: ({ row }) => (
         <Badge
           className={`capitalize ${
-            row.getValue("status") ===  UserStatus.Active
+            row.getValue("status") === UserStatus.Active
               ? "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active"
               : "bg-status-invited-background text-status-invited hover:bg-status-invited-background hover:text-status-invited"
           }`}
@@ -199,12 +82,21 @@ export const MemberList = () => {
   ];
 
   const table = useReactTable({
-    data: members,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const groupedData = useGroupedData(members, "shift");
+  useEffect(() => {
+    if (!data) {
+      toast({
+        title: "No Members Found",
+        description: "There are no members available at this time.",
+      });
+    }
+  }, [error]);
+
+  const groupedData = useGroupedData(data, "shift");
 
   return (
     <Table>
@@ -252,6 +144,13 @@ export const MemberList = () => {
             ))}
           </React.Fragment>
         ))}
+        {!groupedData.length && (
+          <TableRow>
+            <TableCell colSpan={6} className="text-center">
+              No Member Found
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );
