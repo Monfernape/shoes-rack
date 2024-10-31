@@ -1,7 +1,7 @@
+import React from "react";
 import { BasedBreadCrumb } from "@/common/BasedBreadCrumb/BasedBreadCrumb";
 import { Routes } from "@/lib/routes";
 import { BreadcrumbsTypes } from "@/types";
-import React from "react";
 
 const breadcrumbs: BreadcrumbsTypes[] = [
   { href: Routes.Member, label: "Member" },
@@ -9,9 +9,5 @@ const breadcrumbs: BreadcrumbsTypes[] = [
 ];
 
 export const MemberBreadCrumbs = () => {
-  return (
-    <div>
-      <BasedBreadCrumb breadcrumbs={breadcrumbs} />
-    </div>
-  );
+  return <BasedBreadCrumb breadcrumbs={breadcrumbs} />;
 };

@@ -1,5 +1,4 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemeberHeader } from "./MemeberHeader";
 
@@ -18,13 +17,24 @@ describe("Header Component", () => {
       })),
     });
   });
+
   it("Input Event Triggered", async () => {
     render(<MemeberHeader />);
-    userEvent.click(screen.getByTestId("searchInput"));
+    fireEvent.click(screen.getByTestId("searchInput"));
+  });
+
+
+  it("Input Event Triggered", async () => {
+    render(<MemeberHeader />);
+    const searchInput = screen.getByTestId("searchInput") as HTMLInputElement;
+
+    fireEvent.change(searchInput, { target: { value: 'test input' } });
+    
+    expect(searchInput.value).toBe('test input');
   });
 
   it("Button is clicked", async () => {
     render(<MemeberHeader />);
-    userEvent.click(screen.getByTestId("addMemberButton"));
+    fireEvent.click(screen.getByTestId("addMemberButton"));
   });
 });
