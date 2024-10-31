@@ -1,6 +1,6 @@
 import { expect, it, describe } from "vitest";
-import { renderHook } from "@testing-library/react-hooks";
 import useMediaQuery from "./use-media-query";
+import { renderHook } from "@testing-library/react";
 
 describe("useMediaQuery", () => {
   beforeAll(() => {

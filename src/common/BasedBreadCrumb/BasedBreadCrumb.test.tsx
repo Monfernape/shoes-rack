@@ -31,7 +31,7 @@ beforeAll(() => {
 
 describe("BasedBreadCrumb", () => {
   it("renders the correct breadcrumb links", () => {
-    (usePathname as Mock).mockReturnValue("/member/add");
+    (usePathname as Mock).mockReturnValue(Routes.AddMember);
     render(<BasedBreadCrumb breadcrumbs={mockBreadcrumbs} />);
   });
 });
