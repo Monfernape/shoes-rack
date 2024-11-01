@@ -23,10 +23,12 @@ import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 
 interface MemberProps {
   data: Member[];
-  error?: string;
+  success: Boolean;
 }
-export const MemberList = ({ data, error }: MemberProps) => {
+
+export const MemberList = ({ data, success }: MemberProps) => {
   const { toast } = useToast();
+
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -80,13 +82,13 @@ export const MemberList = ({ data, error }: MemberProps) => {
   });
 
   useEffect(() => {
-    if (!data) {
+    if (!success) {
       toast({
         title: "No Members Found",
         description: "There are no members available at this time.",
       });
     }
-  }, [error]);
+  }, [success, toast]);
 
   const groupedData = useGroupedData(data, "shift");
 

@@ -7,8 +7,15 @@ export const getMembers = async () => {
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase.from("members").select("*");
 
+  if (error) {
+    return {
+      success: false,
+      data: [],
+    };
+  }
+
   return {
+    success: true,
     data: data || [],
-    error: error || null,
   };
 };
