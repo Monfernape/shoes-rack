@@ -41,8 +41,6 @@ import {
 } from "../../../../regex";
 import { createUser } from "../actions/createUserAction";
 import { useToast } from "@/hooks/use-toast";
-import { DateSelection } from "../../../common/DateSelection";
-import { useRouter } from "next/navigation";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
@@ -110,7 +108,6 @@ export const userBuilderSchema = z.object({
 
 export const MemberFormBuilder = () => {
   const { toast } = useToast();
-  const router = useRouter();
   const phoneNumberMask = useMask({
     mask: "03__-_______",
     replacement: { _: /\d/ },
@@ -132,7 +129,7 @@ export const MemberFormBuilder = () => {
       role: "member",
       ehad_start_date: new Date(),
     },
-    mode: "onBlur",
+    mode: "all",
   });
 
   const {
@@ -146,7 +143,6 @@ export const MemberFormBuilder = () => {
       description: result.message,
     });
     form.reset();
-    router.refresh();
     console.log("User", form.getValues());
   };
 
@@ -223,11 +219,40 @@ export const MemberFormBuilder = () => {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <Label>Date of birth</Label>
-                <DateSelection
-                  onChange={field.onChange}
-                  value={field.value}
-                  error={errors.date_of_birth}
-                />
+
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        data-testid="date_of_birth"
+                        variant={"outline"}
+                        className={cn(
+                          `justify-start text-left font-normal
+                          ${field.value} && "text-muted-foreground
+                          ${
+                            errors?.date_of_birth &&
+                            "border-red-500 border focus-visible:ring-0"
+                          }
+                            `
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto w-3.5 h-3.5" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" data-testid="calender">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage data-testId="date_of_birth_error" />
               </FormItem>
             )}
@@ -259,11 +284,39 @@ export const MemberFormBuilder = () => {
             render={({ field }) => (
               <FormItem className="flex flex-col flex-1">
                 <Label>Ehad duration</Label>
-                <DateSelection
-                  onChange={field.onChange}
-                  value={field.value}
-                  error={errors.ehad_start_date}
-                />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        data-testid="ehad_start_date"
+                        variant={"outline"}
+                        className={cn(
+                          `justify-start text-left font-normal
+                          ${field.value} && "text-muted-foreground
+                          ${
+                            errors?.date_of_birth &&
+                            "border-red-500 border focus-visible:ring-0"
+                          }
+                           `
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto w-3.5 h-3.5" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" data-testid="calender">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage data-testId="ehad_duration_error" />
               </FormItem>
             )}
@@ -278,11 +331,7 @@ export const MemberFormBuilder = () => {
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="flex-1" data-testid="shift">
-                      <SelectValue
-                        placeholder={
-                          field.value === undefined ? "select shift" : null
-                        }
-                      />
+                      <SelectValue placeholder={"select shift"} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -335,7 +384,11 @@ export const MemberFormBuilder = () => {
             )}
           />
 
-          <Button type="submit" data-testid="submit">
+          <Button
+            type="submit"
+            data-testid="submit"
+            disabled={!form.formState.isValid}
+          >
             Submit
           </Button>
         </form>

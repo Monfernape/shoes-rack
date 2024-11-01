@@ -1,6 +1,6 @@
 export type UserRole = "incharge" | "member" | "shift-incharge";
 export type Shifts = "shift_a" | "shift_b" | "shift_c" | "shift_d";
-export type UserStatus = "active" | "invited";
+export type UserStatus = "active" | "inactive";
 export interface Member {
   shift: string;
   id: number;
