@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { MemberList } from "./components/MemberList";
 import { getMembers } from "@/app/member/actions/getMembers";
 
