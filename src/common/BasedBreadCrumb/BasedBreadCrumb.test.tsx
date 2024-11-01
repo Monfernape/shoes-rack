@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react";
 import { BasedBreadCrumb } from "./BasedBreadCrumb";
 import { Mock, describe, expect, it, vi } from "vitest";
 import { usePathname } from "next/navigation";
-import { BreadcrumbsTypes } from "@/types";
+import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
 
-const mockBreadcrumbs: BreadcrumbsTypes[] = [
+const mockBreadcrumbs: Breadcrumbs[] = [
   { href: Routes.Member, label: "Member" },
   { href: Routes.AddMember, label: "New Member" },
 ];
