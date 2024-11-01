@@ -6,10 +6,10 @@ export enum UserRole {
 }
 
 export enum SHIFT {
-  ShiftA = "shift_a",
-  ShiftB = "shift_b",
-  ShiftC = "shift_c",
-  ShiftD = "shift_d",
+  ShiftA = "A",
+  ShiftB = "B",
+  ShiftC = "C",
+  ShiftD = "D",
 }
 
 export enum UserStatus {

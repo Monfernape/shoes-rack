@@ -41,7 +41,7 @@ import {
 } from "../../../../regex";
 import { createUser } from "../actions/createUserAction";
 import { useToast } from "@/hooks/use-toast";
-import { DateSelection } from "./DateSelection";
+import { DateSelection } from "../../../common/DateSelection";
 import { useRouter } from "next/navigation";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
@@ -90,7 +90,7 @@ export const userBuilderSchema = z.object({
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   date_of_birth: z.date().max(new Date(Date.now()), "under age"),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
-  shift: z.enum(["shift_a", "shift_b", "shift_c", "shift_d"], {
+  shift: z.enum(["A", "B", "C", "D"], {
     errorMap: () => {
       return { message: "Select shift timing " };
     },
@@ -127,9 +127,9 @@ export const MemberFormBuilder = () => {
       phoneNumber: "",
       date_of_birth: undefined,
       cnic: "",
-      shift: undefined,
+      shift: "A",
       address: "",
-      role: undefined,
+      role: "member",
       ehad_start_date: new Date(),
     },
     mode: "onBlur",
@@ -277,7 +277,11 @@ export const MemberFormBuilder = () => {
               <FormItem className="flex flex-col">
                 <Label>Shift </Label>
                 <FormControl>
-                  <Select onValueChange={field.onChange} {...field}>
+                  <Select
+                    onValueChange={field.onChange}
+                    {...field}
+                    form="form-valid"
+                  >
                     <SelectTrigger className="flex-1" data-testid="shift">
                       <SelectValue
                         placeholder={
