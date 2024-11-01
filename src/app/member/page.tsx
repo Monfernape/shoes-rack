@@ -3,11 +3,11 @@ import { MemberList } from "./components/MemberList";
 import { getMembers } from "@/app/member/actions/getMembers";
 
 const Page = async () => {
-  const { data, success } = await getMembers();
+  const { data, success , message } = await getMembers();
 
   return (
     <div className="p-8">
-      <MemberList data={data} success={success} />
+      <MemberList data={data} success={success} message={message} />
     </div>
   );
 };
