@@ -28,21 +28,19 @@ export const DateSelection = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <FormControl>
-          <Button
-            data-testid="ehad_start_date"
-            variant={"outline"}
-            className={cn(
-              `justify-start text-left font-normal
+        <Button
+          data-testid="ehad_start_date"
+          variant={"outline"}
+          className={cn(
+            `justify-start text-left font-normal
           ${value} && "text-muted-foreground
           ${error && "border-red-500 border focus-visible:ring-0"}
           `
-            )}
-          >
-            {value ? format(value, "PPP") : <span>Pick a date</span>}
-            <CalendarIcon className="ml-auto w-3.5 h-3.5" />
-          </Button>
-        </FormControl>
+          )}
+        >
+          {value ? format(value, "PPP") : <span>Pick a date</span>}
+          <CalendarIcon className="ml-auto w-3.5 h-3.5" />
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" data-testid="calender">
         <Calendar mode="single" selected={value} onSelect={onChange} />

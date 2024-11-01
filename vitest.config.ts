@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { loadEnvFile } from "process";
 
-loadEnvFile(path.resolve(__dirname, ".env"));
+// loadEnvFile(path.resolve(__dirname, ".env"));
 export default defineConfig({
   plugins: [react()],
   test: {
