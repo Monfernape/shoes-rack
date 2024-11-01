@@ -339,11 +339,7 @@ export const MemberFormBuilder = () => {
               <FormItem className="flex flex-col">
                 <Label>Shift </Label>
                 <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    {...field}
-                    form="form-valid"
-                  >
+                  <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="flex-1" data-testid="shift">
                       <SelectValue placeholder={"select shift"} />
                     </SelectTrigger>
