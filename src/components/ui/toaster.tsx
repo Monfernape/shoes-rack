@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -10,22 +10,22 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
+} from "@/components/ui/toast";
 
 export function Toaster() {
   const { toasts } = useToast();
   const router = useRouter();
+  const toast = toasts[0];
 
   useMemo(() => {
-    const href = toasts[0]?.href as string
-    if (href) {
-      router.push(href);
+    if (toast?.path && toast?.isSuccess) {
+      router.push(toast?.path);
     }
   }, [toasts]);
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, isSuccess, description,  action, ...props }) {
+      {toasts.map(function ({ id, isSuccess, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>
             <div className="grid gap-1">
@@ -37,9 +37,9 @@ export function Toaster() {
             {action}
             <ToastClose />
           </Toast>
-        )
+        );
       })}
       <ToastViewport />
     </ToastProvider>
-  )
+  );
 }
