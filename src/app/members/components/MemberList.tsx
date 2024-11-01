@@ -38,9 +38,9 @@ export const MemberList = ({ data, success }: MemberProps) => {
       ),
     },
     {
-      accessorKey: "phone",
+      accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{row.getValue("phone")}</div>,
+      cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
     },
     {
       accessorKey: "shift",
