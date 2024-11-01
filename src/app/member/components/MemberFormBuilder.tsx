@@ -136,21 +136,22 @@ export const MemberFormBuilder = () => {
     formState: { errors },
   } = form;
 
-  const handleSubmition = async (values: z.infer<typeof userBuilderSchema>) => {
+  const handleSubmission = async (
+    values: z.infer<typeof userBuilderSchema>
+  ) => {
     const result = await createUser(values);
     toast({
       title: result.title,
       description: result.message,
     });
     form.reset();
-    console.log("User", form.getValues());
   };
 
   return (
     <FormWrapper>
       <Form {...form}>
         <form
-          action={() => form.handleSubmit(handleSubmition)()}
+          action={() => form.handleSubmit(handleSubmission)()}
           className="space-y-4"
           data-testid="form-valid"
         >
