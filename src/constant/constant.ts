@@ -5,7 +5,7 @@ export enum UserRole {
   SuperAdmin = "super_admin",
 }
 
-export enum SHIFT {
+export enum Shift {
   ShiftA = "A",
   ShiftB = "B",
   ShiftC = "C",

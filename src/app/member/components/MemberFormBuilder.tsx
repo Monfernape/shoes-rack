@@ -12,15 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { nullable, z } from "zod";
+import { z } from "zod";
 import { addDays, format } from "date-fns";
-import { SHIFT, UserRole } from "@/constant/constant";
+import { Shift, UserRole } from "@/constant/constant";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -39,7 +38,7 @@ import {
   CNIC_VALIDATOR_REGEX,
   PHONENUMBER_VALIDATOR_REGEX,
 } from "../../../../regex";
-import { createUser } from "../actions/createUserAction";
+import { createUser } from "../actions/action";
 import { useToast } from "@/hooks/use-toast";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
@@ -60,22 +59,22 @@ const USER_ROLES = [
   },
 ];
 
-const DUTIES = [
+const SHIFTTIMING = [
   {
     time: "Shift 12:00am to 00:06am",
-    value: SHIFT.ShiftA,
+    value: Shift.ShiftA,
   },
   {
     time: "Shift 00:06am to 00:12pm",
-    value: SHIFT.ShiftB,
+    value: Shift.ShiftB,
   },
   {
     time: "Shift 00:12pm to 00:06pm",
-    value: SHIFT.ShiftC,
+    value: Shift.ShiftC,
   },
   {
     time: "Shift 00:06pm to 00:12am",
-    value: SHIFT.ShiftD,
+    value: Shift.ShiftD,
   },
 ];
 
@@ -101,7 +100,7 @@ export const userBuilderSchema = z.object({
       return { message: "Select user role" };
     },
   }),
-  ehad_start_date: z
+  ehad_duration: z
     .date()
     .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
 });
@@ -124,10 +123,10 @@ export const MemberFormBuilder = () => {
       phoneNumber: "",
       date_of_birth: undefined,
       cnic: "",
-      shift: "A",
+      shift: Shift.ShiftA,
       address: "",
-      role: "member",
-      ehad_start_date: new Date(),
+      role: UserRole.Member,
+      ehad_duration: new Date(),
     },
     mode: "all",
   });
@@ -136,9 +135,7 @@ export const MemberFormBuilder = () => {
     formState: { errors },
   } = form;
 
-  const handleSubmission = async (
-    values: z.infer<typeof userBuilderSchema>
-  ) => {
+  const handleSubmission = async (values: UserBuilder) => {
     const result = await createUser(values);
     toast({
       title: result.title,
@@ -168,7 +165,7 @@ export const MemberFormBuilder = () => {
                     {...field}
                     data-testid="name"
                     name="name"
-                    inputError={errors?.name && true}
+                    hasError={errors?.name && true}
                   />
                 </FormControl>
                 <FormMessage data-testid="name-error" />
@@ -187,7 +184,7 @@ export const MemberFormBuilder = () => {
                     {...field}
                     data-testid="phone"
                     ref={phoneNumberMask}
-                    inputError={errors?.phoneNumber && true}
+                    hasError={errors?.phoneNumber && true}
                   />
                 </FormControl>
                 <FormMessage data-testId="phone_error" />
@@ -206,7 +203,7 @@ export const MemberFormBuilder = () => {
                     {...field}
                     data-testid="cnic"
                     ref={cnicMask}
-                    inputError={errors?.cnic && true}
+                    hasError={errors?.cnic && true}
                   />
                 </FormControl>
                 <FormMessage data-testId="cnic_error" />
@@ -269,7 +266,7 @@ export const MemberFormBuilder = () => {
                   <Textarea
                     placeholder="Enter Address"
                     {...field}
-                    inputError={errors?.address && true}
+                    hasError={errors?.address && true}
                     className={`resize-none `}
                     data-testid="address"
                   />
@@ -281,7 +278,7 @@ export const MemberFormBuilder = () => {
 
           <FormField
             control={form.control}
-            name="ehad_start_date"
+            name="ehad_duration"
             render={({ field }) => (
               <FormItem className="flex flex-col flex-1">
                 <Label>Ehad duration</Label>
@@ -289,7 +286,7 @@ export const MemberFormBuilder = () => {
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
-                        data-testid="ehad_start_date"
+                        data-testid="ehad_duration"
                         variant={"outline"}
                         className={cn(
                           `justify-start text-left font-normal
@@ -336,7 +333,7 @@ export const MemberFormBuilder = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {DUTIES.map((shift) => (
+                        {SHIFTTIMING.map((shift) => (
                           <SelectItem key={shift.value} value={shift.value}>
                             {shift.time}
                           </SelectItem>

@@ -1,8 +1,8 @@
 import React from "react";
 import { MemberFormBuilder } from "../components/MemberFormBuilder";
 
-const page = () => {
+const Page = () => {
   return <MemberFormBuilder />;
 };
 
-export default page;
+export default Page;

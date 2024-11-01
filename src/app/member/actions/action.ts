@@ -13,7 +13,7 @@ export const createUser = async (values: z.infer<typeof userBuilderSchema>) => {
   const { error } = await supabase.from(Tables.Members).insert({
     ...values,
     date_of_birth: values.date_of_birth.toISOString(),
-    ehad_start_date: values.ehad_start_date.toISOString(),
+    ehad_duration: values.ehad_duration.toISOString(),
     status: UserStatus.Inactive,
   });
 
