@@ -1,6 +1,6 @@
 import React from 'react'
-import { MemberDetials } from '../../components/MemberDetials'
 import { UserDetails } from '@/types';
+import { MemberDetails } from '../../components/MemeberDetails';
 
 const userInfo: UserDetails = {
   name: "Ahmed Khan",
@@ -17,7 +17,7 @@ const userInfo: UserDetails = {
 const page = () => {
   return (
     <div className="p-8">
-      <MemberDetials userInfo={userInfo} />
+      <MemberDetails userInfo={userInfo} />
     </div>
   )
 }

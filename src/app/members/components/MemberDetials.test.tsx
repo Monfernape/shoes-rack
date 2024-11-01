@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { it, describe, expect} from 'vitest'; 
-import { MemberDetials } from './MemberDetials';
-import { UserDetails } from '../details/[...slug]/page';
+import { it, describe, expect} from 'vitest';
 import "@testing-library/jest-dom";
+import { MemberDetails } from './MemeberDetails';
+import { UserDetails } from '@/types';
 
 const mockUserDetails: UserDetails = {
   name: "Alice Johnson",
@@ -19,7 +19,7 @@ const mockUserDetails: UserDetails = {
 describe('ActionsMenu Component', () => {
   it('calls the correct action when an item is clicked', async () => {
 
-    render(<MemberDetials userInfo={mockUserDetails} />);
+    render(<MemberDetails userInfo={mockUserDetails} />);
     expect(screen.getByTestId('user-name')).toHaveTextContent('Alice Johnson');
   });
 });
