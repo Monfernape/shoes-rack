@@ -10,12 +10,14 @@ export const getMembers = async () => {
   if (error) {
     return {
       success: false,
+      message:"There are no members available at this time.",
       data: [],
     };
   }
-
+  
   return {
     success: true,
+    message:'Members loaded successfully.',
     data: data || [],
   };
 };
