@@ -146,7 +146,6 @@ export const MemberFormBuilder = () => {
       description: result.message,
     });
     form.reset();
-
     router.refresh();
     console.log("User", form.getValues());
   };
