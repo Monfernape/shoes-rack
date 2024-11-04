@@ -8,7 +8,7 @@ import {
   Phone as PhoneIcon, 
   Shield as ShieldIcon,
   User as UserIcon } from "lucide-react";
-import { MemberRole } from "@/lib/Constants";
+import { MemberRole } from "@/lib/constants";
 import { UserDetails } from "@/types";
 
 export const MemberDetials = ({

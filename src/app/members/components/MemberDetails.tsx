@@ -2,18 +2,17 @@ import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { UserAvatar } from "@/common/Avatar/UserAvatar";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
-import { 
-  Briefcase as BriefcaseIcon, 
-  MapPin as MapPinIcon, 
-  Phone as PhoneIcon, 
+import {
+  Briefcase as BriefcaseIcon,
+  MapPin as MapPinIcon,
+  Phone as PhoneIcon,
   Shield as ShieldIcon,
-  User as UserIcon } from "lucide-react";
-import { MemberRole } from "@/lib/Constants";
+  User as UserIcon,
+} from "lucide-react";
+import { MemberRole } from "@/lib/constants";
 import { UserDetails } from "@/types";
 
-export const MemberDetails = ({
-    userInfo
-}:{userInfo:UserDetails}) => {
+export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
   return (
     <div>
       <Card>
@@ -21,7 +20,10 @@ export const MemberDetails = ({
           <div className="flex flex-row items-center space-x-4">
             <UserAvatar userName={userInfo.name} />
             <div className="flex flex-col space-y-1">
-              <h2 data-testid="user-name" className="text-sm font-semibold text-gray-700">
+              <h2
+                data-testid="user-name"
+                className="text-sm font-semibold text-gray-700"
+              >
                 {userInfo.name}
               </h2>
               <UserStatusBadge status={userInfo.status} />
@@ -45,12 +47,20 @@ export const MemberDetails = ({
               </h3>
               <div className="pl-7 space-y-2">
                 <p className="text-xs">
-                  <span className="font-medium text-muted-foreground"> Age: </span> {userInfo.age} years
+                  <span className="font-medium text-muted-foreground">
+                    {" "}
+                    Age:{" "}
+                  </span>{" "}
+                  {userInfo.age} years
                 </p>
               </div>
               <div className="pl-7 space-y-2">
                 <p className="text-xs">
-                  <span className="font-medium text-muted-foreground"> Role: </span> {userInfo.role}
+                  <span className="font-medium text-muted-foreground">
+                    {" "}
+                    Role:{" "}
+                  </span>{" "}
+                  {userInfo.role}
                 </p>
               </div>
             </div>
@@ -63,7 +73,11 @@ export const MemberDetails = ({
               </h3>
               <div className="pl-7 space-y-2">
                 <p className="text-xs">
-                  <span className="font-medium text-muted-foreground"> Phone:  </span> {userInfo.phone}
+                  <span className="font-medium text-muted-foreground">
+                    {" "}
+                    Phone:{" "}
+                  </span>{" "}
+                  {userInfo.phone}
                 </p>
               </div>
             </div>
@@ -76,12 +90,19 @@ export const MemberDetails = ({
               </h3>
               <div className="pl-7 space-y-2">
                 <p className="text-xs">
-                  <span className="font-medium text-muted-foreground">Ehad Duration:  </span> {userInfo.ehadDuration} years
+                  <span className="font-medium text-muted-foreground">
+                    Ehad Duration:{" "}
+                  </span>{" "}
+                  {userInfo.ehadDuration} years
                 </p>
               </div>
               <div className="pl-7 space-y-2">
                 <p className="text-xs">
-                  <span className="font-medium text-muted-foreground"> Shift: </span> {userInfo.shift}
+                  <span className="font-medium text-muted-foreground">
+                    {" "}
+                    Shift:{" "}
+                  </span>{" "}
+                  {userInfo.shift}
                 </p>
               </div>
             </div>

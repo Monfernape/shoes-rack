@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { it, describe, expect} from 'vitest';
 import "@testing-library/jest-dom";
-import { MemberDetails } from './MemeberDetails';
+import { MemberDetails } from './MemberDetails';
 import { UserDetails } from '@/types';
 
 const mockUserDetails: UserDetails = {
