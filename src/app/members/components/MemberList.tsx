@@ -7,7 +7,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
 import MemberTableActionRender from "./MemberActionRender";
 import {
   Table,
