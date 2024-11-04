@@ -16,8 +16,8 @@ const mockUserDetails: UserDetails = {
   status: "active",
 };
 
-describe('ActionsMenu Component', () => {
-  it('calls the correct action when an item is clicked', async () => {
+describe('member details', () => {
+  it('should render the member details', async () => {
 
     render(<MemberDetails userInfo={mockUserDetails} />);
     expect(screen.getByTestId('user-name')).toHaveTextContent('Alice Johnson');
