@@ -9,8 +9,8 @@ import {
   Shield as ShieldIcon,
   User as UserIcon,
 } from "lucide-react";
-import { MemberRole } from "@/lib/constants";
 import { UserDetails } from "@/types";
+import { MemberRole } from "@/lib/constants";
 
 export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
   return (
