@@ -6,7 +6,7 @@ interface StandardPageProps {
   title: string;
   description: string;
   onAction?: () => void;
-  showContent?: boolean;
+  isContent?: boolean;
   buttonIcon?: ReactNode;
   labelForActionButton?: string;
   children?: ReactNode;
@@ -16,12 +16,12 @@ export const StandardPage = ({
   title,
   description,
   onAction,
-  showContent = false,
+  isContent = false,
   labelForActionButton,
   children,
   buttonIcon,
 }: StandardPageProps) => {
-  return showContent ? (
+  return isContent ? (
     <>{children}</>
   ) : (
     <div
