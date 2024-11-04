@@ -1,4 +1,3 @@
-'use client';
 
 import AttendanceFormBuilder from "../components/AttendanceFormBuilder";
 
