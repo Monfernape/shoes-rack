@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import {useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,8 +29,8 @@ const attendanceSchema = z
     memberId: z.number({
       required_error: "Please select user name",
     }),
-    startTime: z.string().nonempty({ message: "Start time is required" }),
-    endTime: z.string().nonempty({ message: "End time is required" }),
+    startTime: z.string().min(1, "Start time is required"),
+    endTime: z.string().min(1, "End time is required"),
   })
   .refine(
     (data) => {
