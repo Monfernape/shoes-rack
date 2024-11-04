@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 import {
   Toast,
   ToastClose,
@@ -14,14 +13,6 @@ import {
 
 export function Toaster() {
   const { toasts } = useToast();
-  const router = useRouter();
-  const toast = toasts[0];
-
-  useMemo(() => {
-    if (toast?.path && toast?.isSuccess) {
-      router.push(toast?.path);
-    }
-  }, [toasts]);
 
   return (
     <ToastProvider>
