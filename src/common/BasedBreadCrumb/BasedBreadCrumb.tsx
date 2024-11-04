@@ -27,7 +27,7 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
       updatedLinks = breadcrumbs.slice(-1);
     }
     return updatedLinks;
-  }, [pathname]);
+  }, [pathname , breadcrumbs, isSmallScreen]);
 
   return (
     <div>
