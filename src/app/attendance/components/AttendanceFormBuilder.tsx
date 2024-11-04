@@ -164,7 +164,10 @@ const AttendanceFormBuilder = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
+      >
         <h1 className="text-2xl font-bold text-center mb-6">Attendance Form</h1>
 
         <FormField
@@ -179,8 +182,19 @@ const AttendanceFormBuilder = () => {
                   onValueChange={handleUserSelect}
                   disabled={loginUser.role === "member"}
                 >
-                  <SelectTrigger className={`border rounded-md p-2 ${form.formState.errors.memberId ? "border-red-500" : "border-gray-300"}`}>
-                    <SelectValue placeholder="Select a user">{field.value ? roleBaseMembers.find(m => m.id === field.value)?.name : "Select a user"}</SelectValue>
+                  <SelectTrigger
+                    className={`border rounded-md p-2 ${
+                      form.formState.errors.memberId
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    <SelectValue placeholder="Select a user">
+                      {field.value
+                        ? roleBaseMembers.find((m) => m.id === field.value)
+                            ?.name
+                        : "Select a user"}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {roleBaseMembers.map((user) => (
@@ -207,7 +221,11 @@ const AttendanceFormBuilder = () => {
                   type="time"
                   {...field}
                   onClick={(event) => event.currentTarget.showPicker()}
-                  className={`border rounded-md p-2 ${form.formState.errors.startTime ? "border-red-500" : "border-gray-300"}`}
+                  className={`border rounded-md p-2 ${
+                    form.formState.errors.startTime
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
                 />
               </FormControl>
               <FormMessage />
@@ -226,7 +244,11 @@ const AttendanceFormBuilder = () => {
                   type="time"
                   {...field}
                   onClick={(event) => event.currentTarget.showPicker()}
-                  className={`border rounded-md p-2 ${form.formState.errors.endTime ? "border-red-500" : "border-gray-300"}`}
+                  className={`border rounded-md p-2 ${
+                    form.formState.errors.endTime
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
                 />
               </FormControl>
               <FormMessage />
@@ -234,7 +256,12 @@ const AttendanceFormBuilder = () => {
           )}
         />
 
-        <Button type="submit" className="w-full text-white rounded-md p-3 transition">Submit</Button>
+        <Button
+          type="submit"
+          className="w-full text-white rounded-md p-3 transition"
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   );
