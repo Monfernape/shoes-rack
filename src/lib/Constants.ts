@@ -21,12 +21,6 @@ export enum MemberRole {
   SuperAdmin = "super_admin",
 }
 
-export enum UserRole {
-  Incharge = "incharge",
-  Member = "member",
-  ShiftIncharge = "shift-incharge",
-}
-
 export enum UserStatus {
   Active = "active",
   Inactive = "inactive",

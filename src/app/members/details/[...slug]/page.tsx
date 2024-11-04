@@ -1,6 +1,6 @@
 import React from 'react'
 import { UserDetails } from '@/types';
-import { MemberDetails } from '../../components/MemeberDetails';
+import { MemberDetails } from '../../components/MemberDetails';
 
 const userInfo: UserDetails = {
   name: "Ahmed Khan",
