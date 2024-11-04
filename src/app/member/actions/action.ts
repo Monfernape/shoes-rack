@@ -10,22 +10,28 @@ import { UserStatus } from "@/constant/constant";
 export const createUser = async (values: z.infer<typeof userBuilderSchema>) => {
   const supabase = await getSupabaseClient();
 
-  const { error } = await supabase.from(Tables.Members).insert({
-    ...values,
-    date_of_birth: values.date_of_birth.toISOString(),
-    ehad_duration: values.ehad_duration.toISOString(),
-    status: UserStatus.Inactive,
-  });
+  try {
+    const { error } = await supabase.from(Tables.Members).insert({
+      ...values,
+      date_of_birth: values.date_of_birth.toISOString(),
+      ehad_duration: values.ehad_duration.toISOString(),
+      status: UserStatus.Inactive,
+    });
 
-  if (error) {
+    if (error) {
+      return {
+        title: "Error in creating user",
+        message: error.message,
+      };
+    }
+    revalidatePath(Routes.AddMember);
+    return {
+      title: "User created successfully",
+      message: "You will receive an email confirmation shortly.",
+    };
+  } catch (error) {
     return {
       title: "Error in creating user",
-      message: error.message,
     };
   }
-  revalidatePath(Routes.AddMember);
-  return {
-    title: "User created successfully",
-    message: "You will receive an email confirmation shortly.",
-  };
 };

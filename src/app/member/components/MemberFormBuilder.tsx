@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
+import { useRouter } from "next/navigation";
 import { Shift, UserRole } from "@/constant/constant";
 import {
   Select,
@@ -40,6 +41,7 @@ import {
 } from "../../../../regex";
 import { createUser } from "../actions/action";
 import { useToast } from "@/hooks/use-toast";
+import { Routes } from "@/lib/routes";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
@@ -59,7 +61,7 @@ const USER_ROLES = [
   },
 ];
 
-const SHIFTTIMING = [
+const SHIFT_TIMING = [
   {
     time: "Shift 12:00am to 00:06am",
     value: Shift.ShiftA,
@@ -87,15 +89,13 @@ export const userBuilderSchema = z.object({
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   date_of_birth: z.date().max(new Date(Date.now()), "under age"),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
-  shift: z.enum(["A", "B", "C", "D"], {
+  shift: z.enum([Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD], {
     errorMap: () => {
-      return { message: "Select shift timing " };
+      return { message: "Select shift" };
     },
   }),
-  address: z
-    .string({ message: "Address is required" })
-    .min(10, "Address should have at least 10 characters"),
-  role: z.enum(["member", "incharge", "shift_incharge"], {
+  address: z.string({ message: "Address is required" }),
+  role: z.enum([UserRole.Member, UserRole.ShiftIncharge, UserRole.Incharge], {
     errorMap: () => {
       return { message: "Select user role" };
     },
@@ -107,6 +107,7 @@ export const userBuilderSchema = z.object({
 
 export const MemberFormBuilder = () => {
   const { toast } = useToast();
+  const router = useRouter();
   const phoneNumberMask = useMask({
     mask: "03__-_______",
     replacement: { _: /\d/ },
@@ -141,6 +142,10 @@ export const MemberFormBuilder = () => {
       title: result.title,
       description: result.message,
     });
+
+    if (result.title === "User created successfully") {
+      router.push(Routes.Member);
+    }
     form.reset();
   };
 
@@ -292,7 +297,7 @@ export const MemberFormBuilder = () => {
                           `justify-start text-left font-normal
                           ${field.value} && "text-muted-foreground
                           ${
-                            errors?.date_of_birth &&
+                            errors?.ehad_duration &&
                             "border-red-500 border focus-visible:ring-0"
                           }
                            `
@@ -307,7 +312,10 @@ export const MemberFormBuilder = () => {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" data-testid="calender">
+                  <PopoverContent
+                    className="w-auto p-0"
+                    data-testid="ehad_calender"
+                  >
                     <Calendar
                       mode="single"
                       selected={field.value}
@@ -333,7 +341,7 @@ export const MemberFormBuilder = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {SHIFTTIMING.map((shift) => (
+                        {SHIFT_TIMING.map((shift) => (
                           <SelectItem key={shift.value} value={shift.value}>
                             {shift.time}
                           </SelectItem>
