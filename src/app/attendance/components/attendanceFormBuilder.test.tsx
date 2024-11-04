@@ -21,10 +21,10 @@ describe("AttendanceFormBuilder", () => {
     fireEvent.click(option);
 
     await waitFor(() => {
-      expect(screen.queryByText("Ian Malcolm")).toBeDefined();
+      expect(screen.getAllByText("Ian Malcolm")).toHaveLength(2)
     });
 
-    // Ensure scrollIntoView is called when an option is selected
+ 
     expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
   });
 
