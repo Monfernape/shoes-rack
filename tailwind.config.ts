@@ -77,6 +77,7 @@ const config: Config = {
             background: "hsla(var(--status-rejected-background))",
           },
         },        
+
         button: {
           DEFAULT: "hsl(var(--disable))",
           background: "hsl(var(--disable))",
