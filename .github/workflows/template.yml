@@ -1,14 +1,14 @@
-
 #build
-name: Check
+name: console-check
+
 on:
   pull_request:
     branches:
       - main
-jobs:
 
- build:
-    name: Check
+jobs: 
+  build:
+    name: console-check
     runs-on: ubuntu-latest
 
     steps:
