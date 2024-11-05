@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
-import { useRouter } from "next/navigation";
 import { Shift, UserRole } from "@/constant/constant";
 import {
   Select,
@@ -41,7 +40,6 @@ import {
 } from "../../../../regex";
 import { createUser } from "../actions/action";
 import { useToast } from "@/hooks/use-toast";
-import { Routes } from "@/lib/routes";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
@@ -107,7 +105,6 @@ export const userBuilderSchema = z.object({
 
 export const MemberFormBuilder = () => {
   const { toast } = useToast();
-  const router = useRouter();
   const phoneNumberMask = useMask({
     mask: "03__-_______",
     replacement: { _: /\d/ },
