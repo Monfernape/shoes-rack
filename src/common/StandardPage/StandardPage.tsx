@@ -5,6 +5,7 @@ import { ScrollText as ScrollTextIcon } from "lucide-react";
 interface StandardPageProps {
   title: string;
   description: string;
+  actionButton: boolean;
   onAction?: () => void;
   isContent?: boolean;
   buttonIcon?: ReactNode;
@@ -15,6 +16,7 @@ interface StandardPageProps {
 export const StandardPage = ({
   title,
   description,
+  actionButton = false,
   onAction,
   isContent = false,
   labelForActionButton,
@@ -34,7 +36,7 @@ export const StandardPage = ({
         </span>
         <h1 className="text-sm font-semibold text-gray-800">{title || ""}</h1>
         <span className="flex text-gray-700 text-sm" data-testid="description">{description || ""}</span>
-        {onAction && (
+        {actionButton && (
           <Button
             className="w-32 h-7 mt-3"
             onClick={onAction}

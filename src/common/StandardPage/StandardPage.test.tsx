@@ -6,6 +6,7 @@ const MockStandardPageProps = {
   isContent: false,
   title: "Add member",
   description: "This is where you can see all shoes rack members",
+  actionButton: true,
   buttonIcon: <PlusIcon />,
   onAction: vi.fn(),
   labelForActionButton: "Add member",
