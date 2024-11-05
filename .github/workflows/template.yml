@@ -1,6 +1,6 @@
 
 #build
-name: check-debug-statements
+name: Check
 on:
   pull_request:
     branches:
@@ -8,12 +8,11 @@ on:
 jobs:
 
  build:
-    name: check-debug-statements
+    name: Check
     runs-on: ubuntu-latest
 
     steps:
-        - uses: actions/checkout@v1
-	- name: Run template check
+       	- name: Run template check
           uses: Frenetz/check-debug-statements@main
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
