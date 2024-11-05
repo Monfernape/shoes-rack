@@ -16,17 +16,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Run template check
+        uses: Frenetz/check-debug-statements@main
+        env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-
-      - name: Cleanup Code
-       uses: igorjs/gh-actions-clean-workflow@v6
-        with:
-          runs_older_than: "14" # optional, default value: "7"
-          runs_to_keep: "20" # optional, default value: "0"
       
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -38,13 +36,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-      
-      - name: Detect Logs
-        run : detect [glob[, log]]
-
-       steps:
- - run:   echo ::set-output name=things::$(grep "thing" code.h | wc -l)
-   id:    counter
-   shell: bash 
- - run: echo "There's a thing in my code!"
-   if:  steps.counter.outputs.things == '0'
