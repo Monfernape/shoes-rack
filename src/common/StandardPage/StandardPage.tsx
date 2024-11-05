@@ -7,7 +7,7 @@ interface StandardPageProps {
   description: string;
   actionButton: boolean;
   onAction?: () => void;
-  isContent?: boolean;
+  hasContent?: boolean;
   buttonIcon?: ReactNode;
   labelForActionButton?: string;
   children?: ReactNode;
@@ -18,14 +18,14 @@ export const StandardPage = ({
   description,
   actionButton = false,
   onAction,
-  isContent = false,
+  hasContent = false,
   labelForActionButton,
   children,
   buttonIcon,
 }: StandardPageProps) => {
-  return isContent ? (
-    <>{children}</>
-  ) : (
+  if (hasContent) return <>{children}</>;
+
+  return (
     <div
       className="flex w-full h-full items-center justify-center"
       data-testid="standardPage"
@@ -35,7 +35,9 @@ export const StandardPage = ({
           <ScrollTextIcon className="stroke-gray-500" size={20} />
         </span>
         <h1 className="text-sm font-semibold text-gray-800">{title || ""}</h1>
-        <span className="flex text-gray-700 text-sm" data-testid="description">{description || ""}</span>
+        <span className="flex text-gray-700 text-sm" data-testid="description">
+          {description || ""}
+        </span>
         {actionButton && (
           <Button
             className="w-32 h-7 mt-3"

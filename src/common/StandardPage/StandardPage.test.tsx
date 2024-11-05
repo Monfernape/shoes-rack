@@ -3,7 +3,7 @@ import { Plus as PlusIcon } from "lucide-react";
 import { StandardPage } from "./StandardPage";
 
 const MockStandardPageProps = {
-  isContent: false,
+  hasContent: false,
   title: "Add member",
   description: "This is where you can see all shoes rack members",
   actionButton: true,
