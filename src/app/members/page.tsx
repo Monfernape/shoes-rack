@@ -4,15 +4,15 @@ import { PageLayout } from "../layout/PageLayout";
 import { MemeberHeader } from "./components/MemeberHeader";
 import { getMembers } from "./actions/getMembers";
 const Page = async () => {
-  const { data, success , message } = await getMembers();
+  const members = await getMembers();
 
   return (
-    <div>
+    <>
       <MemeberHeader />
       <PageLayout>
-      <MemberList data={data} success={success} message={message} />
+        <MemberList members={members} />
       </PageLayout>
-    </div>
+    </>
   );
 };
 

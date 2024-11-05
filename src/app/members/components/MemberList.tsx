@@ -20,16 +20,19 @@ import useGroupedData from "@/hooks/useGroupedData";
 import { useToast } from "@/hooks/use-toast";
 import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
-
-interface MemberProps {
-  data: Member[];
-  success: Boolean;
-  message: String;
+import { StandardPage } from "@/common/StandardPage/StandardPage";
+import { Plus } from "lucide-react";
+interface MembersProps {
+  members: {
+    data: Member[];
+    success: boolean;
+    message: string;
+  };
 }
 
-export const MemberList = ({ data, success , message }: MemberProps) => {
+export const MemberList = ({ members }: MembersProps) => {
   const { toast } = useToast();
-
+  const { data, success, message } = members;
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -60,9 +63,7 @@ export const MemberList = ({ data, success , message }: MemberProps) => {
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => (
-         <UserStatusBadge status={row.getValue("status")} />
-      ),
+      cell: ({ row }) => <UserStatusBadge status={row.getValue("status")} />,
     },
     {
       id: "actions",
@@ -83,70 +84,85 @@ export const MemberList = ({ data, success , message }: MemberProps) => {
   });
 
   useEffect(() => {
-if (!success) {
-    toast({
-      title: "No Members Found",
-      description: "There are no members available at this time.",
-    });
-}
+    if (!success) {
+      toast({
+        title: "No Members Found",
+        description: "There are no members available at this time.",
+      });
+    }
   }, [success, toast]);
 
   const groupedData = useGroupedData(data, "shift");
+  const toNavigate = () => {
+    alert("nativgation function trigger");
+  };
+
+  const StandardPageProps = {
+    hasContent: !!data.length,
+    title: "Add member",
+    description: "This is where you can see all shoes rack members",
+    buttonIcon: <Plus />,
+    actionButton: true,
+    onAction: toNavigate,
+    labelForActionButton: "Add member",
+  };
 
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
+    <StandardPage {...StandardPageProps}>
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
 
-      <TableBody>
-        {groupedData.map((shiftGroup, index) => (
-          <React.Fragment key={`${shiftGroup}-${index}`}>
+        <TableBody>
+          {groupedData.map((shiftGroup, index) => (
+            <React.Fragment key={`${shiftGroup}-${index}`}>
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
+                >
+                  Shift {shiftGroup.shift}
+                </TableCell>
+              </TableRow>
+              {shiftGroup.row.map((row) => (
+                <TableRow key={row.id}>
+                  {table
+                    .getRowModel()
+                    .rows.find((r) => r.original === row)
+                    ?.getVisibleCells()
+                    .map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                </TableRow>
+              ))}
+            </React.Fragment>
+          ))}
+          {!groupedData.length && (
             <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
-              >
-                Shift {shiftGroup.shift}
+              <TableCell colSpan={6} className="text-center">
+                No Member Found
               </TableCell>
             </TableRow>
-            {shiftGroup.row.map((row) => (
-              <TableRow key={row.id}>
-                {table
-                  .getRowModel()
-                  .rows.find((r) => r.original === row)
-                  ?.getVisibleCells()
-                  .map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-              </TableRow>
-            ))}
-          </React.Fragment>
-        ))}
-        {!groupedData.length && (
-          <TableRow>
-            <TableCell colSpan={6} className="text-center">
-              No Member Found
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          )}
+        </TableBody>
+      </Table>
+    </StandardPage>
   );
 };

@@ -17,8 +17,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {(pathname !== "/login" || isSidebarOpen) && (
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       )}
-      <div className="flex flex-col w-full h-screen">
-        <div className="lg:ml-48">{children}</div>
+      <div className="flex flex-col w-full h-screen lg:ml-48">
+        {children}
       </div>
     </div>
   );
