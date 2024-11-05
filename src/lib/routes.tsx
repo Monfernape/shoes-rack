@@ -5,8 +5,8 @@ export enum Routes {
   Attendance = "/attendance",
   MarkAttendance = "/mark-attendance",
   Fund = "/fund",
-  Member = "/member",
-  AddMember = "/member/add",
+  Member = "/members",
+  AddMember = "/members/add",
   ShiftIncharge = "/shift-incharge",
   MissingShoes = "/missing-shoes",
   AddMissingShoes = "/add-missing-shoes",
@@ -24,10 +24,11 @@ export enum MemberRole {
 export enum UserRole {
   Incharge = "incharge",
   Member = "member",
-  ShiftIncharge = "shift-incharge",
+  ShiftIncharge = "shift-incharge"
 }
 
 export enum UserStatus {
   Active = "active",
-  Invited = "invited",
+  Invited = "invited"
 }
+

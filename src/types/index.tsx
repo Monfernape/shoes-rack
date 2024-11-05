@@ -25,16 +25,21 @@ export interface User extends UserInfo {
   updated_at: string;
   deleted_at: string | null;
 }
+export interface Breadcrumbs {
+  href: string;
+  label: string;
+}
 
-export type UserFormSchema = {
+export type UserDetails = {
   name: string;
-  phoneNumber: string;
+  phone: string;
+  age: number;
   cnic: string;
-  date_of_birth: Date;
-  address: string;
-  ehad_start_date: Date;
+  ehadDuration: string;
+  shift: string;
   role: UserRole;
-  shift: Shifts;
+  address: string;
+  status: UserStatus;
 };
 
 export enum AttendanceStatus {

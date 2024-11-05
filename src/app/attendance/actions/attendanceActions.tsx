@@ -1,7 +1,8 @@
 "use server";
 import { AttendanceStatus, Table } from "@/types/index";
-import { revalidatePath } from "next/cache";
 import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
+import { redirect } from "next/navigation";
+import { ATTENDANCE_PATH } from "@/constant/constant";
 
 type Attendance = {
   memberId: number;
@@ -9,20 +10,17 @@ type Attendance = {
   endTime: string;
 };
 
-export const setAttendance = async (values: Attendance) => {
+export const onAttandanceRequset = async (values: Attendance) => {
   const supabase = await getSupabaseClient();
 
-  const { data, error } = await supabase.from(Table.Attendance).insert({
+  const { error } = await supabase.from(Table.Attendance).insert({
     ...values,
     status: AttendanceStatus.Pending,
   });
 
   if (error) {
-    console.error("Error:", error.message);
-    throw new Error("Failed to set attendance. Please try again.");
+    return error;
   }
 
-  console.log("Attendance successfully set:", data);
-
-  revalidatePath("/attendance");
+  redirect(ATTENDANCE_PATH);
 };

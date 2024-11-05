@@ -7,11 +7,11 @@ const attendanceMock = {
   endTime: "4:00",
 };
 
-describe("setAttendance", () => {
+describe("onAttandanceRequset", () => {
   it("should call setAttendance", () => {
-    const spy = vi.spyOn(attendanceActions, "setAttendance");
+    const spy = vi.spyOn(attendanceActions, "onAttandanceRequset");
 
-    attendanceActions.setAttendance(attendanceMock);
+    attendanceActions.onAttandanceRequset(attendanceMock);
 
     expect(spy).toHaveBeenCalled();
 

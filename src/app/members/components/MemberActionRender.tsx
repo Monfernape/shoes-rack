@@ -1,7 +1,7 @@
-import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
-import { MemberRole } from "@/lib/routes";
+import React from 'react';
+import ActionsMenu from '@/common/ActionMenu/ActionsMenu';
 import { Info, Trash2, Edit, Send } from "lucide-react";
-import React from "react";
+import { MemberRole } from '@/lib/constants';
 
 interface MemberInfo {
   id: number;

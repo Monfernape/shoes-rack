@@ -21,9 +21,10 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { User } from "@/types";
-import { MemberRole, UserStatus } from "@/lib/routes";
-import { setAttendance } from "../actions/attendanceActions";
+import { onAttandanceRequset } from "../actions/attendanceActions";
+import { MemberRole, User, UserStatus } from "@/lib/constants";
+import { toast } from "@/hooks/use-toast";
+import FormWrapper from "@/common/FormWrapper";
 
 const attendanceSchema = z
   .object({
@@ -54,7 +55,7 @@ const loginUser: User = {
   name: "Alice Johnson",
   shift: "A",
   role: "incharge",
-  status: "active",
+  status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
   created_at: new Date().toISOString(),
@@ -164,113 +165,132 @@ const AttendanceFormBuilder = () => {
     form.setValue("memberId", Number(memberId), { shouldValidate: true });
   };
 
-  const onSubmit = (values: AttendanceFormValues) => {
-    console.log({ values });
-    setAttendance(values);
+  const onSubmit = async (values: AttendanceFormValues) => {
+    try {
+      const result = await onAttandanceRequset(values);
+
+      console.log("result", result);
+      if (result) {
+        toast({
+          title: "Something went wrong",
+        });
+      }
+      form.reset();
+      toast({
+        title: "Attendance submit successfully",
+        description: "You will receive message shortly",
+      });
+    } catch (error) {
+      return;
+    }
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
-      >
-        <h1 className="text-2xl font-bold text-center mb-6">Attendance Form</h1>
+    <FormWrapper>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
+        >
+          <h1 className="text-2xl font-bold text-center mb-6">
+            Attendance Form
+          </h1>
 
-        <FormField
-          control={form.control}
-          name="memberId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>User Name</FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value?.toString() || ""}
-                  onValueChange={handleUserSelect}
-                  disabled={loginUser.role === "member"}
-                >
-                  <SelectTrigger
+          <FormField
+            control={form.control}
+            name="memberId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>User Name</FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value?.toString() || ""}
+                    onValueChange={handleUserSelect}
+                    disabled={loginUser.role === "member"}
+                  >
+                    <SelectTrigger
+                      className={`border rounded-md p-2 ${
+                        form.formState.errors.memberId
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      <SelectValue placeholder="Select a user">
+                        {field.value
+                          ? roleBaseMembers.find((m) => m.id === field.value)
+                              ?.name
+                          : "Select a user"}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {roleBaseMembers.map((user) => (
+                        <SelectItem key={user.id} value={user.id.toString()}>
+                          {user.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="startTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Start Time</FormLabel>
+                <FormControl>
+                  <Input
+                    type="time"
+                    {...field}
+                    onClick={(event) => event.currentTarget.showPicker()}
                     className={`border rounded-md p-2 ${
-                      form.formState.errors.memberId
+                      form.formState.errors.startTime
                         ? "border-red-500"
                         : "border-gray-300"
                     }`}
-                  >
-                    <SelectValue placeholder="Select a user">
-                      {field.value
-                        ? roleBaseMembers.find((m) => m.id === field.value)
-                            ?.name
-                        : "Select a user"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {roleBaseMembers.map((user) => (
-                      <SelectItem key={user.id} value={user.id.toString()}>
-                        {user.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="startTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Start Time</FormLabel>
-              <FormControl>
-                <Input
-                  type="time"
-                  {...field}
-                  onClick={(event) => event.currentTarget.showPicker()}
-                  className={`border rounded-md p-2 ${
-                    form.formState.errors.startTime
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  }`}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="endTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>End Time</FormLabel>
+                <FormControl>
+                  <Input
+                    type="time"
+                    {...field}
+                    onClick={(event) => event.currentTarget.showPicker()}
+                    className={`border rounded-md p-2 ${
+                      form.formState.errors.endTime
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="endTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>End Time</FormLabel>
-              <FormControl>
-                <Input
-                  type="time"
-                  {...field}
-                  onClick={(event) => event.currentTarget.showPicker()}
-                  className={`border rounded-md p-2 ${
-                    form.formState.errors.endTime
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  }`}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button
-          type="submit"
-          className="w-full text-white rounded-md p-3 transition"
-        >
-          Submit
-        </Button>
-      </form>
-    </Form>
+          <Button
+            type="submit"
+            className="w-full text-white rounded-md p-3 transition"
+          >
+            Submit
+          </Button>
+        </form>
+      </Form>
+    </FormWrapper>
   );
 };
 
