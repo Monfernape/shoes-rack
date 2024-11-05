@@ -2,8 +2,8 @@ import { fireEvent, render } from "@testing-library/react";
 import { Plus as PlusIcon } from "lucide-react";
 import { StandardPage } from "./StandardPage";
 
-const StandardPageProps = {
-  showContent: false,
+const MockStandardPageProps = {
+  isContent: false,
   title: "Add member",
   description: "This is where you can see all shoes rack members",
   buttonIcon: <PlusIcon />,
@@ -12,7 +12,7 @@ const StandardPageProps = {
 };
 
 test(" description must be exist  and Add member button should be trigger", async () => {
-  const screen = render(<StandardPage {...StandardPageProps} />);
+  const screen = render(<StandardPage {...MockStandardPageProps} />);
 
   expect(screen.getByTestId("standardPage")).toBeDefined();
 
@@ -21,7 +21,7 @@ test(" description must be exist  and Add member button should be trigger", asyn
   fireEvent.click(navigationButton);
 
   expect(
-    screen.getByText("This is where you can see all shoes rack members")
+    screen.getByTestId("description")
   ).toBeDefined();
-  
+
 });

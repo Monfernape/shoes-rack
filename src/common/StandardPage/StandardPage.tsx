@@ -33,7 +33,7 @@ export const StandardPage = ({
           <ScrollTextIcon className="stroke-gray-500" size={20} />
         </span>
         <h1 className="text-sm font-semibold text-gray-800">{title || ""}</h1>
-        <span className="flex text-gray-700 text-sm">{description || ""}</span>
+        <span className="flex text-gray-700 text-sm" data-testid="description">{description || ""}</span>
         {onAction && (
           <Button
             className="w-32 h-7 mt-3"
