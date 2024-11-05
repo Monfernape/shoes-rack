@@ -19,6 +19,11 @@ export type UserInfo = {
   status: UserStatus;
 }
 
+export interface Breadcrumbs {
+  href: string;
+  label: string;
+}
+
 export type UserDetails = {
   name: string;
   phone: string;
