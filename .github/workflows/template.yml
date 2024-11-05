@@ -6,13 +6,11 @@ on:
     branches:
       - main
 jobs:
+
  build:
-    name: Build
+    name: check-debug-statements
     runs-on: ubuntu-latest
 
-
-  check-debug-statements:
-    runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v1
 	- name: Run template check

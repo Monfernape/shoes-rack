@@ -32,10 +32,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-steps:
-        - uses: actions/checkout@v1
-	- name: Run template check
-          uses: Frenetz/check-debug-statements@main
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
