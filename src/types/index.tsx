@@ -19,20 +19,14 @@ export type UserInfo = {
   status: UserStatus;
 }
 
-export interface User extends UserInfo  {
-    address: string;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-}
-
-export type UserFormSchema = {
+export type UserDetails = {
   name: string;
-  phoneNumber: string;
+  phone: string;
+  age: number;
   cnic: string;
-  date_of_birth: Date;
-  address: string;
-  ehad_start_date: Date;
+  ehadDuration: string;
+  shift: string;
   role: UserRole;
-  shift: Shifts;
+  address: string;
+  status: UserStatus;
 };

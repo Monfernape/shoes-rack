@@ -1,10 +1,11 @@
 import React from "react";
 import { MemberList } from "./components/MemberList";
+import { PageLayout } from "../layout/PageLayout";
 const Page = () => {
   return (
-    <div className="p-8">
+    <PageLayout>
       <MemberList />
-    </div>
+    </PageLayout>
   );
 };
 

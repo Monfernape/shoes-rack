@@ -21,8 +21,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { User } from "@/types";
-import { MemberRole, UserStatus } from "@/lib/routes";
+import { MemberRole, User, UserStatus } from "@/lib/constants";
 
 const attendanceSchema = z
   .object({
@@ -53,7 +52,7 @@ const loginUser: User = {
   name: "Alice Johnson",
   shift: "A",
   role: "incharge",
-  status: "active",
+  status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
   created_at: new Date().toISOString(),

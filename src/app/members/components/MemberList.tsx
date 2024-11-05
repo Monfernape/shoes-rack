@@ -7,7 +7,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
 import MemberTableActionRender from "./MemberActionRender";
 import {
   Table,
@@ -18,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGroupedData from "@/hooks/useGroupedData";
-import { UserStatus } from "@/lib/routes";
+import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 
 const members: UserInfo[] = [
   {
@@ -175,15 +174,7 @@ export const MemberList = () => {
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => (
-        <Badge
-          className={`capitalize ${
-            row.getValue("status") === UserStatus.Active
-              ? "bg-status-active-background text-status-active hover:bg-status-active-background hover:text-status-active"
-              : "bg-status-invited-background text-status-invited hover:bg-status-invited-background hover:text-status-invited"
-          }`}
-        >
-          {row.getValue("status")}
-        </Badge>
+         <UserStatusBadge status={row.getValue("status")} />
       ),
     },
     {

@@ -1,7 +1,6 @@
 
 import { useMemo } from "react";
 import { UserRole } from "@/types";
-import { MemberRole, Routes } from "@/lib/routes";
 
 import {
   DashboardIcon,
@@ -14,6 +13,8 @@ import {
   ClipboardIcon,
   HandCoinsIcon,
 } from "lucide-react";
+import { MemberRole, Routes } from "@/lib/constants";
+
 
 export const MEMBER_ROUTES = [
   {
