@@ -1,11 +1,15 @@
 import React from "react";
 import { MemberList } from "./components/MemberList";
 import { PageLayout } from "../layout/PageLayout";
+import { MemeberHeader } from "./components/MemeberHeader";
 const Page = () => {
   return (
-    <PageLayout>
-      <MemberList />
-    </PageLayout>
+    <div>
+      <MemeberHeader />
+      <PageLayout>
+        <MemberList />
+      </PageLayout>
+    </div>
   );
 };
 

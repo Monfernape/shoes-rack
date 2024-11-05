@@ -40,7 +40,7 @@ export const MemeberHeader = () => {
             )}
             {!isTitleHide && <MemberBreadCrumbs />}
           </div>
-          {pathname !== Routes.Login && (
+          {(pathname !== Routes.AddMember && pathname !== Routes.Login ) && (
             <div className="flex items-center space-x-2">
               <div className="relative">
                 <Input

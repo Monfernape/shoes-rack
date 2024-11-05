@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { MemberFormBuilder } from "./MemberFormBuilder";
-import { createUser } from "@/app/member/actions/action";
+import { createUser } from "@/app/members/actions/action";
 
 
 type TestElement = Document | Element | Window | Node;

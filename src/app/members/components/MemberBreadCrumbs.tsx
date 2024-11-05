@@ -4,7 +4,7 @@ import { Routes } from "@/lib/routes";
 import { Breadcrumbs } from "@/types";
 
 const breadcrumbs: Breadcrumbs[] = [
-  { href: Routes.Member, label: "Member" },
+  { href: Routes.Member, label: "Members" },
   { href: Routes.AddMember, label: "New Member" },
 ];
 
