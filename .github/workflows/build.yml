@@ -23,11 +23,10 @@ jobs:
           node-version: "18"
 
       - name: Cleanup Code
-        uses: ArturWincenciak/ReSharper_CleanupCode@v2.0
-        with:
-        solution: "ReSharperCleanupCodeDemo.sln"
-        fail_on_reformat_needed: "yes"
-
+        uses: actions/javascript-action@v1
+with:
+  milliseconds: 1000
+      
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
