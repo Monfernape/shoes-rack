@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
-import { useRouter } from "next/navigation";
 import { Shift, UserRole } from "@/constant/constant";
 import {
   Select,
@@ -41,7 +40,6 @@ import {
 } from "../../../../regex";
 import { createUser } from "../actions/action";
 import { useToast } from "@/hooks/use-toast";
-import { Routes } from "@/lib/routes";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
@@ -107,7 +105,6 @@ export const userBuilderSchema = z.object({
 
 export const MemberFormBuilder = () => {
   const { toast } = useToast();
-  const router = useRouter();
   const phoneNumberMask = useMask({
     mask: "03__-_______",
     replacement: { _: /\d/ },
@@ -137,16 +134,23 @@ export const MemberFormBuilder = () => {
   } = form;
 
   const handleSubmission = async (values: UserBuilder) => {
-    const result = await createUser(values);
-    toast({
-      title: result.title,
-      description: result.message,
-    });
+    try {
+      // When we insert data then it  give status not the insert item
 
-    if (result.title === "User created successfully") {
-      router.push(Routes.Member);
+      const result = await createUser(values);
+      if (result) {
+        toast({
+          title: "Something went wrong",
+        });
+      }
+      form.reset();
+      toast({
+        title: "User created successfully",
+        description: "You will receive the email shortly",
+      });
+    } catch (error) {
+      return;
     }
-    form.reset();
   };
 
   return (

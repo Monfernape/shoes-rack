@@ -15,4 +15,5 @@ export enum Shift {
 export enum UserStatus {
   Active = "active",
   Inactive = "inactive",
+  Invited = "invited",
 }
