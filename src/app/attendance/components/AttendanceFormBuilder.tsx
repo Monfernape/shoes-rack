@@ -27,7 +27,7 @@ import { MemberRole, UserStatus } from "@/lib/routes";
 const attendanceSchema = z
   .object({
     memberId: z.number({
-      required_error: "Please select user name",
+      required_error: "Please select a user",
     }),
     startTime: z.string().min(1, "Start time is required"),
     endTime: z.string().min(1, "End time is required"),
@@ -41,7 +41,7 @@ const attendanceSchema = z
       return endTime <= nextTwoHours;
     },
     {
-      message: "End time must be later then start time",
+      message: "End time must be after then start time",
       path: ["endTime"],
     }
   );
@@ -140,6 +140,11 @@ const AttendanceFormBuilder = () => {
     },
   });
 
+// Create a list of users based on their roles:
+// Incharge can make attendance for every user.
+// Shift incharge can mark attendance for it's shift's users.
+// Members can only mark their attdencane
+
   const roleBaseMembers = useMemo(() => {
     return members
       .filter(
@@ -152,7 +157,7 @@ const AttendanceFormBuilder = () => {
         id,
         name,
       }));
-  }, []);
+  }, [members]);
 
   const handleUserSelect = (value: string) => {
     form.setValue("memberId", Number(value), { shouldValidate: true });
