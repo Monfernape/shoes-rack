@@ -38,8 +38,8 @@ import {
   CNIC_VALIDATOR_REGEX,
   PHONENUMBER_VALIDATOR_REGEX,
 } from "../../../../regex";
-import { createUser } from "../actions/action";
 import { useToast } from "@/hooks/use-toast";
+import { createUser } from "@/app/member/actions/action";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 

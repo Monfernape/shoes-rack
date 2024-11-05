@@ -60,6 +60,10 @@ const config: Config = {
             DEFAULT: "hsl(var(--status-pending))",
             background: "hsla(var(--status-pending-background))",
           },
+          inactive: {
+            DEFAULT: "hsl(var(--status-inactive))",
+            background: "hsla(var(--status-inactive-background))",
+          },
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
