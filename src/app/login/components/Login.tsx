@@ -1,6 +1,8 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import {
   Form,
   FormControl,
@@ -12,29 +14,52 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Phone as PhoneIcon } from "lucide-react";
-import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import { loginUser } from "@/app/member/actions/action";
 
 const userSchema = z.object({
   phoneNumber: z
     .string()
     .min(1, "Phone number is required")
-    .max(12, "Phone number must be at most 12 characters long"),
+    .max(13, "Phone number must be at most 12 characters long"),
+  password: z.string({ required_error: "password is required" }),
 });
 
 type FormValues = z.infer<typeof userSchema>;
 
 export const LoginPage = () => {
+  const route = useRouter();
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(userSchema),
     defaultValues: {
       phoneNumber: "",
+      password: "",
     },
   });
 
-  function onSubmit(values: FormValues) {
-    console.log(values);
-  }
+  const onSubmit = async (values: FormValues) => {
+    try {
+      const result = await loginUser(values);
+
+      if (!result) {
+        toast({
+          title: "Login successfully",
+          description: "",
+        });
+        form.reset();
+      }
+    } catch (error) {
+      toast({
+        title: "wrong credentials",
+        description: "Please try again",
+      });
+    }
+  };
 
   return (
     <div className="h-full flex items-center justify-center p-4">
@@ -63,18 +88,55 @@ export const LoginPage = () => {
                           placeholder="0300-0000000"
                           {...field}
                           value={field.value}
-                          onChange={(e) =>
-                            field.onChange(formatPhoneNumber(e.target.value))
-                          }
+                          onChange={(e) => field.onChange(e.target.value)}
                           className="pl-12"
                         />
-                        <PhoneIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+            </div>
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          {...field}
+                          className="pl-12"
+                        />
+                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        >
+                          {showPassword ? <EyeOff /> : <Eye />}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Forgot password?
+              </Link>
             </div>
             <Button type="submit" className="w-full bg-gray-800">
               Log in

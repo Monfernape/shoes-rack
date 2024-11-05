@@ -135,21 +135,21 @@ export const MemberFormBuilder = () => {
 
   const handleSubmission = async (values: UserBuilder) => {
     try {
-      // When we insert data then it  give status not the insert item
-
+      // there is nothing in response in case of insert data
       const result = await createUser(values);
-      if (result) {
+
+      if (!result) {
+        form.reset();
         toast({
-          title: "Something went wrong",
+          title: "User created successfully",
+          description: "You will receive message shortly",
         });
       }
-      form.reset();
-      toast({
-        title: "User created successfully",
-        description: "You will receive message shortly",
-      });
     } catch (error) {
-      return;
+      toast({
+        title: "User already exist",
+        description: "Please use other phone number",
+      });
     }
   };
 
