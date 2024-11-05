@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-       	- name: Run template check
+       	- name: Run
           uses: Frenetz/check-debug-statements@main
           env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
