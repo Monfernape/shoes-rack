@@ -6,17 +6,16 @@ on:
     branches:
       - main
 
-jobs: 
+jobs:
   build:
     name: console-check
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    	- name: Cun
+      - name: Cun
         uses: Frenetz/check-debug-statements@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            
