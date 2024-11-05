@@ -23,9 +23,10 @@ jobs:
           node-version: "18"
 
       - name: Cleanup Code
-        uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
+       uses: igorjs/gh-actions-clean-workflow@v6
+        with:
+          runs_older_than: "14" # optional, default value: "7"
+          runs_to_keep: "20" # optional, default value: "0"
       
       - name: Install dependencies
         run: npm install --legacy-peer-deps
