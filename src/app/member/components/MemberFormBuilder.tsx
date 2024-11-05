@@ -146,7 +146,7 @@ export const MemberFormBuilder = () => {
       form.reset();
       toast({
         title: "User created successfully",
-        description: "You will receive the email shortly",
+        description: "You will receive message shortly",
       });
     } catch (error) {
       return;

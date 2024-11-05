@@ -54,6 +54,7 @@
     --status-invited: 39, 100%, 50%;
     --status-invited-background: 39, 100%, 50%, 0.2;
     --sidebar-background: 220, 27%, 98%;
+    --disable: 220, 27%, 98%;
     --head-color: 211, 20%, 44%;
     --row-color: 218, 5%, 44%;
   }
