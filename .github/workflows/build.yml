@@ -18,7 +18,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
+
+      - name: Cleanup Code
+        uses: ArturWincenciak/ReSharper_CleanupCode@v2.0
+        with:
+        solution: "ReSharperCleanupCodeDemo.sln"
+        fail_on_reformat_needed: "yes"
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
