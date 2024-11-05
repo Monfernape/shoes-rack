@@ -40,4 +40,4 @@ jobs:
         run: npm test
       
       - name: Detect Logs
-        run : npm install detect-log
+        run : detect [glob[, log]]
