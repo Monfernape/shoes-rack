@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/form";
 import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/lib/routes";
+import { setAttendance } from "../actions/attendanceActions";
 
 const attendanceSchema = z
   .object({
@@ -41,7 +42,7 @@ const attendanceSchema = z
       return endTime <= nextTwoHours;
     },
     {
-      message: "End time must be after then start time",
+      message: "End time must be within 2 hours of start time",
       path: ["endTime"],
     }
   );
@@ -165,6 +166,7 @@ const AttendanceFormBuilder = () => {
 
   const onSubmit = (values: AttendanceFormValues) => {
     console.log({ values });
+    setAttendance(values);
   };
 
   return (

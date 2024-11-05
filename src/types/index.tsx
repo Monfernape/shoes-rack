@@ -17,13 +17,13 @@ export type UserInfo = {
   phone: string;
   role: UserRole;
   status: UserStatus;
-}
+};
 
-export interface User extends UserInfo  {
-    address: string;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
+export interface User extends UserInfo {
+  address: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
 }
 
 export type UserFormSchema = {
@@ -36,3 +36,15 @@ export type UserFormSchema = {
   role: UserRole;
   shift: Shifts;
 };
+
+export enum AttendanceStatus {
+  Pending = "pending",
+  Accept = "accept",
+  Reject = "reject",
+}
+
+export enum Table {
+  Attendance = "attendance",
+  Member = "member",
+  User = "user",
+}
