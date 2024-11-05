@@ -17,3 +17,23 @@ jobs:
           uses: Frenetz/check-debug-statements@main
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+     
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+      - name: Remove console
+       run: gh run view --job JOB_ID --log | grep .log
+        run: npm run lint
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
