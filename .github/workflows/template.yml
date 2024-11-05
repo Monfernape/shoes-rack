@@ -12,8 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-       	- name: Run
-          uses: Frenetz/check-debug-statements@main
-          env:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+    	- name: Cun
+        uses: Frenetz/check-debug-statements@main
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
