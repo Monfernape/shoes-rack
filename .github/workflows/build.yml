@@ -16,11 +16,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Run template check
-        uses: Frenetz/check-debug-statements@main
-        env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+     
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -36,3 +32,10 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+steps:
+        - uses: actions/checkout@v1
+	- name: Run template check
+          uses: Frenetz/check-debug-statements@main
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
