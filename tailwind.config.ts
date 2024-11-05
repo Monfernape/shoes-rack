@@ -61,21 +61,21 @@ const config: Config = {
             background: "hsla(var(--status-invited-background))",
           },
         },
-        sidebar:{
-          DEFAULT:"hsl(var(--sidebar-background))",
-          background:"hsl(var(--sidebar-background))",
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          background: "hsl(var(--sidebar-background))",
         },
-        button:{
-          DEFAULT:"hsl(var(--disable))",
-          background:"hsl(var(--disable))",
+        button: {
+          DEFAULT: "hsl(var(--disable))",
+          background: "hsl(var(--disable))",
         },
-        table:{
-         thead:{
-          DEFAULT:"hsl(var(--head-color))",
-         },
-         trow:{
-          DEFAULT:"hsl(var(--row-color))",
-         }
+        table: {
+          thead: {
+            DEFAULT: "hsl(var(--head-color))",
+          },
+          trow: {
+            DEFAULT: "hsl(var(--row-color))",
+          },
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

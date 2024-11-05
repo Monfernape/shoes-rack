@@ -1,4 +1,5 @@
 export enum Routes {
+  Login = "/login",
   Dashboard = "/dashboard",
   Notification = "/notification",
   Attendance = "/attendance",
@@ -23,11 +24,10 @@ export enum MemberRole {
 export enum UserRole {
   Incharge = "incharge",
   Member = "member",
-  ShiftIncharge = "shift-incharge"
+  ShiftIncharge = "shift-incharge",
 }
 
 export enum UserStatus {
   Active = "active",
-  Invited = "invited"
+  Invited = "invited",
 }
-
