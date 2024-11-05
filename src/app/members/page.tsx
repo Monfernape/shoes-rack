@@ -2,14 +2,17 @@ import React from "react";
 import { MemberList } from "./components/MemberList";
 import { PageLayout } from "../layout/PageLayout";
 import { MemeberHeader } from "./components/MemeberHeader";
-const Page = () => {
+import { getMembers } from "./actions/getMembers";
+const Page = async () => {
+  const members = await getMembers();
+
   return (
-    <div>
+    <>
       <MemeberHeader />
       <PageLayout>
-        <MemberList />
+        <MemberList members={members} />
       </PageLayout>
-    </div>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { UserInfo } from "@/types";
+
+import React, { useEffect } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -17,133 +17,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGroupedData from "@/hooks/useGroupedData";
+import { useToast } from "@/hooks/use-toast";
+import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
+import { StandardPage } from "@/common/StandardPage/StandardPage";
+import { Plus } from "lucide-react";
+interface MembersProps {
+  members: {
+    data: Member[];
+    success: boolean;
+    message: string;
+  };
+}
 
-const members: UserInfo[] = [
-  {
-    id: 1,
-    name: "Alice Johnson",
-    phone: "555-1234",
-    shift: "A",
-    role: "incharge",
-    status: "active",
-  },
-  {
-    id: 2,
-    name: "Bob Smith",
-    phone: "555-5678",
-    shift: "B",
-    role: "member",
-    status: "inactive",
-  },
-  {
-    id: 3,
-    name: "Charlie Brown",
-    phone: "555-8765",
-    shift: "C",
-    role: "shift-incharge",
-    status: "active",
-  },
-  {
-    id: 4,
-    name: "Diana Prince",
-    phone: "555-4321",
-    shift: "D",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 5,
-    name: "Ethan Hunt",
-    phone: "555-2468",
-    shift: "A",
-    role: "incharge",
-    status: "inactive",
-  },
-  {
-    id: 6,
-    name: "Fiona Gallagher",
-    phone: "555-1357",
-    shift: "B",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 7,
-    name: "George Banks",
-    phone: "555-2469",
-    shift: "B",
-    role: "shift-incharge",
-    status: "active",
-  },
-  {
-    id: 8,
-    name: "Hannah Baker",
-    phone: "555-3698",
-    shift: "B",
-    role: "member",
-    status: "inactive",
-  },
-  {
-    id: 9,
-    name: "Ian Malcolm",
-    phone: "555-2580",
-    shift: "C",
-    role: "incharge",
-    status: "active",
-  },
-  {
-    id: 10,
-    name: "Jack Sparrow",
-    phone: "555-1597",
-    shift: "C",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 11,
-    name: "Kara Danvers",
-    phone: "555-7531",
-    shift: "D",
-    role: "shift-incharge",
-    status: "inactive",
-  },
-  {
-    id: 12,
-    name: "Leo Messi",
-    phone: "555-9876",
-    shift: "A",
-    role: "incharge",
-    status: "active",
-  },
-  {
-    id: 13,
-    name: "Mia Wallace",
-    phone: "555-4327",
-    shift: "B",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 14,
-    name: "Nina Simone",
-    phone: "555-8642",
-    shift: "B",
-    role: "shift-incharge",
-    status: "inactive",
-  },
-  {
-    id: 15,
-    name: "Oscar Isaac",
-    phone: "555-3214",
-    shift: "A",
-    role: "member",
-    status: "active",
-  },
-];
-
-export const MemberList = () => {
-  const columns: ColumnDef<UserInfo>[] = [
+export const MemberList = ({ members }: MembersProps) => {
+  const { toast } = useToast();
+  const { data, success, message } = members;
+  const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
       header: "Name",
@@ -152,9 +42,9 @@ export const MemberList = () => {
       ),
     },
     {
-      accessorKey: "phone",
+      accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{row.getValue("phone")}</div>,
+      cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
     },
     {
       accessorKey: "shift",
@@ -173,9 +63,7 @@ export const MemberList = () => {
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => (
-         <UserStatusBadge status={row.getValue("status")} />
-      ),
+      cell: ({ row }) => <UserStatusBadge status={row.getValue("status")} />,
     },
     {
       id: "actions",
@@ -190,60 +78,91 @@ export const MemberList = () => {
   ];
 
   const table = useReactTable({
-    data: members,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const groupedData = useGroupedData(members, "shift");
+  useEffect(() => {
+    if (!success) {
+      toast({
+        title: "No Members Found",
+        description: "There are no members available at this time.",
+      });
+    }
+  }, [success, toast]);
+
+  const groupedData = useGroupedData(data, "shift");
+  const toNavigate = () => {
+    alert("nativgation function trigger");
+  };
+
+  const StandardPageProps = {
+    hasContent: !!data.length,
+    title: "Add member",
+    description: "This is where you can see all shoes rack members",
+    buttonIcon: <Plus />,
+    actionButton: true,
+    onAction: toNavigate,
+    labelForActionButton: "Add member",
+  };
 
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
+    <StandardPage {...StandardPageProps}>
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
 
-      <TableBody>
-        {groupedData.map((shiftGroup, index) => (
-          <React.Fragment key={`${shiftGroup}-${index}`}>
+        <TableBody>
+          {groupedData.map((shiftGroup, index) => (
+            <React.Fragment key={`${shiftGroup}-${index}`}>
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
+                >
+                  Shift {shiftGroup.shift}
+                </TableCell>
+              </TableRow>
+              {shiftGroup.row.map((row) => (
+                <TableRow key={row.id}>
+                  {table
+                    .getRowModel()
+                    .rows.find((r) => r.original === row)
+                    ?.getVisibleCells()
+                    .map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                </TableRow>
+              ))}
+            </React.Fragment>
+          ))}
+          {!groupedData.length && (
             <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
-              >
-                Shift {shiftGroup.shift}
+              <TableCell colSpan={6} className="text-center">
+                No Member Found
               </TableCell>
             </TableRow>
-            {shiftGroup.row.map((row) => (
-              <TableRow key={row.id}>
-                {table
-                  .getRowModel()
-                  .rows.find((r) => r.original === row)
-                  ?.getVisibleCells()
-                  .map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-              </TableRow>
-            ))}
-          </React.Fragment>
-        ))}
-      </TableBody>
-    </Table>
+          )}
+        </TableBody>
+      </Table>
+    </StandardPage>
   );
 };
