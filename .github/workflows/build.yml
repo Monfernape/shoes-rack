@@ -41,3 +41,10 @@ jobs:
       
       - name: Detect Logs
         run : detect [glob[, log]]
+
+       steps:
+ - run:   echo ::set-output name=things::$(grep "thing" code.h | wc -l)
+   id:    counter
+   shell: bash 
+ - run: echo "There's a thing in my code!"
+   if:  steps.counter.outputs.things == '0'
