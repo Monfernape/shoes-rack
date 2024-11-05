@@ -157,7 +157,7 @@ const AttendanceFormBuilder = () => {
         id,
         name,
       }));
-  }, []);
+  }, [members]);
 
   const handleUserSelect = (memberId: string) => {
     form.setValue("memberId", Number(memberId), { shouldValidate: true });
