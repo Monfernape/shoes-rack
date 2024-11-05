@@ -168,19 +168,18 @@ const AttendanceFormBuilder = () => {
   const onSubmit = async (values: AttendanceFormValues) => {
     try {
       const result = await onAttandanceRequset(values);
-
-      console.log("result", result);
-      if (result) {
+      if (!result) {
+        form.reset();
         toast({
-          title: "Something went wrong",
+          title: "Attendance submit successfully",
+          description: "You will receive message shortly",
         });
       }
-      form.reset();
-      toast({
-        title: "Attendance submit successfully",
-        description: "You will receive message shortly",
-      });
     } catch (error) {
+      console.error("Submission error:", error);
+      toast({
+        title: "Something went wrong",
+      });
       return;
     }
   };
@@ -189,7 +188,7 @@ const AttendanceFormBuilder = () => {
     <FormWrapper>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          action={() => form.handleSubmit(onSubmit)()}
           className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
         >
           <h1 className="text-2xl font-bold text-center mb-6">
@@ -247,11 +246,7 @@ const AttendanceFormBuilder = () => {
                     type="time"
                     {...field}
                     onClick={(event) => event.currentTarget.showPicker()}
-                    className={`border rounded-md p-2 ${
-                      form.formState.errors.startTime
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
+                    hasError={!!form.formState.errors.startTime}
                   />
                 </FormControl>
                 <FormMessage />
@@ -270,11 +265,7 @@ const AttendanceFormBuilder = () => {
                     type="time"
                     {...field}
                     onClick={(event) => event.currentTarget.showPicker()}
-                    className={`border rounded-md p-2 ${
-                      form.formState.errors.endTime
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
+                    hasError={!!form.formState.errors.endTime}
                   />
                 </FormControl>
                 <FormMessage />
