@@ -1,18 +1,13 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { format } from "date-fns";
 import { MemberFormBuilder } from "./MemberFormBuilder";
 import { createUser } from "../actions/action";
 
 type TestElement = Document | Element | Window | Node;
 
-vi.mock("");
-// function for testing input values
 function hasInputValue(e: TestElement, inputValue: string) {
-  // console.log("hasInputValue", e, inputValue);
   return screen.getByDisplayValue(inputValue) === e;
 }
-// Mock Function for testing
 // Unit testing
 const formTargets = [
   {
@@ -79,7 +74,7 @@ describe("UserForm", async () => {
       role: "member",
       cnic: "31303-2943130-9",
       address: "123 Main St",
-      shift: "shift_a",
+      shift: "A",
     };
     await waitFor(() => {
       expect(mock(user));
