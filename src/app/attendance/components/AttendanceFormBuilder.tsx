@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {useMemo } from "react";
+import { useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,8 +29,8 @@ const attendanceSchema = z
     memberId: z.number({
       required_error: "Please select a user",
     }),
-    startTime: z.string().min(1, "Start time is required"),
-    endTime: z.string().min(1, "End time is required"),
+    startTime: z.string().nonempty({ message: "Start time is required" }),
+    endTime: z.string().nonempty({ message: "End time is required" }),
   })
   .refine(
     (data) => {
@@ -140,10 +140,10 @@ const AttendanceFormBuilder = () => {
     },
   });
 
-// Create a list of users based on their roles:
-// Incharge can make attendance for every user.
-// Shift incharge can mark attendance for it's shift's users.
-// Members can only mark their attdencane
+  // Create a list of users based on their roles:
+  // Incharge can make attendance for every user.
+  // Shift incharge can mark attendance for it's shift's users.
+  // Members can only mark their attdencane
 
   const roleBaseMembers = useMemo(() => {
     return members
@@ -157,13 +157,13 @@ const AttendanceFormBuilder = () => {
         id,
         name,
       }));
-  }, [members]);
+  }, []);
 
-  const handleUserSelect = (value: string) => {
-    form.setValue("memberId", Number(value), { shouldValidate: true });
+  const handleUserSelect = (memberId: string) => {
+    form.setValue("memberId", Number(memberId), { shouldValidate: true });
   };
 
-  const onSubmit = async (values: AttendanceFormValues) => {
+  const onSubmit = (values: AttendanceFormValues) => {
     console.log({ values });
   };
 
