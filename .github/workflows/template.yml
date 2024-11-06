@@ -15,3 +15,6 @@ jobs:
         uses: Frenetz/check-debug-statements@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check Node version
+        run: node --version
