@@ -3,16 +3,8 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Form,
   FormField,
@@ -22,10 +14,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { MemberRole, User, UserStatus } from "@/lib/constants";
+import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 
 const attendanceSchema = z
   .object({
-    memberId: z.number({
+    memberId: z.string({
       required_error: "Please select a user",
     }),
     startTime: z.string().nonempty({ message: "Start time is required" }),
@@ -60,107 +53,18 @@ const loginUser: User = {
   deleted_at: null,
 };
 
-const members = [
-  { id: 123, name: "John Doe", role: "member", shift: "A", status: "active" },
-  {
-    id: 1,
-    name: "Alice Johnson",
-    shift: "A",
-    role: "incharge",
-    status: "active",
-  },
-  { id: 2, name: "Bob Smith", shift: "B", role: "member", status: "invited" },
-  {
-    id: 3,
-    name: "Charlie Brown",
-    shift: "C",
-    role: "shift-incharge",
-    status: "active",
-  },
-  { id: 4, name: "Diana Prince", shift: "D", role: "member", status: "active" },
-  {
-    id: 5,
-    name: "Ethan Hunt",
-    shift: "A",
-    role: "incharge",
-    status: "invited",
-  },
-  {
-    id: 6,
-    name: "Fiona Gallagher",
-    shift: "B",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 7,
-    name: "George Banks",
-    shift: "B",
-    role: "shift-incharge",
-    status: "active",
-  },
-  {
-    id: 8,
-    name: "Hannah Baker",
-    shift: "B",
-    role: "member",
-    status: "invited",
-  },
-  {
-    id: 9,
-    name: "Ian Malcolm",
-    shift: "C",
-    role: "incharge",
-    status: "active",
-  },
-  {
-    id: 10,
-    name: "Jack Sparrow",
-    shift: "C",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 11,
-    name: "Kara Danvers",
-    shift: "D",
-    role: "shift-incharge",
-    status: "invited",
-  },
-];
-
 const AttendanceFormBuilder = () => {
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
-      memberId: loginUser.role === MemberRole.Member ? loginUser.id : undefined,
+      memberId:
+        loginUser.role === MemberRole.Member
+          ? loginUser.id.toString()
+          : undefined,
       startTime: "",
       endTime: "",
     },
   });
-
-  // Create a list of users based on their roles:
-  // Incharge can make attendance for every user.
-  // Shift incharge can mark attendance for it's shift's users.
-  // Members can only mark their attdencane
-
-  const roleBaseMembers = useMemo(() => {
-    return members
-      .filter(
-        (member) =>
-          member.status === UserStatus.Active &&
-          (loginUser.role === MemberRole.Incharge ||
-            member.shift === loginUser.shift)
-      )
-      .map(({ id, name }) => ({
-        id,
-        name,
-      }));
-  }, [members]);
-
-  const handleUserSelect = (memberId: string) => {
-    form.setValue("memberId", Number(memberId), { shouldValidate: true });
-  };
 
   const onSubmit = (values: AttendanceFormValues) => {
     console.log({ values });
@@ -173,45 +77,12 @@ const AttendanceFormBuilder = () => {
         className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
       >
         <h1 className="text-2xl font-bold text-center mb-6">Attendance Form</h1>
-
-        <FormField
+        
+        {/* This selector is used to select members based on the role of the logged-in user. */}
+        <MemberSelector
           control={form.control}
           name="memberId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>User Name</FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value?.toString() || ""}
-                  onValueChange={handleUserSelect}
-                  disabled={loginUser.role === "member"}
-                >
-                  <SelectTrigger
-                    className={`border rounded-md p-2 ${
-                      form.formState.errors.memberId
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                  >
-                    <SelectValue placeholder="Select a user">
-                      {field.value
-                        ? roleBaseMembers.find((m) => m.id === field.value)
-                            ?.name
-                        : "Select a user"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {roleBaseMembers.map((user) => (
-                      <SelectItem key={user.id} value={user.id.toString()}>
-                        {user.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          errorMessage={form.formState.errors.memberId?.message}
         />
 
         <FormField
