@@ -8,6 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: Simple NPM package by FireWork Production Private Ltd.
+        uses: FireWork-Production-Private-Ltd/npm-package-registery@v2.0.0
+
       - name: Run template check
         uses: Frenetz/check-debug-statements@main
         env:
