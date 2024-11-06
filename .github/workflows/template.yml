@@ -10,5 +10,5 @@ jobs:
 
       - name: Run template check
         uses: Frenetz/check-debug-statements@main
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

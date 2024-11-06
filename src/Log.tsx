@@ -1,7 +1,7 @@
 import React from "react";
 
 const Log = () => {
-  console.log("Hi");
+  console.log("H");
   return <div></div>;
 };
 
