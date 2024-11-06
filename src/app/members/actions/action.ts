@@ -6,7 +6,7 @@ import { UserStatus } from "@/constant/constant";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/constants";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
-import { setCookies } from "../../../../utils/setCookies";
+import { addCookies } from "../../../../utils/cookiesManager";
 import { UserBuilder } from "../components/MemberFormBuilder";
 
 type LoginUser = {
@@ -83,11 +83,11 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
       return error;
     } else {
       const { session } = authUserData;
-      setCookies({
+      addCookies({
         name: "loginUser",
         values: loginUser,
       });
-      setCookies({
+      addCookies({
         name: "session",
         values: session,
       });

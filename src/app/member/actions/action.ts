@@ -7,7 +7,7 @@ import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
 import { UserStatus } from "@/constant/constant";
 import { redirect } from "next/navigation";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
-import { setCookies } from "../../../../utils/setCookies";
+import { addCookies } from "../../../../utils/cookiesManager";
 import { UserBuilder } from "@/app/members/components/MemberFormBuilder";
 
 type LoginUser = {
@@ -88,12 +88,12 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
 
       const { session } = authUserData;
       
-      setCookies({
+      addCookies({
         name: "loginUser",
         values: loginUser,
       });
 
-      setCookies({
+      addCookies({
         name: "session",
         values: session,
       });
