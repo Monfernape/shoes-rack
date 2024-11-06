@@ -1,21 +1,13 @@
-#build
-name: console-check
+name: check-debug-statements
 
-on:
-  pull_request:
-    branches:
-      - main
-
+on: pull_request
 jobs:
-  build:
-    name: console-check
+  check-debug-statements:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Remove console
-        uses: Frenetz/check-debug-statements@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        - uses: actions/checkout@v1
+	- name: Run template check
+          uses: Frenetz/check-debug-statements@main
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
