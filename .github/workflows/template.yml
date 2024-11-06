@@ -17,5 +17,5 @@ jobs:
 
       - name: Remove console
         uses: Frenetz/check-debug-statements@main
-         env:
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
