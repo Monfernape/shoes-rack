@@ -14,9 +14,8 @@ jobs:
     - name: Run template check
       uses: jacobtomlinson/gha-find-replace@v2
       with:
-          find: "console\.log\(([^)]+)\)"
-          regex: true
-          run: exit 1
- 
+        find: "console.log"
+        run: exit 1
+
     - name: Check Node version
       run: node --version
