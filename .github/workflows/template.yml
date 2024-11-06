@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
       - name: Remove console
         uses: Frenetz/check-debug-statements@main
         env:
