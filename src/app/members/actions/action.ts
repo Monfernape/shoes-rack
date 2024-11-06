@@ -2,13 +2,12 @@
 import { z } from "zod";
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
-import { cookies } from "next/headers";
 import { UserStatus } from "@/constant/constant";
 import { redirect } from "next/navigation";
-import { userBuilderSchema } from "@/app/members/components/MemberFormBuilder";
 import { Routes } from "@/lib/constants";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 import { setCookies } from "../../../../utils/setCookies";
+import { userBuilderSchema } from "../components/MemberFormBuilder";
 
 type LoginUser = {
   phoneNumber: string;
