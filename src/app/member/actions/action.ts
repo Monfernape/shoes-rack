@@ -1,6 +1,5 @@
 "use server";
 import { z } from "zod";
-import { userBuilderSchema } from "../components/MemberFormBuilder";
 import { Tables } from "@/lib/db";
 import { Routes } from "@/lib/routes";
 import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
@@ -9,13 +8,14 @@ import { UserStatus } from "@/constant/constant";
 import { redirect } from "next/navigation";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 import { setCookies } from "../../../../utils/setCookies";
+import { UserBuilder } from "@/app/members/components/MemberFormBuilder";
 
 type LoginUser = {
   phoneNumber: string;
   password: string;
 };
 
-export const createUser = async (values: z.infer<typeof userBuilderSchema>) => {
+export const createUser = async (values: UserBuilder) => {
   const supabase = await getSupabaseClient();
 
   const rendomInviteId = Math.random().toString(36).slice(2, 10);
