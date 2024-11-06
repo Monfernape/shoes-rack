@@ -33,7 +33,7 @@ export const LoginPage = () => {
   });
 
   function onSubmit(values: FormValues) {
-    console.log(values);
+    return values;
   }
 
   return (

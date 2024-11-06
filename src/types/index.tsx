@@ -1,14 +1,14 @@
 export type UserRole = "incharge" | "member" | "shift-incharge";
 export type Shifts = "A" | "B" | "C" | "D";
 export type UserStatus = "active" | "inactive";
-export interface Member {
+export type Member = {
   shift: string;
   id: number;
   name: string;
   phone: string;
   role: UserRole;
   status: UserStatus;
-}
+};
 
 export type UserInfo = {
   id: number;

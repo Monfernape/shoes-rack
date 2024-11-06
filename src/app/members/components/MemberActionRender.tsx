@@ -1,7 +1,7 @@
-import React from 'react';
-import ActionsMenu from '@/common/ActionMenu/ActionsMenu';
+import React from "react";
+import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
-import { MemberRole } from '@/lib/constants';
+import { MemberRole } from "@/lib/constants";
 
 interface MemberInfo {
   id: number;
@@ -17,19 +17,19 @@ type Props = {
 const MemberTableActionRender = ({ memberInfo }: Props) => {
   const { role, status } = memberInfo;
   const handleViewDetails = () => {
-    console.log("Viewing details...");
+    return;
   };
 
   const handleEditInfo = () => {
-    console.log("Editing info...");
+    return;
   };
 
   const handleDeleteMember = () => {
-    console.log("Deleting member...");
+    return;
   };
 
   const handleResendInvite = () => {
-    console.log("Resending invite...");
+    return;
   };
 
   const baseActions = [

@@ -149,10 +149,10 @@ export const MemberFormBuilder = () => {
         description: "You will receive message shortly",
       });
     } catch (error) {
-      return;
+      return error;
     }
   };
- 
+
   return (
     <FormWrapper>
       <Form {...form}>

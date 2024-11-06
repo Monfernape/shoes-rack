@@ -90,7 +90,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     }
   }, [success, toast]);
 
-  const groupedData = useGroupedData(data, "shift");
+  const groupedData = useGroupedData<Member>(data, "shift");
   const toNavigate = () => {
     alert("nativgation function trigger");
   };

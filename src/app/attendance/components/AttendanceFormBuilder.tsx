@@ -28,7 +28,7 @@ const attendanceSchema = z
   .refine(
     (data) => {
       const startTime = new Date(`1970-01-01T${data.startTime}:00`);
-      let endTime = new Date(`1970-01-01T${data.endTime}:00`);
+      const endTime = new Date(`1970-01-01T${data.endTime}:00`);
       if (endTime < startTime) endTime.setDate(endTime.getDate() + 1);
       const nextTwoHours = new Date(startTime.getTime() + 2 * 60 * 60 * 1000);
       return endTime <= nextTwoHours;
@@ -38,6 +38,7 @@ const attendanceSchema = z
       path: ["endTime"],
     }
   );
+
 export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
 const loginUser: User = {
   id: 1,
@@ -56,7 +57,10 @@ const AttendanceFormBuilder = () => {
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
-      memberId: loginUser.role === MemberRole.Member ? loginUser.id.toString() : undefined,
+      memberId:
+        loginUser.role === MemberRole.Member
+          ? loginUser.id.toString()
+          : undefined,
       startTime: "",
       endTime: "",
     },

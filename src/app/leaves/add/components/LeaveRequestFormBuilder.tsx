@@ -4,7 +4,7 @@ import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { addDays, startOfDay } from "date-fns";
+import { startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -61,8 +61,9 @@ const user = {
   id: 3232,
   role: UserRole.Member,
 };
+export type leaveRequestSchema = z.infer<typeof leaveRequestSchema>;
 export const LeaveRequestFormBuilder = () => {
-  const form = useForm<z.infer<typeof leaveRequestSchema>>({
+  const form = useForm<leaveRequestSchema>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
       memberId: user.role === UserRole.Member ? user.id.toString() : "",
@@ -81,7 +82,7 @@ export const LeaveRequestFormBuilder = () => {
   } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
-    console.log(values);
+    return values;
   }
 
   const handleDateChange = (dateRange: DateRange | undefined) => {
@@ -94,7 +95,7 @@ export const LeaveRequestFormBuilder = () => {
 
   return (
     <FormWrapper>
-      <h1 className="text-sm text-sm font-semibold text-gray-800 my-4">
+      <h1 className="text-sm  font-semibold text-gray-800 my-4">
         Request Leave
       </h1>
       <Form {...form}>
@@ -103,7 +104,10 @@ export const LeaveRequestFormBuilder = () => {
           action={() => form.handleSubmit(onSubmit)()}
           className="space-y-4"
         >
-          <MemberSelector control={form.control} name="memberId" />
+          <MemberSelector<leaveRequestSchema>
+            control={form.control}
+            name="memberId"
+          />
 
           <FormField
             control={form.control}
