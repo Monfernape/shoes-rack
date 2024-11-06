@@ -2,15 +2,10 @@
 import { AttendanceStatus, Table } from "@/types/index";
 import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
 import { redirect } from "next/navigation";
-import { ATTENDANCE_PATH } from "@/constant/constant";
+import { Routes } from "@/lib/routes";
+import { AttendanceFormValues } from "../components/AttendanceFormBuilder";
 
-type Attendance = {
-  memberId: number;
-  startTime: string;
-  endTime: string;
-};
-
-export const onAttandanceRequset = async (values: Attendance) => {
+export const onAttandanceRequset = async (values: AttendanceFormValues) => {
   const supabase = await getSupabaseClient();
 
   const { error } = await supabase.from(Table.Attendance).insert({
@@ -22,5 +17,5 @@ export const onAttandanceRequset = async (values: Attendance) => {
     return error;
   }
 
-  redirect(ATTENDANCE_PATH);
+  redirect(Routes.Attendance);
 };

@@ -17,5 +17,3 @@ export enum UserStatus {
   Inactive = "inactive",
   Invited = "invited",
 }
-
-export const ATTENDANCE_PATH = "/attendance";

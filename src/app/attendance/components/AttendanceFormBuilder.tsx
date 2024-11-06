@@ -21,7 +21,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { onAttandanceRequset } from "../actions/attendanceActions";
+import { onAttandanceRequset } from "../actions/CreateAttendance";
 import { MemberRole, User, UserStatus } from "@/lib/constants";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
@@ -48,7 +48,7 @@ const attendanceSchema = z
     }
   );
 
-type AttendanceFormValues = z.infer<typeof attendanceSchema>;
+export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
 
 const loginUser: User = {
   id: 1,
@@ -169,7 +169,6 @@ const AttendanceFormBuilder = () => {
     try {
       const result = await onAttandanceRequset(values);
       if (!result) {
-        form.reset();
         toast({
           title: "Attendance submit successfully",
           description: "You will receive message shortly",
@@ -178,7 +177,7 @@ const AttendanceFormBuilder = () => {
     } catch (error) {
       console.error("Submission error:", error);
       toast({
-        title: "Something went wrong",
+        title: "Attendance could not be marked",
       });
       return;
     }
@@ -208,18 +207,14 @@ const AttendanceFormBuilder = () => {
                     disabled={loginUser.role === "member"}
                   >
                     <SelectTrigger
+                      data-testId="memberId"
                       className={`border rounded-md p-2 ${
                         form.formState.errors.memberId
                           ? "border-red-500"
                           : "border-gray-300"
                       }`}
                     >
-                      <SelectValue placeholder="Select a user">
-                        {field.value
-                          ? roleBaseMembers.find((m) => m.id === field.value)
-                              ?.name
-                          : "Select a user"}
-                      </SelectValue>
+                      <SelectValue placeholder="Select a user" />
                     </SelectTrigger>
                     <SelectContent>
                       {roleBaseMembers.map((user) => (
@@ -247,6 +242,7 @@ const AttendanceFormBuilder = () => {
                     {...field}
                     onClick={(event) => event.currentTarget.showPicker()}
                     hasError={!!form.formState.errors.startTime}
+                    data-testId="startTime"
                   />
                 </FormControl>
                 <FormMessage />
@@ -266,6 +262,7 @@ const AttendanceFormBuilder = () => {
                     {...field}
                     onClick={(event) => event.currentTarget.showPicker()}
                     hasError={!!form.formState.errors.endTime}
+                    data-testId="endTime"
                   />
                 </FormControl>
                 <FormMessage />
