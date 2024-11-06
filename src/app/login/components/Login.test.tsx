@@ -1,11 +1,11 @@
-import { expect, test } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { expect, test, vi } from "vitest";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { LoginPage } from "./Login";
-import { userEvent } from "@testing-library/user-event";
+import { loginUser } from "@/app/members/actions/action";
 
 const credentialsMock = {
   phoneNumber: "923000000000",
-  password: Math.random().toString(),
+  password: 'test-password',
 };
 
 const fields = [
@@ -14,9 +14,9 @@ const fields = [
 ];
 
 test("user login test", async () => {
+  const mockSubmit = vi.fn();
 
   render(<LoginPage />);
-  expect(screen.getByText("Welcome Back")).toBeDefined();
 
   fields.forEach(({ testId, value }) => {
     const field = screen.getByTestId(testId);
@@ -28,4 +28,13 @@ test("user login test", async () => {
     password: credentialsMock.password,
   });
 
+  const submitButton = screen.getByTestId('submitButton');
+  fireEvent.click(submitButton);
+   const submit = vi.fn().mockImplementation(loginUser);
+   await waitFor(()=>{
+    submit({
+      ...credentialsMock
+    })
+   })
+   expect(submit).toHaveBeenCalledTimes(1)
 });

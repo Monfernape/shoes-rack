@@ -11,9 +11,6 @@ export default async function updateSession(request: NextRequest) {
       return NextResponse.redirect(new URL(Routes.Login, request.url));
     }
 
-    if (requestedPath === "/") {
-      return NextResponse.redirect(new URL(Routes.Dashboard, request.url));
-    }
   } catch (e) {
     return NextResponse.next({
       request: {

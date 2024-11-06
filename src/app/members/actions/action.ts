@@ -1,5 +1,4 @@
 "use server";
-import { z } from "zod";
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
 import { UserStatus } from "@/constant/constant";
@@ -60,6 +59,7 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
   const supabase = await getSupabaseClient();
 
   const phoneNum = formatPhoneNumber(phoneNumber);
+  console.log({phoneNum})
 
   const { data: authUserData, error } = await supabase.auth.signInWithPassword({
     phone: phoneNum,

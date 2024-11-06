@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -14,24 +14,27 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { useRouter } from "next/navigation";
+import {
+  Eye as EyeIcon,
+  EyeOff as EyeOffIcon,
+  Lock as LockIcon,
+  MailIcon,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { loginUser } from "@/app/member/actions/action";
+import { loginUser } from "@/app/members/actions/action";
 import { useMask } from "@react-input/mask";
-import { PHONENUMBER_VALIDATOR_REGEX } from "../../../../regex";
+import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 
 const userSchema = z.object({
   phoneNumber: z
-    .string({ message: "Phone is required" })
+    .string()
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  password: z.string({ required_error: "password is required" }),
+  password: z.string().min(1,{message:'password is required'}),
 });
 
 type FormValues = z.infer<typeof userSchema>;
 
 export const LoginPage = () => {
-
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<FormValues>({
@@ -40,6 +43,7 @@ export const LoginPage = () => {
       phoneNumber: "",
       password: "",
     },
+    mode: "all",
   });
 
   const phoneNumberMask = useMask({
@@ -47,14 +51,13 @@ export const LoginPage = () => {
     replacement: { _: /\d/ },
   });
 
-  const onSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: FormValues) => {
     try {
       const result = await loginUser(values);
 
       if (!result) {
         toast({
           title: "Login successfully",
-          description: "",
         });
         form.reset();
       }
@@ -79,7 +82,7 @@ export const LoginPage = () => {
         </div>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(handleSubmit)}
             className="p-8 space-y-6"
             data-testId="form"
           >
@@ -99,12 +102,11 @@ export const LoginPage = () => {
                           {...field}
                           value={field.value}
                           data-testId="phoneNumber"
-                          onChange={(e) => field.onChange(e.target.value)}
                           className="pl-12"
                           ref={phoneNumberMask}
                           hasError={!!errors.phoneNumber}
                         />
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -130,13 +132,13 @@ export const LoginPage = () => {
                           data-testId="password"
                           hasError={!!errors.password}
                         />
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <button
                           type="button"
                           onClick={() => setShowPassword((prev) => !prev)}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                         >
-                          {showPassword ? <EyeOff /> : <Eye />}
+                          {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                         </button>
                       </div>
                     </FormControl>
@@ -153,7 +155,11 @@ export const LoginPage = () => {
                 Forgot password?
               </Link>
             </div>
-            <Button type="submit" className="w-full bg-gray-800" data-testId="submitButton">
+            <Button
+              type="submit"
+              className="w-full bg-gray-800"
+              data-testId="submitButton"
+            >
               Log in
             </Button>
           </form>
