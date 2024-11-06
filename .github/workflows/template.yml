@@ -1,20 +1,21 @@
 name: check-debug-statements
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - main
 jobs:
-  check-debug-statements:
-    runs-on: ubuntu-latest
+  name: check-debug-statements
+  runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v1
+  steps:
+    - uses: actions/checkout@v1
 
-      - name: Simple NPM package by FireWork Production Private Ltd.
-        uses: FireWork-Production-Private-Ltd/npm-package-registery@v2.0.0
-
-      - name: Run template check
-        uses: Frenetz/check-debug-statements@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check Node version
-        run: node --version
+    - name: Run template check
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+          find: "console\.log\(([^)]+)\)"
+          run: exit 1
+ 
+    - name: Check Node version
+      run: node --version
