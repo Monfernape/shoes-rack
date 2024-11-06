@@ -14,9 +14,9 @@ jobs:
     - name: Run template check
       uses: jacobtomlinson/gha-find-replace@v2
       with:
-          find: "/console\.log\(([^)]+)\);/igm"
-          replace: ""
-          regex: true
- 
+        find: "console.log"
+        replace: ""
+        regex: true
+
     - name: Check Node version
       run: node --version
