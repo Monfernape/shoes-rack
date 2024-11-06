@@ -7,14 +7,14 @@ import { redirect } from "next/navigation";
 import { Routes } from "@/lib/constants";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 import { setCookies } from "../../../../utils/setCookies";
-import { userBuilderSchema } from "../components/MemberFormBuilder";
+import { UserBuilder } from "../components/MemberFormBuilder";
 
 type LoginUser = {
   phoneNumber: string;
   password: string;
 };
 
-export const createUser = async (values: z.infer<typeof userBuilderSchema>) => {
+export const createUser = async (values: UserBuilder) => {
   const supabase = await getSupabaseClient();
 
   const rendomInviteId = Math.random().toString(36).slice(2, 10);
