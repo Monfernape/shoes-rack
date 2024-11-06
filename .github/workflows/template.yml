@@ -14,7 +14,7 @@ jobs:
     - name: Run template check
       uses: jacobtomlinson/gha-find-replace@v2
       with:
-          find: "console\.log\(([^)]+)\)"
+          find: "/console\.log\(([^)]+)\);/igm"
           replace: ""
           regex: true
  
