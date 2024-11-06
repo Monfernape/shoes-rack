@@ -1,23 +1,33 @@
-name: Check console
+name: Console
 
 on:
   pull_request:
     branches:
       - main
 
-  jobs:
-    name: Check console
+jobs:
+  build:
+    name: Console
     runs-on: ubuntu-latest
 
-  steps:
-    - uses: actions/checkout@v1
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Run template check
-      uses: jacobtomlinson/gha-find-replace@v2
-      with:
-        find: "console.log"
-        replace: ""
-        regex: true
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-    - name: Check Node version
-      run: node --version
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run template check
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "console.log"
+          replace: ""
+          regex: true
+
+      - name: Run tests
+        run: npm test
