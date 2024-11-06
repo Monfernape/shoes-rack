@@ -16,12 +16,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Plus as PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import useGroupedData from "@/hooks/useGroupedData";
 import { useToast } from "@/hooks/use-toast";
 import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
-import { Plus } from "lucide-react";
+import { Routes } from "@/lib/routes";
+
 interface MembersProps {
   members: {
     data: Member[];
@@ -33,6 +36,7 @@ interface MembersProps {
 export const MemberList = ({ members }: MembersProps) => {
   const { toast } = useToast();
   const { data, success, message } = members;
+  const route = useRouter();
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -93,17 +97,18 @@ export const MemberList = ({ members }: MembersProps) => {
   }, [success, toast]);
 
   const groupedData = useGroupedData(data, "shift");
-  const toNavigate = () => {
-    alert("nativgation function trigger");
+
+  const handleNavigation = () => {
+    route.push(Routes.AddMember);
   };
 
   const StandardPageProps = {
     hasContent: !!data.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
-    buttonIcon: <Plus />,
+    buttonIcon: <PlusIcon />,
     actionButton: true,
-    onAction: toNavigate,
+    onAction: handleNavigation,
     labelForActionButton: "Add member",
   };
 

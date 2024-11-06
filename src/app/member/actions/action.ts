@@ -3,7 +3,7 @@ import { z } from "zod";
 import { Tables } from "@/lib/db";
 import { Routes } from "@/lib/routes";
 import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
-import { cookies } from "next/headers";
+
 import { UserStatus } from "@/constant/constant";
 import { redirect } from "next/navigation";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
@@ -16,6 +16,7 @@ type LoginUser = {
 };
 
 export const createUser = async (values: UserBuilder) => {
+  
   const supabase = await getSupabaseClient();
 
   const rendomInviteId = Math.random().toString(36).slice(2, 10);
@@ -62,13 +63,14 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
 
   const phoneNum = formatPhoneNumber(phoneNumber);
 
-  const { data: authUserData, error } = await supabase.auth.signInWithPassword({
-    phone: phoneNum,
-    password: password,
-  });
+  const { data: authUserData, error: authError } =
+    await supabase.auth.signInWithPassword({
+      phone: phoneNum,
+      password: password,
+    });
 
-  if (error) {
-    return error;
+  if (authError) {
+    return authError;
   } else {
     const { data: loginUser, error } = await supabase
       .from(Tables.Members)
@@ -76,23 +78,28 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
         status: UserStatus.Active,
         invite_link: "",
       })
-      .eq("phoneNumber", phoneNum)
+      .eq("phoneNumber", phoneNumber)
       .select("*")
       .single();
 
     if (error) {
       return error;
     } else {
+
       const { session } = authUserData;
+      
       setCookies({
         name: "loginUser",
         values: loginUser,
       });
+
       setCookies({
         name: "session",
         values: session,
       });
+
       redirect(Routes.Dashboard);
+
     }
   }
 };

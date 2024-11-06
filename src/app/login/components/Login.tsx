@@ -18,19 +18,19 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { loginUser } from "@/app/member/actions/action";
+import { useMask } from "@react-input/mask";
+import { PHONENUMBER_VALIDATOR_REGEX } from "../../../../regex";
 
 const userSchema = z.object({
   phoneNumber: z
-    .string()
-    .min(1, "Phone number is required")
-    .max(13, "Phone number must be at most 12 characters long"),
+    .string({ message: "Phone is required" })
+    .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   password: z.string({ required_error: "password is required" }),
 });
 
 type FormValues = z.infer<typeof userSchema>;
 
 export const LoginPage = () => {
-  const route = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,6 +40,11 @@ export const LoginPage = () => {
       phoneNumber: "",
       password: "",
     },
+  });
+
+  const phoneNumberMask = useMask({
+    mask: "03__-_______",
+    replacement: { _: /\d/ },
   });
 
   const onSubmit = async (values: FormValues) => {
@@ -61,6 +66,10 @@ export const LoginPage = () => {
     }
   };
 
+  const {
+    formState: { errors },
+  } = form;
+
   return (
     <div className="h-full flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl overflow-hidden max-w-md w-full">
@@ -72,6 +81,7 @@ export const LoginPage = () => {
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="p-8 space-y-6"
+            data-testId="form"
           >
             <div className="space-y-2">
               <FormField
@@ -88,8 +98,11 @@ export const LoginPage = () => {
                           placeholder="0300-0000000"
                           {...field}
                           value={field.value}
+                          data-testId="phoneNumber"
                           onChange={(e) => field.onChange(e.target.value)}
                           className="pl-12"
+                          ref={phoneNumberMask}
+                          hasError={!!errors.phoneNumber}
                         />
                         <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       </div>
@@ -114,6 +127,8 @@ export const LoginPage = () => {
                           placeholder="••••••••"
                           {...field}
                           className="pl-12"
+                          data-testId="password"
+                          hasError={!!errors.password}
                         />
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <button
@@ -138,7 +153,7 @@ export const LoginPage = () => {
                 Forgot password?
               </Link>
             </div>
-            <Button type="submit" className="w-full bg-gray-800">
+            <Button type="submit" className="w-full bg-gray-800" data-testId="submitButton">
               Log in
             </Button>
           </form>
