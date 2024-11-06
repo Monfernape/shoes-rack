@@ -15,6 +15,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v2
       with:
           find: "console\.log\(([^)]+)\)"
+          regex: true
           run: exit 1
  
     - name: Check Node version
