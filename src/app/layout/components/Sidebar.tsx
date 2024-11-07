@@ -1,4 +1,7 @@
+"use client"
+import { logoutUser } from "@/app/members/actions/action";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -12,6 +15,24 @@ interface Props {
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   // TODO : role will be dynamic after user login
   const roleBasedRoutes = useAccessibleRoutes("incharge");
+
+  const onLogoutUser = async () => {
+    try {
+      const result = await logoutUser();
+    console.log("user has been logout",result)
+
+      if(!result){
+        toast({
+          title:'Logout successfully'
+        })
+      }
+    } catch (error) {
+      toast({
+        title:'unable to logout'
+      })
+    }
+
+  }
 
   return (
     <aside
@@ -56,7 +77,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
           </ul>
         </nav>
         <div className="p-4 border-t">
-          <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+          <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg" onClick={onLogoutUser}>
             <ExitIcon className="w-3.5 h-3.5 mr-3" />
             <span className="text-xs">Logout</span>
           </button>

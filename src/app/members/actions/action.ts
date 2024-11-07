@@ -5,7 +5,7 @@ import { UserStatus } from "@/constant/constant";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/constants";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
-import { addCookies } from "../../../../utils/cookiesManager";
+import { addCookies, removeCookies } from "../../../../utils/cookiesManager";
 import { UserBuilder } from "../components/MemberFormBuilder";
 
 type LoginUser = {
@@ -59,7 +59,7 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
   const supabase = await getSupabaseClient();
 
   const phoneNum = formatPhoneNumber(phoneNumber);
-  console.log({phoneNum})
+  console.log({ phoneNum });
 
   const { data: authUserData, error } = await supabase.auth.signInWithPassword({
     phone: phoneNum,
@@ -78,11 +78,16 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
       .eq("phoneNumber", phoneNum)
       .select("*")
       .single();
+      
+      console.log('sessionsessionsession',loginUser,error);
+
 
     if (error) {
       return error;
     } else {
       const { session } = authUserData;
+      
+
       addCookies({
         name: "loginUser",
         values: loginUser,
@@ -93,5 +98,16 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
       });
       redirect(Routes.Dashboard);
     }
+  }
+};
+
+export const logoutUser = async () => {
+  const supabase = await getSupabaseClient();
+  const { error } = await supabase.auth.signOut();
+  if (!error) {
+    return error;
+  } else {
+    removeCookies(["loginUser", "session"]);
+    redirect(Routes.Login);
   }
 };

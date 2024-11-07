@@ -18,7 +18,7 @@ import {
   Eye as EyeIcon,
   EyeOff as EyeOffIcon,
   Lock as LockIcon,
-  MailIcon,
+  Phone as PhoneIcon
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { loginUser } from "@/app/members/actions/action";
@@ -54,7 +54,7 @@ export const LoginPage = () => {
   const handleSubmit = async (values: FormValues) => {
     try {
       const result = await loginUser(values);
-
+      console.log("result____",result)
       if (!result) {
         toast({
           title: "Login successfully",
@@ -105,7 +105,7 @@ export const LoginPage = () => {
                           ref={phoneNumberMask}
                           hasError={!!errors.phoneNumber}
                         />
-                        <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <PhoneIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       </div>
                     </FormControl>
                     <FormMessage />
