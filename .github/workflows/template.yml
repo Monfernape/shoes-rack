@@ -23,9 +23,9 @@ jobs:
         run: npm install
 
       - name: Run template check
-        uses: jacobtomlinson/gha-find-replace@v2
+        uses: Frenetz/check-debug-statements@main
         with:
-          find: "console.log"
+          find: console.log
           run: exit 1
 
       - name: Run tests
