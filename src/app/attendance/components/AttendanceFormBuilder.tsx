@@ -82,7 +82,6 @@ const AttendanceFormBuilder = () => {
         <MemberSelector
           control={form.control}
           name="memberId"
-          errorMessage={form.formState.errors.memberId?.message}
         />
 
         <FormField

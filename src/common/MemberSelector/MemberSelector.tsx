@@ -5,6 +5,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
+  FormField,
 } from "@/components/ui/form";
 import {
   Select,
@@ -19,75 +20,30 @@ import { MemberRole, User } from "@/lib/constants";
 interface SelectFieldProps {
   control: Control<any>;
   name: string;
-  errorMessage: string | undefined;
 }
 
 const memberOptions = [
-  { id: 123, name: "John Doe", role: "member", shift: "A", status: "active" },
   {
-    id: 1,
+    id: "1",
     name: "Alice Johnson",
     shift: "A",
     role: "incharge",
     status: "active",
   },
-  { id: 2, name: "Bob Smith", shift: "B", role: "member", status: "invited" },
+  { id: "2", name: "Bob Smith", shift: "B", role: "member", status: "invited" },
   {
-    id: 3,
+    id: "3",
     name: "Charlie Brown",
     shift: "C",
     role: "shift-incharge",
     status: "active",
   },
-  { id: 4, name: "Diana Prince", shift: "D", role: "member", status: "active" },
   {
-    id: 5,
-    name: "Ethan Hunt",
-    shift: "A",
-    role: "incharge",
-    status: "invited",
-  },
-  {
-    id: 6,
-    name: "Fiona Gallagher",
-    shift: "B",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 7,
-    name: "George Banks",
-    shift: "B",
-    role: "shift-incharge",
-    status: "active",
-  },
-  {
-    id: 8,
-    name: "Hannah Baker",
-    shift: "B",
-    role: "member",
-    status: "invited",
-  },
-  {
-    id: 9,
-    name: "Ian Malcolm",
-    shift: "C",
-    role: "incharge",
-    status: "active",
-  },
-  {
-    id: 10,
-    name: "Jack Sparrow",
-    shift: "C",
-    role: "member",
-    status: "active",
-  },
-  {
-    id: 11,
-    name: "Kara Danvers",
+    id: "4",
+    name: "Diana Prince",
     shift: "D",
-    role: "shift-incharge",
-    status: "invited",
+    role: "member",
+    status: "active",
   },
 ];
 
@@ -104,8 +60,8 @@ const loginUser: User = {
   deleted_at: null,
 };
 
-const MemberSelector = ({ control, name, errorMessage }: SelectFieldProps) => {
-  const { field, fieldState } = useController({
+const MemberSelector = ({ control, name }: SelectFieldProps) => {
+  const { fieldState } = useController({
     control,
     name,
   });
@@ -129,36 +85,42 @@ const MemberSelector = ({ control, name, errorMessage }: SelectFieldProps) => {
       }));
   }, [memberOptions]);
 
-  const hasError = fieldState?.error?.message || errorMessage;
-
   return (
-    <FormItem>
-      <FormLabel>User Name</FormLabel>
-      <FormControl>
-        <Select
-          {...field}
-          value={field.value}
-          onValueChange={field.onChange}
-          disabled={loginUser.role === "member"}
-        >
-          <SelectTrigger
-            className={`border rounded-md p-2 ${
-              hasError ? "border-red-500" : "border-gray-300"
-            }`}
-          >
-            <SelectValue placeholder="Select a user" />
-          </SelectTrigger>
-          <SelectContent>
-            {roleBaseMembers.map((option) => (
-              <SelectItem key={option.id} value={option.id.toString()}>
-                {option.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </FormControl>
-      {hasError && <FormMessage>{hasError}</FormMessage>}
-    </FormItem>
+    <FormField
+      control={control}
+      name="endTime"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>User Name</FormLabel>
+          <FormControl>
+            <Select
+              {...field}
+              value={field.value}
+              onValueChange={field.onChange}
+              disabled={loginUser.role === "member"}
+            >
+              <SelectTrigger
+                className={`border rounded-md p-2 ${
+                  fieldState?.error?.message
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+              >
+                <SelectValue placeholder="Select a user" />
+              </SelectTrigger>
+              <SelectContent>
+                {roleBaseMembers.map((option) => (
+                  <SelectItem key={option.id} value={option.id}>
+                    {option.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 };
 
