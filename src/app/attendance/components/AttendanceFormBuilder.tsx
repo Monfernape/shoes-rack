@@ -44,7 +44,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: "incharge",
+  role: "member",
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
@@ -67,6 +67,10 @@ const AttendanceFormBuilder = () => {
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
+    const payload = {
+      ...values,
+      memberId: Number(values.memberId),
+    };
     try {
       const result = await createAttendance(values);
       if (!result) {
