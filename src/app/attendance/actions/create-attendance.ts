@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { AttendanceFormValues } from "../components/AttendanceFormBuilder";
 
-export const onAttandanceRequset = async (values: AttendanceFormValues) => {
+export const createAttendance = async (values: AttendanceFormValues) => {
   const supabase = await getSupabaseClient();
 
   const { error } = await supabase.from(Table.Attendance).insert({

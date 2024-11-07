@@ -21,7 +21,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { onAttandanceRequset } from "../actions/CreateAttendance";
+import { createAttendance } from "../actions/create-attendance";
 import { MemberRole, User, UserStatus } from "@/lib/constants";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
@@ -31,8 +31,8 @@ const attendanceSchema = z
     memberId: z.number({
       required_error: "Please select a user",
     }),
-    startTime: z.string().nonempty({ message: "Start time is required" }),
-    endTime: z.string().nonempty({ message: "End time is required" }),
+    startTime: z.string().min(1,{ message: "Start time is required" }),
+    endTime: z.string().min(1,{ message: "End time is required" }),
   })
   .refine(
     (data) => {
@@ -54,7 +54,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: "incharge",
+  role: "member",
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
@@ -152,22 +152,25 @@ const AttendanceFormBuilder = () => {
       .filter(
         (member) =>
           member.status === UserStatus.Active &&
-          (loginUser.role === MemberRole.Incharge ||
-            member.shift === loginUser.shift)
+          (loginUser.role === MemberRole.Incharge || member.shift === loginUser.shift)
       )
       .map(({ id, name }) => ({
-        id,
+        id: id.toString(), 
         name,
       }));
   }, [members]);
 
-  const handleUserSelect = (memberId: string) => {
+  const handleUserSelect = (memberId:string) => {
     form.setValue("memberId", Number(memberId), { shouldValidate: true });
   };
 
   const onSubmit = async (values: AttendanceFormValues) => {
+    const payload = {
+      ...values,
+      memberId: Number(values.memberId), 
+    };
     try {
-      const result = await onAttandanceRequset(values);
+      const result = await createAttendance(payload);
       if (!result) {
         toast({
           title: "Attendance submit successfully",
@@ -218,10 +221,10 @@ const AttendanceFormBuilder = () => {
                     </SelectTrigger>
                     <SelectContent>
                       {roleBaseMembers.map((user) => (
-                        <SelectItem key={user.id} value={user.id.toString()}>
+                        <SelectItem key={user.id} value={user.id}>
                           {user.name}
                         </SelectItem>
-                      ))}
+                      ))}                  
                     </SelectContent>
                   </Select>
                 </FormControl>

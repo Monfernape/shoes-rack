@@ -1,7 +1,7 @@
 import { describe, it, vi, expect } from "vitest";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import AttendanceFormBuilder from "../components/AttendanceFormBuilder";
-import { onAttandanceRequset } from "./CreateAttendance";  
+import { createAttendance } from "./create-attendance";  
 
 const attendanceMock = {
   memberId: 1,
@@ -10,7 +10,7 @@ const attendanceMock = {
 };
 describe("AttendanceFormBuilder Integration Test", async () => {
   it("calls onAttendanceRequest with correct form data on submit", async () => {
-    const spy = vi.spyOn({ onAttandanceRequset }, "onAttandanceRequset");
+    const spy = vi.spyOn({ createAttendance }, "createAttendance");
 
     // Render the form
     render(<AttendanceFormBuilder />);
@@ -28,7 +28,7 @@ describe("AttendanceFormBuilder Integration Test", async () => {
 
     fireEvent.click(screen.getByText("Submit"));
 
-    const submit = vi.fn().mockImplementation(onAttandanceRequset);
+    const submit = vi.fn().mockImplementation(createAttendance);
     await waitFor(() => {
       submit({
         ...attendanceMock,
