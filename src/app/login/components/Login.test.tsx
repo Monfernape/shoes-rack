@@ -28,8 +28,6 @@ test("user login test", async () => {
     password: credentialsMock.password,
   });
 
-  const submitButton = screen.getByTestId('submitButton');
-  fireEvent.click(submitButton);
    const submit = vi.fn().mockImplementation(loginUser);
    await waitFor(()=>{
     submit({
