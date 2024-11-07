@@ -59,7 +59,6 @@ export const LoginPage = () => {
         toast({
           title: "Login successfully",
         });
-        form.reset();
       }
     } catch (error) {
       toast({
