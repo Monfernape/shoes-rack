@@ -54,7 +54,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: "member",
+  role: "incharge",
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
@@ -217,7 +217,7 @@ const AttendanceFormBuilder = () => {
                           : "border-gray-300"
                       }`}
                     >
-                      <SelectValue placeholder="Select a user" />
+                      <SelectValue data-testId="select" placeholder="Select a user" />
                     </SelectTrigger>
                     <SelectContent>
                       {roleBaseMembers.map((user) => (
