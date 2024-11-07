@@ -14,7 +14,7 @@ describe("AttendanceFormBuilder", () => {
 
     expect(screen.getByText('Attendance Form')).toBeDefined();
 
-    const selectTrigger = screen.getByText(/select a user/i);
+    const selectTrigger = screen.getByTestId('select');
     fireEvent.click(selectTrigger);
 
     const option = await screen.findByLabelText(/Ian Malcolm/i);
