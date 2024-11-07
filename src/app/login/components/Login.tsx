@@ -54,7 +54,6 @@ export const LoginPage = () => {
   const handleSubmit = async (values: FormValues) => {
     try {
       const result = await loginUser(values);
-      console.log("result____",result)
       if (!result) {
         toast({
           title: "Login successfully",

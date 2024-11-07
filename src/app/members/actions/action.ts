@@ -78,8 +78,6 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
       .eq("phoneNumber", phoneNum)
       .select("*")
       .single();
-      
-      console.log('sessionsessionsession',loginUser,error);
 
 
     if (error) {
@@ -104,10 +102,12 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
 export const logoutUser = async () => {
   const supabase = await getSupabaseClient();
   const { error } = await supabase.auth.signOut();
+
   if (!error) {
     return error;
   } else {
     removeCookies(["loginUser", "session"]);
     redirect(Routes.Login);
   }
+  
 };
