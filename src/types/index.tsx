@@ -56,3 +56,15 @@ export enum Table {
   Member = "member",
   User = "user",
 }
+
+export enum AttendanceStatus {
+  Pending = "pending",
+  Accept = "accept",
+  Reject = "reject",
+}
+
+export enum Table {
+  Attendance = "attendance",
+  Member = "member",
+  User = "user",
+}
