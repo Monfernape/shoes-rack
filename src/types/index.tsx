@@ -42,10 +42,13 @@ export type UserDetails = {
   status: UserStatus;
 };
 
-export enum AttendanceStatus {
-  Pending = "pending",
-  Accept = "accept",
-  Reject = "reject",
+export interface LeaveRequestData {
+  memberId: string;
+  leaveType: string;
+  startDate: Date;
+  endDate: Date;
+  reasonForLeave: string;
+  status: string;
 }
 
 export enum Table {
