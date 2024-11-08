@@ -55,3 +55,15 @@ export interface MembersProps {
   success: boolean;
   message: string;
 }
+
+export enum AttendanceStatus {
+  Pending = "pending",
+  Accept = "accept",
+  Reject = "reject",
+}
+
+export enum Table {
+  Attendance = "attendance",
+  Member = "member",
+  User = "user",
+}
