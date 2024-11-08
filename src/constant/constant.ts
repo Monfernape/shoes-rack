@@ -17,3 +17,9 @@ export enum UserStatus {
   Inactive = "inactive",
   Invited = "invited",
 }
+
+export enum LeaveTypes {
+  Sick = "sick",
+  Vacation = "vacation",
+  Personal = "personal",
+}
