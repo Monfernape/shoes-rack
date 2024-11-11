@@ -18,14 +18,19 @@ import {
 } from "@/components/ui/table";
 import useGroupedData from "@/hooks/useGroupedData";
 import { useToast } from "@/hooks/use-toast";
-import { Member, MembersProps } from "@/types";
+import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon } from "lucide-react";
 
-export const MemberList = ({ members }:{ members : MembersProps}) => {
+interface Props {
+  data: Member[];
+  success: boolean;
+  message: string;
+}
+export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
-  const { data, success, message } = members;
+  const { data, success } = members;
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",

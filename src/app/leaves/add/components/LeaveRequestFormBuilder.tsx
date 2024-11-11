@@ -1,14 +1,11 @@
 "use client";
 import React from "react";
 import FormWrapper from "@/common/FormWrapper";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { format } from "date-fns";
+import { addDays, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -18,11 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -30,80 +22,72 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { MembersProps } from "@/types";
 import { LeaveTypes } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
+import { DateRange } from "react-day-picker";
+import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
 
-export const leaveRequestSchema = z
-  .object({
-    memberId: z.string().min(1, {
-      message: "Member must be selected.",
+export const leaveRequestSchema = z.object({
+  memberId: z.string().min(1, {
+    message: "Member must be selected.",
+  }),
+  leaveType: z.enum([
+    LeaveTypes.Personal,
+    LeaveTypes.Sick,
+    LeaveTypes.Vacation,
+  ]),
+  startDate: z
+    .date({
+      message: "Date must be selected.",
+    })
+    .refine((date) => date >= startOfDay(new Date()), {
+      message: "Start Date must be today or in the future.",
     }),
-    leaveType: z.string().min(1, {
-      message: "Leave Type must be selected.",
-    }),
-    startDate: z
-      .date({
-        message: "Start Date must be selected.",
-      })
-      .refine((date) => date >= new Date(), {
-        message:
-          "Start date must be greater than or equal to the current date.",
-      }),
-    endDate: z
-      .date({
-        message: "End Date must be selected.",
-      })
-      .refine((date) => date >= new Date(), {
-        message: "End date must be greater than or equal to the current date.",
-      }),
-    reasonForLeave: z.string().min(10, {
-      message: "Please provide a reason for leave.",
-    }),
-    status: z.string().min(1, {
-      message: "Status must be selected.",
-    }),
-  })
-  .refine((data) => data.endDate > data.startDate, {
-    message: "End date cannot be earlier than start date.",
-    path: ["endDate"],
-  });
+  endDate: z.date({
+    message: "End Date must be selected.",
+  }),
+  reason: z.string().min(10, {
+    message: "Please provide a reason for leave.",
+  }),
+});
 
 const leaveRequestType = [
-  {
-    leaveTypes: LeaveTypes.Personal,
-  },
-  {
-    leaveTypes: LeaveTypes.Sick,
-  },
-  {
-    leaveTypes: LeaveTypes.Vacation,
-  },
+  LeaveTypes.Personal,
+  LeaveTypes.Sick,
+  LeaveTypes.Vacation,
 ];
 
-export const LeaveRequestFormBuilder = ({
-  members,
-}: {
-  members: MembersProps;
-}) => {
+export const LeaveRequestFormBuilder = () => {
   const form = useForm<z.infer<typeof leaveRequestSchema>>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
       memberId: "",
-      leaveType: "",
+      leaveType: LeaveTypes.Personal,
       startDate: undefined,
       endDate: undefined,
-      reasonForLeave: "",
-      status: "Pending",
+      reason: "",
     },
     mode: "all",
   });
 
-  const { errors, isValid } = form.formState;
+  const {
+    formState: { errors, isValid },
+    trigger,
+    setValue,
+  } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
     console.log(values);
   }
+
+  const handleDateChange = (dateRange: DateRange | undefined) => {
+    if (dateRange?.from && dateRange?.to) {
+      setValue("startDate", dateRange.from);
+      setValue("endDate", dateRange.to);
+    }
+    trigger();
+  };
+  console.log({ isValid, errors }, form.getValues());
   return (
     <FormWrapper>
       <h1 className="text-sm text-sm font-semibold text-gray-800 my-4">
@@ -134,8 +118,8 @@ export const LeaveRequestFormBuilder = ({
                     </SelectTrigger>
                     <SelectContent>
                       {leaveRequestType.map((leaveTye) => (
-                        <SelectItem key={leaveTye.leaveTypes} value={leaveTye.leaveTypes}>
-                          {leaveTye.leaveTypes}
+                        <SelectItem key={leaveTye} value={leaveTye}>
+                          {leaveTye}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -145,99 +129,22 @@ export const LeaveRequestFormBuilder = ({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="startDate"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Start Date</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        data-testid="calendarButton"
-                        className={cn(
-                          `pl-3 text-left font-normal ${
-                            errors.startDate
-                              ? "border-destructive"
-                              : "border-input"
-                          }`
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span className="text-xs">Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+            render={() => (
+              <>
+                <FormLabel>Date Range</FormLabel>
+                <DatePickerWithRange handleChange={handleDateChange} />
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>End Date</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        data-testid="calendar-end-date-button"
-                        variant={"outline"}
-                        className={cn(
-                          `pl-3 text-left font-normal ${
-                            errors.endDate
-                              ? "border-destructive"
-                              : "border-input"
-                          }`
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span className="text-xs">Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    data-testid="popover"
-                    className="w-auto p-0"
-                    align="start"
-                  >
-                    <Calendar
-                      data-testid="calendar"
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
+              </>
             )}
           />
 
           <FormField
             control={form.control}
-            name="reasonForLeave"
+            name="reason"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Reason for Leave</FormLabel>
@@ -245,7 +152,7 @@ export const LeaveRequestFormBuilder = ({
                   <Textarea
                     placeholder="Please provide a brief description of your leave reason."
                     data-testid="leaveReason"
-                    hasError={Boolean(errors.reasonForLeave)}
+                    hasError={Boolean(errors.reason)}
                     className={`resize-none focus-visible:ring-0`}
                     {...field}
                   />

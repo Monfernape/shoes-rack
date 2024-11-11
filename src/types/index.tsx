@@ -42,20 +42,6 @@ export type UserDetails = {
   status: UserStatus;
 };
 
-export interface LeaveRequestData {
-  memberId: string;
-  leaveType: string;
-  startDate: Date;
-  endDate: Date;
-  reasonForLeave: string;
-  status: string;
-}
-export interface MembersProps {
-  data: Member[];
-  success: boolean;
-  message: string;
-}
-
 export enum AttendanceStatus {
   Pending = "pending",
   Accept = "accept",
