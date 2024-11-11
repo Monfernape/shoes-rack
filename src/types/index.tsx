@@ -9,7 +9,13 @@ export interface Member {
   role: UserRole;
   status: UserStatus;
 }
-
+export interface Attendance {
+  member: string;
+  id: number;
+  startTime: string;
+  endTime: string;
+  status: AttendanceStatus;
+}
 export type UserInfo = {
   id: number;
   shift: string;
