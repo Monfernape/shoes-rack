@@ -95,7 +95,7 @@ export const LeaveRequestFormBuilder = ({
   }
   return (
     <FormWrapper>
-      <h1 className="text-lg font-semibold text-gray-800 my-4">
+      <h1 className="text-sm text-sm font-semibold text-gray-800 my-4">
         Request Leave
       </h1>
       <Form {...form}>
@@ -156,13 +156,12 @@ export const LeaveRequestFormBuilder = ({
                               ? "border-destructive"
                               : "border-input"
                           }`,
-                          !field.value && "text-muted-foreground"
                         )}
                       >
                         {field.value ? (
                           format(field.value, "PPP")
                         ) : (
-                          <span>Pick a date</span>
+                          <span className="text-xs">Pick a date</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -199,13 +198,12 @@ export const LeaveRequestFormBuilder = ({
                               ? "border-destructive"
                               : "border-input"
                           }`,
-                          !field.value && "text-muted-foreground"
                         )}
                       >
                         {field.value ? (
                           format(field.value, "PPP")
                         ) : (
-                          <span>Pick a date</span>
+                          <span className="text-xs">Pick a date</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -240,11 +238,8 @@ export const LeaveRequestFormBuilder = ({
                   <Textarea
                     placeholder="Please provide a brief description of your leave reason."
                     data-testid="leaveReason"
-                    className={`resize-none ${
-                      errors.reasonForLeave
-                        ? "border-destructive"
-                        : "border-input"
-                    } focus-visible:ring-0`}
+                    hasError={Boolean(errors.reasonForLeave)}
+                    className={`resize-none focus-visible:ring-0`}
                     {...field}
                   />
                 </FormControl>
@@ -252,9 +247,11 @@ export const LeaveRequestFormBuilder = ({
               </FormItem>
             )}
           />
-          <Button data-testid="submitButton" type="submit" disabled={!isValid}>
+          <div className="flex justify-end">
+          <Button data-testid="submitButton" type="submit" disabled={!isValid} className="text-xs">
             Submit
           </Button>
+          </div>
         </form>
       </Form>
     </FormWrapper>

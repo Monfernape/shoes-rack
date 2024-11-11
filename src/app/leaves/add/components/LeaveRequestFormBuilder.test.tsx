@@ -37,10 +37,6 @@ describe("Leave request Form Testing", () => {
 
   const mockSelector = [
     {
-      id: "select-member",
-      name: "Charlie Brown",
-    },
-    {
       id: "leave-type",
       name: LeaveTypes.Sick,
     },
