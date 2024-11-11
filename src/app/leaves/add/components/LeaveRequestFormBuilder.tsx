@@ -134,7 +134,7 @@ export const LeaveRequestFormBuilder = ({
                     </SelectTrigger>
                     <SelectContent>
                       {leaveRequestType.map((leaveTye) => (
-                        <SelectItem value={leaveTye.leaveTypes}>
+                        <SelectItem key={leaveTye.leaveTypes} value={leaveTye.leaveTypes}>
                           {leaveTye.leaveTypes}
                         </SelectItem>
                       ))}
