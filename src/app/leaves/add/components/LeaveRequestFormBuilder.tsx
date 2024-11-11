@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LeaveTypes } from "@/constant/constant";
+import { LeaveTypes, UserRole } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
@@ -51,17 +51,21 @@ export const leaveRequestSchema = z.object({
   }),
 });
 
-const leaveRequestType = [
+const LEAVE_REQUEST_TYPES = [
   LeaveTypes.Personal,
   LeaveTypes.Sick,
   LeaveTypes.Vacation,
 ];
 
+const user = {
+  id: 3232,
+  role: UserRole.Member,
+};
 export const LeaveRequestFormBuilder = () => {
   const form = useForm<z.infer<typeof leaveRequestSchema>>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
-      memberId: "",
+      memberId: user.role === UserRole.Member ? user.id.toString() : "",
       leaveType: LeaveTypes.Personal,
       startDate: undefined,
       endDate: undefined,
@@ -87,7 +91,7 @@ export const LeaveRequestFormBuilder = () => {
     }
     trigger();
   };
-  console.log({ isValid, errors }, form.getValues());
+
   return (
     <FormWrapper>
       <h1 className="text-sm text-sm font-semibold text-gray-800 my-4">
@@ -96,7 +100,7 @@ export const LeaveRequestFormBuilder = () => {
       <Form {...form}>
         <form
           data-testid="form"
-          onSubmit={form.handleSubmit(onSubmit)}
+          action={() => form.handleSubmit(onSubmit)()}
           className="space-y-4"
         >
           <MemberSelector control={form.control} name="memberId" />
@@ -117,9 +121,9 @@ export const LeaveRequestFormBuilder = () => {
                       <SelectValue placeholder="Select a leave type" />
                     </SelectTrigger>
                     <SelectContent>
-                      {leaveRequestType.map((leaveTye) => (
-                        <SelectItem key={leaveTye} value={leaveTye}>
-                          {leaveTye}
+                      {LEAVE_REQUEST_TYPES.map((leaveType) => (
+                        <SelectItem key={leaveType} value={leaveType}>
+                          {leaveType}
                         </SelectItem>
                       ))}
                     </SelectContent>
