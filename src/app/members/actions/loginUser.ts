@@ -4,8 +4,8 @@ import { addCookies } from "../../../utils/cookiesManager";
 import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 import { redirect } from "next/navigation";
-import { UserStatus } from "@/constant/constant";
 import { Routes } from "@/lib/routes";
+import { UserStatus } from "@/constant/constant";
 
 type LoginUser = {
   phoneNumber: string;
