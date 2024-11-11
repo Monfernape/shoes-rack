@@ -69,12 +69,23 @@ export const leaveRequestSchema = z
     path: ["endDate"],
   });
 
+const leaveRequestType = [
+  {
+    leaveTypes: LeaveTypes.Personal,
+  },
+  {
+    leaveTypes: LeaveTypes.Sick,
+  },
+  {
+    leaveTypes: LeaveTypes.Vacation,
+  },
+];
+
 export const LeaveRequestFormBuilder = ({
   members,
 }: {
   members: MembersProps;
 }) => {
-  const { data } = members;
   const form = useForm<z.infer<typeof leaveRequestSchema>>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
@@ -122,15 +133,11 @@ export const LeaveRequestFormBuilder = ({
                       <SelectValue placeholder="Select a leave type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={LeaveTypes.Personal}>
-                        {LeaveTypes.Personal}
-                      </SelectItem>
-                      <SelectItem value={LeaveTypes.Sick}>
-                        {LeaveTypes.Sick}
-                      </SelectItem>
-                      <SelectItem value={LeaveTypes.Vacation}>
-                        {LeaveTypes.Vacation}
-                      </SelectItem>
+                      {leaveRequestType.map((leaveTye) => (
+                        <SelectItem value={leaveTye.leaveTypes}>
+                          {leaveTye.leaveTypes}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -155,7 +162,7 @@ export const LeaveRequestFormBuilder = ({
                             errors.startDate
                               ? "border-destructive"
                               : "border-input"
-                          }`,
+                          }`
                         )}
                       >
                         {field.value ? (
@@ -197,7 +204,7 @@ export const LeaveRequestFormBuilder = ({
                             errors.endDate
                               ? "border-destructive"
                               : "border-input"
-                          }`,
+                          }`
                         )}
                       >
                         {field.value ? (
@@ -248,9 +255,14 @@ export const LeaveRequestFormBuilder = ({
             )}
           />
           <div className="flex justify-end">
-          <Button data-testid="submitButton" type="submit" disabled={!isValid} className="text-xs">
-            Submit
-          </Button>
+            <Button
+              data-testid="submitButton"
+              type="submit"
+              disabled={!isValid}
+              className="text-xs"
+            >
+              Submit
+            </Button>
           </div>
         </form>
       </Form>
