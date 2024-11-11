@@ -15,7 +15,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { UserStatus } from "@/constant/constant";
+import { UserRole, UserStatus } from "@/constant/constant";
 import { MemberRole, User } from "@/lib/constants";
 import { getMembers } from "@/app/members/actions/getMembers";
 import { Member } from "@/types";
@@ -88,7 +88,7 @@ const MemberSelector = ({ control, name }: SelectFieldProps) => {
           <FormControl>
             <Select
               {...field}
-              value={field.value}
+              value={loginUser.role === "member"  ? loginUser.name : field.value}
               onValueChange={field.onChange}
               disabled={loginUser.role === "member"}
             >
