@@ -62,9 +62,3 @@ export enum AttendanceStatus {
   Accept = "accept",
   Reject = "reject",
 }
-
-export enum Table {
-  Attendance = "attendance",
-  Member = "member",
-  User = "user",
-}

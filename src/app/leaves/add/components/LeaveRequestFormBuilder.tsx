@@ -92,7 +92,6 @@ export const LeaveRequestFormBuilder = () => {
     }
     trigger();
   };
-
   return (
     <FormWrapper>
       <h1 className="text-sm  font-semibold text-gray-800 my-4">
