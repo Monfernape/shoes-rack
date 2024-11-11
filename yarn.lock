@@ -598,10 +598,14 @@
 "@radix-ui/number@1.1.0":
   version "1.1.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/@radix-ui/number/-/number-1.1.0.tgz"
 =======
   resolved "https://registry.yarnpkg.com/@radix-ui/number/-/number-1.1.0.tgz#1e95610461a09cdf8bb05c152e76ca1278d5da46"
 >>>>>>> 5738675 (work on Leave Request form)
+=======
+  resolved "https://registry.npmjs.org/@radix-ui/number/-/number-1.1.0.tgz"
+>>>>>>> 5b2a118 (work on form UI fixes and commits)
   integrity sha512-V3gRzhVNU1ldS5XhAPTom1fOIo4ccrjjJgmE+LI2h/WaFpHmx0MQApT+KZHnx8abG6Avtfcz4WoEciMnpFT3HQ==
 
 "@radix-ui/primitive@1.1.0":
@@ -2076,16 +2080,22 @@ data-view-byte-offset@^1.0.0:
     is-data-view "^1.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5b2a118 (work on form UI fixes and commits)
 date-fns@^3.0.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-3.6.0.tgz#f20ca4fe94f8b754951b24240676e8618c0206bf"
   integrity sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==
+<<<<<<< HEAD
 =======
 date-fns@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-4.1.0.tgz#64b3d83fff5aa80438f5b1a633c2e83b8a1c2d14"
   integrity sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==
 >>>>>>> 5738675 (work on Leave Request form)
+=======
+>>>>>>> 5b2a118 (work on form UI fixes and commits)
 
 debug@4, debug@^4.1.0, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@^4.3.5, debug@^4.3.7:
   version "4.3.7"
@@ -2676,10 +2686,14 @@ fastq@^1.6.0:
 fdir@^6.4.2:
   version "6.4.2"
 <<<<<<< HEAD
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/fdir/-/fdir-6.4.2.tgz"
 =======
   resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.2.tgz#ddaa7ce1831b161bc3657bb99cb36e1622702689"
 >>>>>>> 5738675 (work on Leave Request form)
+=======
+  resolved "https://registry.npmjs.org/fdir/-/fdir-6.4.2.tgz"
+>>>>>>> 5b2a118 (work on form UI fixes and commits)
   integrity sha512-KnhMXsKSPZlAhp7+IjUkRZKPb4fUyccpDrdFXbi4QL1qkmFh9kVY09Yox+n4MaOb3lHZ1Tv829C3oaaXoMYPDQ==
 
 fetch-blob@^3.1.2, fetch-blob@^3.1.4:
@@ -4473,10 +4487,14 @@ sirv@^3.0.0:
 sisteransi@^1.0.5:
   version "1.0.5"
 <<<<<<< HEAD
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/sisteransi/-/sisteransi-1.0.5.tgz"
 =======
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
 >>>>>>> 5738675 (work on Leave Request form)
+=======
+  resolved "https://registry.npmjs.org/sisteransi/-/sisteransi-1.0.5.tgz"
+>>>>>>> 5b2a118 (work on form UI fixes and commits)
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
 
 slash@^3.0.0:
@@ -4945,7 +4963,7 @@ typescript-eslint@^8.14.0:
 
 typescript@^5.6.3:
   version "5.6.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.6.3.tgz#5f3449e31c9d94febb17de03cc081dd56d81db5b"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-5.6.3.tgz"
   integrity sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==
 
 unbox-primitive@^1.0.2:
