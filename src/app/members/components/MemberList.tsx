@@ -21,18 +21,16 @@ import { useToast } from "@/hooks/use-toast";
 import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
-import { Plus } from "lucide-react";
-interface MembersProps {
-  members: {
-    data: Member[];
-    success: boolean;
-    message: string;
-  };
-}
+import { Plus as PlusIcon } from "lucide-react";
 
-export const MemberList = ({ members }: MembersProps) => {
+interface Props {
+  data: Member[];
+  success: boolean;
+  message: string;
+}
+export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
-  const { data, success, message } = members;
+  const { data, success } = members;
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -101,7 +99,7 @@ export const MemberList = ({ members }: MembersProps) => {
     hasContent: !!data.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
-    buttonIcon: <Plus />,
+    buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: toNavigate,
     labelForActionButton: "Add member",

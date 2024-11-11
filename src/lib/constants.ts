@@ -15,8 +15,8 @@ export enum Routes {
   ShiftIncharge = "/shift-incharge",
   MissingShoes = "/missing-shoes",
   AddMissingShoes = "/add-missing-shoes",
-  LeaveRequest = "/leave-request",
-  AddLeaveRequest = "/add-leave-request",
+  LeaveRequest = "/leaves",
+  AddLeaveRequest = "/leaves/add",
 }
 
 export enum MemberRole {
