@@ -28,6 +28,7 @@ import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { User } from "@/types";
+import { onCreateLeaveRequest } from "../../actions/actions";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -92,7 +93,7 @@ export const LeaveRequestFormBuilder = () => {
   } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
-    console.log(values);
+    onCreateLeaveRequest(values);
   }
 
   const handleDateChange = (dateRange: DateRange | undefined) => {
@@ -108,7 +109,7 @@ export const LeaveRequestFormBuilder = () => {
       <FormTitle title="Request Leave" />
       <Form {...form}>
         <form
-          data-testid="form"
+          data-testid="validForm"
           action={() => form.handleSubmit(onSubmit)()}
           className="space-y-4"
         >
