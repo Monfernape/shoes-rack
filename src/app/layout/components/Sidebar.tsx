@@ -1,5 +1,5 @@
 "use client";
-import { logoutUser } from "@/app/members/actions/action";
+import { logoutUser } from "@/app/members/actions/logoutUser";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
@@ -16,11 +16,8 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   // TODO : role will be dynamic after user login
   const roleBasedRoutes = useAccessibleRoutes("incharge");
 
-  const onLogoutUser = async () => {
-    await logoutUser();
-    toast({
-      title: "Logout successfully",
-    });
+  const onLogoutUser = () => {
+     logoutUser();
   };
 
   return (

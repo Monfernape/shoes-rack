@@ -1,3 +1,4 @@
+"use server"
 import { cookies } from "next/headers";
 
 type Props = {
@@ -11,7 +12,7 @@ export const addCookies = ({ name, values }: Props) => {
   });
 };
 
-export const removeCookies = (values: string[]) => {
+export const clearCookies = (values: string[]) => {
   values.map((name) => {
     cookies().delete(name);
   });

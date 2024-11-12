@@ -21,14 +21,14 @@ import {
   Phone as PhoneIcon
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { loginUser } from "@/app/members/actions/action";
 import { useMask } from "@react-input/mask";
 import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
+import { loginUser } from "@/app/members/actions/loginUser";
 
 const userSchema = z.object({
   phoneNumber: z
     .string()
-    .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
+    .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is invalid"),
   password: z.string().min(1,{message:'password is required'}),
 });
 

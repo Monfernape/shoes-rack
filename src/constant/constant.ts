@@ -17,3 +17,5 @@ export enum UserStatus {
   Inactive = "inactive",
   Invited = "invited",
 }
+
+export const PAKISTAN_COUNTRY_CODE = "92";

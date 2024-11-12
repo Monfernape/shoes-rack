@@ -39,7 +39,7 @@ import {
   PHONENUMBER_VALIDATOR_REGEX,
 } from "@/lib/regex";
 import { useToast } from "@/hooks/use-toast";
-import { createUser } from "@/app/members/actions/action";
+import { createUser } from "../actions/createUser";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
