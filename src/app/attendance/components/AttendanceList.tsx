@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
-
+import React, { useEffect, useMemo } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -18,88 +17,72 @@ import {
 } from "@/components/ui/table";
 
 import { useToast } from "@/hooks/use-toast";
-import { Attendance, Member } from "@/types";
+import { AttendanceStatus, Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
 import MemberTableActionRender from "@/app/members/components/MemberActionRender";
 
+interface Attendance {
+  member: string;
+  id: number;
+  startTime: string;
+  endTime: string;
+  status: AttendanceStatus;
+}
 interface AttendanceProps {
   attendance: {
     data: Attendance[];
-    success: boolean;
-    message: string;
-  };
-  members: {
-    data: Member[];
-    success: boolean;
-    message: string;
   };
 }
 
-export const AttendanceList = ({ attendance, members }: AttendanceProps) => {
+export const AttendanceList = ({ attendance }: AttendanceProps) => {
   const { toast } = useToast();
-  const { data: attendanceData, success } = attendance;
-  const { data: memberData } = members;
+  const { data: attendanceData } = attendance;
 
-  const getNameById = (id: number) => {
-    const member = memberData.find((member) => member.id === id);
-
-    return member ? member.name : "Unknown";
-  };
-
-  const getShiftByMemberId = (memberId: number) => {
-    const member = memberData.find((member) => member.id === memberId);
-
-    return member && member.shift ? member.shift : "Unknown Shift";
-  };
-
-  const columns: ColumnDef<Attendance>[] = [
-    {
-      accessorKey: "memberId",
-      header: "Name",
-      cell: ({ row }) => (
-        <div className="capitalize">
-          {getNameById(row.getValue("memberId"))}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "memberId",
-      header: "Shift",
-      cell: ({ row }) => (
-        <div className="capitalize">
-          {getShiftByMemberId(row.getValue("memberId"))}
-        </div>
-      ),
-    },
-
-    {
-      accessorKey: "startTime",
-      header: "Start Time",
-      cell: ({ row }) => <div>{row.getValue("startTime")}</div>,
-    },
-    {
-      accessorKey: "endTime",
-      header: "End Time",
-      cell: ({ row }) => <div>{row.getValue("endTime")}</div>,
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => <UserStatusBadge status={row.getValue("status")} />,
-    },
-    {
-      id: "actions",
-      enableHiding: false,
-      header: () => {
-        return <span>Action</span>;
+  const columns: ColumnDef<Attendance>[] = useMemo (()=> [
+      {
+        accessorKey: "name",
+        header: "Name",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("name")}</div>
+        ),
       },
-      cell: ({ row }) => {
-        return <MemberTableActionRender memberInfo={row.original} />;
+      {
+        accessorKey: "shift",
+        header: "Shift",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("shift")}</div>
+        ),
       },
-    },
-  ];
+  
+      {
+        accessorKey: "startTime",
+        header: "Start Time",
+        cell: ({ row }) => <div>{row.getValue("startTime")}</div>,
+      },
+      {
+        accessorKey: "endTime",
+        header: "End Time",
+        cell: ({ row }) => <div>{row.getValue("endTime")}</div>,
+      },
+      {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({ row }) => <UserStatusBadge status={row.getValue("status")} />,
+      },
+      {
+        id: "actions",
+        enableHiding: false,
+        header: () => {
+          return <div>Action</div>;
+        },
+        cell: ({ row }) => {
+          return <MemberTableActionRender memberInfo={row.original} />;
+        },
+      },
+    ]
+   ,[])
 
   const table = useReactTable({
     data: attendanceData,
@@ -108,15 +91,20 @@ export const AttendanceList = ({ attendance, members }: AttendanceProps) => {
   });
 
   useEffect(() => {
-    if (!success) {
+    if (!attendanceData) {
       toast({
         title: "No Attendance Found",
         description: "There are no members available at this time.",
       });
+    } else {
+      toast({
+        title: "Attendances loaded successfully",
+        description: "You can now see all attendance.",
+      });
     }
-  }, [success, toast]);
+  }, [attendanceData, toast]);
 
-  const toNavigate = () => {
+  const addAttendance = () => {
     alert("Navigation function triggered");
   };
 
@@ -126,7 +114,7 @@ export const AttendanceList = ({ attendance, members }: AttendanceProps) => {
     description: "This is where you can see all attendance",
     buttonIcon: <Plus />,
     actionButton: true,
-    onAction: toNavigate,
+    onAction: addAttendance,
     labelForActionButton: "Add Attendance",
   };
 
