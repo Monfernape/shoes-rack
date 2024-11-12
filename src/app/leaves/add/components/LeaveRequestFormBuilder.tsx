@@ -27,6 +27,8 @@ import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
 import { onCreateLeaveRequest } from "../../actions/actions";
+import { UserStatus } from "@/lib/constants";
+import { User } from "@/types";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -58,15 +60,25 @@ const LEAVE_REQUEST_TYPES = [
   LeaveTypes.Vacation,
 ];
 
-const user = {
+
+const loginUser: User = {
   id: 3,
+  name: "Alice Johnson",
+  shift: "A",
   role: UserRole.Member,
+  status: UserStatus.Active,
+  phone: "123-456-7890",
+  address: "123 Main St, Anytown, USA",
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  deleted_at: null,
 };
+
 export const LeaveRequestFormBuilder = () => {
   const form = useForm<z.infer<typeof leaveRequestSchema>>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
-      memberId: user.role === UserRole.Member ? user.id.toString() : "",
+      memberId: loginUser.role === UserRole.Member ? loginUser.id.toString() : "",
       leaveType: LeaveTypes.Personal,
       startDate: undefined,
       endDate: undefined,

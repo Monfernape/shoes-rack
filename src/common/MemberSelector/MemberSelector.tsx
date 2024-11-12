@@ -15,7 +15,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { UserStatus } from "@/constant/constant";
+import { LeaveRequestStatus, UserRole, UserStatus } from "@/constant/constant";
 import { MemberRole, User } from "@/lib/constants";
 import { getMembers } from "@/app/members/actions/getMembers";
 import { Member } from "@/types";
@@ -29,7 +29,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: "member",
+  role: UserRole.Member,
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
@@ -90,7 +90,7 @@ const MemberSelector = ({ control, name }: SelectFieldProps) => {
               {...field}
               value={field.value}
               onValueChange={field.onChange}
-              disabled={loginUser.role === "member"}
+              disabled={loginUser.role === UserRole.Member}
             >
               <SelectTrigger
                 data-testid="memberId"

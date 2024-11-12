@@ -23,3 +23,9 @@ export enum LeaveTypes {
   Vacation = "vacation",
   Personal = "personal",
 }
+
+export enum LeaveRequestStatus {
+  Pending = "pending",
+  Accept = "accept",
+  Reject = "reject",
+}
