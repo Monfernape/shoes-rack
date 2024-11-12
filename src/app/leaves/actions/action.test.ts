@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/dom";
 import { onCreateLeaveRequest } from "./actions";
-import { LeaveTypes } from "@/constant/constant";
+import { LeaveRequestStatus, LeaveTypes } from "@/constant/constant";
 
 describe("Leave Request Integration Test", async () => {
   const mockPayload = {
@@ -9,7 +9,7 @@ describe("Leave Request Integration Test", async () => {
     startDate: "2024/11/20",
     endDate: "2024/11/26",
     reasonForLeave: "Due to some personal reason",
-    status: "pending",
+    status: LeaveRequestStatus.Pending,
   };
 
   it("calls onCreateLeaveRequest with mock form data on submit", async () => {

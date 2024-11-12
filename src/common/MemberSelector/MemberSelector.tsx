@@ -28,7 +28,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: "member",
+  role: UserRole.Member,
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
