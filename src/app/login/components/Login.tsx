@@ -18,7 +18,7 @@ import {
   Eye as EyeIcon,
   EyeOff as EyeOffIcon,
   Lock as LockIcon,
-  Phone as PhoneIcon
+  Phone as PhoneIcon,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useMask } from "@react-input/mask";
@@ -29,7 +29,7 @@ const userSchema = z.object({
   phoneNumber: z
     .string()
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is invalid"),
-  password: z.string().min(1,{message:'password is required'}),
+  password: z.string().min(1, { message: "password is required" }),
 });
 
 type FormValues = z.infer<typeof userSchema>;
@@ -53,17 +53,14 @@ export const LoginPage = () => {
 
   const handleSubmit = async (values: FormValues) => {
     try {
-      const result = await loginUser(values);
-      if (!result) {
+      await loginUser(values);
+    } catch (error) {
+      if (error instanceof Error) {
         toast({
-          title: "Login successfully",
+          title: error.message,
+          description: "Please try again",
         });
       }
-    } catch (error) {
-      toast({
-        title: "wrong credentials",
-        description: "Please try again",
-      });
     }
   };
 
