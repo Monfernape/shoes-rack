@@ -42,14 +42,6 @@ export type UserDetails = {
   status: UserStatus;
 };
 
-export interface LeaveRequestDetails {
-  memberId: string;
-  leaveType: string;
-  startDate: Date;
-  endDate: Date;
-  reason: string;
-  status: string;
-}
 export interface MembersProps {
   data: Member[];
   success: boolean;
@@ -62,7 +54,7 @@ export interface LeaveRequestsTypes {
   startDate?: string;
   endDate?: string;
   status?: string;
-  reasonForLeave?: string;
+  reason?: string;
   requestedBy?: string;
 }
 
