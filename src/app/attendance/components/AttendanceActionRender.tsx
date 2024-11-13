@@ -1,10 +1,14 @@
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
-import { Trash2, Edit, XCircle, CheckSquare } from "lucide-react";
+import {
+  Trash2 as TrashIcon,
+  Edit as EditIcon,
+  XCircle as XCricleIcon,
+  CheckSquare as CheckSquareIcon,
+} from "lucide-react";
 import { MemberRole } from "@/lib/constants";
 
 interface MemberInfo {
-  id: number;
   shift: string;
   role: string;
   status: string;
@@ -15,12 +19,11 @@ interface AttendanceData {
 }
 
 type Props = {
-  memberInfo: MemberInfo;
+  loginUser: MemberInfo;
   attendanceData: AttendanceData;
 };
 
-const AttendanceActionRender = ({ memberInfo, attendanceData }: Props) => {
-
+const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   const handleEditInfo = () => {
     console.log("Editing info...");
   };
@@ -30,10 +33,10 @@ const AttendanceActionRender = ({ memberInfo, attendanceData }: Props) => {
   };
 
   const handleApproveRequest = () => {
-    console.log("Approve Request ");
+    console.log("Request Status");
   };
   const handleRejectRequest = () => {
-    console.log("Reject Request");
+    console.log("Request Status");
   };
 
   const baseActions = [
@@ -41,13 +44,14 @@ const AttendanceActionRender = ({ memberInfo, attendanceData }: Props) => {
       title: "Edit Info",
       id: 2,
       onClick: handleEditInfo,
-      icon: <Edit size={16} />,
+      icon: <EditIcon size={16} />,
     },
     {
       title: "Delete Member",
       id: 3,
       onClick: handleDeleteMember,
-      icon: <Trash2 size={16} />,
+      icon: <TrashIcon size={16} className="text-red-500" />,
+      className: "text-red-500",
     },
   ];
   const ApprovelRequest = [
@@ -55,29 +59,32 @@ const AttendanceActionRender = ({ memberInfo, attendanceData }: Props) => {
       title: "Approve",
       id: 2,
       onClick: handleApproveRequest,
-      icon: <CheckSquare size={16} />,
+      icon: <CheckSquareIcon size={16} />,
     },
     {
       title: "Reject",
       id: 3,
       onClick: handleRejectRequest,
-      icon: <XCircle size={16} />,
+      icon: <XCricleIcon size={16} className="text-red-500" />,
+      className: "text-red-500",
     },
   ];
 
   const actionMenu = React.useMemo(() => {
-    switch (memberInfo.role) {
+    switch (loginUser.role) {
       case MemberRole.Member:
-        return attendanceData.status === "pending" ? [...baseActions] :[]
+        return attendanceData.status === "pending" ? [...baseActions] : [];
       case MemberRole.ShiftIncharge:
-        return attendanceData.shift === memberInfo.shift ? [...ApprovelRequest] : []
+        return attendanceData.shift === loginUser.shift
+          ? [...ApprovelRequest]
+          : [];
       case MemberRole.Incharge:
       case MemberRole.SuperAdmin:
         return [...ApprovelRequest];
       default:
         return [];
     }
-  }, [memberInfo.role, attendanceData.status]);
+  }, [loginUser.role, attendanceData.status]);
 
   return <ActionsMenu actions={actionMenu} />;
 };

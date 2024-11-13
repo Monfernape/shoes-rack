@@ -92,7 +92,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <AttendanceActionRender memberInfo={loginUser} attendanceData={row.original}/>;
+          return <AttendanceActionRender loginUser={loginUser} attendanceData={row.original}/>;
         },
       },
     ]
