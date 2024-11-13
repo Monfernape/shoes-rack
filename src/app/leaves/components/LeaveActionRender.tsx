@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import {
   Info as InfoIcon,
@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { MemberRole } from "@/lib/constants";
 import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
+import { LeaveRequestDetails } from "./LeaveRequestDetails";
 
 const loggedUser = {
   name: "John Smith",
@@ -18,9 +19,12 @@ const loggedUser = {
 interface Props {
   leaveRequestDetails: LeaveRequestsTypes;
 }
+
 const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
+  const [isOpenViewModal, setIsOpenViewModal] = useState<Boolean>(false);
+
   const handleViewDetails = () => {
-    console.log("Viewing details...");
+    setIsOpenViewModal(!isOpenViewModal);
   };
 
   const handleEditInfo = () => {
@@ -94,7 +98,16 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
     }
   }, [leaveRequestDetails.status]);
 
-  return <ActionsMenu actions={actionMenu} />;
+  return (
+    <>
+      <ActionsMenu actions={actionMenu} />
+      <LeaveRequestDetails
+        isOpenViewModal={isOpenViewModal as boolean}
+        setIsOpenViewModal={setIsOpenViewModal}
+        leaveRequestDetails={leaveRequestDetails}
+      />
+    </>
+  );
 };
 
 export default LeaveTableActionRender;
