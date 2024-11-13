@@ -43,32 +43,12 @@ export type UserDetails = {
   status: UserStatus;
 };
 
-export interface Member {
-  shift: string;
-  id: number;
-  name: string;
-  phone: string;
-  role: UserRole;
-  status: UserStatus;
-}
-
-export type UserFormSchema = {
-  name: string;
-  phoneNumber: string;
-  cnic: string;
-  date_of_birth: Date;
-  address: string;
-  ehad_start_date: Date;
-  role: UserRole;
-  shift: Shifts;
-};
-
-export interface LeaveRequestData {
+export interface LeaveRequestDetails {
   memberId: string;
   leaveType: string;
   startDate: Date;
   endDate: Date;
-  reasonForLeave: string;
+  reason: string;
   status: string;
 }
 export interface MembersProps {
@@ -89,8 +69,8 @@ export interface LeaveRequestsTypes {
 
 export enum LeavesRequestStatus {
   Pending = "pending",
-  Accept = "accept",
-  Reject = "reject",
+  Accept = "accepted",
+  Reject = "rejected",
 }
 
 export enum Table {

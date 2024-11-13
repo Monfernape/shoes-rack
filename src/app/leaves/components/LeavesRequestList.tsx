@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGroupedData from "@/hooks/useGroupedData";
-import { LeaveRequestsTypes } from "@/types";
+import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon } from "lucide-react";
 import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
@@ -28,7 +28,7 @@ const leaveRequests = [
     leaveType: "Sick Leave",
     startDate: "2024-11-01",
     endDate: "2024-11-03",
-    status: "accept",
+    status: "accepted",
     reasonForLeave: "Flu",
     requestedBy: "John Doe",
   },
@@ -46,7 +46,7 @@ const leaveRequests = [
     leaveType: "Personal Leave",
     startDate: "2024-11-15",
     endDate: "2024-11-16",
-    status: "accept",
+    status: "accepted",
     reasonForLeave: "Personal matter",
     requestedBy: "Emily Johnson",
   },
@@ -64,14 +64,13 @@ const leaveRequests = [
     leaveType: "Unpaid Leave",
     startDate: "2024-11-20",
     endDate: "2024-11-25",
-    status: "reject",
+    status: "rejected",
     reasonForLeave: "Travel",
     requestedBy: "Michael Lee",
   },
 ];
 
 export const LeavesRequestList = () => {
-
   const columns: ColumnDef<LeaveRequestsTypes>[] = useMemo(
     () => [
       {
@@ -113,7 +112,10 @@ export const LeavesRequestList = () => {
         },
         cell: ({ row }) => {
           return (
-            <LeaveTableActionRender leaveRequestStatus={row.original.status} />
+            <LeaveTableActionRender
+              leaveRequestId={row?.original?.id as number}
+              leaveRequestStatus={row?.original?.status as LeavesRequestStatus}
+            />
           );
         },
       },
