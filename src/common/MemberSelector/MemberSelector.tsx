@@ -88,9 +88,9 @@ const MemberSelector = ({ control, name }: SelectFieldProps) => {
           <FormControl>
             <Select
               {...field}
-              value={loginUser.role === "member"  ? loginUser.name : field.value}
+              value={loginUser.role === UserRole.Member  ? loginUser.name : field.value}
               onValueChange={field.onChange}
-              disabled={loginUser.role === "member"}
+              disabled={loginUser.role === UserRole.Member}
             >
               <SelectTrigger
                 data-testid="memberId"
