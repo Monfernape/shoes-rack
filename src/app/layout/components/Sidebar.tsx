@@ -1,7 +1,6 @@
 "use client";
 import { logoutUser } from "@/app/members/actions/logoutUser";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
