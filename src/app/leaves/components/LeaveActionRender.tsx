@@ -8,17 +8,22 @@ import {
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
 import { MemberRole } from "@/lib/constants";
+import { LeavesRequestStatus } from "@/types";
 
 const loggedUser = {
   name: "John Smith",
   role: "member",
 };
 
+interface Props {
+  leaveRequestId: number,
+  leaveRequestStatus: LeavesRequestStatus
+
+}
 const LeaveTableActionRender = ({
+  leaveRequestId,
   leaveRequestStatus,
-}: {
-  leaveRequestStatus: string | undefined;
-}) => {
+}: Props) => {
   const handleViewDetails = () => {
     console.log("Viewing details...");
   };
@@ -50,7 +55,7 @@ const LeaveTableActionRender = ({
       title: "Delete",
       id: 3,
       onClick: handleDeleteRequest,
-      icon: <TrashIcon size={16} />,
+      icon: <TrashIcon size={16} className="stroke-status-inactive" />,
     },
   ];
 
@@ -63,9 +68,9 @@ const LeaveTableActionRender = ({
     },
   ];
 
-  const StatusActions = [
+  const statusActions = [
     {
-      title: "Approved",
+      title: "Approve",
       id: 4,
       onClick: handleApprovedRequest,
       icon: <CheckCircleIcon size={16} />,
@@ -74,20 +79,20 @@ const LeaveTableActionRender = ({
       title: "Reject",
       id: 4,
       onClick: handleRejectedRequest,
-      icon: <AlertCircleIcon size={16} />,
+      icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
     },
   ];
 
   const actionMenu = useMemo(() => {
     switch (loggedUser.role) {
       case MemberRole.Member:
-        return leaveRequestStatus === "pending"
+        return leaveRequestStatus === LeavesRequestStatus.Pending
           ? [...viewInfo, ...baseActions]
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
       case MemberRole.Incharge:
       case MemberRole.SuperAdmin:
-        return [...viewInfo, ...StatusActions];
+        return [...viewInfo, ...statusActions];
 
       default:
         return [];
