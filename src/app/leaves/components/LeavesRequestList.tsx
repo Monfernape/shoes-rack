@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGroupedData from "@/hooks/useGroupedData";
-import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
+import {  LeaveRequestsTypes } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon } from "lucide-react";
 import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
@@ -29,7 +29,7 @@ const leaveRequests = [
     startDate: "2024-11-01",
     endDate: "2024-11-03",
     status: "accepted",
-    reasonForLeave: "Flu",
+    reason: "Flu",
     requestedBy: "John Doe",
   },
   {
@@ -38,7 +38,7 @@ const leaveRequests = [
     startDate: "2024-12-10",
     endDate: "2024-12-20",
     status: "pending",
-    reasonForLeave: "Family vacation",
+    reason: "Family vacation",
     requestedBy: "Jane Smith",
   },
   {
@@ -47,7 +47,7 @@ const leaveRequests = [
     startDate: "2024-11-15",
     endDate: "2024-11-16",
     status: "accepted",
-    reasonForLeave: "Personal matter",
+    reason: "Personal matter",
     requestedBy: "Emily Johnson",
   },
   {
@@ -56,7 +56,7 @@ const leaveRequests = [
     startDate: "2024-12-01",
     endDate: "2025-05-31",
     status: "pending",
-    reasonForLeave: "Childbirth",
+    reason: "Childbirth",
     requestedBy: "Sarah Brown",
   },
   {
@@ -65,7 +65,7 @@ const leaveRequests = [
     startDate: "2024-11-20",
     endDate: "2024-11-25",
     status: "rejected",
-    reasonForLeave: "Travel",
+    reason: "Travel",
     requestedBy: "Michael Lee",
   },
 ];
@@ -113,8 +113,7 @@ export const LeavesRequestList = () => {
         cell: ({ row }) => {
           return (
             <LeaveTableActionRender
-              leaveRequestId={row?.original?.id as number}
-              leaveRequestStatus={row?.original?.status as LeavesRequestStatus}
+              leaveRequestDetails={ row?.original }
             />
           );
         },

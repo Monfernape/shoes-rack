@@ -8,7 +8,7 @@ import {
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
 import { MemberRole } from "@/lib/constants";
-import { LeavesRequestStatus } from "@/types";
+import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
 
 const loggedUser = {
   name: "John Smith",
@@ -16,14 +16,9 @@ const loggedUser = {
 };
 
 interface Props {
-  leaveRequestId: number,
-  leaveRequestStatus: LeavesRequestStatus
-
+  leaveRequestDetails: LeaveRequestsTypes;
 }
-const LeaveTableActionRender = ({
-  leaveRequestId,
-  leaveRequestStatus,
-}: Props) => {
+const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
   const handleViewDetails = () => {
     console.log("Viewing details...");
   };
@@ -86,7 +81,7 @@ const LeaveTableActionRender = ({
   const actionMenu = useMemo(() => {
     switch (loggedUser.role) {
       case MemberRole.Member:
-        return leaveRequestStatus === LeavesRequestStatus.Pending
+        return leaveRequestDetails.status === LeavesRequestStatus.Pending
           ? [...viewInfo, ...baseActions]
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
@@ -97,7 +92,7 @@ const LeaveTableActionRender = ({
       default:
         return [];
     }
-  }, [leaveRequestStatus]);
+  }, [leaveRequestDetails.status]);
 
   return <ActionsMenu actions={actionMenu} />;
 };
