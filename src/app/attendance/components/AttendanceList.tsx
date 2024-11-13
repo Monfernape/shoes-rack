@@ -17,15 +17,18 @@ import {
 } from "@/components/ui/table";
 
 import { useToast } from "@/hooks/use-toast";
-import { AttendanceStatus } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
-import MemberTableActionRender from "@/app/members/components/MemberActionRender";
+import AttendanceActionRender from "./AttendanceActionRender";
+import { AttendanceStatus, User } from "@/types";
+import { MemberRole, UserStatus } from "@/constant/constant";
+
 
 interface Attendance {
   member: string;
   id: number;
+  shift: string;
   startTime: string;
   endTime: string;
   status: AttendanceStatus;
@@ -35,6 +38,18 @@ interface AttendanceProps {
     data: Attendance[];
   };
 }
+const loginUser: User = {
+  id: 1,
+  name: "Alice Johnson",
+  shift: "A",
+  role: MemberRole.Member,
+  status: UserStatus.Active,
+  phone: "123-456-7890",
+  address: "123 Main St, Anytown, USA",
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  deleted_at: null,
+};
 
 export const AttendanceList = ({ attendance }: AttendanceProps) => {
   const { toast } = useToast();
@@ -78,7 +93,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <MemberTableActionRender memberInfo={row.original} />;
+          return <AttendanceActionRender loginUser={loginUser} attendanceData={row.original}/>;
         },
       },
     ]
