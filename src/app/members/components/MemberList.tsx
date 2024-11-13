@@ -33,7 +33,12 @@ interface MembersProps {
   };
 }
 
-export const MemberList = ({ members }: MembersProps) => {
+interface Props {
+  data: Member[];
+  success: boolean;
+  message: string;
+}
+export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
   const { data, success, message } = members;
   const route = useRouter();
