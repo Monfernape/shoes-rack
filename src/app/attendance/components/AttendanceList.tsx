@@ -22,11 +22,12 @@ import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
-import { UserStatus } from "@/lib/routes";
+import { MemberRole, UserStatus } from "@/lib/constants";
 
 interface Attendance {
   member: string;
   id: number;
+  shift: string;
   startTime: string;
   endTime: string;
   status: AttendanceStatus;
@@ -40,7 +41,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: "incharge",
+  role: MemberRole.Member,
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",

@@ -5,12 +5,12 @@ import { MemberRole } from "@/lib/constants";
 
 interface MemberInfo {
   id: number;
-  name: string;
-  phone: string;
+  shift: string;
   role: string;
   status: string;
 }
 interface AttendanceData {
+  shift: string;
   status: string;
 }
 
@@ -20,7 +20,6 @@ type Props = {
 };
 
 const AttendanceActionRender = ({ memberInfo, attendanceData }: Props) => {
-  const { role, status } = memberInfo;
 
   const handleEditInfo = () => {
     console.log("Editing info...");
@@ -67,17 +66,18 @@ const AttendanceActionRender = ({ memberInfo, attendanceData }: Props) => {
   ];
 
   const actionMenu = React.useMemo(() => {
-    switch (role) {
+    switch (memberInfo.role) {
       case MemberRole.Member:
-        return attendanceData.status === "pending" ? [...baseActions] : [];
+        return attendanceData.status === "pending" ? [...baseActions] :[]
       case MemberRole.ShiftIncharge:
+        return attendanceData.shift === memberInfo.shift ? [...ApprovelRequest] : []
       case MemberRole.Incharge:
       case MemberRole.SuperAdmin:
         return [...ApprovelRequest];
       default:
         return [];
     }
-  }, [role, status])
+  }, [memberInfo.role, attendanceData.status]);
 
   return <ActionsMenu actions={actionMenu} />;
 };
