@@ -5,9 +5,9 @@ import { MemberRole } from "@/lib/constants";
 
 interface MemberInfo {
   id: number;
-  name: string;
-  phone: string;
-  role: string;
+  name?: string;
+  phone?: string;
+  role?: string;
   status: string;
 }
 type Props = {

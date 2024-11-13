@@ -1,6 +1,8 @@
 "use client";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import {
   Form,
   FormControl,
@@ -12,29 +14,59 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Phone as PhoneIcon } from "lucide-react";
-import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
+import {
+  Eye as EyeIcon,
+  EyeOff as EyeOffIcon,
+  Lock as LockIcon,
+  Phone as PhoneIcon,
+} from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { useMask } from "@react-input/mask";
+import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
+import { loginUser } from "@/app/members/actions/loginUser";
 
 const userSchema = z.object({
   phoneNumber: z
     .string()
-    .min(1, "Phone number is required")
-    .max(12, "Phone number must be at most 12 characters long"),
+    .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is invalid"),
+  password: z.string().min(1, { message: "password is required" }),
 });
 
 type FormValues = z.infer<typeof userSchema>;
 
 export const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(userSchema),
     defaultValues: {
       phoneNumber: "",
+      password: "",
     },
+    mode: "all",
   });
 
-  function onSubmit(values: FormValues) {
-    return values;
-  }
+  const phoneNumberMask = useMask({
+    mask: "03__-_______",
+    replacement: { _: /\d/ },
+  });
+
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      await loginUser(values);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+          description: "Please try again",
+        });
+      }
+    }
+  };
+
+  const {
+    formState: { errors },
+  } = form;
 
   return (
     <div className="h-full flex items-center justify-center p-4">
@@ -45,8 +77,9 @@ export const LoginPage = () => {
         </div>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(handleSubmit)}
             className="p-8 space-y-6"
+            data-testId="form"
           >
             <div className="space-y-2">
               <FormField
@@ -63,10 +96,10 @@ export const LoginPage = () => {
                           placeholder="0300-0000000"
                           {...field}
                           value={field.value}
-                          onChange={(e) =>
-                            field.onChange(formatPhoneNumber(e.target.value))
-                          }
+                          data-testId="phoneNumber"
                           className="pl-12"
+                          ref={phoneNumberMask}
+                          hasError={!!errors.phoneNumber}
                         />
                         <PhoneIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       </div>
@@ -76,7 +109,52 @@ export const LoginPage = () => {
                 )}
               />
             </div>
-            <Button type="submit" className="w-full bg-gray-800">
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          {...field}
+                          className="pl-12"
+                          data-testId="password"
+                          hasError={!!errors.password}
+                        />
+                        <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        >
+                          {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+            <Button
+              type="submit"
+              className="w-full bg-gray-800"
+              data-testId="submitButton"
+            >
               Log in
             </Button>
           </form>

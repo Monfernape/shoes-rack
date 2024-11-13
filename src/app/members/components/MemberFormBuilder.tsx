@@ -34,12 +34,9 @@ import { Calendar } from "@/components/ui/calendar";
 import FormWrapper from "../../../common/FormWrapper";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  CNIC_VALIDATOR_REGEX,
-  PHONENUMBER_VALIDATOR_REGEX,
-} from "../../../../regex";
+import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { useToast } from "@/hooks/use-toast";
-import { createUser } from "@/app/members/actions/action";
+import { createUser } from "../actions/createUser";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
@@ -135,21 +132,21 @@ export const MemberFormBuilder = () => {
 
   const handleSubmission = async (values: UserBuilder) => {
     try {
-      // When we insert data then it  give status not the insert item
-
+      // there is nothing in response in case of insert data
       const result = await createUser(values);
-      if (result) {
+
+      if (!result) {
+        form.reset();
         toast({
-          title: "Something went wrong",
+          title: "User created successfully",
+          description: "You will receive message shortly",
         });
       }
-      form.reset();
-      toast({
-        title: "User created successfully",
-        description: "You will receive message shortly",
-      });
     } catch (error) {
-      return error;
+      toast({
+        title: "User already exist",
+        description: "Please use other phone number",
+      });
     }
   };
 

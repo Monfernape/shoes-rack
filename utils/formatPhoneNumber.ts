@@ -1,11 +1,11 @@
-export const formatPhoneNumber = (value: string): string => {
-    const cleaned = ('' + value).replace(/\D/g, '');
-  
-    if (cleaned.length <= 4) {
-      return cleaned;
-    } else if (cleaned.length <= 11) {
-      return `${cleaned.slice(0, 4)}-${cleaned.slice(4)}`;
-    } else {
-      return `${cleaned.slice(0, 4)}-${cleaned.slice(4, 11)}`;
-    }
-  };
+import { PAKISTAN_COUNTRY_CODE } from "@/constant/constant";
+
+/**
+ * @phoneNumbe is local format starts with `03` covering into international format starts with `92`
+ */
+export const formatPhoneNumber = (phoneNumber: string) => {
+  const formattedPhoneNumber = phoneNumber
+    .replace("-", "")
+    .replace("0", PAKISTAN_COUNTRY_CODE);
+  return formattedPhoneNumber;
+};
