@@ -1,7 +1,7 @@
 "use server";
 import { Tables } from "@/lib/db";
 import { Routes, UserStatus } from "@/lib/routes";
-import { addCookies } from "@/utils/cookiesManager";
+import { addCookies } from "../../../../utils/cookiesManager";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { redirect } from "next/navigation";
