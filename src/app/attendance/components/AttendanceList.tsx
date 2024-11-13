@@ -17,11 +17,12 @@ import {
 } from "@/components/ui/table";
 
 import { useToast } from "@/hooks/use-toast";
-import { AttendanceStatus, Member } from "@/types";
+import { AttendanceStatus, Member,User } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
-import MemberTableActionRender from "@/app/members/components/MemberActionRender";
+import AttendanceActionRender from "./AttendanceActionRender";
+import { UserStatus } from "@/lib/routes";
 
 interface Attendance {
   member: string;
@@ -35,6 +36,18 @@ interface AttendanceProps {
     data: Attendance[];
   };
 }
+const loginUser: User = {
+  id: 1,
+  name: "Alice Johnson",
+  shift: "A",
+  role: "incharge",
+  status: UserStatus.Active,
+  phone: "123-456-7890",
+  address: "123 Main St, Anytown, USA",
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  deleted_at: null,
+};
 
 export const AttendanceList = ({ attendance }: AttendanceProps) => {
   const { toast } = useToast();
@@ -78,7 +91,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <MemberTableActionRender memberInfo={row.original} />;
+          return <AttendanceActionRender memberInfo={loginUser} attendanceData={row.original}/>;
         },
       },
     ]
