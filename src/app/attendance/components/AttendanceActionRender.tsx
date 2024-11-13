@@ -6,7 +6,8 @@ import {
   XCircle as XCricleIcon,
   CheckSquare as CheckSquareIcon,
 } from "lucide-react";
-import { MemberRole } from "@/lib/constants";
+import { AttendanceStatus, MemberRole } from "@/constant/constant";
+
 
 interface MemberInfo {
   shift: string;
@@ -73,7 +74,7 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   const actionMenu = React.useMemo(() => {
     switch (loginUser.role) {
       case MemberRole.Member:
-        return attendanceData.status === "pending" ? [...baseActions] : [];
+        return attendanceData.status === AttendanceStatus.Pending ? [...baseActions] : [];
       case MemberRole.ShiftIncharge:
         return attendanceData.shift === loginUser.shift
           ? [...ApprovelRequest]
