@@ -75,7 +75,7 @@ export const LoginPage = () => {
     <div className="bg-white rounded-lg shadow-2xl overflow-hidden max-w-md w-full">
       <div className="flex justify-center item-center pt-8 ">
         <Image
-          src={LogoImage.src}
+          src={LogoImage}
           width="65"
           height="65"
           alt={"logo"}
