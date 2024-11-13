@@ -1,16 +1,18 @@
 "use server";
+
 import { z } from "zod";
 import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
 import { leaveRequestSchema } from "../add/components/LeaveRequestFormBuilder";
 import { redirect } from "next/navigation";
 import { LeaveRequestStatus } from "@/constant/constant";
+import { Routes } from "@/lib/constants";
+import { Tables } from "@/lib/db";
 
-export const onCreateLeaveRequest = async (
+export const createLeaveRequest = async (
   values: z.infer<typeof leaveRequestSchema>
 ) => {
-
   const supabase = await getSupabaseClient();
-  const { error } = await supabase.from("leaves").insert({
+  const { error } = await supabase.from(Tables.Leaves).insert({
     memberId: Number(values.memberId),
     leaveType: values.leaveType,
     startDate: values.startDate.toISOString(),
@@ -23,5 +25,5 @@ export const onCreateLeaveRequest = async (
     return error;
   }
 
-  redirect("/leaves");
+  redirect(Routes.LeaveRequest);
 };

@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/dom";
-import { onCreateLeaveRequest } from "./actions";
 import { LeaveRequestStatus, LeaveTypes } from "@/constant/constant";
+import { createLeaveRequest } from "./createLeaveRequest";
 
 describe("Leave Request Integration Test", async () => {
   const mockPayload = {
@@ -12,8 +12,8 @@ describe("Leave Request Integration Test", async () => {
     status: LeaveRequestStatus.Pending,
   };
 
-  it("calls onCreateLeaveRequest with mock form data on submit", async () => {
-    const submit = vi.fn().mockImplementation(onCreateLeaveRequest);
+  it("calls createLeaveRequest with mock form data on submit", async () => {
+    const submit = vi.fn().mockImplementation(createLeaveRequest);
     await waitFor(() => {
       submit({
         ...mockPayload,
@@ -22,3 +22,4 @@ describe("Leave Request Integration Test", async () => {
     expect(submit).toHaveBeenCalledTimes(1);
   });
 });
+

@@ -4,7 +4,7 @@ import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { addDays, startOfDay } from "date-fns";
+import { startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,9 +26,9 @@ import { LeaveTypes, UserRole, UserStatus } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
-import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { User } from "@/types";
-import { onCreateLeaveRequest } from "../../actions/actions";
+import { createLeaveRequest } from "../../actions/createLeaveRequest";
+import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -54,6 +54,8 @@ export const leaveRequestSchema = z.object({
   }),
 });
 
+export type leaveRequestSchemaType = z.infer<typeof leaveRequestSchema>;
+
 const LEAVE_REQUEST_TYPES = [
   LeaveTypes.Personal,
   LeaveTypes.Sick,
@@ -74,10 +76,11 @@ const loginUser: User = {
 };
 
 export const LeaveRequestFormBuilder = () => {
-  const form = useForm<z.infer<typeof leaveRequestSchema>>({
+  const form = useForm<leaveRequestSchemaType>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
-      memberId: loginUser.role === UserRole.Member ? loginUser.id.toString() : "",
+      memberId:
+        loginUser.role === UserRole.Member ? loginUser.id.toString() : "",
       leaveType: LeaveTypes.Personal,
       startDate: undefined,
       endDate: undefined,
@@ -93,7 +96,7 @@ export const LeaveRequestFormBuilder = () => {
   } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
-    onCreateLeaveRequest(values);
+    createLeaveRequest(values);
   }
 
   const handleDateChange = (dateRange: DateRange | undefined) => {
@@ -109,7 +112,7 @@ export const LeaveRequestFormBuilder = () => {
       <FormTitle title="Request Leave" />
       <Form {...form}>
         <form
-          data-testid="validForm"
+          data-testid="leaveRequestForm"
           action={() => form.handleSubmit(onSubmit)()}
           className="space-y-4"
         >

@@ -35,8 +35,8 @@ export enum LeaveTypes {
 
 export enum AttendanceStatus {
   Pending = "pending",
-  Accept = "accept",
-  Reject = "reject",
+  Accept = "accepted",
+  Reject = "rejected",
 }
 
 export enum Table {
