@@ -1,6 +1,8 @@
 export type UserRole = "incharge" | "member" | "shift-incharge";
 export type Shifts = "A" | "B" | "C" | "D";
 export type UserStatus = "active" | "inactive";
+export type AttendanceStatus = "pending" | "approved"
+
 export interface Member {
   shift: string;
   id: number;
@@ -41,14 +43,23 @@ export type UserDetails = {
   status: UserStatus;
 };
 
-export enum AttendanceStatus {
-  Pending = "pending",
-  Accept = "accept",
-  Reject = "reject",
+export interface Member {
+  shift: string;
+  id: number;
+  name: string;
+  phone: string;
+  role: UserRole;
+  status: UserStatus;
 }
 
-export enum Table {
-  Attendance = "attendance",
-  Member = "member",
-  User = "user",
-}
+export type UserFormSchema = {
+  name: string;
+  phoneNumber: string;
+  cnic: string;
+  date_of_birth: Date;
+  address: string;
+  ehad_start_date: Date;
+  role: UserRole;
+  shift: Shifts;
+};
+

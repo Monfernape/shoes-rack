@@ -1,9 +1,9 @@
 "use server";
-import { AttendanceStatus, Table } from "@/types/index";
-import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
+import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 import { redirect } from "next/navigation";
-import { Routes } from "@/lib/routes";
 import { AttendanceFormValues } from "../components/AttendanceFormBuilder";
+import { AttendanceStatus, Table } from "@/constant/constant";
+import { Routes } from "@/lib/routes";
 
 export const createAttendance = async (values: AttendanceFormValues) => {
   const supabase = await getSupabaseClient();

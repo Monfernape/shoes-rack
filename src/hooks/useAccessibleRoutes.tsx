@@ -13,7 +13,8 @@ import {
   ClipboardIcon,
   HandCoinsIcon,
 } from "lucide-react";
-import { MemberRole, Routes } from "@/lib/constants";
+import { Routes } from "@/lib/routes";
+import { MemberRole } from "@/constant/constant";
 
 
 export const MEMBER_ROUTES = [
