@@ -66,10 +66,6 @@ const AttendanceFormBuilder = () => {
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
-    const payload = {
-      ...values,
-      memberId: Number(values.memberId),
-    };
     try {
       const result = await createAttendance(values);
       if (!result) {
