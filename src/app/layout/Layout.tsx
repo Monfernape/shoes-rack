@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Sidebar } from "./components/Sidebar";
 import { cx } from "class-variance-authority";
+import { Routes } from "@/lib/routes";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,12 +16,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex">
-      {(pathname !== "/login" || isSidebarOpen) && (
+      {(pathname !== Routes.Login || isSidebarOpen) && (
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       )}
       <div
         className={cx(
-          `flex flex-col w-full h-screen ${pathname !== "/login" && "lg:ml-48"}`
+          `flex flex-col w-full h-screen ${pathname !== Routes.Login && "lg:ml-48"}`
         )}
       >
         {children}

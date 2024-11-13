@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import LogoImage from "../../../../public/imgs/logo.png"
+import LogoImage from "../../../../public/assets/imgs/logo.png"
 import {
   Form,
   FormControl,
