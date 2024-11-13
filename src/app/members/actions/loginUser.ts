@@ -35,7 +35,7 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
       .single();
 
     if (error) {
-      return error;
+      throw error;
     } else {
       // getting session
       const { session } = authUserData;

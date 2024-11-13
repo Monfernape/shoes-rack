@@ -143,10 +143,12 @@ export const MemberFormBuilder = () => {
         });
       }
     } catch (error) {
-      toast({
-        title: "User already exist",
-        description: "Please use other phone number",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "User already exist",
+          description: "Please use other phone number",
+        });
+      }
     }
   };
 

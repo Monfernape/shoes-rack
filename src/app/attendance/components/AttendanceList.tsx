@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 
 import { useToast } from "@/hooks/use-toast";
-import { AttendanceStatus, Member } from "@/types";
+import { AttendanceStatus } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
@@ -40,7 +40,8 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
   const { toast } = useToast();
   const { data: attendanceData } = attendance;
 
-  const columns: ColumnDef<Attendance>[] = useMemo (()=> [
+  const columns: ColumnDef<Attendance>[] = useMemo(
+    () => [
       {
         accessorKey: "name",
         header: "Name",
@@ -55,7 +56,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           <div className="capitalize">{row.getValue("shift")}</div>
         ),
       },
-  
+
       {
         accessorKey: "startTime",
         header: "Start Time",
@@ -81,8 +82,9 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           return <MemberTableActionRender memberInfo={row.original} />;
         },
       },
-    ]
-   ,[])
+    ],
+    []
+  );
 
   const table = useReactTable({
     data: attendanceData,

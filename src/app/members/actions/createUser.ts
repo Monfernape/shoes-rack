@@ -33,7 +33,7 @@ export const createUser = async (values: UserBuilder) => {
   });
 
   if (error) {
-    return error;
+    throw error;
   } else {
     const { error } = await supabase.auth.signUp({
       phone: userPhoneNumber,
@@ -47,7 +47,7 @@ export const createUser = async (values: UserBuilder) => {
       },
     });
     if (error) {
-      return error;
+      throw error;
     }
     redirect(Routes.AddMember);
   }

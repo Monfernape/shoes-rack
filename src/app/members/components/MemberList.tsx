@@ -25,14 +25,6 @@ import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
 
-interface MembersProps {
-  members: {
-    data: Member[];
-    success: boolean;
-    message: string;
-  };
-}
-
 interface Props {
   data: Member[];
   success: boolean;
@@ -40,7 +32,7 @@ interface Props {
 }
 export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
-  const { data, success, message } = members;
+  const { data, success } = members;
   const route = useRouter();
   const columns: ColumnDef<Member>[] = [
     {
