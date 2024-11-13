@@ -1,7 +1,7 @@
 "use server";
 
 import { Tables } from "@/lib/db";
-import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
+import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 import { getMembers } from "@/app/members/actions/getMembers";
 
 export const getAttendance = async () => {

@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { getSession } from "../utils/supabase/getSession";
+import { getSession } from "./utils/supabase/getSession";
 import { Routes } from "./lib/routes";
 
 export default async function updateSession(request: NextRequest) {
