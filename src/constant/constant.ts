@@ -26,6 +26,6 @@ export enum LeaveTypes {
 
 export enum LeaveRequestStatus {
   Pending = "pending",
-  Accept = "accept",
-  Reject = "reject",
+  Accept = "accepted",
+  Reject = "rejected",
 }
