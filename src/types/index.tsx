@@ -9,7 +9,6 @@ export interface Member {
   role: UserRole;
   status: UserStatus;
 }
-
 export type UserInfo = {
   id: number;
   shift: string;
