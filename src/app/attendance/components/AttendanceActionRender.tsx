@@ -30,10 +30,10 @@ const AttendanceActionRender = ({ memberInfo, attendanceData }: Props) => {
   };
 
   const handleApproveRequest = () => {
-    console.log("Request Status");
+    console.log("Approve Request ");
   };
   const handleRejectRequest = () => {
-    console.log("Request Status");
+    console.log("Reject Request");
   };
 
   const baseActions = [
