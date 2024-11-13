@@ -1,3 +1,10 @@
+export enum MemberRole {
+  Incharge = "incharge",
+  ShiftIncharge = "shift-incharge",
+  Member = "member",
+  SuperAdmin = "super_admin",
+}
+
 export enum UserRole {
   Member = "member",
   Incharge = "incharge",
@@ -18,8 +25,22 @@ export enum UserStatus {
   Invited = "invited",
 }
 
+export const PAKISTAN_COUNTRY_CODE = "92";
+
 export enum LeaveTypes {
   Sick = "sick",
   Vacation = "vacation",
   Personal = "personal",
+}
+
+export enum AttendanceStatus {
+  Pending = "pending",
+  Accept = "accept",
+  Reject = "reject",
+}
+
+export enum Table {
+  Attendance = "attendance",
+  Member = "member",
+  User = "user",
 }
