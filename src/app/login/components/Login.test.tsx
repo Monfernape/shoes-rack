@@ -1,7 +1,7 @@
 import { expect, test, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { LoginPage } from "./Login";
-import { loginUser } from "@/app/members/actions/loginUser";
+import { loginUser } from "../../members/actions/loginUser";
 
 const credentialsMock = {
   phoneNumber: "923000000000",
