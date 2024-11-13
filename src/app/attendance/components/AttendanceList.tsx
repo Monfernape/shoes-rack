@@ -56,7 +56,6 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           <div className="capitalize">{row.getValue("shift")}</div>
         ),
       },
-
       {
         accessorKey: "startTime",
         header: "Start Time",
