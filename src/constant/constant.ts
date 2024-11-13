@@ -19,3 +19,9 @@ export enum UserStatus {
 }
 
 export const PAKISTAN_COUNTRY_CODE = "92";
+
+export enum LeaveTypes {
+  Sick = "sick",
+  Vacation = "vacation",
+  Personal = "personal",
+}
