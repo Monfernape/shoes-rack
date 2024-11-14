@@ -1,9 +1,10 @@
 "use server";
+import { Cookies } from "@/constant/constant";
 import { cookies } from "next/headers";
 
 export const getSession = async () => {
   const cookieStore = cookies();
-  const session = cookieStore.get("session");
+  const session = cookieStore.get(Cookies.Session);
 
   if (session) {
     try {
