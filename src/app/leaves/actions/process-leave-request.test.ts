@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/dom";
-import { deleteLeaveRequest } from "./delete-leave-request";
 import { processLeaveRequest } from "./process-leave-request";
 
 describe("delete leave request", () => {

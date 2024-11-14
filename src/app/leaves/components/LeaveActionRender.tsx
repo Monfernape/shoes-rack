@@ -116,7 +116,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
         id: 4,
         onClick: () => {
           if (requestId !== undefined) {
-            handleLeaveRequestStatus(requestId, LeavesRequestStatus.Accept);
+            handleLeaveRequestStatus(requestId, LeavesRequestStatus.Approved);
           } else {
             toast({
               title: "Error",

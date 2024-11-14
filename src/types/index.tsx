@@ -51,7 +51,7 @@ export interface MembersProps {
 
 export enum LeavesRequestStatus {
   Pending = "pending",
-  Accept = "accepted",
+  Approved = "approved",
   Reject = "rejected",
 }
 export interface LeaveRequestsTypes {
