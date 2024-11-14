@@ -10,10 +10,13 @@ import {
 import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
 import { MemberRole } from "@/constant/constant";
 import { LeaveRequestDetails } from "../modal/LeaveRequestDetails";
+import { deleteLeaveRequest } from "../actions/delete-leave-request";
+import { toast } from "@/hooks/use-toast";
+import { processLeaveRequest } from "../actions/process-leave-request";
 
 const loggedUser = {
   name: "John Smith",
-  role: "member",
+  role: "incharge",
 };
 
 interface Props {
@@ -23,6 +26,7 @@ interface Props {
 const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
   const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
+  const { id: requestId } = leaveRequestDetails;
   const handleViewDetails = () => {
     setIsOpenViewModal(!isOpenViewModal);
   };
@@ -31,16 +35,39 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
     console.log("Editing info...");
   };
 
-  const handleDeleteRequest = () => {
-    console.log("Deleting request...");
+  const handleDeleteRequest = async (requestId: number) => {
+    try {
+      await deleteLeaveRequest({ requestId });
+      toast({
+        title: "Success",
+        description: "Request deleted successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          "There was an issue deleting the request. Please try again.",
+      });
+    }
   };
 
-  const handleApprovedRequest = () => {
-    console.log("Approved Request...");
-  };
-
-  const handleRejectedRequest = () => {
-    console.log("Rejected Request...");
+  const handleLeaveRequestStatus = async (
+    requestId: number,
+    status: LeavesRequestStatus
+  ) => {
+    try {
+      await processLeaveRequest({ requestId, requestStatus: status });
+      toast({
+        title: "Success",
+        description: "Request updated successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          "There was an issue updating the request. Please try again.",
+      });
+    }
   };
 
   const baseActions = useMemo(
@@ -54,7 +81,16 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
       {
         title: "Delete",
         id: 3,
-        onClick: handleDeleteRequest,
+        onClick: () => {
+          if (requestId !== undefined) {
+            handleDeleteRequest(requestId);
+          } else {
+            toast({
+              title: "Error",
+              description: "Request ID is missing.",
+            });
+          }
+        },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
     ],
@@ -76,15 +112,33 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
   const statusActions = useMemo(
     () => [
       {
-        title: "Approve",
+        title: "Accept",
         id: 4,
-        onClick: handleApprovedRequest,
+        onClick: () => {
+          if (requestId !== undefined) {
+            handleLeaveRequestStatus(requestId, LeavesRequestStatus.Accept);
+          } else {
+            toast({
+              title: "Error",
+              description: "Request ID is missing.",
+            });
+          }
+        },
         icon: <CheckCircleIcon size={16} />,
       },
       {
         title: "Reject",
         id: 4,
-        onClick: handleRejectedRequest,
+        onClick: () => {
+          if (requestId !== undefined) {
+            handleLeaveRequestStatus(requestId, LeavesRequestStatus.Reject);
+          } else {
+            toast({
+              title: "Error",
+              description: "Request ID is missing.",
+            });
+          }
+        },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
       },
     ],
