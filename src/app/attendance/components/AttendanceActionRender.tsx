@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { AttendanceStatus, MemberRole } from "@/constant/constant";
 
-
 interface MemberInfo {
   shift: string;
   role: string;
@@ -26,18 +25,18 @@ type Props = {
 
 const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   const handleEditInfo = () => {
-    console.log("Editing info...");
+    return;
   };
 
   const handleDeleteMember = () => {
-    console.log("Deleting member...");
+    return;
   };
 
   const handleApproveRequest = () => {
-    console.log("Request Status");
+    return;
   };
   const handleRejectRequest = () => {
-    console.log("Request Status");
+    return;
   };
 
   const baseActions = [
@@ -74,7 +73,9 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   const actionMenu = React.useMemo(() => {
     switch (loginUser.role) {
       case MemberRole.Member:
-        return attendanceData.status === AttendanceStatus.Pending ? [...baseActions] : [];
+        return attendanceData.status === AttendanceStatus.Pending
+          ? [...baseActions]
+          : [];
       case MemberRole.ShiftIncharge:
         return attendanceData.shift === loginUser.shift
           ? [...ApprovelRequest]
