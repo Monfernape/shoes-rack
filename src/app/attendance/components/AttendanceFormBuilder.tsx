@@ -13,10 +13,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createAttendance } from "../actions/create-attendance";
-import { MemberRole, User, UserStatus } from "@/lib/constants";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
+import { User } from "@/types";
+import { MemberRole, UserStatus } from "@/constant/constant";
 const attendanceSchema = z
   .object({
     memberId: z.string({

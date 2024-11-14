@@ -20,10 +20,9 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { UserStatus } from "@/constant/constant";
-import { MemberRole, User } from "@/lib/constants";
+import { MemberRole, UserStatus } from "@/constant/constant";
 import { getMembers } from "@/app/members/actions/getMembers";
-import { Member } from "@/types";
+import { Member, User } from "@/types";
 
 interface SelectFieldProps<T extends FieldValues> {
   control: Control<T>;

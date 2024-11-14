@@ -1,6 +1,6 @@
 "use server";
 
-import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
+import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 
 
 export const getMembers = async () => {

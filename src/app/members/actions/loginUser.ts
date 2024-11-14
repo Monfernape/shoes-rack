@@ -1,10 +1,11 @@
 "use server";
 import { Tables } from "@/lib/db";
-import { Routes, UserStatus } from "@/lib/routes";
-import { addCookies } from "../../../../utils/cookiesManager";
+import { Routes } from "@/lib/routes";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
-import { getSupabaseClient } from "../../../../utils/supabase/supabaseClient";
 import { redirect } from "next/navigation";
+import { UserStatus } from "@/constant/constant";
+import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { addCookies } from "@/utils/cookiesManager";
 
 type LoginUser = {
   phoneNumber: string;

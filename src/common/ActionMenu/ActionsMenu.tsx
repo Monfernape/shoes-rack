@@ -13,6 +13,7 @@ interface Action {
   id: number;
   icon: ReactNode;
   onClick: () => void;
+  className?: string;
 }
 
 interface Props {
