@@ -12,12 +12,16 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { useEffect } from "react";
 import { createAttendance } from "../actions/create-attendance";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
+import { getAttendanceById } from "../actions/getAttendanceById";
+import { useSearchParams } from "next/navigation";
+
 const attendanceSchema = z
   .object({
     memberId: z.string({
@@ -57,11 +61,31 @@ const AttendanceFormBuilder = () => {
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
-      memberId: loginUser.role === MemberRole.Member ? loginUser.id.toString() : undefined,
+      memberId:
+        loginUser.role === MemberRole.Member
+          ? loginUser.id.toString()
+          : undefined,
       startTime: "",
       endTime: "",
     },
   });
+  const searchParams = useSearchParams();
+  const paramId = searchParams.get("id");
+  useEffect(() => {
+    if (paramId) {
+      getAttendanceById(Number(paramId)).then((response) => {
+        if (response) {
+          const { memberId, startTime, endTime } = response.data;
+
+          form.reset({
+            memberId: memberId.toString(),
+            startTime: startTime,
+            endTime: endTime,
+          });
+        }
+      });
+    }
+  }, [searchParams, form]);
 
   const onSubmit = async (values: AttendanceFormValues) => {
     try {
@@ -136,7 +160,7 @@ const AttendanceFormBuilder = () => {
             type="submit"
             className="w-full text-white rounded-md p-3 transition"
           >
-            Submit
+            {paramId ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>
