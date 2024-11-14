@@ -22,10 +22,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LeaveTypes, UserRole } from "@/constant/constant";
+import { LeaveTypes, UserRole, UserStatus } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
+import { FormTitle } from "@/common/FormTitle/FormTitle";
+import { User } from "@/types";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -57,15 +59,24 @@ const LEAVE_REQUEST_TYPES = [
   LeaveTypes.Vacation,
 ];
 
-const user = {
-  id: 3232,
-  role: UserRole.Member,
+const loginUser: User = {
+  id: 1,
+  name: "Alice Johnson",
+  shift: "A",
+  role: "incharge",
+  status: UserStatus.Active,
+  phone: "123-456-7890",
+  address: "123 Main St, Anytown, USA",
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  deleted_at: null,
 };
+
 export const LeaveRequestFormBuilder = () => {
   const form = useForm<z.infer<typeof leaveRequestSchema>>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
-      memberId: user.role === UserRole.Member ? user.id.toString() : "",
+      memberId: loginUser.role === UserRole.Member ? loginUser.id.toString() : "",
       leaveType: LeaveTypes.Personal,
       startDate: undefined,
       endDate: undefined,
@@ -94,9 +105,7 @@ export const LeaveRequestFormBuilder = () => {
 
   return (
     <FormWrapper>
-      <h1 className="text-sm text-sm font-semibold text-gray-800 my-4">
-        Request Leave
-      </h1>
+      <FormTitle title="Request Leave" />
       <Form {...form}>
         <form
           data-testid="form"
