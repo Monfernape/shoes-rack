@@ -64,6 +64,7 @@ export interface LeaveRequestsTypes {
   requestedBy?: string;
 }
 
+
 export enum RequestActionTitles {
   Edit = "edit",
   Delete = "delete",
