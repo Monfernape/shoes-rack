@@ -49,20 +49,28 @@ export interface MembersProps {
   message: string;
 }
 
+export enum LeavesRequestStatus {
+  Pending = "pending",
+  Accept = "accepted",
+  Reject = "rejected",
+}
 export interface LeaveRequestsTypes {
   id?: number;
   leaveType?: string;
   startDate?: string;
   endDate?: string;
-  status?: string;
+  status?: LeavesRequestStatus;
   reason?: string;
   requestedBy?: string;
 }
 
-export enum LeavesRequestStatus {
-  Pending = "pending",
-  Accept = "accepted",
-  Reject = "rejected",
+
+export enum RequestActionTitles {
+  Edit = "edit",
+  Delete = "delete",
+  Approve = "approve",
+  Reject = "reject",
+  ViewDetails = "view details",
 }
 
 export enum Table {
