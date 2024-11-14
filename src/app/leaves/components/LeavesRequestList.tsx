@@ -22,13 +22,15 @@ import { Plus as PlusIcon } from "lucide-react";
 import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
 
+import { LeavesRequestStatus } from "@/types"; 
+
 const leaveRequests = [
   {
     id: 1,
     leaveType: "Sick Leave",
     startDate: "2024-11-01",
     endDate: "2024-11-03",
-    status: "accepted",
+    status: LeavesRequestStatus.Accept,
     reason: "Flu",
     requestedBy: "John Doe",
   },
@@ -37,7 +39,7 @@ const leaveRequests = [
     leaveType: "Vacation",
     startDate: "2024-12-10",
     endDate: "2024-12-20",
-    status: "pending",
+    status: LeavesRequestStatus.Pending,
     reason: "Family vacation",
     requestedBy: "Jane Smith",
   },
@@ -46,7 +48,7 @@ const leaveRequests = [
     leaveType: "Personal Leave",
     startDate: "2024-11-15",
     endDate: "2024-11-16",
-    status: "accepted",
+    status: LeavesRequestStatus.Accept,
     reason: "Personal matter",
     requestedBy: "Emily Johnson",
   },
@@ -55,7 +57,7 @@ const leaveRequests = [
     leaveType: "Maternity Leave",
     startDate: "2024-12-01",
     endDate: "2025-05-31",
-    status: "pending",
+    status: LeavesRequestStatus.Pending,
     reason: "Childbirth",
     requestedBy: "Sarah Brown",
   },
@@ -64,11 +66,12 @@ const leaveRequests = [
     leaveType: "Unpaid Leave",
     startDate: "2024-11-20",
     endDate: "2024-11-25",
-    status: "rejected",
+    status: LeavesRequestStatus.Reject,
     reason: "Travel",
     requestedBy: "Michael Lee",
   },
 ];
+
 
 export const LeavesRequestList = () => {
   const columns: ColumnDef<LeaveRequestsTypes>[] = useMemo(
@@ -113,7 +116,7 @@ export const LeavesRequestList = () => {
         cell: ({ row }) => {
           return (
             <LeaveTableActionRender
-              leaveRequestDetails={ row?.original }
+              leaveRequestDetails={ row.original }
             />
           );
         },
@@ -129,7 +132,7 @@ export const LeavesRequestList = () => {
   });
 
   const groupedData = useGroupedData(leaveRequests, "shift");
-  const toNavigate = () => {
+  const handleNavigate = () => {
     alert("nativgation function trigger");
   };
 
@@ -139,7 +142,7 @@ export const LeavesRequestList = () => {
     description: "This is where you can see all shoes rack members",
     buttonIcon: <PlusIcon />,
     actionButton: true,
-    onAction: toNavigate,
+    onAction: handleNavigate,
     labelForActionButton: "Add member",
   };
 

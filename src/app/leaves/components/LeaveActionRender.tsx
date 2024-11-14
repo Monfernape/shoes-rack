@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
 import { MemberRole } from "@/constant/constant";
-import { LeaveRequestDetails } from "./LeaveRequestDetails";
+import { LeaveRequestDetails } from "../modal/LeaveRequestDetails";
 
 const loggedUser = {
   name: "John Smith",
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
-  const [isOpenViewModal, setIsOpenViewModal] = useState<Boolean>(false);
+  const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
   const handleViewDetails = () => {
     setIsOpenViewModal(!isOpenViewModal);
@@ -111,7 +111,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
     <>
       <ActionsMenu actions={actionMenu} />
       <LeaveRequestDetails
-        isOpenViewModal={isOpenViewModal as boolean}
+        isOpenViewModal={isOpenViewModal}
         setIsOpenViewModal={setIsOpenViewModal}
         leaveRequestDetails={leaveRequestDetails}
       />
