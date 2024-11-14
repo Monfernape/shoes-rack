@@ -8,8 +8,12 @@ import {
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
 import { MemberRole } from "@/lib/constants";
-import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
-import { LeaveRequestDetails } from "./LeaveRequestDetails";
+import {
+  LeaveRequestsTypes,
+  LeavesRequestStatus,
+  RequestActionTitles,
+} from "@/types";
+import { LeaveRequestDetails } from "../modal/LeaveRequestDetails";
 
 const loggedUser = {
   name: "John Smith",
@@ -21,7 +25,7 @@ interface Props {
 }
 
 const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
-  const [isOpenViewModal, setIsOpenViewModal] = useState<Boolean>(false);
+  const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
   const handleViewDetails = () => {
     setIsOpenViewModal(!isOpenViewModal);
@@ -45,13 +49,13 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
 
   const baseActions = [
     {
-      title: "Edit",
+      title: RequestActionTitles.Edit,
       id: 2,
       onClick: handleEditInfo,
       icon: <EditIcon size={16} />,
     },
     {
-      title: "Delete",
+      title: RequestActionTitles.Delete,
       id: 3,
       onClick: handleDeleteRequest,
       icon: <TrashIcon size={16} className="stroke-status-inactive" />,
@@ -60,7 +64,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
 
   const viewInfo = [
     {
-      title: "View Details",
+      title: RequestActionTitles.ViewDetails,
       id: 1,
       onClick: handleViewDetails,
       icon: <InfoIcon size={16} />,
@@ -69,13 +73,13 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
 
   const statusActions = [
     {
-      title: "Approve",
+      title: RequestActionTitles.Approve,
       id: 4,
       onClick: handleApprovedRequest,
       icon: <CheckCircleIcon size={16} />,
     },
     {
-      title: "Reject",
+      title: RequestActionTitles.Reject,
       id: 4,
       onClick: handleRejectedRequest,
       icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
@@ -102,7 +106,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
     <>
       <ActionsMenu actions={actionMenu} />
       <LeaveRequestDetails
-        isOpenViewModal={isOpenViewModal as boolean}
+        isOpenViewModal={isOpenViewModal}
         setIsOpenViewModal={setIsOpenViewModal}
         leaveRequestDetails={leaveRequestDetails}
       />

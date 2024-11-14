@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import { RequestActionTitles } from "@/types";
 
 interface Action {
   title: string;
@@ -43,8 +44,8 @@ const ActionsMenu = ({ actions }: Props) => {
           >
             {action.icon}
             <span
-              className={`${
-                action.title === "Delete" || action.title === "Reject"
+              className={`capitalize ${
+                action.title === RequestActionTitles.Delete || action.title === RequestActionTitles.Reject
                   ? "text-status-inactive"
                   : ""
               }`}

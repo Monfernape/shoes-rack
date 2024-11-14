@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
-import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
+import { LeaveRequestsTypes } from "@/types";
 import { Separator } from "@/components/ui/separator";
 import {
   FileText as FileTextIcon,
@@ -33,9 +33,9 @@ export const LeaveRequestDetails = ({
             Leave Request Details
           </DialogTitle>
           <div className="flex justify-between items-center py-4">
-            <LeavesStatusBadge
-              status={leaveRequestDetails.status as LeavesRequestStatus}
-            />
+            {leaveRequestDetails.status && (
+              <LeavesStatusBadge status={leaveRequestDetails.status} />
+            )}
             <span className="text-xs text-gray-700">
               {leaveRequestDetails.leaveType}
             </span>
@@ -56,7 +56,9 @@ export const LeaveRequestDetails = ({
             <div className="flex flex-col gap-2">
               <span className="text-sm text-table-thead">Leave Period</span>
               <span className="text-xs text-gray-700">
-                {leaveRequestDetails.startDate} <span className="mx-2 font-semibold">to</span> {leaveRequestDetails.endDate}
+                {leaveRequestDetails.startDate}{" "}
+                <span className="mx-2 font-semibold">to</span>{" "}
+                {leaveRequestDetails.endDate}
               </span>
             </div>
           </div>
