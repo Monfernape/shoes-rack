@@ -70,7 +70,7 @@ const AttendanceFormBuilder = () => {
     },
   });
   const searchParams = useSearchParams();
-  const paramId = searchParams.get("id");
+  const paramId = searchParams?.get("id");
   useEffect(() => {
     if (paramId) {
       getAttendanceById(Number(paramId)).then((response) => {
