@@ -20,7 +20,7 @@ import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
 import { getAttendanceById } from "../actions/getAttendanceById";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 const attendanceSchema = z
   .object({
@@ -69,23 +69,40 @@ const AttendanceFormBuilder = () => {
       endTime: "",
     },
   });
-  const searchParams = useSearchParams();
-  const paramId = searchParams?.get("id");
-  useEffect(() => {
-    if (paramId) {
-      getAttendanceById(Number(paramId)).then((response) => {
-        if (response) {
-          const { memberId, startTime, endTime } = response.data;
+  const { id: paramId } = useParams();
 
-          form.reset({
-            memberId: memberId.toString(),
-            startTime: startTime,
-            endTime: endTime,
-          });
+  useEffect(() => {
+    const fetchAttendance = async () => {
+
+      try {
+        if (paramId) {
+          const response = await getAttendanceById(Number(paramId));
+          
+          if (response) {
+            const { memberId, startTime, endTime } = response.data;
+            form.reset({
+              memberId: memberId.toString(),
+              startTime,
+              endTime,
+            });
+          } else {
+           
+            toast({
+              title: "Attendance not found",
+              description: "No data found for this ID",
+            });
+          }
         }
-      });
-    }
-  }, [searchParams, form]);
+      } catch (error) {
+        toast({
+          title: "Error fetching attendance",
+          description: "No data found for this ID",
+        });
+      }
+    };
+
+    fetchAttendance();
+  }, [paramId, form]);
 
   const onSubmit = async (values: AttendanceFormValues) => {
     try {
