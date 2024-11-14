@@ -5,7 +5,7 @@ type Props = {
 };
 const FormWrapper = ({ children }: Props) => {
   return (
-    <div className="p-4 mx-auto w-3/4  sm:w-2/4 bg-white mt-2 rounded ">
+    <div className="p-4 mx-auto w-3/4  sm:w-2/4 bg-white mt-2 rounded h-full">
       {children}
     </div>
   );
