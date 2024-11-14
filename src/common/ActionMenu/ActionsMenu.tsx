@@ -43,7 +43,15 @@ const ActionsMenu = ({ actions }: Props) => {
             className="cursor-pointer px-4 py-2 hover:bg-gray-100 focus:outline-none focus-visible:ring-0 flex items-center space-x-2"
           >
             {action.icon}
-            <span className={action.className}>{action.title}</span>
+            <span
+              className={`${
+                action.title === "Delete" || action.title === "Reject"
+                  ? "text-status-inactive"
+                  : ""
+              }`}
+            >
+              {action.title}
+            </span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
