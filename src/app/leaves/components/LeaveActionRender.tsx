@@ -7,8 +7,8 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { MemberRole } from "@/lib/constants";
 import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
+import { MemberRole } from "@/constant/constant";
 
 const loggedUser = {
   name: "John Smith",
