@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { getSession } from "../utils/supabase/getSession";
+
 import { Routes } from "./lib/routes";
+import { getSession } from "./utils/supabase/getSession";
 
 export default async function updateSession(request: NextRequest) {
   const isTokenValid = await getSession();
