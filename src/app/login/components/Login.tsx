@@ -156,6 +156,7 @@ export const LoginPage = () => {
               type="submit"
               className="w-full bg-gray-800"
               data-testId="submitButton"
+              disabled={!form.formState.isValid}
             >
               Log in
             </Button>
