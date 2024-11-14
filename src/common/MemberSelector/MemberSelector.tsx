@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { getMembers } from "@/app/members/actions/getMembers";
 import { Member, User } from "@/types";
-import { MemberRole, UserStatus } from "@/constant/constant";
+import { MemberRole, UserRole, UserStatus } from "@/constant/constant";
 
 interface SelectFieldProps {
   control: Control<any>;
