@@ -2,7 +2,7 @@
 import { getCookies } from "@/utils/cookiesManager";
 import { useMemo } from "react";
 
-export const useGetLoginUser = () => {
+export const useGetLoggedInUser = () => {
   const loginUser = useMemo(async () => {
     const loginUserInfo = await getCookies("loginUser");
     return loginUserInfo;
