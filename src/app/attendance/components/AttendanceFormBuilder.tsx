@@ -69,8 +69,8 @@ const AttendanceFormBuilder = () => {
       endTime: "",
     },
   });
-  const { id: paramId } = useParams();
-
+  const params = useParams();
+  const paramId = params?.id;
   useEffect(() => {
     const fetchAttendance = async () => {
 
