@@ -1,11 +1,11 @@
 "use server";
 import { Tables } from "@/lib/db";
-import { addCookies } from "../../../utils/cookiesManager";
-import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
-import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
+import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { Cookies, UserStatus } from "@/constant/constant";
+import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { addCookies } from "@/utils/cookiesManager";
 
 type LoginUser = {
   phoneNumber: string;
@@ -36,7 +36,7 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
       .single();
 
     if (error) {
-      return error;
+      throw error;
     } else {
       // getting session
       const { session } = authUserData;

@@ -13,8 +13,8 @@ import { Routes } from "@/lib/routes";
 export const MemeberHeader = () => {
   const pathname = usePathname();
 
-  const [isSidebarOpen, setSidebarOpen] = useState<Boolean>(false);
-  const [isTitleHide, setIsTitleHide] = useState<Boolean>(false);
+  const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [isTitleHide, setIsTitleHide] = useState<boolean>(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -40,7 +40,7 @@ export const MemeberHeader = () => {
             )}
             {!isTitleHide && <MemberBreadCrumbs />}
           </div>
-          {(pathname !== Routes.AddMember && pathname !== Routes.Login ) && (
+          {pathname !== Routes.AddMember && pathname !== Routes.Login && (
             <div className="flex items-center space-x-2">
               <div className="relative">
                 <Input

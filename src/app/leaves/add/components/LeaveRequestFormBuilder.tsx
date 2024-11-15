@@ -106,7 +106,6 @@ export const LeaveRequestFormBuilder = () => {
     }
     trigger();
   };
-
   return (
     <FormWrapper>
       <FormTitle title="Request Leave" />

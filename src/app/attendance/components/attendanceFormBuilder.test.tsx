@@ -1,15 +1,14 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import AttendanceFormBuilder from "./AttendanceFormBuilder"; 
+import AttendanceFormBuilder from "./AttendanceFormBuilder";
 
 describe("AttendanceFormBuilder", () => {
-
   it("selection value", async () => {
     render(<AttendanceFormBuilder />);
 
-    expect(screen.getByText('Attendance Form')).toBeDefined();
+    expect(screen.getByText("Attendance Form")).toBeDefined();
 
-    const selectTrigger = screen.getByTestId('select');
+    const selectTrigger = screen.getByTestId("select");
     fireEvent.click(selectTrigger);
   });
 

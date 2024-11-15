@@ -1,6 +1,11 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
-import { Control, useController } from "react-hook-form";
+import {
+  Control,
+  FieldPath,
+  FieldValues,
+  useController,
+} from "react-hook-form";
 import {
   FormItem,
   FormLabel,
@@ -19,9 +24,9 @@ import { getMembers } from "@/app/members/actions/getMembers";
 import { Member, User } from "@/types";
 import { MemberRole, UserRole, UserStatus } from "@/constant/constant";
 
-interface SelectFieldProps {
-  control: Control<any>;
-  name: string;
+interface SelectFieldProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
 }
 
 const loginUser: User = {
@@ -37,7 +42,10 @@ const loginUser: User = {
   deleted_at: null,
 };
 
-const MemberSelector = ({ control, name }: SelectFieldProps) => {
+const MemberSelector = <T extends FieldValues>({
+  control,
+  name,
+}: SelectFieldProps<T>) => {
   const { fieldState } = useController({
     control,
     name,

@@ -1,7 +1,7 @@
 import { describe, it, vi, expect } from "vitest";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import AttendanceFormBuilder from "../components/AttendanceFormBuilder";
-import { createAttendance } from "./create-attendance";  
+import { createAttendance } from "./create-attendance";
 
 const attendanceMock = {
   memberId: 1,
@@ -10,8 +10,6 @@ const attendanceMock = {
 };
 describe("AttendanceFormBuilder Integration Test", async () => {
   it("calls onAttendanceRequest with correct form data on submit", async () => {
-    const spy = vi.spyOn({ createAttendance }, "createAttendance");
-
     // Render the form
     render(<AttendanceFormBuilder />);
 

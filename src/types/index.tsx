@@ -1,16 +1,14 @@
 export type UserRole = "incharge" | "member" | "shift-incharge";
 export type Shifts = "A" | "B" | "C" | "D";
 export type UserStatus = "active" | "inactive";
-export type AttendanceStatus = "pending" | "approved"
-
-export interface Member {
+export type Member = {
   shift: string;
   id: number;
   name: string;
   phone: string;
   role: UserRole;
   status: UserStatus;
-}
+};
 export type UserInfo = {
   id: number;
   shift: string;
@@ -63,7 +61,6 @@ export interface LeaveRequestsTypes {
   reason?: string;
   requestedBy?: string;
 }
-
 
 export enum RequestActionTitles {
   Edit = "edit",

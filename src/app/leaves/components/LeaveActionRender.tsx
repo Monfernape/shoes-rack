@@ -32,22 +32,24 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
   };
 
   const handleEditInfo = () => {
-    console.log("Editing info...");
+    return;
   };
 
   const handleDeleteRequest = async (requestId: number) => {
     try {
-      await deleteLeaveRequest( requestId );
+      await deleteLeaveRequest(requestId);
       toast({
         title: "Success",
         description: "Request deleted successfully.",
       });
     } catch (error) {
-      toast({
-        title: "Error",
-        description:
-          "There was an issue deleting the request. Please try again.",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description:
+            "There was an issue deleting the request. Please try again.",
+        });
+      }
     }
   };
 
@@ -62,11 +64,13 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
         description: "Request updated successfully.",
       });
     } catch (error) {
-      toast({
-        title: "Error",
-        description:
-          "There was an issue updating the request. Please try again.",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description:
+            "There was an issue updating the request. Please try again.",
+        });
+      }
     }
   };
 

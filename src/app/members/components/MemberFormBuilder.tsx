@@ -34,10 +34,7 @@ import { Calendar } from "@/components/ui/calendar";
 import FormWrapper from "../../../common/FormWrapper";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  CNIC_VALIDATOR_REGEX,
-  PHONENUMBER_VALIDATOR_REGEX,
-} from "@/lib/regex";
+import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { useToast } from "@/hooks/use-toast";
 import { createUser } from "../actions/createUser";
 
@@ -146,13 +143,15 @@ export const MemberFormBuilder = () => {
         });
       }
     } catch (error) {
-      toast({
-        title: "User already exist",
-        description: "Please use other phone number",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "User already exist",
+          description: "Please use other phone number",
+        });
+      }
     }
   };
- 
+
   return (
     <FormWrapper>
       <Form {...form}>

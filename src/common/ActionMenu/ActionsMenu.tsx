@@ -46,7 +46,8 @@ const ActionsMenu = ({ actions }: Props) => {
             {action.icon}
             <span
               className={`capitalize ${
-                action.title === RequestActionTitles.Delete || action.title === RequestActionTitles.Reject
+                action.title === RequestActionTitles.Delete ||
+                action.title === RequestActionTitles.Reject
                   ? "text-status-inactive"
                   : ""
               }`}
