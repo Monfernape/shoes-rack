@@ -5,7 +5,8 @@ import { Sidebar } from "@/app/layout/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { usePathname,useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
 import { Plus } from "lucide-react";
 import { Routes } from "@/lib/routes";
@@ -23,7 +24,7 @@ export const MemeberHeader = () => {
  const  navigateToAddMember=()=>{
     router.push(Routes.AddMember)
  }
- 
+
   return (
     <div className="sticky top-0 z-50 w-full">
       {isSidebarOpen && (
