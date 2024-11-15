@@ -78,8 +78,9 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
           ? [...viewInfo, ...baseActions, ...resendInvite]
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
+        return [...viewInfo, ...baseActions];
       case MemberRole.Incharge:
-        return [...viewInfo, ...baseActions, ...resendInvite];
+        return [...viewInfo, ...baseActions];
 
       default:
         return [];
