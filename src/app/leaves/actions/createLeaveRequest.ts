@@ -17,7 +17,7 @@ export const createLeaveRequest = async (
     leaveType: values.leaveType,
     startDate: values.startDate.toISOString(),
     endDate: values.endDate.toISOString(),
-    reasonForLeave: values.reason,
+    reason: values.reason,
     status: LeaveRequestStatus.Pending,
   });
 

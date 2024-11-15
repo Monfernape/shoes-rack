@@ -1,21 +1,23 @@
 import { waitFor } from "@testing-library/dom";
 import { LeaveRequestStatus, LeaveTypes } from "@/constant/constant";
-import { createLeaveRequest } from "./createLeaveRequest";
+import { updateLeaveRequest } from "./updated-leave-request";
 
-describe("Leave Request Integration Test", async () => {
+describe("Leave Request Update Test", async () => {
   const mockPayload = {
-    memberId: 119,
+    memberId: 12,
     leaveType: LeaveTypes.Vacation,
-    startDate: "2024/11/20",
-    endDate: "2024/11/26",
+    startDate: "2025/11/20",
+    endDate: "2025/11/26",
     reason: "Due to some personal reason",
     status: LeaveRequestStatus.Pending,
   };
+  const mockLeaveRequestId = 2;
 
-  it("calls createLeaveRequest with mock form data on submit", async () => {
-    const submit = vi.fn().mockImplementation(createLeaveRequest);
+  it("calls updateLeaveRequest with mock form data on update", async () => {
+    const submit = vi.fn().mockImplementation(updateLeaveRequest);
     await waitFor(() => {
       submit({
+        mockLeaveRequestId,
         ...mockPayload,
       });
     });
