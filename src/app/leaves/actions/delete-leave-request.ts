@@ -3,11 +3,7 @@
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
-export const deleteLeaveRequest = async ({
-  requestId,
-}: {
-  requestId: number;
-}) => {
+export const deleteLeaveRequest = async (requestId : number) => {
   const supabase = await getSupabaseClient();
   const { error } = await supabase
     .from(Tables.Leaves)

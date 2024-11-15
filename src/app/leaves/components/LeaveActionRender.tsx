@@ -37,7 +37,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
 
   const handleDeleteRequest = async (requestId: number) => {
     try {
-      await deleteLeaveRequest({ requestId });
+      await deleteLeaveRequest( requestId );
       toast({
         title: "Success",
         description: "Request deleted successfully.",
