@@ -5,15 +5,15 @@ import { Sidebar } from "@/app/layout/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { usePathname } from "next/navigation";
+import { usePathname,useRouter } from "next/navigation";
 import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
 import { Plus } from "lucide-react";
 import { Routes } from "@/lib/routes";
-import { useRouter } from "next/navigation";
+
 
 export const MemeberHeader = () => {
   const pathname = usePathname();
-  const router = useRouter();
+  const route = useRouter();
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isTitleHide, setIsTitleHide] = useState<boolean>(false);
 
@@ -60,7 +60,7 @@ export const MemeberHeader = () => {
                 />
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
-              <Button data-testid="addMemberButton" className="h-7"  onClick={() => router.push(Routes.AddMember)}>
+              <Button data-testid="addMemberButton" className="h-7"  onClick={() => route.push(Routes.AddMember)}>
                 <Plus /> <span className="hidden md:block">Add Member </span>
               </Button>
             </div>
