@@ -21,6 +21,9 @@ import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
 import { getAttendanceById } from "../actions/getAttendanceById";
 import { useSearchParams } from "next/navigation";
+import { updateAttendance } from "../actions/updateAttendance";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/lib/routes";
 
 const attendanceSchema = z
   .object({
@@ -87,21 +90,33 @@ const AttendanceFormBuilder = () => {
     }
   }, [searchParams, form]);
 
+  const router = useRouter();
   const onSubmit = async (values: AttendanceFormValues) => {
     try {
-      const result = await createAttendance(values);
-      if (!result) {
-        toast({
-          title: "Attendance submit successfully",
-          description: "You will receive message shortly",
-        });
+      if (paramId) {
+        const updatedResult = await updateAttendance(Number(paramId), values);
+
+        if (updatedResult) {
+          router.push(Routes.Attendance);
+          toast({
+            title: "Attendance updated successfully",
+            description: "The attendance record has been updated.",
+          });
+        }
+      } else {
+        const result = await createAttendance(values);
+        if (result) {
+          toast({
+            title: "Attendance submitted successfully",
+            description: "You will receive a message shortly.",
+          });
+        }
       }
     } catch (error) {
       console.error("Submission error:", error);
       toast({
         title: "Attendance could not be marked",
       });
-      return;
     }
   };
   return (
@@ -159,6 +174,7 @@ const AttendanceFormBuilder = () => {
           <Button
             type="submit"
             className="w-full text-white rounded-md p-3 transition"
+            disabled={!form.formState.isValid}
           >
             {paramId ? "Update" : "Submit"}
           </Button>
