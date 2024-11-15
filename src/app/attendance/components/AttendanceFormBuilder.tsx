@@ -92,10 +92,12 @@ const AttendanceFormBuilder = () => {
           }
         }
       } catch (error) {
-        toast({
-          title: "Error fetching attendance",
-          description: "No data found for this ID",
-        });
+        if (error instanceof Error) {
+          toast({
+            title: "Error fetching attendance",
+            description: "No data found for this ID",
+          });
+        }
       }
     };
 
