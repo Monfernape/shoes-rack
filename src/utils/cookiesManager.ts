@@ -17,3 +17,13 @@ export const clearCookies = (values: string[]) => {
     cookies().delete(name);
   });
 };
+
+export const getCookies = (name: string) => {
+  const cookie = cookies().get(name);
+  if (cookie) {
+    const values = JSON.parse(cookie.value);
+    return values;
+  } else {
+    return null;
+  }
+};

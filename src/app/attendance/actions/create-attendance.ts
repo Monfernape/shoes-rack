@@ -2,8 +2,9 @@
 import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 import { redirect } from "next/navigation";
 import { AttendanceFormValues } from "../components/AttendanceFormBuilder";
-import { AttendanceStatus, Table } from "@/constant/constant";
 import { Routes } from "@/lib/routes";
+import { AttendanceStatus } from "@/constant/constant";
+import { Tables } from "@/lib/db";
 
 export const createAttendance = async (values: AttendanceFormValues) => {
   const supabase = await getSupabaseClient();
@@ -13,7 +14,7 @@ export const createAttendance = async (values: AttendanceFormValues) => {
     memberId: Number(values.memberId),
   };
 
-  const { error } = await supabase.from(Table.Attendance).insert({
+  const { error } = await supabase.from(Tables.Attendance).insert({
     ...payload,
     status: AttendanceStatus.Pending,
   });

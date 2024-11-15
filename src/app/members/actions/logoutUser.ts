@@ -1,8 +1,9 @@
 import { Routes } from "@/lib/routes";
 import { clearCookies } from "@/utils/cookiesManager";
 import { redirect } from "next/navigation";
+import { Cookies } from "@/constant/constant";
 
 export const logoutUser = async () => {
-  clearCookies(["loginUser", "session"]);
+  clearCookies([Cookies.LoginUser, Cookies.Session]);
   redirect(Routes.Login);
 };

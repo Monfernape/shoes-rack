@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import LogoImage from "../../../../public/assets/imgs/logo.png"
 import {
   Form,
   FormControl,
@@ -17,13 +18,13 @@ import { useForm } from "react-hook-form";
 import {
   Eye as EyeIcon,
   EyeOff as EyeOffIcon,
-  Lock as LockIcon,
-  Phone as PhoneIcon,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useMask } from "@react-input/mask";
 import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { loginUser } from "@/app/members/actions/loginUser";
+import Image from "next/image";
+import FormWrapper from "@/common/FormWrapper";
 
 const userSchema = z.object({
   phoneNumber: z
@@ -69,12 +70,24 @@ export const LoginPage = () => {
   } = form;
 
   return (
+    <FormWrapper>
     <div className="h-full flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl overflow-hidden max-w-md w-full">
-        <div className="bg-gray-800 p-8 text-center">
-          <h2 className="text-2xl font-bold text-white">Welcome Back</h2>
-          <p className="text-gray-400">Log in to your Shoes Rack account</p>
-        </div>
+    <div className="bg-white rounded-lg shadow-2xl overflow-hidden max-w-md w-full">
+      <div className="flex justify-center item-center pt-8 ">
+        <Image
+          src={LogoImage}
+          width="65"
+          height="65"
+          alt={"logo"}
+          className="border border-black rounded-full p-1"
+        />
+      </div>
+      <div className="p-8 pb-0 text-center flex gap-1 flex-col">
+        <h2 className="text-sm font-bold text-gray-700">Login Shoes Rack</h2>
+        <p className="text-sm text-gray-500">
+          Enter your credentials to access your account.
+        </p>
+      </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
@@ -97,11 +110,9 @@ export const LoginPage = () => {
                           {...field}
                           value={field.value}
                           data-testId="phoneNumber"
-                          className="pl-12"
                           ref={phoneNumberMask}
                           hasError={!!errors.phoneNumber}
                         />
-                        <PhoneIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -123,11 +134,9 @@ export const LoginPage = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
                           {...field}
-                          className="pl-12"
                           data-testId="password"
                           hasError={!!errors.password}
                         />
-                        <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <button
                           type="button"
                           onClick={() => setShowPassword((prev) => !prev)}
@@ -142,24 +151,27 @@ export const LoginPage = () => {
                 )}
               />
             </div>
-            <div className="flex items-center justify-between">
-              <Link
-                href="/forgot-password"
-                className="text-sm text-blue-600 hover:underline"
-              >
-                Forgot password?
-              </Link>
-            </div>
+
             <Button
               type="submit"
               className="w-full bg-gray-800"
               data-testId="submitButton"
+              disabled={!form.formState.isValid}
             >
               Log in
             </Button>
+            <div className="flex items-center justify-center">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-gray-500 hover:text-gray-800 "
+              >
+                Forgot password?
+              </Link>
+            </div>
           </form>
         </Form>
       </div>
     </div>
+    </FormWrapper>
   );
 };

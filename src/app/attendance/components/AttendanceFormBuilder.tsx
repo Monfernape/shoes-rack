@@ -12,12 +12,16 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { useEffect } from "react";
 import { createAttendance } from "../actions/create-attendance";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
+import { getAttendanceById } from "../actions/getAttendanceById";
+import { useParams } from "next/navigation";
+
 const attendanceSchema = z
   .object({
     memberId: z.string({
@@ -65,6 +69,38 @@ const AttendanceFormBuilder = () => {
       endTime: "",
     },
   });
+  const params = useParams();
+  const paramId = params?.id;
+  useEffect(() => {
+    const fetchAttendance = async () => {
+      try {
+        if (paramId) {
+          const response = await getAttendanceById(Number(paramId));
+
+          if (response) {
+            const { memberId, startTime, endTime } = response.data;
+            form.reset({
+              memberId: memberId.toString(),
+              startTime,
+              endTime,
+            });
+          } else {
+            toast({
+              title: "Attendance not found",
+              description: "No data found for this ID",
+            });
+          }
+        }
+      } catch (error) {
+        toast({
+          title: "Error fetching attendance",
+          description: "No data found for this ID",
+        });
+      }
+    };
+
+    fetchAttendance();
+  }, [paramId, form]);
 
   const onSubmit = async (values: AttendanceFormValues) => {
     try {
@@ -76,10 +112,12 @@ const AttendanceFormBuilder = () => {
         });
       }
     } catch (error) {
-      console.error("Submission error:", error);
-      toast({
-        title: "Attendance could not be marked",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "Attendance could not be marked",
+        });
+      }
+
       return;
     }
   };
@@ -139,7 +177,7 @@ const AttendanceFormBuilder = () => {
             type="submit"
             className="w-full text-white rounded-md p-3 transition"
           >
-            Submit
+            {paramId ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>

@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import { RequestActionTitles } from "@/types";
 
 interface Action {
   title: string;
@@ -38,12 +39,21 @@ const ActionsMenu = ({ actions }: Props) => {
       >
         {actions.map((action) => (
           <DropdownMenuItem
-            key={action.id}
+            key={`${action.id}-${action.title}`}
             onClick={action.onClick}
             className="cursor-pointer px-4 py-2 hover:bg-gray-100 focus:outline-none focus-visible:ring-0 flex items-center space-x-2"
           >
             {action.icon}
-            <span>{action.title}</span>
+            <span
+              className={`capitalize ${
+                action.title === RequestActionTitles.Delete ||
+                action.title === RequestActionTitles.Reject
+                  ? "text-status-inactive"
+                  : ""
+              }`}
+            >
+              {action.title}
+            </span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

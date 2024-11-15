@@ -1,9 +1,9 @@
 "use server";
 import { Tables } from "@/lib/db";
-import { Routes } from "@/lib/routes";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 import { redirect } from "next/navigation";
-import { UserStatus } from "@/constant/constant";
+import { Routes } from "@/lib/routes";
+import { Cookies, UserStatus } from "@/constant/constant";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { addCookies } from "@/utils/cookiesManager";
 
@@ -43,12 +43,12 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
 
       // addCookies function get name and values that will store against name
       addCookies({
-        name: "loginUser",
+        name: Cookies.LoginUser,
         values: loginUser,
       });
 
       addCookies({
-        name: "session",
+        name: Cookies.Session,
         values: session,
       });
 
