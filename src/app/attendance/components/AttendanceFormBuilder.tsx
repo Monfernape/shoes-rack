@@ -20,7 +20,7 @@ import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
 import { getAttendanceById } from "../actions/getAttendanceById";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { updateAttendance } from "../actions/updateAttendance";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
@@ -72,23 +72,40 @@ const AttendanceFormBuilder = () => {
       endTime: "",
     },
   });
-  const searchParams = useSearchParams();
-  const paramId = searchParams?.get("id");
+  const params = useParams();
+  const paramId = params?.id;
   useEffect(() => {
-    if (paramId) {
-      getAttendanceById(Number(paramId)).then((response) => {
-        if (response) {
-          const { memberId, startTime, endTime } = response.data;
+    const fetchAttendance = async () => {
 
-          form.reset({
-            memberId: memberId.toString(),
-            startTime: startTime,
-            endTime: endTime,
-          });
+      try {
+        if (paramId) {
+          const response = await getAttendanceById(Number(paramId));
+          
+          if (response) {
+            const { memberId, startTime, endTime } = response.data;
+            form.reset({
+              memberId: memberId.toString(),
+              startTime,
+              endTime,
+            });
+          } else {
+           
+            toast({
+              title: "Attendance not found",
+              description: "No data found for this ID",
+            });
+          }
         }
-      });
-    }
-  }, [searchParams, form]);
+      } catch (error) {
+        toast({
+          title: "Error fetching attendance",
+          description: "No data found for this ID",
+        });
+      }
+    };
+
+    fetchAttendance();
+  }, [paramId, form]);
 
   const router = useRouter();
   const onSubmit = async (values: AttendanceFormValues) => {

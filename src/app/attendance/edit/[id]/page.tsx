@@ -1,4 +1,4 @@
-import AttendanceFormBuilder from "../components/AttendanceFormBuilder";
+import AttendanceFormBuilder from "../../components/AttendanceFormBuilder";
 
 const AttendanceForm = () => {
   return <AttendanceFormBuilder />;

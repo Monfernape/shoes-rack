@@ -33,14 +33,20 @@ export enum LeaveTypes {
   Personal = "personal",
 }
 
+export enum LeaveRequestStatus {
+  Pending = "pending",
+  Accept = "accepted",
+  Reject = "rejected",
+}
+
 export enum AttendanceStatus {
   Pending = "pending",
   Accept = "accept",
   Reject = "reject",
 }
 
-export enum Table {
-  Attendance = "attendance",
-  Member = "member",
-  User = "user",
+export enum Cookies {
+  LoginUser = "loginUser",
+  Session = "session"
+
 }
