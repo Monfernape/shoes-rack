@@ -44,3 +44,9 @@ export enum AttendanceStatus {
   Accept = "accept",
   Reject = "reject",
 }
+
+export enum Cookies {
+  LoginUser = "loginUser",
+  Session = "session"
+
+}
