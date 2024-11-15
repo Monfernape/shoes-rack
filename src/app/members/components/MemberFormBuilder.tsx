@@ -410,7 +410,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
           <Button
             type="submit"
             data-testid="submit"
-            disabled={!member ?? !form.formState.isValid}
+            disabled={!member && !form.formState.isValid}
           >
             Submit
           </Button>
