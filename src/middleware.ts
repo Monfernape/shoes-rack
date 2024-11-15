@@ -7,7 +7,7 @@ export default async function updateSession(request: NextRequest) {
     const isTokenValid = await getSession();
     const requestedPath = request.nextUrl.pathname;
 
-    if (!isTokenValid && requestedPath !== Routes.Login) {
+    if (!isTokenValid && requestedPath === Routes.Login) {
       return NextResponse.redirect(new URL(Routes.Login, request.url));
     }
 
