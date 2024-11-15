@@ -17,12 +17,11 @@ import {
 } from "@/components/ui/table";
 
 import { useToast } from "@/hooks/use-toast";
-import { AttendanceStatus } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
 import MemberTableActionRender from "@/app/members/components/MemberActionRender";
-import { Shift } from "@/constant/constant";
+import { AttendanceStatus, Shift } from "@/constant/constant";
 
 interface Attendance {
   member: string;
