@@ -19,8 +19,8 @@ export const getAttendance = async () => {
 
     return {
       ...attendance,
-      name: member ? member.name : "Unknown",
-      shift: member ? member.shift : "Unknown Shift",
+      name:  member?.name,
+      shift: member?.shift 
     };
   });
 

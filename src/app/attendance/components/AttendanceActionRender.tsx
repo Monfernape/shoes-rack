@@ -7,16 +7,18 @@ import {
   CheckSquare as CheckSquareIcon,
 } from "lucide-react";
 import { AttendanceStatus, MemberRole } from "@/constant/constant";
-
+import { useRouter } from "next/navigation";
 
 interface MemberInfo {
   shift: string;
   role: string;
   status: string;
+  id: number;
 }
 interface AttendanceData {
   shift: string;
   status: string;
+  id: number;
 }
 
 type Props = {
@@ -25,8 +27,10 @@ type Props = {
 };
 
 const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
-  const handleEditInfo = () => {
-    console.log("Editing info...");
+  const router = useRouter();
+
+  const handleEditInfo = (id: number) => {
+    router.push(`/attendance/edit/${id}`);
   };
 
   const handleDeleteMember = () => {
@@ -44,7 +48,7 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
     {
       title: "Edit Info",
       id: 2,
-      onClick: handleEditInfo,
+      onClick: () => handleEditInfo(attendanceData.id),
       icon: <EditIcon size={16} />,
     },
     {
@@ -74,7 +78,9 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   const actionMenu = React.useMemo(() => {
     switch (loginUser.role) {
       case MemberRole.Member:
-        return attendanceData.status === AttendanceStatus.Pending ? [...baseActions] : [];
+        return attendanceData.status === AttendanceStatus.Pending
+          ? [...baseActions]
+          : [];
       case MemberRole.ShiftIncharge:
         return attendanceData.shift === loginUser.shift
           ? [...ApprovelRequest]
