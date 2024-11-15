@@ -22,7 +22,6 @@ import { MemberRole, UserStatus } from "@/constant/constant";
 import { getAttendanceById } from "../actions/getAttendanceById";
 import { useParams } from "next/navigation";
 import { updateAttendance } from "../actions/updateAttendance";
-import { Routes } from "@/lib/routes";
 
 const attendanceSchema = z
   .object({
