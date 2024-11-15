@@ -22,7 +22,6 @@ import { MemberRole, UserStatus } from "@/constant/constant";
 import { getAttendanceById } from "../actions/getAttendanceById";
 import { useParams } from "next/navigation";
 import { updateAttendance } from "../actions/updateAttendance";
-import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
 const attendanceSchema = z
@@ -72,15 +71,17 @@ const AttendanceFormBuilder = () => {
       endTime: "",
     },
   });
+  
   const params = useParams();
   const paramId = params?.id;
+
   useEffect(() => {
     const fetchAttendance = async () => {
 
       try {
         if (paramId) {
           const response = await getAttendanceById(Number(paramId));
-          
+
           if (response) {
             const { memberId, startTime, endTime } = response.data;
             form.reset({
@@ -89,7 +90,6 @@ const AttendanceFormBuilder = () => {
               endTime,
             });
           } else {
-           
             toast({
               title: "Attendance not found",
               description: "No data found for this ID",
@@ -107,14 +107,12 @@ const AttendanceFormBuilder = () => {
     fetchAttendance();
   }, [paramId, form]);
 
-  const router = useRouter();
   const onSubmit = async (values: AttendanceFormValues) => {
     try {
       if (paramId) {
         const updatedResult = await updateAttendance(Number(paramId), values);
 
         if (updatedResult) {
-          router.push(Routes.Attendance);
           toast({
             title: "Attendance updated successfully",
             description: "The attendance record has been updated.",
