@@ -5,7 +5,7 @@ import { loginUser } from "../../members/actions/loginUser";
 
 const credentialsMock = {
   phoneNumber: "923000000000",
-  password: 'test-password',
+  password: "test-password",
 };
 
 const fields = [
@@ -14,8 +14,6 @@ const fields = [
 ];
 
 test("user login test", async () => {
-  const mockSubmit = vi.fn();
-
   render(<LoginPage />);
 
   fields.forEach(({ testId, value }) => {
@@ -28,11 +26,11 @@ test("user login test", async () => {
     password: credentialsMock.password,
   });
 
-   const submit = vi.fn().mockImplementation(loginUser);
-   await waitFor(()=>{
+  const submit = vi.fn().mockImplementation(loginUser);
+  await waitFor(() => {
     submit({
-      ...credentialsMock
-    })
-   })
-   expect(submit).toHaveBeenCalledTimes(1)
+      ...credentialsMock,
+    });
+  });
+  expect(submit).toHaveBeenCalledTimes(1);
 });

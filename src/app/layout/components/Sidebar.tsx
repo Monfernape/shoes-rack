@@ -1,14 +1,13 @@
 "use client";
 import { logoutUser } from "@/app/members/actions/logoutUser";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React from "react";
 
 interface Props {
-  isSidebarOpen: Boolean;
+  isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
@@ -17,7 +16,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const roleBasedRoutes = useAccessibleRoutes("incharge");
 
   const onLogoutUser = () => {
-     logoutUser();
+    logoutUser();
   };
 
   return (
