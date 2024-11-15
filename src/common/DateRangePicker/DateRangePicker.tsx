@@ -16,20 +16,16 @@ import {
 
 interface DatePickerWithRangeProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  handleChange: (date: DateRange | undefined) => void;
+  dateRange: DateRange | undefined;
+  setDateRange: (date: DateRange | undefined) => void;
 }
 
 export function DatePickerWithRange({
-  handleChange,
+  dateRange,
+  setDateRange,
 }: DatePickerWithRangeProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: undefined,
-    to: undefined,
-  });
-
   const onDateChange = (selectedDate: DateRange | undefined) => {
-    setDate(selectedDate);
-    handleChange(selectedDate);
+    setDateRange(selectedDate);
   };
 
   const today = new Date();
@@ -45,18 +41,18 @@ export function DatePickerWithRange({
           variant={"outline"}
           className={cn(
             "w-full justify-start text-xs font-normal text-left",
-            !date && "text-muted-foreground"
+            !dateRange && "text-muted-foreground"
           )}
         >
           <CalendarIcon />
-          {date?.from ? (
-            date.to ? (
+          {dateRange?.from ? (
+            dateRange.to ? (
               <>
-                {format(date.from, "LLL dd, y")} -{" "}
-                {format(date.to, "LLL dd, y")}
+                {format(dateRange.from, "LLL dd, y")} -{" "}
+                {format(dateRange.to, "LLL dd, y")}
               </>
             ) : (
-              format(date.from, "LLL dd, y")
+              format(dateRange.from, "LLL dd, y")
             )
           ) : (
             <span className="test-xs">Pick start date and end date</span>
@@ -67,8 +63,8 @@ export function DatePickerWithRange({
         <Calendar
           initialFocus
           mode="range"
-          defaultMonth={date?.from}
-          selected={date}
+          defaultMonth={dateRange?.from}
+          selected={dateRange}
           onSelect={onDateChange}
           numberOfMonths={2}
           disabled={isDisabled}

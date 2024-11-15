@@ -1,15 +1,32 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { LeaveTypes } from "@/constant/constant";
 import { LeaveRequestFormBuilder } from "./LeaveRequestFormBuilder";
+import { useParams, useRouter } from "next/navigation";
+import { Mock } from "vitest";
+
+vi.mock("next/navigation", async () => {
+  return {
+    useParams: vi.fn(),
+    useRouter: vi.fn(),
+  };
+});
 
 describe("Leave request Form Testing", () => {
-
   const mockSelector = [
     {
       id: "leave-type",
       name: LeaveTypes.Sick,
     },
   ];
+
+  beforeEach(() => {
+    (useParams as Mock).mockReturnValue({
+      query: { id: "123" },
+    });
+    (useRouter as Mock).mockReturnValue({
+      query: { id: "123" },
+    });
+  });
 
   it("should get values from select and text area", () => {
     render(<LeaveRequestFormBuilder />);

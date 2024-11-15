@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React, { useEffect } from "react";
 import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -29,6 +30,10 @@ import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
 import { User } from "@/types";
 import { createLeaveRequest } from "../../actions/createLeaveRequest";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
+import { useParams, useRouter } from "next/navigation";
+import { getLeaveRequestById } from "../../actions/get-leave-request-by-id";
+import { toast } from "@/hooks/use-toast";
+import { updateLeaveRequest } from "../../actions/updated-leave-request";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -41,7 +46,7 @@ export const leaveRequestSchema = z.object({
   ]),
   startDate: z
     .date({
-      message: "Date must be selected.",
+      message: "Date Range must be selected.",
     })
     .refine((date) => date >= startOfDay(new Date()), {
       message: "Start Date must be today or in the future.",
@@ -76,6 +81,13 @@ const loginUser: User = {
 };
 
 export const LeaveRequestFormBuilder = () => {
+  const { id: paramsId } = useParams<{ id: string }>();
+  const router = useRouter();
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
+    from: undefined,
+    to: undefined,
+  });
+
   const form = useForm<leaveRequestSchemaType>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
@@ -96,16 +108,72 @@ export const LeaveRequestFormBuilder = () => {
   } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
-    createLeaveRequest(values);
+    try {
+      if (!paramsId) {
+        createLeaveRequest(values);
+        toast({
+          title: "Success",
+          description: "Leave Request Created Successfully",
+        });
+      } else {
+        updateLeaveRequest(Number(paramsId), values);
+        toast({
+          title: "Success",
+          description: "Leave Request Updated Successfully",
+        });
+      }
+      router.push("/leaves");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong! Please try again.",
+      });
+    }
   }
+  useEffect(() => {
+    const getLeaveById = async () => {
+      try {
+        if (paramsId) {
+          const response = await getLeaveRequestById(Number(paramsId));
 
-  const handleDateChange = (dateRange: DateRange | undefined) => {
+          if (response) {
+            const { memberId, leaveType, startDate, endDate, reason } =
+              response;
+            setDateRange({
+              from: startDate,
+              to: endDate,
+            });
+            form.reset({
+              memberId: memberId.toString(),
+              leaveType: leaveType,
+              startDate: startDate,
+              endDate: endDate,
+              reason: reason,
+            });
+          } else {
+            toast({
+              title: "Leave Request not found",
+              description: "No data found for this ID",
+            });
+          }
+        }
+      } catch (error) {
+        toast({
+          title: "Error fetching leave request",
+          description: "No data found for this ID",
+        });
+      }
+    };
+    getLeaveById();
+  }, [paramsId]);
+
+  useEffect(() => {
     if (dateRange?.from && dateRange?.to) {
-      setValue("startDate", dateRange.from);
-      setValue("endDate", dateRange.to);
+      setValue("startDate", new Date(dateRange.from));
+      setValue("endDate", new Date(dateRange.to));
     }
     trigger();
-  };
+  }, [dateRange]);
 
   return (
     <FormWrapper>
@@ -153,7 +221,10 @@ export const LeaveRequestFormBuilder = () => {
             render={() => (
               <>
                 <FormLabel>Date Range</FormLabel>
-                <DatePickerWithRange handleChange={handleDateChange} />
+                <DatePickerWithRange
+                  dateRange={dateRange}
+                  setDateRange={setDateRange}
+                />
                 <FormMessage />
               </>
             )}
@@ -185,7 +256,7 @@ export const LeaveRequestFormBuilder = () => {
               disabled={!isValid}
               className="text-xs"
             >
-              Submit
+              {paramsId ? "Update" : "Submit"}
             </Button>
           </div>
         </form>
