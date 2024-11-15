@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 type Props = {
   name: string;
-  values: any;
+  values: unknown;
 };
 export const addCookies = ({ name, values }: Props) => {
   cookies().set(name, JSON.stringify(values), {

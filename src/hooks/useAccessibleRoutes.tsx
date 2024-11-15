@@ -1,4 +1,3 @@
-
 import { useMemo } from "react";
 import { UserRole } from "@/types";
 
@@ -15,7 +14,6 @@ import {
 } from "lucide-react";
 import { Routes } from "@/lib/routes";
 import { MemberRole } from "@/constant/constant";
-
 
 export const MEMBER_ROUTES = [
   {
@@ -72,7 +70,6 @@ export const INCHARGE_ROUTES = [
     icon: <HandCoinsIcon />,
   },
 ];
-
 
 export const useAccessibleRoutes = (userRole: UserRole) => {
   const routes = useMemo(() => {

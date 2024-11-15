@@ -1,11 +1,11 @@
 "use server";
 import { Tables } from "@/lib/db";
-import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 import { UserStatus } from "@/constant/constant";
 import { redirect } from "next/navigation";
-import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
+import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 import { UserBuilder } from "../components/MemberFormBuilder";
 import { headers } from "next/headers";
+import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { Routes } from "@/lib/routes";
 
 export const createUser = async (values: UserBuilder) => {
@@ -33,7 +33,7 @@ export const createUser = async (values: UserBuilder) => {
   });
 
   if (error) {
-    return error;
+    throw error;
   } else {
     const { error } = await supabase.auth.signUp({
       phone: userPhoneNumber,
@@ -47,7 +47,7 @@ export const createUser = async (values: UserBuilder) => {
       },
     });
     if (error) {
-      return error;
+      throw error;
     }
     redirect(Routes.AddMember);
   }

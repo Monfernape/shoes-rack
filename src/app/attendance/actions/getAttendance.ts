@@ -9,22 +9,17 @@ export const getAttendance = async () => {
 
   const membersResponse = await getMembers();
   const members = membersResponse?.data || [];
-
   const { data: attendanceData } = await supabase
     .from(Tables.Attendance)
     .select("*");
-
-  const enrichedData = (attendanceData || []).map((attendance) => {
-    const member = members.find((m) => m.id === attendance.memberId);
-
+  const updateAttendance = (attendanceData || []).map((attendance) => {
+    const member = members.find((member) => attendance.memberId === member.id);
     return {
       ...attendance,
-      name:  member?.name,
-      shift: member?.shift 
+      name: member?.name,
+      shift: member?.shift,
     };
   });
 
-  return {
-    data: enrichedData,
-  };
+  return updateAttendance;
 };

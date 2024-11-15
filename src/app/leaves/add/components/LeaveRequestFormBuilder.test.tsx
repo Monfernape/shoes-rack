@@ -3,7 +3,6 @@ import { LeaveTypes } from "@/constant/constant";
 import { LeaveRequestFormBuilder } from "./LeaveRequestFormBuilder";
 
 describe("Leave request Form Testing", () => {
-
   const mockSelector = [
     {
       id: "leave-type",

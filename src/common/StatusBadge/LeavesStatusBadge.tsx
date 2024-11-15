@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { LeavesRequestStatus } from "@/types";
 
 const statusClasses = {
-  accepted: {
+  approved: {
     background: "bg-status-active-background",
     text: "text-status-active",
   },

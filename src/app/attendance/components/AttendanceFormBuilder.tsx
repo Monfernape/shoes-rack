@@ -35,7 +35,7 @@ const attendanceSchema = z
   .refine(
     (data) => {
       const startTime = new Date(`1970-01-01T${data.startTime}:00`);
-      let endTime = new Date(`1970-01-01T${data.endTime}:00`);
+      const endTime = new Date(`1970-01-01T${data.endTime}:00`);
       if (endTime < startTime) endTime.setDate(endTime.getDate() + 1);
       const nextTwoHours = new Date(startTime.getTime() + 2 * 60 * 60 * 1000);
       return endTime <= nextTwoHours;
@@ -77,7 +77,6 @@ const AttendanceFormBuilder = () => {
 
   useEffect(() => {
     const fetchAttendance = async () => {
-
       try {
         if (paramId) {
           const response = await getAttendanceById(Number(paramId));
@@ -97,10 +96,12 @@ const AttendanceFormBuilder = () => {
           }
         }
       } catch (error) {
-        toast({
-          title: "Error fetching attendance",
-          description: "No data found for this ID",
-        });
+        if (error instanceof Error) {
+          toast({
+            title: "Error fetching attendance",
+            description: "No data found for this ID",
+          });
+        }
       }
     };
 
@@ -128,10 +129,13 @@ const AttendanceFormBuilder = () => {
         }
       }
     } catch (error) {
-      console.error("Submission error:", error);
-      toast({
-        title: "Attendance could not be marked",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "Attendance could not be marked",
+        });
+      }
+
+      return;
     }
   };
   return (

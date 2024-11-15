@@ -20,42 +20,29 @@ import { useToast } from "@/hooks/use-toast";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
-import AttendanceActionRender from "./AttendanceActionRender";
-import { AttendanceStatus, User } from "@/types";
-import { MemberRole, UserStatus } from "@/constant/constant";
-
+import MemberTableActionRender from "@/app/members/components/MemberActionRender";
+import { AttendanceStatus, Shift } from "@/constant/constant";
 
 interface Attendance {
   member: string;
   id: number;
-  shift: string;
   startTime: string;
   endTime: string;
   status: AttendanceStatus;
+  created_at: string;
+  memberId: number;
+  name: string;
+  shift: Shift;
 }
 interface AttendanceProps {
-  attendance: {
-    data: Attendance[];
-  };
+  attendance: Attendance[];
 }
-const loginUser: User = {
-  id: 1,
-  name: "Alice Johnson",
-  shift: "A",
-  role: MemberRole.Member,
-  status: UserStatus.Active,
-  phone: "123-456-7890",
-  address: "123 Main St, Anytown, USA",
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  deleted_at: null,
-};
 
 export const AttendanceList = ({ attendance }: AttendanceProps) => {
   const { toast } = useToast();
-  const { data: attendanceData } = attendance;
 
-  const columns: ColumnDef<Attendance>[] = useMemo (()=> [
+  const columns: ColumnDef<Attendance>[] = useMemo(
+    () => [
       {
         accessorKey: "name",
         header: "Name",
@@ -70,7 +57,6 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           <div className="capitalize">{row.getValue("shift")}</div>
         ),
       },
-  
       {
         accessorKey: "startTime",
         header: "Start Time",
@@ -93,20 +79,21 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <AttendanceActionRender loginUser={loginUser} attendanceData={row.original}/>;
+          return <MemberTableActionRender memberInfo={row.original} />;
         },
       },
-    ]
-   ,[])
+    ],
+    []
+  );
 
   const table = useReactTable({
-    data: attendanceData,
+    data: attendance,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   useEffect(() => {
-    if (!attendanceData) {
+    if (!attendance) {
       toast({
         title: "No Attendance Found",
         description: "There are no members available at this time.",
@@ -117,14 +104,14 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
         description: "You can now see all attendance.",
       });
     }
-  }, [attendanceData, toast]);
+  }, [attendance, toast]);
 
   const addAttendance = () => {
     alert("Navigation function triggered");
   };
 
   const StandardPageProps = {
-    hasContent: !!attendanceData.length,
+    hasContent: !!attendance.length,
     title: "Add Attendance",
     description: "This is where you can see all attendance",
     buttonIcon: <Plus />,

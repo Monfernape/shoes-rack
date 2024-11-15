@@ -34,14 +34,14 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   };
 
   const handleDeleteMember = () => {
-    console.log("Deleting member...");
+    return;
   };
 
   const handleApproveRequest = () => {
-    console.log("Request Status");
+    return;
   };
   const handleRejectRequest = () => {
-    console.log("Request Status");
+    return;
   };
 
   const baseActions = [

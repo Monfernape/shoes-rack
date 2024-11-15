@@ -17,19 +17,19 @@ type Props = {
 const MemberTableActionRender = ({ memberInfo }: Props) => {
   const { role, status } = memberInfo;
   const handleViewDetails = () => {
-    console.log("Viewing details...");
+    return;
   };
 
   const handleEditInfo = () => {
-    console.log("Editing info...");
+    return;
   };
 
   const handleDeleteMember = () => {
-    console.log("Deleting member...");
+    return;
   };
 
   const handleResendInvite = () => {
-    console.log("Resending invite...");
+    return;
   };
 
   const baseActions = [

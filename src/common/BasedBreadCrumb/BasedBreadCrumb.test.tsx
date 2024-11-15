@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { BasedBreadCrumb } from "./BasedBreadCrumb";
-import { Mock, describe, expect, it, vi } from "vitest";
+import { Mock, describe, it, vi } from "vitest";
 import { usePathname } from "next/navigation";
 import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
