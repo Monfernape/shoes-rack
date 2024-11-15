@@ -13,7 +13,7 @@ interface Action {
   title: string;
   id: number;
   icon: ReactNode;
-  onClick: () => void;
+  onClick: (id: number) => void;
   className?: string;
 }
 
@@ -40,7 +40,7 @@ const ActionsMenu = ({ actions }: Props) => {
         {actions.map((action) => (
           <DropdownMenuItem
             key={`${action.id}-${action.title}`}
-            onClick={action.onClick}
+            onClick={() => action.onClick}
             className="cursor-pointer px-4 py-2 hover:bg-gray-100 focus:outline-none focus-visible:ring-0 flex items-center space-x-2"
           >
             {action.icon}

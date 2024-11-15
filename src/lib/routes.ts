@@ -9,6 +9,7 @@ export enum Routes {
   Fund = "/fund",
   Member = "/members",
   AddMember = "/members/add",
+  EditMember = "/members/edit/id",
   ShiftIncharge = "/shift-incharge",
   MissingShoes = "/missing-shoes",
   AddMissingShoes = "/add-missing-shoes",

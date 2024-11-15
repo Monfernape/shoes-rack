@@ -94,7 +94,6 @@ export const MemberList = ({ members }: { members: Props }) => {
   }, [success, toast]);
 
   const groupedData = useGroupedData(data, "shift");
-
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };

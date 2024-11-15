@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
-import { Shift, UserRole } from "@/constant/constant";
+import { MemberRole, Shift } from "@/constant/constant";
 import {
   Select,
   SelectContent,
@@ -37,22 +37,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { useToast } from "@/hooks/use-toast";
 import { createUser } from "../actions/createUser";
+import { updateUser } from "../actions/update-user";
+import { Member } from "@/types";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
 const USER_ROLES = [
   {
     role: "Member",
-    value: UserRole.Member,
+    value: MemberRole.Member,
   },
 
   {
     role: "Shift Incharge",
-    value: UserRole.ShiftIncharge,
+    value: MemberRole.ShiftIncharge,
   },
   {
     role: "Incharge",
-    value: UserRole.Incharge,
+    value: MemberRole.Incharge,
   },
 ];
 
@@ -90,20 +92,25 @@ export const userBuilderSchema = z.object({
     },
   }),
   address: z.string({ message: "Address is required" }),
-  role: z.enum([UserRole.Member, UserRole.ShiftIncharge, UserRole.Incharge], {
-    errorMap: () => {
-      return { message: "Select user role" };
-    },
-  }),
+  role: z.enum(
+    [MemberRole.Member, MemberRole.ShiftIncharge, MemberRole.Incharge],
+    {
+      errorMap: () => {
+        return { message: "Select user role" };
+      },
+    }
+  ),
   ehad_duration: z
     .date()
     .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
 });
-
-export const MemberFormBuilder = () => {
+type MemberFormBuilder = {
+  member?: Member;
+};
+export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
   const { toast } = useToast();
   const phoneNumberMask = useMask({
-    mask: "03__-_______",
+    mask: "___________",
     replacement: { _: /\d/ },
   });
   const cnicMask = useMask({
@@ -114,14 +121,14 @@ export const MemberFormBuilder = () => {
   const form = useForm<UserBuilder>({
     resolver: zodResolver(userBuilderSchema),
     defaultValues: {
-      name: "",
-      phoneNumber: "",
-      date_of_birth: undefined,
-      cnic: "",
-      shift: Shift.ShiftA,
-      address: "",
-      role: UserRole.Member,
-      ehad_duration: new Date(),
+      name: member?.name ?? "",
+      phoneNumber: member?.phoneNumber ?? "",
+      date_of_birth: member ? new Date(member?.date_of_birth) : undefined,
+      cnic: member?.cnic ?? "",
+      shift: member?.shift ?? Shift.ShiftA,
+      address: member?.address ?? "",
+      role: member?.role ?? MemberRole.Member,
+      ehad_duration: member ? new Date(member?.ehad_duration) : new Date(),
     },
     mode: "all",
   });
@@ -132,14 +139,16 @@ export const MemberFormBuilder = () => {
 
   const handleSubmission = async (values: UserBuilder) => {
     try {
-      // there is nothing in response in case of insert data
-      const result = await createUser(values);
+      const result = member
+        ? await updateUser(values, member.id)
+        : await createUser(values);
 
       if (!result) {
-        form.reset();
         toast({
-          title: "User created successfully",
-          description: "You will receive message shortly",
+          title: member?.id
+            ? "User updated successfully"
+            : "User created successfully",
+          description: member?.id ? "" : "You will receive message shortly",
         });
       }
     } catch (error) {
@@ -222,46 +231,51 @@ export const MemberFormBuilder = () => {
           <FormField
             control={form.control}
             name="date_of_birth"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <Label>Date of birth</Label>
+            render={({ field }) => {
+              return (
+                <FormItem className="flex flex-col">
+                  <Label>Date of birth</Label>
 
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        data-testid="date_of_birth"
-                        variant={"outline"}
-                        className={cn(
-                          `justify-start text-left font-normal
-                          ${field.value} && "text-muted-foreground
-                          ${
-                            errors?.date_of_birth &&
-                            "border-red-500 border focus-visible:ring-0"
-                          }
-                            `
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto w-3.5 h-3.5" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" data-testid="calender">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage data-testId="date_of_birth_error" />
-              </FormItem>
-            )}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          data-testid="date_of_birth"
+                          variant={"outline"}
+                          className={cn(
+                            `justify-start text-left font-normal
+                        ${field.value} && "text-muted-foreground
+                        ${
+                          errors?.date_of_birth &&
+                          "border-red-500 border focus-visible:ring-0"
+                        }
+                          `
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto w-3.5 h-3.5" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-auto p-0"
+                      data-testid="calender"
+                    >
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage data-testId="date_of_birth_error" />
+                </FormItem>
+              );
+            }}
           />
 
           <FormField
@@ -396,7 +410,7 @@ export const MemberFormBuilder = () => {
           <Button
             type="submit"
             data-testid="submit"
-            disabled={!form.formState.isValid}
+            disabled={!member ?? !form.formState.isValid}
           >
             Submit
           </Button>

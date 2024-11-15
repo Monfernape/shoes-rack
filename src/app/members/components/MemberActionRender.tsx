@@ -2,6 +2,8 @@ import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import { MemberRole } from "@/constant/constant";
+import { Routes } from "@/lib/routes";
+import { useRouter } from "next/navigation";
 
 interface MemberInfo {
   id: number;
@@ -15,13 +17,14 @@ type Props = {
 };
 
 const MemberTableActionRender = ({ memberInfo }: Props) => {
-  const { role, status } = memberInfo;
+  const router = useRouter();
+  const { role, status, id } = memberInfo;
   const handleViewDetails = () => {
     return;
   };
 
   const handleEditInfo = () => {
-    return;
+    router.push(Routes.EditMember.replace("id", String(id)));
   };
 
   const handleDeleteMember = () => {
@@ -72,11 +75,10 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
     switch (role) {
       case MemberRole.Member:
         return status === "inactive"
-          ? [...viewInfo, ...resendInvite]
+          ? [...viewInfo, ...baseActions, ...resendInvite]
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
       case MemberRole.Incharge:
-      case MemberRole.SuperAdmin:
         return [...viewInfo, ...baseActions, ...resendInvite];
 
       default:

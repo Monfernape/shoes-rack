@@ -2,7 +2,6 @@ export enum MemberRole {
   Incharge = "incharge",
   ShiftIncharge = "shift-incharge",
   Member = "member",
-  SuperAdmin = "super_admin",
 }
 
 export enum UserRole {

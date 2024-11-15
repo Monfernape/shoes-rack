@@ -86,7 +86,6 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
           ? [...ApprovelRequest]
           : [];
       case MemberRole.Incharge:
-      case MemberRole.SuperAdmin:
         return [...ApprovelRequest];
       default:
         return [];

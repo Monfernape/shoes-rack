@@ -1,13 +1,22 @@
+import { MemberRole, Shift } from "@/constant/constant";
+
 export type UserRole = "incharge" | "member" | "shift-incharge";
 export type Shifts = "A" | "B" | "C" | "D";
 export type UserStatus = "active" | "inactive";
 export type Member = {
-  shift: string;
   id: number;
+  created_at: string;
   name: string;
-  phone: string;
-  role: UserRole;
+  phoneNumber: string;
+  date_of_birth: string;
+  cnic: string;
+  address: string;
+  ehad_duration: string;
+  role: MemberRole;
   status: UserStatus;
+  shift: Shift;
+  invite_link: string;
+  temporary_password: boolean;
 };
 export type UserInfo = {
   id: number;
@@ -68,10 +77,4 @@ export enum RequestActionTitles {
   Approve = "approve",
   Reject = "reject",
   ViewDetails = "view details",
-}
-
-export enum Table {
-  Attendance = "attendance",
-  Member = "member",
-  User = "user",
 }

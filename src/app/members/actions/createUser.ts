@@ -49,6 +49,6 @@ export const createUser = async (values: UserBuilder) => {
     if (error) {
       throw error;
     }
-    redirect(Routes.AddMember);
+    redirect(Routes.Member);
   }
 };
