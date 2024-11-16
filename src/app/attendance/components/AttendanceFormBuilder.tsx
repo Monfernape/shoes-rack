@@ -72,13 +72,13 @@ const AttendanceFormBuilder = () => {
   });
   
   const params = useParams();
-  const paramId = params?.id;
+  const attendanceId = params?.id;
 
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-        if (paramId) {
-          const response = await getAttendanceById(Number(paramId));
+        if (attendanceId) {
+          const response = await getAttendanceById(Number(attendanceId));
 
           if (response) {
             const { memberId, startTime, endTime } = response.data;
@@ -105,12 +105,13 @@ const AttendanceFormBuilder = () => {
     };
 
     fetchAttendance();
-  }, [paramId, form]);
+  }, [attendanceId, form]);
 
   const onSubmit = async (values: AttendanceFormValues) => {
+    const updatedValue = {...values ,attendanceId }
     try {
-      if (paramId) {
-        const updatedResult = await updateAttendance(Number(paramId), values);
+      if (attendanceId) {
+        const updatedResult = await updateAttendance( updatedValue);
 
         if (updatedResult) {
           toast({
@@ -194,7 +195,7 @@ const AttendanceFormBuilder = () => {
             className="w-full text-white rounded-md p-3 transition"
             disabled={!form.formState.isValid}
           >
-            {paramId ? "Update" : "Submit"}
+            {attendanceId ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>
