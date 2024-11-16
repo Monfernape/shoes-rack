@@ -12,7 +12,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { createAttendance } from "../actions/create-attendance";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
@@ -108,10 +108,13 @@ const AttendanceFormBuilder = () => {
   }, [attendanceId, form]);
 
   const onSubmit = async (values: AttendanceFormValues) => {
-    const updatedValue = {...values ,attendanceId }
+    const updatedValue = {
+      id:attendanceId,
+      ...values
+     }
     try {
       if (attendanceId) {
-        const updatedResult = await updateAttendance( updatedValue);
+        const updatedResult = await updateAttendance(updatedValue);
 
         if (updatedResult) {
           toast({

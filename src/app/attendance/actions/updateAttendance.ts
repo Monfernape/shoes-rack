@@ -6,19 +6,17 @@ import { AttendanceFormValues } from "../components/AttendanceFormBuilder";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
-type Attendance = {
-  attendanceId: number;
-  value: AttendanceFormValues;
-}
-export const updateAttendance = async (
-values : Attendance
-) => {
+interface Attendance extends AttendanceFormValues  {
+  id: string | string[];
+};
+
+export const updateAttendance = async (attendance : Attendance) => {
   const supabase = await getSupabaseClient();
 
   const { error } = await supabase
     .from(Tables.Attendance)
-    .update(values)
-    .eq("id", values.attendanceId);
+    .update(attendance)
+    .eq("id", attendance.id);
 
   if (error) {
     return error;
