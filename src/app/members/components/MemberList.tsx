@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
+
+import React, { useEffect, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -22,11 +23,11 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
-import { formatRole } from "@/utils/formatRole";
+import { useSearchContext } from "@/hooks/useSearchContext";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
+import { formatRole } from "@/utils/formatRole";
 import { Shift } from "@/constant/constant";
 import { useUser } from "@/hooks/useGetLoggedinUser";
-import { Loader } from "@/common/Loader/Loader";
 
 interface Props {
   data: Member[];
@@ -36,11 +37,11 @@ interface Props {
 
 export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
+  const loginUser = useUser()
   const { data : membersData, success } = members;
   const route = useRouter();
-  const loginUser = useUser();
-
-
+  const { searchValue } = useSearchContext();
+  const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -89,8 +90,23 @@ export const MemberList = ({ members }: { members: Props }) => {
       },
     },
   ];
+
+  useEffect(() => {
+    const members = membersData.filter(
+      (member: Member) =>
+        member.name.toLowerCase()?.includes(searchValue.toLowerCase()) ||
+        member.phoneNumber?.includes(searchValue)
+    );
+
+    if (searchValue.length) {
+      setFilteredMember(members);
+    } else {
+      setFilteredMember(members);
+    }
+  }, [searchValue]);
+
   const table = useReactTable({
-    data: membersData,
+    data: filteredMember,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
