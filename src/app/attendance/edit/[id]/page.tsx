@@ -27,7 +27,6 @@ const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
     try {
       const response = await getAttendanceById(Number(attendanceId));
       attendanceData = response ? response.data : null;
-      console.log("Attendance data:", attendanceData);
     } catch (error) {
       console.error("Error fetching attendance:", error);
     }
