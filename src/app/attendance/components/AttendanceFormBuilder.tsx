@@ -23,7 +23,7 @@ import { User } from "@/types";
 
 interface AttendanceFormBuilderProps {
   initialData?: AttendanceFormValues;
-  loginUser: User;
+  loginUser?: User;
 }
 
 const attendanceSchema = z
@@ -65,10 +65,17 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
     },
   });
 
-
   const onSubmit = async (values: AttendanceFormValues) => {
+    if (!loginUser?.id) {
+      toast({
+        title: "Error",
+        description: "User ID is missing.",
+      });
+      return;
+    }
+
     const updatedValue = {
-      id: loginUser.id.toString(), 
+      id: loginUser.id.toString(),
       ...values,
     };
 
