@@ -1,6 +1,6 @@
 export type UserRole = "incharge" | "member" | "shift-incharge";
 export type Shifts = "A" | "B" | "C" | "D";
-export type UserStatus = "active" | "inactive";
+export type UserStatus = "active" | "inactive" | "pending";
 export type Member = {
   shift: string;
   id: number;
@@ -36,9 +36,9 @@ export type UserDetails = {
   cnic: string;
   ehad_duration: string;
   shift: string;
-  role: string;
+  role: UserRole;
   address: string;
-  status: string;
+  status: UserStatus;
   created_at: string;
   date_of_birth: string;
   invite_link: string;
