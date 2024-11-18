@@ -9,7 +9,7 @@ function useGroupedData<T extends Record<string, unknown>>(
       return [];
     }
 
-    const groupedData = data?.reduce((acc: Record<string, T[]>, item: T) => {
+    const groupedData = data.reduce((acc: Record<string, T[]>, item: T) => {
       const groupKey = item[key];
       if (!acc[groupKey as string]) {
         acc[groupKey as string] = [];
@@ -17,11 +17,26 @@ function useGroupedData<T extends Record<string, unknown>>(
       acc[groupKey as string].push(item);
       return acc;
     }, {});
-    return Object?.entries(groupedData)?.map(([shift, row]) => ({
-      shift,
-      row,
-    }));
+
+    const sortedKeys = Object.keys(groupedData).sort((a, b) => {
+      const order = ["Shift A", "Shift B", "Shift C"];
+      return order.indexOf(a) - order.indexOf(b);
+    });
+
+    return sortedKeys.map((shift) => {
+      const sortedMembers = groupedData[shift].sort((a, b) => {
+        const dateA = new Date(a.created_at as string).getTime();
+        const dateB = new Date(b.created_at as string).getTime();
+        return dateB - dateA;
+      });
+
+      return {
+        shift,
+        row: sortedMembers,
+      };
+    });
   }, [data, key]);
 }
 
 export default useGroupedData;
+
