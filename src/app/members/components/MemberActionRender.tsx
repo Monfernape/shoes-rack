@@ -87,7 +87,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
     switch (role) {
       case MemberRole.Member:
         return status === "inactive"
-          ? [...viewInfo, ...baseActions, ...resendInvite]
+          ? [...viewInfo, ...resendInvite]
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
       case MemberRole.Incharge:
