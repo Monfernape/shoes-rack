@@ -133,7 +133,7 @@ export const MemberList = ({ members }: { members: Props }) => {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
+                  className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-semibold text-sm"
                 >
                   Shift {shiftGroup.shift}
                 </TableCell>
