@@ -1,12 +1,24 @@
 "use client";
 import { Cookies } from "@/constant/constant";
 import { getCookies } from "@/utils/cookiesManager";
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
+
 
 export const useGetLoggedInUser = () => {
-  const loginUser = useMemo(async () => {
-    const loginUserInfo = await getCookies(Cookies.LoginUser);
-    return loginUserInfo;
+  const [loggedInUser, setLoggedInUser] = useState();
+
+  useEffect(() => {
+    const fetchLoggedInUser = async () => {
+      try {
+        const response = await getCookies(Cookies.LoginUser);
+
+        setLoggedInUser(response);
+      } catch (error) {
+        console.error("Error fetching logged-in user:", error);
+      }
+    };
+
+    fetchLoggedInUser();
   }, []);
-  return { loginUser };
+  return loggedInUser;
 };
