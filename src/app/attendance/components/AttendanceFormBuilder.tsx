@@ -12,16 +12,19 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import React, { useEffect } from "react";
+import React from "react";
 import { createAttendance } from "../actions/create-attendance";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
-import { User } from "@/types";
-import { MemberRole, UserStatus } from "@/constant/constant";
-import { getAttendanceById } from "../actions/getAttendanceById";
-import { useParams } from "next/navigation";
+import { MemberRole } from "@/constant/constant";
 import { updateAttendance } from "../actions/update-attendance";
+import { User } from "@/types";
+
+interface AttendanceFormBuilderProps {
+  initialData?: AttendanceFormValues;
+  loginUser: User;
+}
 
 const attendanceSchema = z
   .object({
@@ -45,76 +48,32 @@ const attendanceSchema = z
     }
   );
 export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
-const loginUser: User = {
-  id: 1,
-  name: "Alice Johnson",
-  shift: "A",
-  role: "incharge",
-  status: UserStatus.Active,
-  phone: "123-456-7890",
-  address: "123 Main St, Anytown, USA",
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  deleted_at: null,
-};
 
-const AttendanceFormBuilder = () => {
+const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
+  initialData,
+  loginUser,
+}) => {
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
       memberId:
-        loginUser.role === MemberRole.Member
+        loginUser?.role === MemberRole.Member
           ? loginUser.id.toString()
-          : undefined,
-      startTime: "",
-      endTime: "",
+          : initialData?.memberId || undefined,
+      startTime: initialData?.startTime ?? "",
+      endTime: initialData?.endTime || "",
     },
   });
 
-  const params = useParams();
-  const attendanceId = params?.id;
-
-  useEffect(() => {
-    const fetchAttendance = async () => {
-      try {
-        if (attendanceId) {
-          const response = await getAttendanceById(Number(attendanceId));
-
-          if (response) {
-            const { memberId, startTime, endTime } = response.data;
-            form.reset({
-              memberId: memberId.toString(),
-              startTime,
-              endTime,
-            });
-          } else {
-            toast({
-              title: "Attendance not found",
-              description: "No data found for this ID",
-            });
-          }
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          toast({
-            title: "Error fetching attendance",
-            description: "No data found for this ID",
-          });
-        }
-      }
-    };
-
-    fetchAttendance();
-  }, [attendanceId, form]);
 
   const onSubmit = async (values: AttendanceFormValues) => {
     const updatedValue = {
-      id: attendanceId,
+      id: loginUser.id.toString(), 
       ...values,
     };
 
     try {
-      if (attendanceId) {
+      if (initialData?.memberId) {
         const error = await updateAttendance(updatedValue);
 
         if (!error) {
@@ -143,6 +102,7 @@ const AttendanceFormBuilder = () => {
       return;
     }
   };
+
   return (
     <FormWrapper>
       <Form {...form}>
@@ -200,7 +160,7 @@ const AttendanceFormBuilder = () => {
             className="w-full text-white rounded-md p-3 transition"
             disabled={!form.formState.isValid}
           >
-            {attendanceId ? "Update" : "Submit"}
+            {initialData?.memberId ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>

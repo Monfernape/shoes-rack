@@ -33,7 +33,7 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   const router = useRouter();
 
   const handleEditInfo = (id: number) => {
-    router.push(`${Routes.EditAttendance}${id}`);
+    router.push(`${Routes.EditAttendance}/${id}`);
   };
 
   const handleDeleteMember = async (id: number) => {
