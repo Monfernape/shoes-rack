@@ -19,7 +19,7 @@ function useGroupedData<T extends Record<string, unknown>>(
     }, {});
 
     const sortedKeys = Object.keys(groupedData).sort((a, b) => {
-      const order = ["Shift A", "Shift B", "Shift C"];
+      const order = ["A", "B", "C" , "D"];
       return order.indexOf(a) - order.indexOf(b);
     });
 
