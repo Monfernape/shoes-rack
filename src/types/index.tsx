@@ -30,15 +30,19 @@ export interface Breadcrumbs {
 }
 
 export type UserDetails = {
+  id: number;
   name: string;
-  phone: string;
-  age: number;
+  phoneNumber: string;
   cnic: string;
-  ehadDuration: string;
+  ehad_duration: string;
   shift: string;
-  role: UserRole;
+  role: string;
   address: string;
-  status: UserStatus;
+  status: string;
+  created_at: string;
+  date_of_birth: string;
+  invite_link: string;
+  temporary_password: boolean;
 };
 
 export interface MembersProps {
