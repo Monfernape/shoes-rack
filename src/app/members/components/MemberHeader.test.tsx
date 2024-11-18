@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberHeader } from "./MemberHeader";
+import { MemberContextProvider } from "@/context/SearchContextProvider";
 
 describe("Header Component", () => {
   beforeAll(() => {
@@ -19,22 +20,33 @@ describe("Header Component", () => {
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemberHeader />);
+    render(
+      <MemberContextProvider>
+        <MemberHeader />
+      </MemberContextProvider>
+    );
     fireEvent.click(screen.getByTestId("searchInput"));
   });
 
-
   it("Input Event Triggered", async () => {
-    render(<MemberHeader />);
+    render(
+      <MemberContextProvider>
+        <MemberHeader />
+      </MemberContextProvider>
+    );
     const searchInput = screen.getByTestId("searchInput") as HTMLInputElement;
 
-    fireEvent.change(searchInput, { target: { value: 'test input' } });
-    
-    expect(searchInput.value).toBe('test input');
+    fireEvent.change(searchInput, { target: { value: "test input" } });
+
+    expect(searchInput.value).toBe("test input");
   });
 
   it("Button is clicked", async () => {
-    render(<MemberHeader />);
+    render(
+      <MemberContextProvider>
+        <MemberHeader />
+      </MemberContextProvider>
+    );
     fireEvent.click(screen.getByTestId("addMemberButton"));
   });
 });
