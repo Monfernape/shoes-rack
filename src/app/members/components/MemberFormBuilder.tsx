@@ -40,7 +40,7 @@ import { createUser } from "../actions/createUser";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
-const USER_ROLES = [
+export const USER_ROLES = [
   {
     role: "Member",
     value: UserRole.Member,
