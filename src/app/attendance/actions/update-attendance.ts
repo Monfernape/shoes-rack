@@ -6,11 +6,11 @@ import { AttendanceFormValues } from "../components/AttendanceFormBuilder";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
-interface Attendance extends AttendanceFormValues  {
+interface Attendance extends AttendanceFormValues {
   id: string | string[];
-};
+}
 
-export const updateAttendance = async (attendance : Attendance) => {
+export const updateAttendance = async (attendance: Attendance) => {
   const supabase = await getSupabaseClient();
 
   const { error } = await supabase

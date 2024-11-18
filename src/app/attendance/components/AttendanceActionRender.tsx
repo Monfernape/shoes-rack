@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { AttendanceStatus, MemberRole } from "@/constant/constant";
 import { useRouter } from "next/navigation";
+import { Routes } from "@/lib/routes";
 
 interface MemberInfo {
   shift: string;
@@ -30,7 +31,7 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   const router = useRouter();
 
   const handleEditInfo = (id: number) => {
-    router.push(`/attendance/edit/${id}`);
+    router.push(`${Routes.EditAttendance}${id}`);
   };
 
   const handleDeleteMember = () => {

@@ -21,7 +21,7 @@ import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
 import { getAttendanceById } from "../actions/getAttendanceById";
 import { useParams } from "next/navigation";
-import { updateAttendance } from "../actions/updateAttendance";
+import { updateAttendance } from "../actions/update-attendance";
 
 const attendanceSchema = z
   .object({
@@ -70,7 +70,7 @@ const AttendanceFormBuilder = () => {
       endTime: "",
     },
   });
-  
+
   const params = useParams();
   const attendanceId = params?.id;
 
@@ -109,22 +109,24 @@ const AttendanceFormBuilder = () => {
 
   const onSubmit = async (values: AttendanceFormValues) => {
     const updatedValue = {
-      id:attendanceId,
-      ...values
-     }
+      id: attendanceId,
+      ...values,
+    };
+
     try {
       if (attendanceId) {
-        const updatedResult = await updateAttendance(updatedValue);
+        const error = await updateAttendance(updatedValue);
 
-        if (updatedResult) {
+        if (!error) {
           toast({
             title: "Attendance updated successfully",
             description: "The attendance record has been updated.",
           });
         }
       } else {
-        const result = await createAttendance(values);
-        if (result) {
+        const error = await createAttendance(values);
+
+        if (!error) {
           toast({
             title: "Attendance submitted successfully",
             description: "You will receive a message shortly.",
