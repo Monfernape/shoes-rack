@@ -5,7 +5,7 @@ export type Member = {
   shift: string;
   id: number;
   name: string;
-  phone: string;
+  phoneNumber: string;
   role: UserRole;
   status: UserStatus;
 };

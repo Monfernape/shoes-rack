@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -24,6 +24,7 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
+import { useSearchContext } from "@/hooks/useSearchContext";
 
 interface Props {
   data: Member[];
@@ -34,6 +35,8 @@ export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
   const { data, success } = members;
   const route = useRouter();
+  const { searchValue } = useSearchContext();
+  const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -78,8 +81,22 @@ export const MemberList = ({ members }: { members: Props }) => {
     },
   ];
 
+  useEffect(() => {
+    const members = data.filter(
+      (member: Member) =>
+        member.name.toLowerCase()?.includes(searchValue.toLowerCase()) ||
+        member.phoneNumber?.includes(searchValue)
+    );
+
+    if (searchValue.length) {
+      setFilteredMember(members);
+    } else {
+      setFilteredMember(members);
+    }
+  }, [searchValue]);
+
   const table = useReactTable({
-    data,
+    data: filteredMember,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -93,14 +110,14 @@ export const MemberList = ({ members }: { members: Props }) => {
     }
   }, [success, toast]);
 
-  const groupedData = useGroupedData(data, "shift");
+  const groupedData = useGroupedData(filteredMember, "shift");
 
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
 
   const StandardPageProps = {
-    hasContent: !!data.length,
+    hasContent: !!filteredMember.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
     buttonIcon: <PlusIcon />,

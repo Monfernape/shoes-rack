@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import { Sidebar } from "@/app/layout/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,15 +9,25 @@ import { usePathname } from "next/navigation";
 import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
 import { Plus } from "lucide-react";
 import { Routes } from "@/lib/routes";
+import MemberContext, {
+  MemberContextType,
+} from "@/context/SearchContextProvider";
+import useMediaQuery from "@/hooks/use-media-query";
 
-export const MemeberHeader = () => {
+
+export const MemberHeader = () => {
   const pathname = usePathname();
-
+  const isSmallScreen = useMediaQuery("sm");
+  const { setSearchValue } = useContext(MemberContext) as MemberContextType;
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isTitleHide, setIsTitleHide] = useState<boolean>(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
   };
 
   return (
@@ -38,7 +48,7 @@ export const MemeberHeader = () => {
                 <HamburgerMenuIcon className="h-6 w-6 text-black" />
               </Button>
             )}
-            {!isTitleHide && <MemberBreadCrumbs />}
+            {( !isTitleHide || !isSmallScreen ) && <MemberBreadCrumbs />}
           </div>
           {pathname !== Routes.AddMember && pathname !== Routes.Login && (
             <div className="flex items-center space-x-2">
@@ -53,6 +63,7 @@ export const MemeberHeader = () => {
                   onBlur={() => {
                     setIsTitleHide(false);
                   }}
+                  onChange={handleChange}
                   className={`pr-4 py-2 h-7 ${
                     isTitleHide ? "w-32 pl-10" : "w-2 pl-6"
                   } md:w-60 md:pl-10 rounded text-xs`}
