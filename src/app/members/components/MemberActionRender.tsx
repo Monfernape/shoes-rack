@@ -30,7 +30,6 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
 
   const handleDeleteMember = async () => {
     const result = await deleteMember(id);
-    console.log("handleDelteMember", id, result);
     if (result.status === 204) {
       toast({
         title: "Member deleted successfully",
