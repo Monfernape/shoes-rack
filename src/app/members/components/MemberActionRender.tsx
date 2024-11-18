@@ -2,7 +2,9 @@ import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import { MemberRole } from "@/constant/constant";
-
+import { deleteMember } from "../actions/delete-user";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 interface MemberInfo {
   id: number;
   name?: string;
@@ -15,7 +17,9 @@ type Props = {
 };
 
 const MemberTableActionRender = ({ memberInfo }: Props) => {
-  const { role, status } = memberInfo;
+  const { role, status, id } = memberInfo;
+  const router = useRouter();
+  const { toast } = useToast();
   const handleViewDetails = () => {
     return;
   };
@@ -24,8 +28,19 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
     return;
   };
 
-  const handleDeleteMember = () => {
-    return;
+  const handleDeleteMember = async () => {
+    const result = await deleteMember(id);
+    console.log("handleDelteMember", id, result);
+    if (result.status === 204) {
+      toast({
+        title: "Member deleted successfully",
+      });
+      return router.refresh();
+    } else {
+      toast({
+        title: "Error occured during member deletion process",
+      });
+    }
   };
 
   const handleResendInvite = () => {
@@ -72,7 +87,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
     switch (role) {
       case MemberRole.Member:
         return status === "inactive"
-          ? [...viewInfo, ...resendInvite]
+          ? [...viewInfo, ...baseActions, ...resendInvite]
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
       case MemberRole.Incharge:
