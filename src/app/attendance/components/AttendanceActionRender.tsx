@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { AttendanceStatus, MemberRole } from "@/constant/constant";
 import { useRouter } from "next/navigation";
+import { deleteAttendance } from "../actions/deleteAttendance";
+import { toast } from "@/hooks/use-toast";
 
 interface MemberInfo {
   shift: string;
@@ -33,8 +35,14 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
     router.push(`/attendance/edit/${id}`);
   };
 
-  const handleDeleteMember = () => {
-    return;
+  const handleDeleteMember = async (id: number) => {
+    deleteAttendance(id).then(() => {
+      toast({
+        title: "Attendance Deleted ",
+        description: "Attendance deleted successfully",
+      });
+      router.refresh();
+    });
   };
 
   const handleApproveRequest = () => {
@@ -54,7 +62,7 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
     {
       title: "Delete Member",
       id: 3,
-      onClick: handleDeleteMember,
+      onClick: () => handleDeleteMember(attendanceData.id),
       icon: <TrashIcon size={16} className="text-red-500" />,
       className: "text-red-500",
     },
