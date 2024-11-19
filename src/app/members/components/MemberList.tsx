@@ -32,7 +32,7 @@ export const MemberList = () => {
   const { toast } = useToast();
   const route = useRouter();
   const { searchValue } = useSearchContext();
-  const [isLoading , setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
     {
@@ -83,11 +83,18 @@ export const MemberList = () => {
     try {
       const response = await getMembers(searchValue);
       setFilteredMember(response.data);
-    } catch (err) {
-      toast({
-        title: "No Members Found",
-        description: "There are no members available at this time.",
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast({
+          title: "No Members Found",
+          description: error.message,
+        });
+      } else {
+        toast({
+          title: "No Members Found",
+          description: "An unknown error occurred",
+        });
+      }
     }
     setIsLoading(false);
   }, [searchValue]);
