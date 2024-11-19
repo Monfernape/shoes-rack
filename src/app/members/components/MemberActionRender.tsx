@@ -1,23 +1,20 @@
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
-import { MemberRole } from "@/constant/constant";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { deleteMember } from "../actions/delete-user";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-interface MemberInfo {
-  id: number;
-  name?: string;
-  phone?: string;
-  role?: string;
-  status: string;
-}
+import { Member } from "@/types";
+
 type Props = {
-  memberInfo: MemberInfo;
+  memberInfo: Member;
+  loginUser: any;
 };
 
-const MemberTableActionRender = ({ memberInfo }: Props) => {
-  const { role, status, id } = memberInfo;
+const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
+  const { role, status, id, shift } = memberInfo;
+
   const router = useRouter();
   const { toast } = useToast();
   const handleViewDetails = () => {
@@ -30,7 +27,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
 
   const handleDeleteMember = async () => {
     const result = await deleteMember(id);
-    if (result.status === 204) {
+    if (result && result.status === 204) {
       toast({
         title: "Member deleted successfully",
       });
@@ -71,7 +68,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
   ];
 
   const resendInvite =
-    status === "active"
+    status === UserStatus.Inactive
       ? [
           {
             title: "Resend Invite",
@@ -82,17 +79,23 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
         ]
       : [];
 
+  const checkShiftMembers = (loginUserShift: string, shift: Shift) => {
+    if (loginUserShift === shift) {
+      if (status === UserStatus.Inactive) {
+        return [...baseActions, ...viewInfo, ...resendInvite];
+      }
+      return [...baseActions, ...viewInfo];
+    }
+    return [];
+  };
   const actionMenu = React.useMemo(() => {
-    switch (role) {
-      case MemberRole.Member:
-        return status === "inactive"
-          ? [...viewInfo, ...resendInvite]
-          : [...viewInfo];
-      case MemberRole.ShiftIncharge:
+    switch (loginUser?.role) {
       case MemberRole.Incharge:
-      case MemberRole.SuperAdmin:
-        return [...viewInfo, ...baseActions, ...resendInvite];
-
+        return [...baseActions, ...viewInfo];
+      case MemberRole.ShiftIncharge:
+        return checkShiftMembers(loginUser?.shift, shift);
+      case MemberRole.Member:
+        return [...viewInfo];
       default:
         return [];
     }

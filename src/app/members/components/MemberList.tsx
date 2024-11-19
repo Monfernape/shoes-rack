@@ -24,6 +24,7 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface Props {
   data: Member[];
@@ -32,6 +33,7 @@ interface Props {
 }
 export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
+  const loginUser = useUser();
   const { data, success } = members;
   const route = useRouter();
   const columns: ColumnDef<Member>[] = [
@@ -73,7 +75,12 @@ export const MemberList = ({ members }: { members: Props }) => {
         return <span>Action</span>;
       },
       cell: ({ row }) => {
-        return <MemberTableActionRender memberInfo={row.original} />;
+        return (
+          <MemberTableActionRender
+            memberInfo={row.original}
+            loginUser={loginUser}
+          />
+        );
       },
     },
   ];

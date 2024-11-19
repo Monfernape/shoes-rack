@@ -1,6 +1,6 @@
 export enum MemberRole {
   Incharge = "incharge",
-  ShiftIncharge = "shift-incharge",
+  ShiftIncharge = "shift_incharge",
   Member = "member",
   SuperAdmin = "super_admin",
 }
@@ -23,6 +23,7 @@ export enum UserStatus {
   Active = "active",
   Inactive = "inactive",
   Invited = "invited",
+  Deactivate = "deactivate",
 }
 
 export const PAKISTAN_COUNTRY_CODE = "92";
@@ -47,6 +48,5 @@ export enum AttendanceStatus {
 
 export enum Cookies {
   LoginUser = "loginUser",
-  Session = "session"
-
+  Session = "session",
 }
