@@ -1,8 +1,8 @@
 import React from "react";
 import { MemberList } from "./components/MemberList";
 import { PageLayout } from "../layout/PageLayout";
-import { getMembers } from "./actions/getMembers";
 import { MemberHeader } from "./components/MemberHeader";
+import { getMembers } from "./actions/getMembers";
 
 const Page = async () => {
   const members = await getMembers("");

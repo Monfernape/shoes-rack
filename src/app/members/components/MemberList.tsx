@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -41,6 +41,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   const { data : membersData, success } = members;
   const route = useRouter();
   const { searchValue } = useSearchContext();
+  const [isLoading , setIsLoading] = useState<boolean>(false)
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
     {
@@ -103,6 +104,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     } else {
       setFilteredMember(members);
     }
+    setIsLoading(false);
   }, [searchValue]);
 
   const table = useReactTable({
