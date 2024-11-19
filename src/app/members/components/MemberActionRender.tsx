@@ -86,7 +86,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       }
       return [...baseActions, ...viewInfo];
     }
-    return [];
+    return [...viewInfo];
   };
   const actionMenu = React.useMemo(() => {
     switch (loginUser?.role) {
