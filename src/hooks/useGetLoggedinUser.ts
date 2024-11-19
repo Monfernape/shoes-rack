@@ -1,12 +1,12 @@
 "use client";
 import { UpdateDevUserRole } from "@/app/playground/components/UpdateDevUserForm";
 import { Cookies } from "@/constant/constant";
+import { UserDetails } from "@/types";
 import { getCookies } from "@/utils/cookiesManager";
 import { useState, useEffect } from "react";
 
-export const useGetLoggedInUser = () => {
-  const [loggedInUser, setLoggedInUser] = useState();
-
+export const useUser = () => {
+  const [loggedInUser, setLoggedInUser] = useState<UserDetails>();
   useEffect(() => {
     const fetchLoggedInUser = async () => {
       try {

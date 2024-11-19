@@ -6,14 +6,18 @@ import { UserDetails } from '@/types';
 
 const mockUserDetails: UserDetails = {
   name: "Alice Johnson",
-  phone: "123-456-7890",
-  age: 30,
+  phoneNumber: "123-456-7890",
+  date_of_birth: '',
   cnic: "12345-6789012-3",
-  ehadDuration: "2 years",
+  ehad_duration: "2 years",
   shift: "day",
   role: "member",
   address: "123 Main St, Springfield, IL",
   status: "active",
+  id: 23,
+  created_at: '',
+  invite_link: '',
+  temporary_password: false
 };
 
 describe('member details', () => {
