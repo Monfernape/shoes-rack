@@ -7,7 +7,7 @@ import { getMembers } from "@/app/members/actions/getMembers";
 export const getAttendance = async () => {
   const supabase = await getSupabaseClient();
 
-  const membersResponse = await getMembers();
+  const membersResponse = await getMembers("");
   const members = membersResponse?.data || [];
   const { data: attendanceData } = await supabase
     .from(Tables.Attendance)
