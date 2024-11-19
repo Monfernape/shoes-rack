@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
 interface Attendance extends AttendanceFormValues {
-  id: string | string[];
+  id: string 
 }
 
 export const updateAttendance = async (attendance: Attendance) => {

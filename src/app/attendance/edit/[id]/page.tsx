@@ -10,8 +10,8 @@ const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
   const { id: attendanceId } = params;
 
   const loginUser: User = {
-    id: 151,
-    name: "Alice Johnson",
+    id: 1,
+    name: "Muhammad Bilal Ali khokhar",
     shift: "A",
     role: UserRole.Member,
     status: UserStatus.Active,
