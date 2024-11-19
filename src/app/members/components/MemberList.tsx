@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -25,17 +25,14 @@ import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
 import { Shift } from "@/constant/constant";
 import { useSearchContext } from "@/hooks/useSearchContext";
+import { getMembers } from "../actions/getMembers";
+import { Loader } from "@/common/Loader/Loader";
 
-interface Props {
-  data: Member[];
-  success: boolean;
-  message: string;
-}
-export const MemberList = ({ members }: { members: Props }) => {
+export const MemberList = () => {
   const { toast } = useToast();
-  const { data, success } = members;
   const route = useRouter();
   const { searchValue } = useSearchContext();
+  const [isLoading , setIsLoading] = useState<boolean>(false)
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
     {
@@ -81,19 +78,23 @@ export const MemberList = ({ members }: { members: Props }) => {
     },
   ];
 
-  useEffect(() => {
-    const members = data.filter(
-      (member: Member) =>
-        member.name.toLowerCase()?.includes(searchValue.toLowerCase()) ||
-        member.phoneNumber?.includes(searchValue)
-    );
-
-    if (searchValue.length) {
-      setFilteredMember(members);
-    } else {
-      setFilteredMember(members);
+  const fetchMembers = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await getMembers(searchValue);
+      setFilteredMember(response.data);
+    } catch (err) {
+      toast({
+        title: "No Members Found",
+        description: "There are no members available at this time.",
+      });
     }
+    setIsLoading(false);
   }, [searchValue]);
+
+  useEffect(() => {
+    fetchMembers();
+  }, [fetchMembers]);
 
   const table = useReactTable({
     data: filteredMember,
@@ -101,19 +102,11 @@ export const MemberList = ({ members }: { members: Props }) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  useEffect(() => {
-    if (!success) {
-      toast({
-        title: "No Members Found",
-        description: "There are no members available at this time.",
-      });
-    }
-  }, [success, toast]);
 
   const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC , Shift.ShiftD];
 
   const groupedData = allShifts.map((shift) => {
-    const usersInShift = data.filter((user) => user.shift === shift);
+    const usersInShift = filteredMember.filter((user) => user.shift === shift);
     return {
       shift: shift,
       members: usersInShift,
@@ -136,6 +129,7 @@ export const MemberList = ({ members }: { members: Props }) => {
 
   return (
     <StandardPage {...StandardPageProps}>
+      {isLoading && <Loader />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
