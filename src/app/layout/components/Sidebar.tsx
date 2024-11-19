@@ -3,8 +3,10 @@ import { logoutUser } from "@/app/members/actions/logoutUser";
 import { Button } from "@/components/ui/button";
 import { MemberRole } from "@/constant/constant";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
+import { Routes } from "@/lib/routes";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 interface Props {
@@ -20,6 +22,10 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     logoutUser();
   };
 
+  if(isSidebarOpen){
+    return null
+  }
+  
   return (
     <aside
       className={`

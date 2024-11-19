@@ -45,7 +45,7 @@ export const addDevUser = async (values: DevUserType) => {
       },
     });
     if (error) {
-      return error;
+      throw error;
     }
   }
 };
