@@ -14,19 +14,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
     setSidebarOpen(!isSidebarOpen);
   };
 
-  const restrictPath = pathname === Routes.Playground || pathname === Routes.Login;
-
+  const isRestrictPath =
+    pathname === Routes.Playground || pathname === Routes.Login;
 
   return (
     <div className="flex">
-      {(!restrictPath || isSidebarOpen) && (
-        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      )}
+      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div
         className={cx(
-          `flex flex-col w-full h-screen ${
-            restrictPath ? "" : "lg:ml-48"
-          }`
+          `flex flex-col w-full h-screen ${isRestrictPath ? "" : "lg:ml-48"}`
         )}
       >
         {children}

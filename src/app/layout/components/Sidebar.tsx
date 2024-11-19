@@ -2,8 +2,10 @@
 import { logoutUser } from "@/app/members/actions/logoutUser";
 import { Button } from "@/components/ui/button";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
+import { Routes } from "@/lib/routes";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 interface Props {
@@ -14,11 +16,18 @@ interface Props {
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   // TODO : role will be dynamic after user login
   const roleBasedRoutes = useAccessibleRoutes("incharge");
+  const pathname = usePathname();
+
+  const isRestrictPath = pathname === Routes.Playground || pathname === Routes.Login;
 
   const onLogoutUser = () => {
     logoutUser();
   };
 
+  if(isRestrictPath || isSidebarOpen){
+    return null
+  }
+  
   return (
     <aside
       className={`
