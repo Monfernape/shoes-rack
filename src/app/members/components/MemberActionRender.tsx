@@ -1,30 +1,34 @@
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
-import { MemberRole } from "@/constant/constant";
-import { Routes } from "@/lib/routes";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { useRouter } from "next/navigation";
+import { User, UserDetails } from "@/types";
+import { Routes } from "@/lib/routes";
 
 interface MemberInfo {
   id: number;
   name?: string;
   phone?: string;
-  role?: string;
-  status: string;
+  role?: MemberRole;
+  status: UserStatus;
+  shift: Shift;
 }
 type Props = {
   memberInfo: MemberInfo;
+  loginUser: UserDetails | undefined;
 };
 
-const MemberTableActionRender = ({ memberInfo }: Props) => {
+const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const router = useRouter();
-  const { role, status, id } = memberInfo;
+  console.log("Loginuser", loginUser);
+  const { role, status, id, shift } = memberInfo;
   const handleViewDetails = () => {
     return;
   };
 
   const handleEditInfo = () => {
-    router.push(Routes.EditMember.replace("id", String(id)));
+    router.push(`${Routes.EditMember}/${id}`);
   };
 
   const handleDeleteMember = () => {
@@ -60,7 +64,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
   ];
 
   const resendInvite =
-    status === "active"
+    status === UserStatus.Inactive
       ? [
           {
             title: "Resend Invite",
@@ -71,17 +75,25 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
         ]
       : [];
 
-  const actionMenu = React.useMemo(() => {
-    switch (role) {
-      case MemberRole.Member:
-        return status === "inactive"
-          ? [...viewInfo, ...baseActions, ...resendInvite]
-          : [...viewInfo];
-      case MemberRole.ShiftIncharge:
-        return [...viewInfo, ...baseActions];
-      case MemberRole.Incharge:
-        return [...viewInfo, ...baseActions];
+  const checkShiftMembers = (loginUserShift: string, shift: Shift) => {
+    console.log("LoginUserShift", loginUserShift);
+    if (loginUserShift === shift) {
+      if (status === UserStatus.Inactive) {
+        return [...baseActions, ...viewInfo, ...resendInvite];
+      }
+      return [...baseActions, ...viewInfo];
+    }
+    return [...viewInfo];
+  };
 
+  const actionMenu = React.useMemo(() => {
+    switch (loginUser?.role) {
+      case MemberRole.Incharge:
+        return [...baseActions, ...viewInfo];
+      case MemberRole.ShiftIncharge:
+        return checkShiftMembers(loginUser?.shift, shift);
+      case MemberRole.Member:
+        return [...viewInfo];
       default:
         return [];
     }

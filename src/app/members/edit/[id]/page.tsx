@@ -1,22 +1,16 @@
 import React from "react";
 import { MemberFormBuilder } from "../../components/MemberFormBuilder";
-import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { Tables } from "@/lib/db";
+import { getUserById } from "../../actions/get-user-by-id";
 
 type Parameters = {
   params: {
     id: string;
   };
 };
-const page = async ({ params }: Parameters) => {
+const Page = async ({ params }: Parameters) => {
   const { id } = params;
-  const supabase = await getSupabaseClient();
-  const { data: member } = await supabase
-    .from(Tables.Members)
-    .select()
-    .eq("id", Number(id))
-    .single();
+  const member = await getUserById(id);
   return <MemberFormBuilder member={member} />;
 };
 
-export default page;
+export default Page;

@@ -47,7 +47,7 @@ export const SHIFT_INCHARGE_ROUTES = [
   ...MEMBER_ROUTES,
   {
     name: "Members",
-    route: Routes.Member,
+    route: Routes.Members,
     icon: <PersonIcon />,
   },
   {

@@ -1,19 +1,19 @@
 "use server";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { UserBuilder } from "../components/MemberFormBuilder";
+import { UpdateUser } from "../components/MemberFormBuilder";
 import { Tables } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
-export const updateUser = async (values: UserBuilder, id: number) => {
+export const updateUser = async (values: UpdateUser) => {
   const supabase = await getSupabaseClient();
   const { error } = await supabase
     .from(Tables.Members)
     .update({ ...values })
-    .eq("id", id);
+    .eq("id", values.id);
   if (error) {
     throw error;
   }
 
-  redirect(Routes.Member);
+  redirect(Routes.Members);
 };

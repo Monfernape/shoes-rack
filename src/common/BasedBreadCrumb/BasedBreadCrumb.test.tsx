@@ -6,7 +6,7 @@ import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
 
 const mockBreadcrumbs: Breadcrumbs[] = [
-  { href: Routes.Member, label: "Member" },
+  { href: Routes.Members, label: "Member" },
   { href: Routes.AddMember, label: "New Member" },
 ];
 

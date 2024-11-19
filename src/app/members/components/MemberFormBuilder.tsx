@@ -41,7 +41,9 @@ import { updateUser } from "../actions/update-user";
 import { Member } from "@/types";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
-
+export interface UpdateUser extends UserBuilder {
+  id: number;
+}
 const USER_ROLES = [
   {
     role: "Member",
@@ -137,10 +139,10 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
     formState: { errors },
   } = form;
 
-  const handleSubmission = async (values: UserBuilder) => {
+  const handleSubmission = async (values: UserBuilder | UpdateUser) => {
     try {
       const result = member
-        ? await updateUser(values, member.id)
+        ? await updateUser({ ...values, id: member?.id })
         : await createUser(values);
 
       if (!result) {
@@ -148,7 +150,6 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
           title: member?.id
             ? "User updated successfully"
             : "User created successfully",
-          description: member?.id ? "" : "You will receive message shortly",
         });
       }
     } catch (error) {
@@ -167,7 +168,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
         <form
           action={() => form.handleSubmit(handleSubmission)()}
           className="space-y-4"
-          data-testid="form-valid"
+          data-testid="form"
         >
           <h4 className="text-xl text-black text-bold">Information</h4>
           <FormField

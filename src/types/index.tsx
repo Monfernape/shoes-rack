@@ -1,8 +1,7 @@
-import { MemberRole, Shift } from "@/constant/constant";
+import { MemberRole, Shift, UserRole, UserStatus } from "@/constant/constant";
 
-export type UserRole = "incharge" | "member" | "shift-incharge";
 export type Shifts = "A" | "B" | "C" | "D";
-export type UserStatus = "active" | "inactive" | "pending";
+
 export type Member = {
   id: number;
   created_at: string;
@@ -23,7 +22,7 @@ export type UserInfo = {
   shift: string;
   name: string;
   phone: string;
-  role: UserRole;
+  role: MemberRole;
   status: UserStatus;
 };
 
@@ -45,7 +44,7 @@ export type UserDetails = {
   cnic: string;
   ehad_duration: string;
   shift: string;
-  role: UserRole;
+  role: MemberRole;
   address: string;
   status: UserStatus;
   created_at: string;
