@@ -5,11 +5,11 @@ import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { deleteMember } from "../actions/delete-user";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { Member } from "@/types";
+import { Member, User } from "@/types";
 
 type Props = {
   memberInfo: Member;
-  loginUser: any;
+  loginUser: User;
 };
 
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {

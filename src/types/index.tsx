@@ -1,6 +1,6 @@
 import { Shift } from "@/constant/constant";
 
-export type UserRole = "incharge" | "member" | "shift-incharge";
+export type UserRole = "incharge" | "member" | "shift_incharge";
 export type Shifts = "A" | "B" | "C" | "D";
 export type UserStatus = "active" | "inactive" | "pending";
 export type Member = {
