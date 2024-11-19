@@ -41,7 +41,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   const { data : membersData, success } = members;
   const route = useRouter();
   const { searchValue } = useSearchContext();
-  const [isLoading , setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
     {
