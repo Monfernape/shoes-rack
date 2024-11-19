@@ -33,8 +33,8 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
     <div>
       <Breadcrumb>
         <BreadcrumbList data-testid="breadCrumb">
-          {updatedBreadCrumbs.map((breadcrumb, index) => (
-            <div key={`breadCrumb-${index}`} className="flex items-center">
+          {updatedBreadCrumbs.map((breadcrumb) => (
+            <div key={breadcrumb.href} className="flex items-center">
               <BreadcrumbItem>
                 <BreadcrumbLink
                   asChild
