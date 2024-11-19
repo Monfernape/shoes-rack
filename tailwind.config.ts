@@ -94,6 +94,9 @@ const config: Config = {
             DEFAULT: "hsl(var(--row-color))",
           },
         },
+        loader:{
+          DEFAULT: "hsla(var(--loder-color))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
