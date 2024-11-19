@@ -62,21 +62,23 @@ const UpdateDevUserFrom = () => {
   } = form;
 
   const handleSubmission = async (values: UpdateDevUserRole) => {
-    console.log({ values });
     try {
       // there is nothing in response in case of insert data
       const result = await updateDevUserRole(values);
 
-      if (!result) {
+      if (result) {
         form.reset();
         toast({
           title: "Role update successfully",
         });
       }
     } catch (error) {
-      toast({
-        title: "Try again",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+          description: "Please try again",
+        });
+      }
     }
   };
 
