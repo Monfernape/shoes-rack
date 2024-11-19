@@ -8,7 +8,7 @@ export const updateDevUserRole = async (values: UpdateDevUserRole) => {
   const supabase = await getSupabaseClient();
   const userPhoneNumber = formatPhoneNumber(values.phoneNumber);
 
-  const { error } = await supabase
+  const { data: updatedDevUser, error } = await supabase
     .from(Tables.Members)
     .update({
       role: values.role,
@@ -18,6 +18,8 @@ export const updateDevUserRole = async (values: UpdateDevUserRole) => {
     .single();
 
   if (error) {
-    return error;
+    throw error;
+  } else {
+    return updatedDevUser;
   }
 };
