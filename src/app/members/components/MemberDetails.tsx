@@ -51,7 +51,7 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
                     {" "}
                     Age:{" "}
                   </span>{" "}
-                  {userInfo.age} years
+                  {userInfo.date_of_birth} years
                 </p>
               </div>
               <div className="pl-7 space-y-2">
@@ -77,7 +77,7 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
                     {" "}
                     Phone:{" "}
                   </span>{" "}
-                  {userInfo.phone}
+                  {userInfo.phoneNumber}
                 </p>
               </div>
             </div>
@@ -93,7 +93,7 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
                   <span className="font-medium text-muted-foreground">
                     Ehad Duration:{" "}
                   </span>{" "}
-                  {userInfo.ehadDuration} years
+                  {userInfo.ehad_duration} years
                 </p>
               </div>
               <div className="pl-7 space-y-2">
