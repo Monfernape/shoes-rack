@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Sidebar } from "@/app/layout/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,11 +13,14 @@ import MemberContext, {
   MemberContextType,
 } from "@/context/SearchContextProvider";
 import useMediaQuery from "@/hooks/use-media-query";
-
+import useDebounce from "@/hooks/useDebounce";
 
 export const MemberHeader = () => {
+
   const pathname = usePathname();
   const isSmallScreen = useMediaQuery("sm");
+  const [search, setSearch] = useState("");
+  const debounceValue = useDebounce(search, 500);
   const { setSearchValue } = useContext(MemberContext) as MemberContextType;
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isTitleHide, setIsTitleHide] = useState<boolean>(false);
@@ -27,8 +30,12 @@ export const MemberHeader = () => {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+    setSearch(e.target.value);
   };
+
+  useEffect(() => {
+    setSearchValue(debounceValue);
+  }, [debounceValue]);
 
   return (
     <div className="sticky top-0 z-50 w-full">
@@ -48,7 +55,7 @@ export const MemberHeader = () => {
                 <HamburgerMenuIcon className="h-6 w-6 text-black" />
               </Button>
             )}
-            {( !isTitleHide || !isSmallScreen ) && <MemberBreadCrumbs />}
+            {(!isTitleHide || !isSmallScreen) && <MemberBreadCrumbs />}
           </div>
           {pathname !== Routes.AddMember && pathname !== Routes.Login && (
             <div className="flex items-center space-x-2">

@@ -26,6 +26,7 @@ import { formatRole } from "@/utils/formatRole";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { Shift } from "@/constant/constant";
 import { useUser } from "@/hooks/useGetLoggedinUser";
+import { Loader } from "@/common/Loader/Loader";
 
 interface Props {
   data: Member[];
@@ -123,6 +124,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   };
   return (
     <StandardPage {...StandardPageProps}>
+      {/* {isLoading && <Loader />} */}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
