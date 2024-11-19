@@ -1,11 +1,12 @@
-export type UserRole = "incharge" | "member" | "shift-incharge";
+export type UserRole = "incharge" | "member" | "shift_incharge";
 export type Shifts = "A" | "B" | "C" | "D";
 export type UserStatus = "active" | "inactive" | "pending";
+
 export type Member = {
   shift: string;
   id: number;
   name: string;
-  phone: string;
+  phoneNumber: string;
   role: UserRole;
   status: UserStatus;
 };

@@ -24,6 +24,7 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
+import { memberListMapper } from "@/utils/Mapper";
 
 interface Props {
   data: Member[];
@@ -34,6 +35,8 @@ export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
   const { data, success } = members;
   const route = useRouter();
+  const memberData = memberListMapper(data)
+
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -79,7 +82,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   ];
 
   const table = useReactTable({
-    data,
+    data:memberData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -93,7 +96,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     }
   }, [success, toast]);
 
-  const groupedData = useGroupedData(data, "shift");
+  const groupedData = useGroupedData(memberData, "shift");
 
   const handleNavigation = () => {
     route.push(Routes.AddMember);

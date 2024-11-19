@@ -1,6 +1,7 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { UserStatus } from "@/types";
+import { capitalization } from "@/utils/Mapper";
 
 const statusClasses = {
   active: {
@@ -24,7 +25,7 @@ export const UserStatusBadge = ({ status }: { status: UserStatus }) => {
     <Badge
       className={`capitalize flex justify-center ${background} ${text} hover:${background} hover:${text} hover:cursor-pointer`}
     >
-      {status}
+      {capitalization(status)}
     </Badge>
   );
 };
