@@ -25,13 +25,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { LeaveTypes, UserRole, UserStatus } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
-import { LeaveRequestsTypes, LeavesRequestStatus, User } from "@/types";
 import { createLeaveRequest } from "../../actions/createLeaveRequest";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { useParams, useRouter } from "next/navigation";
-import { getLeaveRequestById } from "../../actions/get-leave-request-by-id";
 import { toast } from "@/hooks/use-toast";
 import { updateLeaveRequest } from "../../actions/updated-leave-request";
+import { User } from "@/types";
+import { startOfDay } from "date-fns";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -43,8 +43,16 @@ export const leaveRequestSchema = z.object({
     LeaveTypes.Vacation,
   ]),
   date: z.object({
-    from: z.date(),
-    to: z.date(),
+    from: z
+      .date({
+        message: "Date Range must be selected.",
+      })
+      .refine((date) => date >= startOfDay(new Date()), {
+        message: "Start Date must be today or in the future.",
+      }),
+    to: z.date({
+      message: "End Date must be selected.",
+    }),
   }),
   reason: z.string().min(10, {
     message: "Please provide a reason for leave.",
@@ -85,8 +93,10 @@ interface LeaveRequestFormBuilderProps {
   leaveRequest?: LeaveRequest | null;
 }
 
-export const LeaveRequestFormBuilder = ({leaveRequest}: LeaveRequestFormBuilderProps) => {
-  const { id: paramsId } = useParams<{ id: string }>();
+export const LeaveRequestFormBuilder = ({
+  leaveRequest,
+}: LeaveRequestFormBuilderProps) => {
+  const { id: leaveId } = useParams<{ id: string }>();
   const router = useRouter();
 
   const form = useForm<leaveRequestSchemaType>({
@@ -112,17 +122,17 @@ export const LeaveRequestFormBuilder = ({leaveRequest}: LeaveRequestFormBuilderP
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
     try {
-      if (!paramsId) {
+      if (!leaveId) {
         createLeaveRequest(values);
         toast({
           title: "Success",
-          description: "Leave Request Created Successfully",
+          description: "Leave request created successfully",
         });
       } else {
-        updateLeaveRequest(Number(paramsId), values);
+        updateLeaveRequest(Number(leaveId), values);
         toast({
           title: "Success",
-          description: "Leave Request Updated Successfully",
+          description: "Leave request updated successfully",
         });
       }
       router.push("/leaves");
@@ -216,7 +226,7 @@ export const LeaveRequestFormBuilder = ({leaveRequest}: LeaveRequestFormBuilderP
               disabled={!isValid}
               className="text-xs"
             >
-              {paramsId ? "Update" : "Submit"}
+              {leaveId ? "Update" : "Submit"}
             </Button>
           </div>
         </form>
