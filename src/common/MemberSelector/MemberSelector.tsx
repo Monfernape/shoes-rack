@@ -21,26 +21,14 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { getMembers } from "@/app/members/actions/getMembers";
-import { Member, User } from "@/types";
+import { Member } from "@/types";
 import { MemberRole, UserRole, UserStatus } from "@/constant/constant";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface SelectFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
 }
-
-const loginUser: User = {
-  id: 1,
-  name: "Muhammad Bilal Ali khokhar",
-  shift: "A",
-  role: UserRole.Member,
-  status: UserStatus.Active,
-  phone: "123-456-7890",
-  address: "123 Main St, Anytown, USA",
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  deleted_at: null,
-};
 
 const MemberSelector = <T extends FieldValues>({
   control,
@@ -52,7 +40,7 @@ const MemberSelector = <T extends FieldValues>({
   });
 
   const [members, setMembers] = useState<Member[]>([]);
-
+  const loginUser = useUser();
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -76,8 +64,8 @@ const MemberSelector = <T extends FieldValues>({
       .filter(
         (member) =>
           member.status === UserStatus.Active &&
-          (loginUser.role === MemberRole.Incharge ||
-            member.shift === loginUser.shift)
+          (loginUser?.role === MemberRole.Incharge ||
+            member.shift === loginUser?.shift)
       )
       .map(({ id, name }) => ({
         id: id.toString(),
@@ -96,12 +84,12 @@ const MemberSelector = <T extends FieldValues>({
             <Select
               {...field}
               value={
-                loginUser.role === UserRole.Member
-                  ? loginUser.name
+                loginUser?.role === UserRole.Member
+                  ? loginUser?.id.toString()
                   : field.value
               }
               onValueChange={field.onChange}
-              disabled={loginUser.role === UserRole.Member}
+              disabled={loginUser?.role === UserRole.Member}
             >
               <SelectTrigger
                 data-testid="memberId"

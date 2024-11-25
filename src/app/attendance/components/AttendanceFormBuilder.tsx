@@ -19,11 +19,11 @@ import FormWrapper from "@/common/FormWrapper";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { MemberRole } from "@/constant/constant";
 import { updateAttendance } from "../actions/update-attendance";
-import { User } from "@/types";
+import { useParams } from "next/navigation";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface AttendanceFormBuilderProps {
-  initialData?: AttendanceFormValues;
-  loginUser?: User;
+  attendace?: AttendanceFormValues;
 }
 
 const attendanceSchema = z
@@ -50,37 +50,32 @@ const attendanceSchema = z
 export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
 
 const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
-  initialData,
-  loginUser,
+  attendace,
 }) => {
+  const params = useParams();
+  const attendanceId = params?.attendanceId;
+  const loginUser = useUser();
+
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
       memberId:
         loginUser?.role === MemberRole.Member
           ? loginUser.id.toString()
-          : initialData?.memberId || undefined,
-      startTime: initialData?.startTime ?? "",
-      endTime: initialData?.endTime || "",
+          : attendace?.memberId || undefined,
+      startTime: attendace?.startTime ?? "",
+      endTime: attendace?.endTime || "",
     },
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
-    if (!loginUser?.id) {
-      toast({
-        title: "Error",
-        description: "User ID is missing.",
-      });
-      return;
-    }
-
     const updatedValue = {
-      id: loginUser.id.toString(),
+      id: attendanceId.toString(),
       ...values,
     };
 
     try {
-      if (initialData?.memberId) {
+      if (attendace?.memberId) {
         const error = await updateAttendance(updatedValue);
 
         if (!error) {
@@ -167,7 +162,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
             className="w-full text-white rounded-md p-3 transition"
             disabled={!form.formState.isValid}
           >
-            {initialData?.memberId ? "Update" : "Submit"}
+            {attendace?.memberId ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>

@@ -11,13 +11,8 @@ import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { deleteAttendance } from "../actions/deleteAttendance";
 import { toast } from "@/hooks/use-toast";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
-interface MemberInfo {
-  shift: string;
-  role: string;
-  status: string;
-  id: number;
-}
 interface AttendanceData {
   shift: string;
   status: string;
@@ -25,12 +20,12 @@ interface AttendanceData {
 }
 
 type Props = {
-  loginUser: MemberInfo;
   attendanceData: AttendanceData;
 };
 
-const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
+const AttendanceActionRender = ({ attendanceData }: Props) => {
   const router = useRouter();
+  const loginUser = useUser();
 
   const handleEditInfo = (id: number) => {
     router.push(`${Routes.EditAttendance}/${id}`);
@@ -85,22 +80,21 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   ];
 
   const actionMenu = React.useMemo(() => {
-    switch (loginUser.role) {
+    switch (loginUser?.role) {
       case MemberRole.Member:
         return attendanceData.status === AttendanceStatus.Pending
           ? [...baseActions]
           : [];
       case MemberRole.ShiftIncharge:
-        return attendanceData.shift === loginUser.shift
+        return attendanceData.shift === loginUser?.shift
           ? [...ApprovelRequest]
           : [];
       case MemberRole.Incharge:
-      case MemberRole.SuperAdmin:
         return [...ApprovelRequest];
       default:
         return [];
     }
-  }, [loginUser.role, attendanceData.status]);
+  }, [loginUser?.role, attendanceData.status]);
 
   return <ActionsMenu actions={actionMenu} />;
 };
