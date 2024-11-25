@@ -16,8 +16,8 @@ export const updateLeaveRequest = async (
     .update({
       memberId: Number(values.memberId),
       leaveType: values.leaveType,
-      startDate: values.startDate.toISOString(),
-      endDate: values.endDate.toISOString(),
+      startDate: values.date.from.toISOString(),
+      endDate: values.date.to.toISOString(),
       reason: values.reason,
       status: LeaveRequestStatus.Pending,
     })
