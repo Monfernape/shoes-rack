@@ -1,6 +1,6 @@
 "use server";
 import { Tables } from "@/lib/db";
-import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
+import { intlNumberFormat } from "@/utils/phoneNumberFormatter";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { Cookies, UserStatus } from "@/constant/constant";
@@ -14,7 +14,7 @@ type LoginUser = {
 
 export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
   const supabase = await getSupabaseClient();
-  const phoneNum = formatPhoneNumber(phoneNumber);
+  const phoneNum = intlNumberFormat(phoneNumber);
 
   const { data: authUserData, error } = await supabase.auth.signInWithPassword({
     phone: phoneNum,

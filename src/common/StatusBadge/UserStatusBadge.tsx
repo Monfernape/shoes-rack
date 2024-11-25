@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { UserStatus } from "@/types";
-import { capitalization } from "@/utils/Mapper";
+import { capitalization } from "@/utils/stringFormater";
 
 const statusClasses = {
   active: {

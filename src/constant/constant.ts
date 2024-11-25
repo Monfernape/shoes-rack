@@ -1,6 +1,6 @@
 export enum MemberRole {
   Incharge = "incharge",
-  ShiftIncharge = "shift-incharge",
+  ShiftIncharge = "shift_incharge",
   Member = "member",
   SuperAdmin = "super_admin",
 }

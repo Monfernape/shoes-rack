@@ -24,7 +24,7 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
-import { memberListMapper } from "@/utils/Mapper";
+import { memberListMapper } from "@/utils/memberListMapper";
 
 interface Props {
   data: Member[];
