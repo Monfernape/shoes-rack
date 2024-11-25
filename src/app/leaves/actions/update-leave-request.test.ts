@@ -17,8 +17,8 @@ describe("Leave Request Update Test", async () => {
     const submit = vi.fn().mockImplementation(updateLeaveRequest);
     await waitFor(() => {
       submit({
-        mockLeaveRequestId,
         ...mockPayload,
+        mockLeaveRequestId,
       });
     });
     expect(submit).toHaveBeenCalledTimes(1);

@@ -95,7 +95,7 @@ const MemberSelector = <T extends FieldValues>({
           <FormControl>
             <Select
               {...field}
-              value={loginUser.role === UserRole.Member  ? loginUser.name : field.value}
+              value={loginUser.role === UserRole.Member  ? loginUser.id.toString() : field.value}
               onValueChange={field.onChange}
               disabled={loginUser.role === UserRole.Member}
             >

@@ -1,10 +1,8 @@
 "use client";
 
-import * as React from "react";
+import React, { useEffect } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { DateRange } from "react-day-picker";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -13,21 +11,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { DateRange } from "react-day-picker";
 
-interface DatePickerWithRangeProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  dateRange: DateRange | undefined;
-  setDateRange: (date: DateRange | undefined) => void;
+type FieldValues = {
+  from: Date | undefined;
+  to: Date | undefined;
+};
+interface Props {
+  onChange: (dates: DateRange | undefined) => void;
+  value: FieldValues;
 }
 
-export function DatePickerWithRange({
-  dateRange,
-  setDateRange,
-}: DatePickerWithRangeProps) {
-  const onDateChange = (selectedDate: DateRange | undefined) => {
-    setDateRange(selectedDate);
-  };
-
+export function DatePickerWithRange({ onChange, value }: Props) {
   const today = new Date();
   const isDisabled = (date: Date) => {
     return date < today;
@@ -41,18 +36,18 @@ export function DatePickerWithRange({
           variant={"outline"}
           className={cn(
             "w-full justify-start text-xs font-normal text-left",
-            !dateRange && "text-muted-foreground"
+            !value && "text-muted-foreground"
           )}
         >
           <CalendarIcon />
-          {dateRange?.from ? (
-            dateRange.to ? (
+          {value?.from ? (
+            value?.to ? (
               <>
-                {format(dateRange.from, "LLL dd, y")} -{" "}
-                {format(dateRange.to, "LLL dd, y")}
+                {format(value?.from, "LLL dd, y")} -{" "}
+                {format(value?.to, "LLL dd, y")}
               </>
             ) : (
-              format(dateRange.from, "LLL dd, y")
+              format(value?.from, "LLL dd, y")
             )
           ) : (
             <span className="test-xs">Pick start date and end date</span>
@@ -63,9 +58,9 @@ export function DatePickerWithRange({
         <Calendar
           initialFocus
           mode="range"
-          defaultMonth={dateRange?.from}
-          selected={dateRange}
-          onSelect={onDateChange}
+          defaultMonth={value?.from}
+          selected={value}
+          onSelect={onChange}
           numberOfMonths={2}
           disabled={isDisabled}
         />
