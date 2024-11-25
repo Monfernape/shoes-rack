@@ -19,11 +19,16 @@ export const clearCookies = (values: string[]) => {
 };
 
 export const getCookies = (name: string) => {
+  console.log("name", name);
   const cookie = cookies().get(name);
+
+  console.log("cookie**", cookie);
   if (cookie) {
     const values = JSON.parse(cookie.value);
+    console.log("cookies", values);
     return values;
   } else {
+    console.log("cookies&&");
     return null;
   }
 };

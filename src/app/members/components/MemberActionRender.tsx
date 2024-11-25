@@ -21,7 +21,8 @@ type Props = {
 
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const router = useRouter();
-  console.log("Loginuser", loginUser);
+
+  console.log("memberActionRender", loginUser);
   const { role, status, id, shift } = memberInfo;
   const handleViewDetails = () => {
     return;
@@ -76,7 +77,6 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       : [];
 
   const checkShiftMembers = (loginUserShift: string, shift: Shift) => {
-    console.log("LoginUserShift", loginUserShift);
     if (loginUserShift === shift) {
       if (status === UserStatus.Inactive) {
         return [...baseActions, ...viewInfo, ...resendInvite];
