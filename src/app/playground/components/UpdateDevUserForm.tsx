@@ -31,7 +31,7 @@ import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 export const UpdateDevUserSchema = z.object({
   phoneNumber: z
-    .string({ message: "Phone is required" })
+    .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   role: z.enum([UserRole.Member, UserRole.ShiftIncharge, UserRole.Incharge], {
     errorMap: () => {
