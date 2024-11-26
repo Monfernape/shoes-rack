@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { MemberList } from "./MemberList";
@@ -31,21 +31,9 @@ beforeAll(() => {
         return {
           get: vi.fn().mockReturnValue({
             name: "loginUser",
-            value: {
-              id: 148,
-              created_at: "2024-11-15T11:17:10.486126+00:00",
-              name: "Testing User",
-              phoneNumber: "923057692655",
-              date_of_birth: "2024-08-31",
-              cnic: "33333-3333333-3",
-              address: "test",
-              ehad_duration: "2025-03-30",
-              role: MemberRole.ShiftIncharge,
-              status: UserStatus.Active,
-              shift: Shift.ShiftD,
-              invite_link: "kkkk",
-              temporary_password: true,
-            },
+            value:
+              '{"id":148,"created_at":"2024-11-15T11:17:10.486126+00:00","name":"Testing User","phoneNumber":"923057692655","date_of_birth":"2024-08-31","cnic":"33333-3333333-3","address":"test","ehad_duration":"2025-03-30","role":"shift_incharge","status":"active","shift":"D","invite_link":"","temporary_password":true}',
+            path: "/",
           }),
         };
       },
@@ -62,7 +50,7 @@ beforeAll(() => {
 
 describe("integration Testing", () => {
   it("Member List", async () => {
-    render(<MemberList members={member} />);
+    await act(async () => render(<MemberList members={member} />));
     const selection = screen.getAllByTestId("actionButton");
     fireEvent.pointerDown(selection[0]);
     expect(screen.getByTestId("menus")).toBeInTheDocument();

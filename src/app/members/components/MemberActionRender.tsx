@@ -3,7 +3,7 @@ import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { useRouter } from "next/navigation";
-import { User, UserDetails } from "@/types";
+import {  UserDetails } from "@/types";
 import { Routes } from "@/lib/routes";
 
 interface MemberInfo {
@@ -22,7 +22,6 @@ type Props = {
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const router = useRouter();
 
-  console.log("memberActionRender", loginUser);
   const { role, status, id, shift } = memberInfo;
   const handleViewDetails = () => {
     return;

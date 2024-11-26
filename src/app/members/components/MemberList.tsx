@@ -20,11 +20,12 @@ import { Plus as PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useGroupedData from "@/hooks/useGroupedData";
 import { useToast } from "@/hooks/use-toast";
-import { Member, User } from "@/types";
+import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
 import { useUser } from "@/hooks/useGetLoggedinUser";
+
 
 interface Props {
   data: Member[];
