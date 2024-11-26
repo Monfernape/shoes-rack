@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LeaveTypes, MemberRole, UserRole, UserStatus } from "@/constant/constant";
+import { LeaveTypes, MemberRole,  UserStatus } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
