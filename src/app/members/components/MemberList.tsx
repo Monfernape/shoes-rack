@@ -25,7 +25,7 @@ import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
 import { formattedPhoneNumber } from "@/utils/formattedPhoneNumber";
-import { roleFormmater } from "@/utils/memberRoleFormatter";
+import { formattedRole } from "@/utils/memberRoleFormatter";
 
 interface Props {
   data: Member[];
@@ -63,7 +63,7 @@ export const MemberList = ({ members }: { members: Props }) => {
       accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
-        <div className="capitalize">{roleFormmater(row.getValue("role"))}</div>
+        <div className="capitalize">{formattedRole(row.getValue("role"))}</div>
       ),
     },
     {
