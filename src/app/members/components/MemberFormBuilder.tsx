@@ -80,7 +80,7 @@ export const userBuilderSchema = z.object({
     message: "Name is required",
   }),
   phoneNumber: z
-    .string({ message: "Phone is required" })
+    .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   date_of_birth: z.date().max(new Date(Date.now()), "under age"),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),

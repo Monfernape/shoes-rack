@@ -14,7 +14,7 @@ export const addDevUser = async (values: DevUserType) => {
   
   const updatedValues = {
     phoneNumber: userPhoneNumber,
-    name: `Testing User`,
+    name: 'Testing User',
     date_of_birth: currentData,
     ehad_duration: currentData,
     role: UserRole.Member,
