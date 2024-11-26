@@ -2,11 +2,12 @@
 import { Tables } from "@/lib/db";
 import { UserStatus } from "@/constant/constant";
 import { redirect } from "next/navigation";
-import { intlNumberFormat } from "@/utils/phoneNumberFormatter";
+
 import { UserBuilder } from "../components/MemberFormBuilder";
 import { headers } from "next/headers";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { Routes } from "@/lib/routes";
+import { formattedPhoneNumber } from "@/utils/formattedPhoneNumber";
 
 export const createUser = async (values: UserBuilder) => {
   const supabase = await getSupabaseClient();
@@ -20,7 +21,7 @@ export const createUser = async (values: UserBuilder) => {
 
   const invite_link = `${protocol}://${host}?token=${randomInvitedId}`;
 
-  const userPhoneNumber = intlNumberFormat(values.phoneNumber);
+  const userPhoneNumber = formattedPhoneNumber(values.phoneNumber);
 
   const { error } = await supabase.from(Tables.Members).insert({
     ...values,

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { UserRole } from "@/types";
+import { UserRoleType } from "@/types";
 
 import {
   DashboardIcon,
@@ -71,7 +71,7 @@ export const INCHARGE_ROUTES = [
   },
 ];
 
-export const useAccessibleRoutes = (userRole: UserRole) => {
+export const useAccessibleRoutes = (userRole: UserRoleType) => {
   const routes = useMemo(() => {
     switch (userRole) {
       case MemberRole.Incharge:

@@ -24,18 +24,30 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
-import { memberListMapper } from "@/utils/memberListMapper";
+import { formattedPhoneNumber } from "@/utils/formattedPhoneNumber";
+import { roleFormmater } from "@/utils/memberRoleFormatter";
 
 interface Props {
   data: Member[];
   success: boolean;
   message: string;
 }
+
 export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
   const { data, success } = members;
   const route = useRouter();
-  const memberData = memberListMapper(data)
+
+  const memberListMapper = (members: Member[]) => {
+    const mappedMembers = members.map((member) => ({
+      ...member,
+      phoneNumber: formattedPhoneNumber(member.phoneNumber),
+      role: roleFormmater(member.role),
+    }));
+    return mappedMembers;
+  };
+
+  const memberData = memberListMapper(data);
 
   const columns: ColumnDef<Member>[] = [
     {
@@ -82,7 +94,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   ];
 
   const table = useReactTable({
-    data:memberData,
+    data: memberData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

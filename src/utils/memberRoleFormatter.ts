@@ -1,4 +1,4 @@
-import { UserRole as UserRoleType } from "@/types";
+import { UserRoleType } from "@/types";
 import { capitalization, snakeToCapitalization } from "./stringFormater";
 import { UserRole } from "@/constant/constant";
 

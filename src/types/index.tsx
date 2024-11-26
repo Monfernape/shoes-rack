@@ -1,4 +1,4 @@
-export type UserRole = "incharge" | "member" | "shift_incharge";
+export type UserRoleType = "incharge" | "member" | "shift_incharge";
 export type Shifts = "A" | "B" | "C" | "D";
 export type UserStatus = "active" | "inactive" | "pending";
 
@@ -7,7 +7,7 @@ export type Member = {
   id: number;
   name: string;
   phoneNumber: string;
-  role: UserRole;
+  role: UserRoleType;
   status: UserStatus;
 };
 export type UserInfo = {
@@ -15,7 +15,7 @@ export type UserInfo = {
   shift: string;
   name: string;
   phone: string;
-  role: UserRole;
+  role: UserRoleType;
   status: UserStatus;
 };
 
@@ -37,7 +37,7 @@ export type UserDetails = {
   cnic: string;
   ehad_duration: string;
   shift: string;
-  role: UserRole;
+  role: UserRoleType;
   address: string;
   status: UserStatus;
   created_at: string;
