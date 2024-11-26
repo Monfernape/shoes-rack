@@ -1,7 +1,7 @@
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
-import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+import { AttendanceStatus, MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { useRouter } from "next/navigation";
 import {  UserDetails } from "@/types";
 import { Routes } from "@/lib/routes";
@@ -11,12 +11,12 @@ interface MemberInfo {
   name?: string;
   phone?: string;
   role?: MemberRole;
-  status: UserStatus;
+  status: UserStatus | AttendanceStatus;
   shift: Shift;
 }
 type Props = {
   memberInfo: MemberInfo;
-  loginUser: UserDetails | undefined;
+  loginUser?: UserDetails | undefined;
 };
 
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {

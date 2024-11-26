@@ -1,20 +1,21 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { UserStatus } from "@/types";
+import { UserStatus } from "@/constant/constant";
 
 const statusClasses = {
   active: {
     background: "bg-status-active-background",
     text: "text-status-active",
   },
-  pending: {
-    background: "bg-status-pending-background",
-    text: "text-status-pending",
-  },
+  
   inactive: {
     background: "bg-status-inactive-background",
     text: "text-status-inactive",
   },
+  deactivated : {
+    background : "",
+    text:""
+  }
 } as const;
 
 export const UserStatusBadge = ({ status }: { status: UserStatus }) => {

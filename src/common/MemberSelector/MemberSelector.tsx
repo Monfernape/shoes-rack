@@ -33,7 +33,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: UserRole.Incharge,
+  role: MemberRole.Incharge,
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
@@ -95,9 +95,9 @@ const MemberSelector = <T extends FieldValues>({
           <FormControl>
             <Select
               {...field}
-              value={loginUser.role === UserRole.Member  ? loginUser.name : field.value}
+              value={loginUser.role === MemberRole.Member  ? loginUser.name : field.value}
               onValueChange={field.onChange}
-              disabled={loginUser.role === UserRole.Member}
+              disabled={loginUser.role === MemberRole.Member}
             >
               <SelectTrigger
                 data-testid="memberId"

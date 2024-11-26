@@ -21,8 +21,7 @@ export enum Shift {
 export enum UserStatus {
   Active = "active",
   Inactive = "inactive",
-  Invited = "invited",
-  deactivate = "deactivate",
+  deactivated = "deactivated",
 }
 
 export const PAKISTAN_COUNTRY_CODE = "92";
