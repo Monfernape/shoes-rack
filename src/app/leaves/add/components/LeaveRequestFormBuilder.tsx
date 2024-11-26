@@ -45,7 +45,7 @@ export const leaveRequestSchema = z.object({
   date: z.object({
     from: z
       .date({
-        message: "Date Range must be selected.",
+        message: "Date range must be selected.",
       })
       .refine((date) => date >= startOfDay(new Date()), {
         message: "Start Date must be today or in the future.",
