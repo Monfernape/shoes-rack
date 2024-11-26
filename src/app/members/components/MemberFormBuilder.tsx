@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
-import { Shift, UserRole } from "@/constant/constant";
+import { Shift, MemberRole } from "@/constant/constant";
 import {
   Select,
   SelectContent,
@@ -43,16 +43,16 @@ export type UserBuilder = z.infer<typeof userBuilderSchema>;
 const USER_ROLES = [
   {
     role: "Member",
-    value: UserRole.Member,
+    value: MemberRole.Member,
   },
 
   {
     role: "Shift Incharge",
-    value: UserRole.ShiftIncharge,
+    value: MemberRole.ShiftIncharge,
   },
   {
     role: "Incharge",
-    value: UserRole.Incharge,
+    value: MemberRole.Incharge,
   },
 ];
 
@@ -90,7 +90,7 @@ export const userBuilderSchema = z.object({
     },
   }),
   address: z.string({ message: "Address is required" }),
-  role: z.enum([UserRole.Member, UserRole.ShiftIncharge, UserRole.Incharge], {
+  role: z.enum([MemberRole.Member, MemberRole.ShiftIncharge, MemberRole.Incharge], {
     errorMap: () => {
       return { message: "Select user role" };
     },
@@ -120,7 +120,7 @@ export const MemberFormBuilder = () => {
       cnic: "",
       shift: Shift.ShiftA,
       address: "",
-      role: UserRole.Member,
+      role: MemberRole.Member,
       ehad_duration: new Date(),
     },
     mode: "all",

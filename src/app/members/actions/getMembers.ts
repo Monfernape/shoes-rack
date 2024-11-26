@@ -9,7 +9,7 @@ export const getMembers = async () => {
   const { data, error } = await supabase
     .from(Tables.Members)
     .select("*")
-    .neq("status", UserStatus.Deactivate);
+    .neq("status", UserStatus.Deactivated);
 
   if (error) {
     return {

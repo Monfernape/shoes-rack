@@ -8,13 +8,15 @@ export const deleteMember = async (id: number) => {
   const supabase = await getSupabaseClient();
   const permission = await hasPermission();
   if (permission) {
-    const response = await supabase
+    const { error } = await supabase
       .from(Tables.Members)
       .update({
-        status: UserStatus.Deactivate,
+        status: UserStatus.Deactivated,
       })
       .eq("id", id);
-    return response;
+    if (error) {
+      throw error;
+    }
   }
   return;
 };

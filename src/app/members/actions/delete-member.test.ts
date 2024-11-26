@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { deleteMember } from "./delete-user";
+import { deleteMember } from "./delete-member";
 
 describe("Test Delete User Function", () => {
   it("Delete Function should be called", () => {

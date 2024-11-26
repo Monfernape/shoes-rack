@@ -5,12 +5,6 @@ export enum MemberRole {
   SuperAdmin = "super_admin",
 }
 
-export enum UserRole {
-  Member = "member",
-  Incharge = "incharge",
-  ShiftIncharge = "shift_incharge",
-  SuperAdmin = "super_admin",
-}
 
 export enum Shift {
   ShiftA = "A",
@@ -22,8 +16,7 @@ export enum Shift {
 export enum UserStatus {
   Active = "active",
   Inactive = "inactive",
-  Invited = "invited",
-  Deactivate = "deactivate",
+  Deactivated = "deactivated",
 }
 
 export const PAKISTAN_COUNTRY_CODE = "92";
