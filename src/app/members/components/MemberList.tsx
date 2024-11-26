@@ -35,19 +35,9 @@ interface Props {
 
 export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
-  const { data, success } = members;
+  const { data : membersList, success } = members;
   const route = useRouter();
 
-  const memberListMapper = (members: Member[]) => {
-    const mappedMembers = members.map((member) => ({
-      ...member,
-      phoneNumber: formattedPhoneNumber(member.phoneNumber),
-      role: roleFormmater(member.role),
-    }));
-    return mappedMembers;
-  };
-
-  const memberData = memberListMapper(data);
 
   const columns: ColumnDef<Member>[] = [
     {
@@ -60,7 +50,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
+      cell: ({ row }) => <div>{formattedPhoneNumber(row.getValue("phoneNumber"))}</div>,
     },
     {
       accessorKey: "shift",
@@ -73,7 +63,7 @@ export const MemberList = ({ members }: { members: Props }) => {
       accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("role")}</div>
+        <div className="capitalize">{roleFormmater(row.getValue("role"))}</div>
       ),
     },
     {
@@ -94,7 +84,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   ];
 
   const table = useReactTable({
-    data: memberData,
+    data: membersList,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -108,14 +98,14 @@ export const MemberList = ({ members }: { members: Props }) => {
     }
   }, [success, toast]);
 
-  const groupedData = useGroupedData(memberData, "shift");
+  const groupedData = useGroupedData(membersList, "shift");
 
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
 
   const StandardPageProps = {
-    hasContent: !!data.length,
+    hasContent: !!membersList.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
     buttonIcon: <PlusIcon />,
