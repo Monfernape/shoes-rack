@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Layout } from "./layout/Layout";
 import { Toaster } from "@/components/ui/toaster";
