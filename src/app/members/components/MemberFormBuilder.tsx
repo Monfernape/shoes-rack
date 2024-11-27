@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
-import { Shift, UserRole } from "@/constant/constant";
+import { Shift, MemberRole } from "@/constant/constant";
 import {
   Select,
   SelectContent,
@@ -37,22 +37,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { useToast } from "@/hooks/use-toast";
 import { createUser } from "../actions/createUser";
+import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
 export const USER_ROLES = [
   {
     role: "Member",
-    value: UserRole.Member,
+    value: MemberRole.Member,
   },
 
   {
     role: "Shift Incharge",
-    value: UserRole.ShiftIncharge,
+    value: MemberRole.ShiftIncharge,
   },
   {
     role: "Incharge",
-    value: UserRole.Incharge,
+    value: MemberRole.Incharge,
   },
 ];
 
@@ -90,7 +91,7 @@ export const userBuilderSchema = z.object({
     },
   }),
   address: z.string({ message: "Address is required" }),
-  role: z.enum([UserRole.Member, UserRole.ShiftIncharge, UserRole.Incharge], {
+  role: z.enum([MemberRole.Member, MemberRole.ShiftIncharge, MemberRole.Incharge], {
     errorMap: () => {
       return { message: "Select user role" };
     },
@@ -120,7 +121,7 @@ export const MemberFormBuilder = () => {
       cnic: "",
       shift: Shift.ShiftA,
       address: "",
-      role: UserRole.Member,
+      role: MemberRole.Member,
       ehad_duration: new Date(),
     },
     mode: "all",
@@ -160,7 +161,7 @@ export const MemberFormBuilder = () => {
           className="space-y-4"
           data-testid="form-valid"
         >
-          <h4 className="text-xl text-black text-bold">Information</h4>
+          <FormTitle title="Information" />
           <FormField
             control={form.control}
             name="name"
@@ -233,7 +234,7 @@ export const MemberFormBuilder = () => {
                         data-testid="date_of_birth"
                         variant={"outline"}
                         className={cn(
-                          `justify-start text-left font-normal
+                          `justify-start text-left font-normal text-xs
                           ${field.value} && "text-muted-foreground
                           ${
                             errors?.date_of_birth &&
@@ -297,7 +298,7 @@ export const MemberFormBuilder = () => {
                         data-testid="ehad_duration"
                         variant={"outline"}
                         className={cn(
-                          `justify-start text-left font-normal
+                          `justify-start text-left font-normal text-xs
                           ${field.value} && "text-muted-foreground
                           ${
                             errors?.ehad_duration &&
