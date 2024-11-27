@@ -1,6 +1,6 @@
 export type UserRole = "incharge" | "member" | "shift-incharge";
 export type Shifts = "A" | "B" | "C" | "D";
-export type UserStatus = "active" | "inactive" | "deactivated" ;
+export type UserStatus = "active" | "inactive" | "deactivated";
 export type Member = {
   shift: string;
   id: number;
@@ -30,15 +30,19 @@ export interface Breadcrumbs {
 }
 
 export type UserDetails = {
+  id: number;
   name: string;
-  phone: string;
-  age: number;
+  phoneNumber: string;
   cnic: string;
-  ehadDuration: string;
+  ehad_duration: string;
   shift: string;
   role: UserRole;
   address: string;
   status: UserStatus;
+  created_at: string;
+  date_of_birth: string;
+  invite_link: string;
+  temporary_password: boolean;
 };
 
 export interface MembersProps {

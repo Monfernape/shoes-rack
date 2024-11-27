@@ -18,12 +18,12 @@ import {
 } from "@/components/ui/table";
 import { Plus as PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import useGroupedData from "@/hooks/useGroupedData";
 import { useToast } from "@/hooks/use-toast";
 import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
+import { Shift } from "@/constant/constant";
 
 interface Props {
   data: Member[];
@@ -93,7 +93,15 @@ export const MemberList = ({ members }: { members: Props }) => {
     }
   }, [success, toast]);
 
-  const groupedData = useGroupedData(data, "shift");
+  const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC , Shift.ShiftD];
+
+  const groupedData = allShifts.map((shift) => {
+    const usersInShift = data.filter((user) => user.shift === shift);
+    return {
+      shift: shift,
+      members: usersInShift,
+    };
+  });
 
   const handleNavigation = () => {
     route.push(Routes.AddMember);
@@ -138,7 +146,7 @@ export const MemberList = ({ members }: { members: Props }) => {
                   Shift {shiftGroup.shift}
                 </TableCell>
               </TableRow>
-              {shiftGroup.row.map((row) => (
+              {shiftGroup.members.map((row) => (
                 <TableRow key={row.id}>
                   {table
                     .getRowModel()
