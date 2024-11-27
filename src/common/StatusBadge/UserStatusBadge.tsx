@@ -7,7 +7,7 @@ const statusClasses = {
     background: "bg-status-active-background",
     text: "text-status-active",
   },
-  pending: {
+  deactivated: {
     background: "bg-status-pending-background",
     text: "text-status-pending",
   },

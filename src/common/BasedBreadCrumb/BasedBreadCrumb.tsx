@@ -33,9 +33,9 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
     <div>
       <Breadcrumb>
         <BreadcrumbList data-testid="breadCrumb">
-          {updatedBreadCrumbs.map((breadcrumb, index) => (
-            <BreadcrumbItem key={index}>
-              <>
+          {updatedBreadCrumbs.map((breadcrumb) => (
+            <div key={breadcrumb.href} className="flex items-center">
+              <BreadcrumbItem>
                 <BreadcrumbLink
                   asChild
                   className={`max-w-20 text-sm font-semibold text-gray-800 truncate truncate md:max-w-none ${
@@ -48,10 +48,9 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
                     {breadcrumb.label}
                   </Link>
                 </BreadcrumbLink>
-
-                {updatedBreadCrumbs.length > 1 && <BreadcrumbSeparator />}
-              </>
-            </BreadcrumbItem>
+              </BreadcrumbItem>
+              {updatedBreadCrumbs.length > 1 && <BreadcrumbSeparator />}
+            </div>
           ))}
         </BreadcrumbList>
       </Breadcrumb>
