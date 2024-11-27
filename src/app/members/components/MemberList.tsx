@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect } from "react";
 import {
   ColumnDef,
@@ -25,7 +24,6 @@ import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
 import { Shift } from "@/constant/constant";
 import { useUser } from "@/hooks/useGetLoggedinUser";
-
 interface Props {
   data: Member[];
   success: boolean;
@@ -84,13 +82,11 @@ export const MemberList = ({ members }: { members: Props }) => {
       },
     },
   ];
-
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
   useEffect(() => {
     if (!success) {
       toast({
@@ -99,9 +95,7 @@ export const MemberList = ({ members }: { members: Props }) => {
       });
     }
   }, [success, toast]);
-
   const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC , Shift.ShiftD];
-
   const groupedData = allShifts.map((shift) => {
     const usersInShift = data.filter((user) => user.shift === shift);
     return {
@@ -109,11 +103,9 @@ export const MemberList = ({ members }: { members: Props }) => {
       members: usersInShift,
     };
   });
-
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
-
   const StandardPageProps = {
     hasContent: !!data.length,
     title: "Add member",
@@ -123,7 +115,6 @@ export const MemberList = ({ members }: { members: Props }) => {
     onAction: handleNavigation,
     labelForActionButton: "Add member",
   };
-
   return (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -141,7 +132,6 @@ export const MemberList = ({ members }: { members: Props }) => {
             </TableRow>
           ))}
         </TableHeader>
-
         <TableBody>
           {groupedData.map((shiftGroup, index) => (
             <React.Fragment key={`${shiftGroup}-${index}`}>

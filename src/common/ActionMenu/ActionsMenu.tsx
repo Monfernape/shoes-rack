@@ -54,6 +54,7 @@ const ActionsMenu = ({ actions }: Props) => {
                   ? "text-status-inactive"
                   : ""
               }`}
+              data-testid="menuOptions"
             >
               {action.title}
             </span>

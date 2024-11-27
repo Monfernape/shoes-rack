@@ -5,13 +5,19 @@ import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 export type UserRole = "incharge" | "member" | "shift_incharge";
 
 export type Member = {
-  shift: Shift;
   id: number;
+  created_at: string;
   name: string;
-  phone: string;
+  phoneNumber: string;
+  date_of_birth: string;
+  cnic: string;
+  address: string;
+  ehad_duration: string;
   role: MemberRole;
   status: UserStatus;
+  shift: Shift;
   invite_link: string;
+  temporary_password: boolean;
 };
 export type UserInfo = {
   id: number;
@@ -76,10 +82,4 @@ export enum RequestActionTitles {
   Approve = "approve",
   Reject = "reject",
   ViewDetails = "view details",
-}
-
-export enum Table {
-  Attendance = "attendance",
-  Member = "member",
-  User = "user",
 }

@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { it, describe, vi, beforeAll } from "vitest";
+import { it, describe, vi } from "vitest";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { MemberList } from "./MemberList";
 
@@ -19,7 +19,6 @@ const member = {
       shift: Shift.ShiftD,
       invite_link: "",
       temporary_password: true,
-      phone: ""
     },
   ],
   success: true,
@@ -51,7 +50,7 @@ beforeAll(() => {
 
 describe("integration Testing", () => {
   it("Member List", async () => {
-    await act( async () => render(<MemberList members={member} />));
+    await act(async () => render(<MemberList members={member} />));
     const selection = screen.getAllByTestId("actionButton");
     fireEvent.pointerDown(selection[0]);
     expect(screen.getByTestId("menus")).toBeInTheDocument();

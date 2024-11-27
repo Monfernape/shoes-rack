@@ -1,6 +1,7 @@
 "use client";
 import { logoutUser } from "@/app/members/actions/logoutUser";
 import { Button } from "@/components/ui/button";
+import { MemberRole } from "@/constant/constant";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
 import { Routes } from "@/lib/routes";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
@@ -15,14 +16,16 @@ interface Props {
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   // TODO : role will be dynamic after user login
-  const roleBasedRoutes = useAccessibleRoutes("incharge");
-  const pathname = usePathname();
-
-  const isRestrictPath = pathname === Routes.Playground || pathname === Routes.Login;
+  const roleBasedRoutes = useAccessibleRoutes(MemberRole.Incharge);
 
   const onLogoutUser = () => {
     logoutUser();
   };
+
+  const pathname = usePathname();
+
+
+  const isRestrictPath = pathname === Routes.Playground || pathname === Routes.Login;
 
   if(isRestrictPath || isSidebarOpen){
     return null

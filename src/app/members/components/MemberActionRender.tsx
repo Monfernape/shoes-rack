@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Member, UserDetails } from "@/types";
 import { Attendance } from "@/app/attendance/components/AttendanceList";
+import { Routes } from "@/lib/routes";
 
 type Props = {
   memberInfo: Member | Attendance;
@@ -23,7 +24,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   };
 
   const handleEditInfo = () => {
-    return;
+    router.push(`${Routes.EditMember}/${id}`);
   };
 
   const handleDeleteMember = async () => {
