@@ -15,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import useGroupedData from "@/hooks/useGroupedData";
 import {  LeaveRequestsTypes } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon } from "lucide-react";
@@ -131,7 +130,6 @@ export const LeavesRequestList = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const groupedData = useGroupedData(leaveRequests, "shift");
   const handleNavigate = () => {
     alert("nativgation function trigger");
   };
@@ -178,7 +176,7 @@ export const LeavesRequestList = () => {
                 ))}
             </TableRow>
           ))}
-          {!groupedData.length && (
+          {!leaveRequests.length && (
             <TableRow>
               <TableCell colSpan={6} className="text-center">
                 No Leave Request Found
