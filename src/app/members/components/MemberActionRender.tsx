@@ -7,7 +7,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Member, UserDetails } from "@/types";
 import { Attendance } from "@/app/attendance/components/AttendanceList";
-import result from "postcss/lib/result";
 
 type Props = {
   memberInfo: Member | Attendance;
