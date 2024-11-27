@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LeaveTypes, UserRole, UserStatus } from "@/constant/constant";
+import { LeaveRequestStatus, LeaveTypes, UserRole, UserStatus } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
 import { createLeaveRequest } from "../../actions/createLeaveRequest";
@@ -32,6 +32,7 @@ import { toast } from "@/hooks/use-toast";
 import { updateLeaveRequest } from "../../actions/updated-leave-request";
 import { User } from "@/types";
 import { startOfDay } from "date-fns";
+import { Routes } from "@/lib/routes";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -86,15 +87,17 @@ type LeaveRequest = {
   startDate: Date;
   endDate: Date;
   reason: string;
-  memberId: string;
+  memberId: number;
+  created_at?: string,
+  status?: LeaveRequestStatus
 };
 
 interface LeaveRequestFormBuilderProps {
-  leaveRequest?: LeaveRequest | null;
+  leaves?: LeaveRequest;
 }
 
 export const LeaveRequestFormBuilder = ({
-  leaveRequest,
+  leaves,
 }: LeaveRequestFormBuilderProps) => {
   const { id: leaveId } = useParams<{ id: string }>();
   const router = useRouter();
@@ -104,16 +107,14 @@ export const LeaveRequestFormBuilder = ({
     defaultValues: {
       memberId:
         loginUser.role !== UserRole.Member
-          ? leaveRequest?.memberId?.toString() ?? ""
+          ? leaves?.memberId?.toString() ?? ""
           : loginUser.id.toString(),
-      leaveType: leaveRequest?.leaveType ?? LeaveTypes.Personal,
+      leaveType: leaves?.leaveType ?? LeaveTypes.Personal,
       date: {
-        from: leaveRequest?.startDate
-          ? new Date(leaveRequest?.startDate)
-          : undefined,
-        to: leaveRequest?.endDate ? new Date(leaveRequest?.endDate) : undefined,
+        from: leaves?.startDate ? new Date(leaves?.startDate) : undefined,
+        to: leaves?.endDate ? new Date(leaves?.endDate) : undefined,
       },
-      reason: leaveRequest?.reason ?? "",
+      reason: leaves?.reason ?? "",
     },
     mode: "all",
   });
@@ -135,12 +136,14 @@ export const LeaveRequestFormBuilder = ({
           description: "Leave request updated successfully",
         });
       }
-      router.push("/leaves");
+      router.push(Routes.LeaveRequest);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong! Please try again.",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description: "Something went wrong! Please try again.",
+        });
+      }
     }
   }
 

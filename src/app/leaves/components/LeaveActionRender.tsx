@@ -86,14 +86,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
         title: "Edit",
         id: 2,
         onClick: () => {
-          if (requestId !== undefined) {
-            handleEditInfo(requestId);
-          } else {
-            toast({
-              title: "Error",
-              description: "Request ID is missing.",
-            });
-          }
+          handleEditInfo(requestId);
         },
         icon: <EditIcon size={16} />,
       },
@@ -101,14 +94,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
         title: "Delete",
         id: 3,
         onClick: () => {
-          if (requestId !== undefined) {
-            handleDeleteRequest(requestId);
-          } else {
-            toast({
-              title: "Error",
-              description: "Request ID is missing.",
-            });
-          }
+          handleDeleteRequest(requestId);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
@@ -134,14 +120,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
         title: "Accept",
         id: 4,
         onClick: () => {
-          if (requestId !== undefined) {
-            handleLeaveRequestStatus(requestId, LeavesRequestStatus.Approved);
-          } else {
-            toast({
-              title: "Error",
-              description: "Request ID is missing.",
-            });
-          }
+          handleLeaveRequestStatus(requestId, LeavesRequestStatus.Approved);
         },
         icon: <CheckCircleIcon size={16} />,
       },
@@ -149,14 +128,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
         title: "Reject",
         id: 4,
         onClick: () => {
-          if (requestId !== undefined) {
-            handleLeaveRequestStatus(requestId, LeavesRequestStatus.Reject);
-          } else {
-            toast({
-              title: "Error",
-              description: "Request ID is missing.",
-            });
-          }
+          handleLeaveRequestStatus(requestId, LeavesRequestStatus.Reject);
         },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
       },

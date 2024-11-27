@@ -57,7 +57,7 @@ export enum LeavesRequestStatus {
   Reject = "rejected",
 }
 export interface LeaveRequestsTypes {
-  id?: number;
+  id: number;
   leaveType?: string;
   startDate?: string;
   endDate?: string;

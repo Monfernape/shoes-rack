@@ -11,14 +11,13 @@ describe("Leave Request Update Test", async () => {
     reason: "Due to some personal reason",
     status: LeaveRequestStatus.Pending,
   };
-  const mockLeaveRequestId = 2;
-
+  const leaveRequestId = 2;
   it("calls updateLeaveRequest with mock form data on update", async () => {
     const submit = vi.fn().mockImplementation(updateLeaveRequest);
     await waitFor(() => {
       submit({
         ...mockPayload,
-        mockLeaveRequestId,
+        leaveRequestId,
       });
     });
     expect(submit).toHaveBeenCalledTimes(1);

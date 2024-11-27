@@ -7,7 +7,7 @@ export const getLeaveRequestById = async (requestId: number) => {
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase
     .from(Tables.Leaves)
-    .select(`memberId, leaveType, startDate, endDate, reason, id`)
+    .select()
     .eq("id", requestId)
     .maybeSingle();
 
