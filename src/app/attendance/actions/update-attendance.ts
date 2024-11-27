@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
 interface Attendance extends AttendanceFormValues {
-  id: string 
+  id: string;
 }
 
 export const updateAttendance = async (attendance: Attendance) => {
@@ -16,7 +16,8 @@ export const updateAttendance = async (attendance: Attendance) => {
   const { error } = await supabase
     .from(Tables.Attendance)
     .update(attendance)
-    .eq("id", attendance.id);
+    .eq("id", attendance.id)
+    .eq("status", "pending");
 
   if (error) {
     return error;

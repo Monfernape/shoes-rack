@@ -21,9 +21,10 @@ import { MemberRole } from "@/constant/constant";
 import { updateAttendance } from "../actions/update-attendance";
 import { useParams } from "next/navigation";
 import { useUser } from "@/hooks/useGetLoggedinUser";
+import { isValidParam } from "@/utils/utils";
 
 interface AttendanceFormBuilderProps {
-  attendace?: AttendanceFormValues;
+  attendance?: AttendanceFormValues;
 }
 
 const attendanceSchema = z
@@ -50,7 +51,7 @@ const attendanceSchema = z
 export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
 
 const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
-  attendace,
+  attendance,
 }) => {
   const params = useParams();
   const attendanceId = params?.attendanceId;
@@ -60,48 +61,50 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
       memberId:
-        loginUser?.role === MemberRole.Member
+        loginUser && loginUser.role === MemberRole.Member
           ? loginUser.id.toString()
-          : attendace?.memberId || undefined,
-      startTime: attendace?.startTime ?? "",
-      endTime: attendace?.endTime || "",
+          : attendance?.memberId,
+      startTime: attendance?.startTime ?? "",
+      endTime: attendance?.endTime || "",
     },
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
-    const updatedValue = {
-      id: attendanceId.toString(),
-      ...values,
-    };
+    if (isValidParam(attendanceId)) {
+      const updatedValue = {
+        id: attendanceId,
+        ...values,
+      };
 
-    try {
-      if (attendace?.memberId) {
-        const error = await updateAttendance(updatedValue);
+      try {
+        if (attendance?.memberId) {
+          const error = await updateAttendance(updatedValue);
 
-        if (!error) {
+          if (!error) {
+            toast({
+              title: "Attendance updated successfully",
+              description: "The attendance record has been updated.",
+            });
+          }
+        } else {
+          const error = await createAttendance(values);
+
+          if (!error) {
+            toast({
+              title: "Attendance submitted successfully",
+              description: "You will receive a message shortly.",
+            });
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error) {
           toast({
-            title: "Attendance updated successfully",
-            description: "The attendance record has been updated.",
+            title: "Attendance could not be marked",
           });
         }
-      } else {
-        const error = await createAttendance(values);
 
-        if (!error) {
-          toast({
-            title: "Attendance submitted successfully",
-            description: "You will receive a message shortly.",
-          });
-        }
+        return;
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: "Attendance could not be marked",
-        });
-      }
-
-      return;
     }
   };
 
@@ -162,7 +165,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
             className="w-full text-white rounded-md p-3 transition"
             disabled={!form.formState.isValid}
           >
-            {attendace?.memberId ? "Update" : "Submit"}
+            {attendance?.memberId ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>
