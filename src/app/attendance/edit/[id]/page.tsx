@@ -18,7 +18,7 @@ const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
     }
   }
 
-  return <AttendanceFormBuilder attendace={attendanceData} />;
+  return <AttendanceFormBuilder attendance={attendanceData} />;
 };
 
 export default AttendanceForm;
