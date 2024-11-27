@@ -157,7 +157,6 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
       case MemberRole.Incharge:
-      case MemberRole.SuperAdmin:
         return [...viewInfo, ...statusActions];
 
       default:
