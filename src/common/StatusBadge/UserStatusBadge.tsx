@@ -1,6 +1,6 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { UserStatus } from "@/types";
+import { UserStatus } from "@/constant/constant";
 
 const statusClasses = {
   active: {

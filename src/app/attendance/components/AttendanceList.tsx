@@ -23,7 +23,7 @@ import { Plus } from "lucide-react";
 import MemberTableActionRender from "@/app/members/components/MemberActionRender";
 import { AttendanceStatus, Shift } from "@/constant/constant";
 
-interface Attendance {
+export interface Attendance {
   member: string;
   id: number;
   startTime: string;

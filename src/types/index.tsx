@@ -1,20 +1,24 @@
-export type UserRole = "incharge" | "member" | "shift-incharge";
-export type Shifts = "A" | "B" | "C" | "D";
-export type UserStatus = "active" | "inactive" | "deactivated";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+
+
+
+export type UserRole = "incharge" | "member" | "shift_incharge";
+
 export type Member = {
-  shift: string;
+  shift: Shift;
   id: number;
   name: string;
   phone: string;
-  role: UserRole;
+  role: MemberRole;
   status: UserStatus;
+  invite_link: string;
 };
 export type UserInfo = {
   id: number;
   shift: string;
   name: string;
   phone: string;
-  role: UserRole;
+  role: MemberRole;
   status: UserStatus;
 };
 
@@ -36,7 +40,7 @@ export type UserDetails = {
   cnic: string;
   ehad_duration: string;
   shift: string;
-  role: UserRole;
+  role: MemberRole
   address: string;
   status: UserStatus;
   created_at: string;

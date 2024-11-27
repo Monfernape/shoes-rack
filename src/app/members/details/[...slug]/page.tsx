@@ -1,6 +1,7 @@
 import React from "react";
 import { UserDetails } from "@/types";
 import { MemberDetails } from "../../components/MemberDetails";
+import { MemberRole, UserStatus } from "@/constant/constant";
 
 const userInfo: UserDetails = {
   id: 151,
@@ -11,8 +12,8 @@ const userInfo: UserDetails = {
   cnic: "31303-2943130-9",
   address: "Testing Street 12",
   ehad_duration: "2024-11-18",
-  role: "incharge",
-  status: "active",
+  role:MemberRole.Incharge,
+  status: UserStatus.Active,
   shift: "A",
   invite_link: "",
   temporary_password: false,
