@@ -38,7 +38,7 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
               <>
                 <BreadcrumbLink
                   asChild
-                  className={`max-w-20 text-sm font-semibold text-gray-800 truncate truncate md:max-w-none ${
+                  className={`max-w-20 text-sm font-medium text-gray-800 truncate  md:max-w-none ${
                     pathname === breadcrumb.href
                       ? "text-foreground"
                       : "transition-colors"
