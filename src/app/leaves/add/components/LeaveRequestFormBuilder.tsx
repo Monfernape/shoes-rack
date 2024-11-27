@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LeaveTypes, UserRole, UserStatus } from "@/constant/constant";
+import { LeaveTypes, MemberRole, UserStatus } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
@@ -66,7 +66,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: "incharge",
+  role: MemberRole.Incharge,
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
@@ -80,7 +80,7 @@ export const LeaveRequestFormBuilder = () => {
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
       memberId:
-        loginUser.role === UserRole.Member ? loginUser.id.toString() : "",
+        loginUser.role === MemberRole.Member ? loginUser.id.toString() : "",
       leaveType: LeaveTypes.Personal,
       startDate: undefined,
       endDate: undefined,

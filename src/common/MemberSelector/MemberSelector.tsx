@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { getMembers } from "@/app/members/actions/getMembers";
 import { Member } from "@/types";
-import { MemberRole, UserRole, UserStatus } from "@/constant/constant";
+import { MemberRole, UserStatus } from "@/constant/constant";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface SelectFieldProps<T extends FieldValues> {
@@ -83,13 +83,9 @@ const MemberSelector = <T extends FieldValues>({
           <FormControl>
             <Select
               {...field}
-              value={
-                loginUser?.role === UserRole.Member
-                  ? loginUser?.id.toString()
-                  : field.value
-              }
+              value={loginUser?.role === MemberRole.Member  ? loginUser?.name : field.value}
               onValueChange={field.onChange}
-              disabled={loginUser?.role === UserRole.Member}
+              disabled={loginUser?.role === MemberRole.Member}
             >
               <SelectTrigger
                 data-testid="memberId"
