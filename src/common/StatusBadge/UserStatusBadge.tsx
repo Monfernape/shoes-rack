@@ -15,6 +15,7 @@ const statusClasses = {
     background: "bg-status-inactive-background",
     text: "text-status-inactive",
   },
+ 
 } as const;
 
 export const UserStatusBadge = ({ status }: { status: UserStatus }) => {

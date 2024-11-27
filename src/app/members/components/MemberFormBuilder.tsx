@@ -37,6 +37,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { useToast } from "@/hooks/use-toast";
 import { createUser } from "../actions/createUser";
+import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 
@@ -160,7 +161,7 @@ export const MemberFormBuilder = () => {
           className="space-y-4"
           data-testid="form-valid"
         >
-          <h4 className="text-xl text-black text-bold">Information</h4>
+          <FormTitle title="Information" />
           <FormField
             control={form.control}
             name="name"
@@ -233,7 +234,7 @@ export const MemberFormBuilder = () => {
                         data-testid="date_of_birth"
                         variant={"outline"}
                         className={cn(
-                          `justify-start text-left font-normal
+                          `justify-start text-left font-normal text-xs
                           ${field.value} && "text-muted-foreground
                           ${
                             errors?.date_of_birth &&
@@ -297,7 +298,7 @@ export const MemberFormBuilder = () => {
                         data-testid="ehad_duration"
                         variant={"outline"}
                         className={cn(
-                          `justify-start text-left font-normal
+                          `justify-start text-left font-normal text-xs
                           ${field.value} && "text-muted-foreground
                           ${
                             errors?.ehad_duration &&
