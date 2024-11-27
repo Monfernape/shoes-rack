@@ -29,7 +29,7 @@ const ActionsMenu = ({ actions }: Props) => {
           variant="ghost"
           size="icon"
           className="focus:outline-none focus-visible:ring-0 active:outline-none active:ring-0"
-          disabled={actions.length === 0 && true}
+          disabled={!actions.length}
           data-testid = "actionButton"
         >
           <DotsHorizontalIcon className="w-5 h-5" aria-label="icon" />
