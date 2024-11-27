@@ -80,7 +80,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <AttendanceActionRender attendanceData={row.original} />;
+          return <AttendanceActionRender attendance={row.original} />;
         },
       },
     ],
