@@ -24,7 +24,7 @@ import { AttendanceStatus, Shift } from "@/constant/constant";
 
 import AttendanceActionRender from "./AttendanceActionRender";
 
-interface Attendance {
+export interface Attendance {
   member: string;
   id: number;
   startTime: string;
