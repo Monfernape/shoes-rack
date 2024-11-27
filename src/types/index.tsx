@@ -1,6 +1,8 @@
-import { MemberRole, Shift,  UserStatus } from "@/constant/constant";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 
-export type Shifts = "A" | "B" | "C" | "D";
+
+
+export type UserRole = "incharge" | "member" | "shift_incharge";
 
 export type Member = {
   id: number;
@@ -44,7 +46,7 @@ export type UserDetails = {
   cnic: string;
   ehad_duration: string;
   shift: string;
-  role: MemberRole;
+  role: MemberRole
   address: string;
   status: UserStatus;
   created_at: string;

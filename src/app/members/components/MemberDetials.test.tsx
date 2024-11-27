@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { it, describe, expect } from "vitest";
 import "@testing-library/jest-dom";
-import { MemberDetails } from "./MemberDetails";
-import { UserDetails } from "@/types";
-import { MemberRole, UserStatus } from "@/constant/constant";
+import { MemberDetails } from './MemberDetails';
+import { UserDetails } from '@/types';
+import { MemberRole, UserStatus } from '@/constant/constant';
 
 const mockUserDetails: UserDetails = {
   name: "Alice Johnson",

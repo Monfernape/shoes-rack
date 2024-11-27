@@ -29,8 +29,8 @@ const ActionsMenu = ({ actions }: Props) => {
           variant="ghost"
           size="icon"
           className="focus:outline-none focus-visible:ring-0 active:outline-none active:ring-0"
-          disabled={actions.length === 0 && true}
-          data-testid="actionButton"
+          disabled={!actions.length}
+          data-testid = "actionButton"
         >
           <DotsHorizontalIcon className="w-5 h-5" aria-label="icon" />
         </Button>
@@ -38,7 +38,7 @@ const ActionsMenu = ({ actions }: Props) => {
       <DropdownMenuContent
         align="end"
         className="w-48 bg-white border rounded shadow-lg"
-        data-testid="menus"
+        data-testid = 'menus'
       >
         {actions.map((action) => (
           <DropdownMenuItem

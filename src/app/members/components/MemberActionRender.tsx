@@ -1,28 +1,24 @@
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
-import { AttendanceStatus, MemberRole, Shift, UserStatus } from "@/constant/constant";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+import { deleteMember } from "../actions/delete-member";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import {  UserDetails } from "@/types";
+import { Member, UserDetails } from "@/types";
+import { Attendance } from "@/app/attendance/components/AttendanceList";
 import { Routes } from "@/lib/routes";
 
-interface MemberInfo {
-  id: number;
-  name?: string;
-  phone?: string;
-  role?: MemberRole;
-  status: UserStatus | AttendanceStatus;
-  shift: Shift;
-}
 type Props = {
-  memberInfo: MemberInfo;
-  loginUser?: UserDetails | undefined;
+  memberInfo: Member | Attendance;
+  loginUser?: UserDetails;
 };
 
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
-  const router = useRouter();
+  const { status, id, shift } = memberInfo;
 
-  const { role, status, id, shift } = memberInfo;
+  const router = useRouter();
+  const { toast } = useToast();
   const handleViewDetails = () => {
     return;
   };
@@ -31,8 +27,20 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     router.push(`${Routes.EditMember}/${id}`);
   };
 
-  const handleDeleteMember = () => {
-    return;
+  const handleDeleteMember = async () => {
+    try {
+      await deleteMember(id);
+      toast({
+        title: "Member deleted successfully",
+      });
+      return router.refresh();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+        });
+      }
+    }
   };
 
   const handleResendInvite = () => {
@@ -84,7 +92,6 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     }
     return [...viewInfo];
   };
-
   const actionMenu = React.useMemo(() => {
     switch (loginUser?.role) {
       case MemberRole.Incharge:
@@ -96,7 +103,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       default:
         return [];
     }
-  }, [role, status]);
+  }, [status]);
 
   return <ActionsMenu actions={actionMenu} />;
 };

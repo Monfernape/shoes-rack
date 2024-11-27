@@ -7,15 +7,15 @@ const statusClasses = {
     background: "bg-status-active-background",
     text: "text-status-active",
   },
-  
+  deactivated: {
+    background: "bg-status-pending-background",
+    text: "text-status-pending",
+  },
   inactive: {
     background: "bg-status-inactive-background",
     text: "text-status-inactive",
   },
-  deactivated : {
-    background : "",
-    text:""
-  }
+ 
 } as const;
 
 export const UserStatusBadge = ({ status }: { status: UserStatus }) => {

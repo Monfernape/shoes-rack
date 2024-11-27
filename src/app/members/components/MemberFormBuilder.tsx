@@ -39,6 +39,7 @@ import { useToast } from "@/hooks/use-toast";
 import { createUser } from "../actions/createUser";
 import { updateUser } from "../actions/update-user";
 import { Member } from "@/types";
+import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
@@ -170,7 +171,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
           className="space-y-4"
           data-testid="form"
         >
-          <h4 className="text-xl text-black text-bold">Information</h4>
+          <FormTitle title="Information" />
           <FormField
             control={form.control}
             name="name"
@@ -312,7 +313,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                         data-testid="ehad_duration"
                         variant={"outline"}
                         className={cn(
-                          `justify-start text-left font-normal
+                          `justify-start text-left font-normal text-xs
                           ${field.value} && "text-muted-foreground
                           ${
                             errors?.ehad_duration &&
