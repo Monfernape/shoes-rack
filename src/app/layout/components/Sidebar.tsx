@@ -31,7 +31,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
       <div className="flex flex-col h-full bg-sidebar-background">
         <div className="flex items-center justify-between p-4 text-gray-700 hover:bg-gray-100 rounded-lg">
           <h1
-            className={`text-sm font-semibold text-gray-800 truncate sm:block`}
+            className={`text-sm font-medium text-gray-800 truncate sm:block`}
           >
             Shoes Rack
           </h1>
