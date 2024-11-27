@@ -1,8 +1,8 @@
 import { UserRoleType } from "@/types";
-import { capitalization, snakeToCapitalization } from "./stringFormater";
 import { UserRole } from "@/constant/constant";
+import { capitalization, snakeToCapitalization } from "./utils";
 
-export const formattedRole = (role: UserRoleType) => {
+export const formatRole = (role: UserRoleType) => {
   switch (role) {
     case UserRole.Member || UserRole.Incharge:
       return capitalization(role);

@@ -6,12 +6,16 @@ import { PAKISTAN_COUNTRY_CODE } from "@/constant/constant";
  * @returns The formatted phone number.
  */
 
-export const formattedPhoneNumber = (phoneNumber: string): string => {
-  const isIntlNumber = phoneNumber.startsWith(PAKISTAN_COUNTRY_CODE);
-  if (isIntlNumber) {
-    return "0" + phoneNumber.slice(PAKISTAN_COUNTRY_CODE.length);
-  } else if (phoneNumber.startsWith("0")) {
-    return phoneNumber.replace("0", PAKISTAN_COUNTRY_CODE);
-  }
-  return phoneNumber;
+export const intlNumberFormat = (phoneNumber: string) => {
+  const formattedPhoneNumber = phoneNumber
+    .replace("-", "")
+    .replace("0", PAKISTAN_COUNTRY_CODE);
+  return formattedPhoneNumber;
+};
+
+export const localNumberFormat = (phoneNumber: string) => {
+  const formattedPhoneNumber = phoneNumber.startsWith(PAKISTAN_COUNTRY_CODE)
+    ? "0" + phoneNumber.slice(2)
+    : phoneNumber;
+  return formattedPhoneNumber;
 };

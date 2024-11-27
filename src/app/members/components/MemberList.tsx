@@ -24,8 +24,8 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
-import { formattedPhoneNumber } from "@/utils/formattedPhoneNumber";
-import { formattedRole } from "@/utils/memberRoleFormatter";
+import { formatRole } from "@/utils/formatRole";
+import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
 interface Props {
   data: Member[];
@@ -35,7 +35,7 @@ interface Props {
 
 export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
-  const { data : membersList, success } = members;
+  const { data : membersData, success } = members;
   const route = useRouter();
 
 
@@ -50,7 +50,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{formattedPhoneNumber(row.getValue("phoneNumber"))}</div>,
+      cell: ({ row }) => <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>,
     },
     {
       accessorKey: "shift",
@@ -63,7 +63,7 @@ export const MemberList = ({ members }: { members: Props }) => {
       accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
-        <div className="capitalize">{formattedRole(row.getValue("role"))}</div>
+        <div className="capitalize">{formatRole(row.getValue("role"))}</div>
       ),
     },
     {
@@ -84,7 +84,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   ];
 
   const table = useReactTable({
-    data: membersList,
+    data: membersData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -98,14 +98,14 @@ export const MemberList = ({ members }: { members: Props }) => {
     }
   }, [success, toast]);
 
-  const groupedData = useGroupedData(membersList, "shift");
+  const groupedData = useGroupedData(membersData, "shift");
 
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
 
   const StandardPageProps = {
-    hasContent: !!membersList.length,
+    hasContent: !!membersData.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
     buttonIcon: <PlusIcon />,
