@@ -17,17 +17,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Plus as PlusIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
-import { useSearchContext } from "@/hooks/useSearchContext";
+import { Shift } from "@/constant/constant";
+import { getMembers } from "../actions/getMembers";
+import { DataSpinner } from "@/common/Loader/Loader";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { formatRole } from "@/utils/formatRole";
-import { Shift } from "@/constant/constant";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface Props {
   data: Member[];
@@ -40,7 +41,8 @@ export const MemberList = ({ members }: { members: Props }) => {
   const loginUser = useUser()
   const { data : membersData, success } = members;
   const route = useRouter();
-  const { searchValue } = useSearchContext();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("key");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
@@ -92,35 +94,35 @@ export const MemberList = ({ members }: { members: Props }) => {
     },
   ];
 
-  useEffect(() => {
-    const members = membersData.filter(
-      (member: Member) =>
-        member.name.toLowerCase()?.includes(searchValue.toLowerCase()) ||
-        member.phoneNumber?.includes(searchValue)
-    );
-
-    if (searchValue.length) {
-      setFilteredMember(members);
-    } else {
-      setFilteredMember(members);
+  const fetchMembers = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await getMembers(searchQuery);
+      setFilteredMember(response.data);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast({
+          title: "No Members Found",
+          description: error.message,
+        });
+      } else {
+        toast({
+          title: "No Members Found",
+          description: "An unknown error occurred",
+        });
+      }
     }
     setIsLoading(false);
-  }, [searchValue]);
+  }, [searchQuery]);
 
   const table = useReactTable({
     data: filteredMember,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  useEffect(() => {
-    if (!success) {
-      toast({
-        title: "No Members Found",
-        description: "There are no members available at this time.",
-      });
-    }
-  }, [success, toast]);
-  const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC , Shift.ShiftD];
+
+  const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD];
+
   const groupedData = allShifts.map((shift) => {
     const usersInShift = membersData.filter((user) => user.shift === shift);
     return {
@@ -142,7 +144,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   };
   return (
     <StandardPage {...StandardPageProps}>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <DataSpinner />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -161,14 +163,16 @@ export const MemberList = ({ members }: { members: Props }) => {
         <TableBody>
           {groupedData.map((shiftGroup, index) => (
             <React.Fragment key={`${shiftGroup}-${index}`}>
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-medium text-sm"
-                >
-                  Shift {shiftGroup.shift}
-                </TableCell>
-              </TableRow>
+              {shiftGroup.members.length > 0 && (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
+                  >
+                    Shift {shiftGroup.shift}
+                  </TableCell>
+                </TableRow>
+              )}
               {shiftGroup.members.map((row) => (
                 <TableRow key={row.id}>
                   {table

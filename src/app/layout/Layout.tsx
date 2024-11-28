@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { Sidebar } from "./components/Sidebar";
 import { cx } from "class-variance-authority";
 import { Routes } from "@/lib/routes";
-import { MemberContextProvider } from "@/context/SearchContextProvider";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,7 +15,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <MemberContextProvider>
     <div className="flex">
       {(pathname !== Routes.Login || isSidebarOpen) && (
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
@@ -29,6 +27,5 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </div>
     </div>
-    </MemberContextProvider>
   );
 }
