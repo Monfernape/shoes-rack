@@ -1,3 +1,4 @@
+import React from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
