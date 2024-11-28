@@ -2,18 +2,20 @@
 import { Tables } from "@/lib/db";
 import { Shift, MemberRole, UserStatus } from "@/constant/constant";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+
 import { DevUserType } from "../components/AddDevUserForm";
+import { intlNumberFormat } from "@/utils/formattedPhoneNumber";
 
 export const addDevUser = async (values: DevUserType) => {
 
   const supabase = await getSupabaseClient();
 
   const currentData = new Date().toISOString();
-  const userPhoneNumber = formatPhoneNumber(values.phoneNumber);
+  
+  const formattedPhoneNumber = intlNumberFormat(values.phoneNumber);
   
   const updatedValues = {
-    phoneNumber: userPhoneNumber,
+    phoneNumber: formattedPhoneNumber,
     name: 'Testing User',
     date_of_birth: currentData,
     ehad_duration: currentData,
@@ -34,11 +36,11 @@ export const addDevUser = async (values: DevUserType) => {
     return error;
   } else {
     const { error } = await supabase.auth.signUp({
-      phone: userPhoneNumber,
+      phone: formattedPhoneNumber,
       password: values.password,
       options: {
         data: {
-          phoneNumber: userPhoneNumber,
+          phoneNumber: formattedPhoneNumber,
           role: updatedValues.role,
           password: values.password,
         },
