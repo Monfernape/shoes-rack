@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useTransition } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -43,6 +43,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   const route = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
+  const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
@@ -95,9 +96,9 @@ export const MemberList = ({ members }: { members: Props }) => {
   ];
 
   const fetchMembers = useCallback(async () => {
-    setIsLoading(true);
+    const response = await getMembers(searchQuery);
+    startTransition(() => {
     try {
-      const response = await getMembers(searchQuery);
       setFilteredMember(response.data);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -112,7 +113,8 @@ export const MemberList = ({ members }: { members: Props }) => {
         });
       }
     }
-    setIsLoading(false);
+  })
+    
   }, [searchQuery]);
 
   const table = useReactTable({
@@ -144,7 +146,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   };
   return (
     <StandardPage {...StandardPageProps}>
-      {isLoading && <DataSpinner />}
+      {isPending && <DataSpinner />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
