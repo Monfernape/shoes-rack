@@ -5,6 +5,11 @@ export const snakeToCapitalization = (item: string) => {
     .join(" ");
 };
 
+
+export const isValidParam = (param: string | string[]): param is string => {
+  return !Array.isArray(param);
+}
+
 export const capitalization = (item: string) => {
   return item.charAt(0).toUpperCase() + item.slice(1);
 };
