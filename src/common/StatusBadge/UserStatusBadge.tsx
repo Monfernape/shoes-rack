@@ -25,7 +25,7 @@ export const UserStatusBadge = ({ status }: { status: UserStatus }) => {
     <Badge
       className={`capitalize flex justify-center ${background} ${text} hover:${background} hover:${text} hover:cursor-pointer`}
     >
-      {status}
+      status
     </Badge>
   );
 };
