@@ -1,12 +1,11 @@
-import { UserRoleType } from "@/types";
-import { UserRole } from "@/constant/constant";
+import { MemberRole } from "@/constant/constant";
 import { capitalization, snakeToCapitalization } from "./utils";
 
-export const formatRole = (role: UserRoleType) => {
+export const formatRole = (role: MemberRole) => {
   switch (role) {
-    case UserRole.Member || UserRole.Incharge:
+    case MemberRole.Member || MemberRole.Incharge:
       return capitalization(role);
-    case UserRole.ShiftIncharge:
+    case MemberRole.ShiftIncharge:
       return snakeToCapitalization(role);
     default:
       break;
