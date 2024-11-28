@@ -50,6 +50,6 @@ describe("Header Component", () => {
 
   it("Button is clicked", async () => {
     render(<MemeberHeader />);
-    fireEvent.click(screen.getByTestId("addMemberButton")).valueOf();
+    fireEvent.click(screen.getByTestId("addMemberButton"));
   });
 });
