@@ -22,18 +22,24 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
+import { formatRole } from "@/utils/formatRole";
+import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { Shift } from "@/constant/constant";
 import { useUser } from "@/hooks/useGetLoggedinUser";
+
 interface Props {
   data: Member[];
   success: boolean;
   message: string;
 }
+
 export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
-  const loginUser = useUser();
-  const { data, success } = members;
+  const { data : membersData, success } = members;
   const route = useRouter();
+  const loginUser = useUser();
+
+
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -45,7 +51,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
+      cell: ({ row }) => <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>,
     },
     {
       accessorKey: "shift",
@@ -58,7 +64,7 @@ export const MemberList = ({ members }: { members: Props }) => {
       accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("role")}</div>
+        <div className="capitalize">{formatRole(row.getValue("role"))}</div>
       ),
     },
     {
@@ -83,7 +89,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     },
   ];
   const table = useReactTable({
-    data,
+    data: membersData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -97,7 +103,7 @@ export const MemberList = ({ members }: { members: Props }) => {
   }, [success, toast]);
   const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC , Shift.ShiftD];
   const groupedData = allShifts.map((shift) => {
-    const usersInShift = data.filter((user) => user.shift === shift);
+    const usersInShift = membersData.filter((user) => user.shift === shift);
     return {
       shift: shift,
       members: usersInShift,
@@ -107,7 +113,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     route.push(Routes.AddMember);
   };
   const StandardPageProps = {
-    hasContent: !!data.length,
+    hasContent: !!membersData.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
     buttonIcon: <PlusIcon />,
