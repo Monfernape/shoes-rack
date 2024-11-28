@@ -1,21 +1,30 @@
-export type UserRoleType = "incharge" | "member" | "shift_incharge";
-export type Shifts = "A" | "B" | "C" | "D";
-export type UserStatus = "active" | "inactive" | "pending";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+
+
+
+export type UserRole = "incharge" | "member" | "shift_incharge";
 
 export type Member = {
-  shift: string;
   id: number;
+  created_at: string;
   name: string;
   phoneNumber: string;
-  role: UserRoleType;
+  date_of_birth: string;
+  cnic: string;
+  address: string;
+  ehad_duration: string;
+  role: MemberRole;
   status: UserStatus;
+  shift: Shift;
+  invite_link: string;
+  temporary_password: boolean;
 };
 export type UserInfo = {
   id: number;
   shift: string;
   name: string;
   phone: string;
-  role: UserRoleType;
+  role: MemberRole;
   status: UserStatus;
 };
 
@@ -37,7 +46,7 @@ export type UserDetails = {
   cnic: string;
   ehad_duration: string;
   shift: string;
-  role: UserRoleType;
+  role: MemberRole
   address: string;
   status: UserStatus;
   created_at: string;
@@ -73,10 +82,4 @@ export enum RequestActionTitles {
   Approve = "approve",
   Reject = "reject",
   ViewDetails = "view details",
-}
-
-export enum Table {
-  Attendance = "attendance",
-  Member = "member",
-  User = "user",
 }

@@ -1,31 +1,46 @@
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
-import { MemberRole } from "@/constant/constant";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+import { deleteMember } from "../actions/delete-member";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { Member, UserDetails } from "@/types";
+import { Attendance } from "@/app/attendance/components/AttendanceList";
+import { Routes } from "@/lib/routes";
 
-interface MemberInfo {
-  id: number;
-  name?: string;
-  phone?: string;
-  role?: string;
-  status: string;
-}
 type Props = {
-  memberInfo: MemberInfo;
+  memberInfo: Member | Attendance;
+  loginUser?: UserDetails;
 };
 
-const MemberTableActionRender = ({ memberInfo }: Props) => {
-  const { role, status } = memberInfo;
+const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
+  const { status, id, shift } = memberInfo;
+
+  const router = useRouter();
+  const { toast } = useToast();
   const handleViewDetails = () => {
     return;
   };
 
   const handleEditInfo = () => {
-    return;
+    router.push(`${Routes.EditMember}/${id}`);
   };
 
-  const handleDeleteMember = () => {
-    return;
+  const handleDeleteMember = async () => {
+    try {
+      await deleteMember(id);
+      toast({
+        title: "Member deleted successfully",
+      });
+      return router.refresh();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+        });
+      }
+    }
   };
 
   const handleResendInvite = () => {
@@ -57,7 +72,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
   ];
 
   const resendInvite =
-    status === "active"
+    status === UserStatus.Inactive
       ? [
           {
             title: "Resend Invite",
@@ -68,21 +83,27 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
         ]
       : [];
 
+  const checkShiftMembers = (loginUserShift: string, shift: Shift) => {
+    if (loginUserShift === shift) {
+      if (status === UserStatus.Inactive) {
+        return [...baseActions, ...viewInfo, ...resendInvite];
+      }
+      return [...baseActions, ...viewInfo];
+    }
+    return [...viewInfo];
+  };
   const actionMenu = React.useMemo(() => {
-    switch (role) {
-      case MemberRole.Member:
-        return status === "inactive"
-          ? [...viewInfo, ...resendInvite]
-          : [...viewInfo];
-      case MemberRole.ShiftIncharge:
+    switch (loginUser?.role) {
       case MemberRole.Incharge:
-      case MemberRole.SuperAdmin:
-        return [...viewInfo, ...baseActions, ...resendInvite];
-
+        return [...baseActions, ...viewInfo];
+      case MemberRole.ShiftIncharge:
+        return checkShiftMembers(loginUser?.shift, shift);
+      case MemberRole.Member:
+        return [...viewInfo];
       default:
         return [];
     }
-  }, [role, status]);
+  }, [status]);
 
   return <ActionsMenu actions={actionMenu} />;
 };
