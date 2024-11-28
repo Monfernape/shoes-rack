@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useTransition } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -32,6 +32,7 @@ export const MemberList = () => {
   const route = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
+  const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
@@ -79,9 +80,9 @@ export const MemberList = () => {
   ];
 
   const fetchMembers = useCallback(async () => {
-    setIsLoading(true);
+    const response = await getMembers(searchQuery);
+    startTransition(() => {
     try {
-      const response = await getMembers(searchQuery);
       setFilteredMember(response.data);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -96,7 +97,8 @@ export const MemberList = () => {
         });
       }
     }
-    setIsLoading(false);
+  })
+    
   }, [searchQuery]);
 
   useEffect(() => {
@@ -135,7 +137,7 @@ export const MemberList = () => {
 
   return (
     <StandardPage {...StandardPageProps}>
-      {isLoading && <DataSpinner />}
+      {isPending && <DataSpinner />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
