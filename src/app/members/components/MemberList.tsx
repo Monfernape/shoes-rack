@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect } from "react";
 import {
   ColumnDef,
@@ -18,22 +17,29 @@ import {
 } from "@/components/ui/table";
 import { Plus as PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import useGroupedData from "@/hooks/useGroupedData";
 import { useToast } from "@/hooks/use-toast";
 import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
+import { formatRole } from "@/utils/formatRole";
+import { localNumberFormat } from "@/utils/formattedPhoneNumber";
+import { Shift } from "@/constant/constant";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface Props {
   data: Member[];
   success: boolean;
   message: string;
 }
+
 export const MemberList = ({ members }: { members: Props }) => {
   const { toast } = useToast();
-  const { data, success } = members;
+  const { data : membersData, success } = members;
   const route = useRouter();
+  const loginUser = useUser();
+
+
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -45,7 +51,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
+      cell: ({ row }) => <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>,
     },
     {
       accessorKey: "shift",
@@ -58,7 +64,7 @@ export const MemberList = ({ members }: { members: Props }) => {
       accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("role")}</div>
+        <div className="capitalize">{formatRole(row.getValue("role"))}</div>
       ),
     },
     {
@@ -73,17 +79,20 @@ export const MemberList = ({ members }: { members: Props }) => {
         return <span>Action</span>;
       },
       cell: ({ row }) => {
-        return <MemberTableActionRender memberInfo={row.original} />;
+        return (
+          <MemberTableActionRender
+            memberInfo={row.original}
+            loginUser={loginUser}
+          />
+        );
       },
     },
   ];
-
   const table = useReactTable({
-    data,
+    data: membersData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
   useEffect(() => {
     if (!success) {
       toast({
@@ -92,15 +101,19 @@ export const MemberList = ({ members }: { members: Props }) => {
       });
     }
   }, [success, toast]);
-
-  const groupedData = useGroupedData(data, "shift");
-
+  const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC , Shift.ShiftD];
+  const groupedData = allShifts.map((shift) => {
+    const usersInShift = membersData.filter((user) => user.shift === shift);
+    return {
+      shift: shift,
+      members: usersInShift,
+    };
+  });
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
-
   const StandardPageProps = {
-    hasContent: !!data.length,
+    hasContent: !!membersData.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
     buttonIcon: <PlusIcon />,
@@ -108,7 +121,6 @@ export const MemberList = ({ members }: { members: Props }) => {
     onAction: handleNavigation,
     labelForActionButton: "Add member",
   };
-
   return (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -126,19 +138,18 @@ export const MemberList = ({ members }: { members: Props }) => {
             </TableRow>
           ))}
         </TableHeader>
-
         <TableBody>
           {groupedData.map((shiftGroup, index) => (
             <React.Fragment key={`${shiftGroup}-${index}`}>
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
+                  className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-medium text-sm"
                 >
                   Shift {shiftGroup.shift}
                 </TableCell>
               </TableRow>
-              {shiftGroup.row.map((row) => (
+              {shiftGroup.members.map((row) => (
                 <TableRow key={row.id}>
                   {table
                     .getRowModel()

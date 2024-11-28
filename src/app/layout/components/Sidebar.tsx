@@ -1,6 +1,7 @@
 "use client";
 import { logoutUser } from "@/app/members/actions/logoutUser";
 import { Button } from "@/components/ui/button";
+import { MemberRole } from "@/constant/constant";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
 import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -13,7 +14,7 @@ interface Props {
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   // TODO : role will be dynamic after user login
-  const roleBasedRoutes = useAccessibleRoutes("incharge");
+  const roleBasedRoutes = useAccessibleRoutes(MemberRole.Incharge);
 
   const onLogoutUser = () => {
     logoutUser();
@@ -31,7 +32,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
       <div className="flex flex-col h-full bg-sidebar-background">
         <div className="flex items-center justify-between p-4 text-gray-700 hover:bg-gray-100 rounded-lg">
           <h1
-            className={`text-sm font-semibold text-gray-800 truncate sm:block`}
+            className={`text-sm font-medium text-gray-800 truncate sm:block`}
           >
             Shoes Rack
           </h1>

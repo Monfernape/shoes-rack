@@ -1,16 +1,15 @@
-import { redirect } from "next/navigation";
+export const snakeToCapitalization = (item: string) => {
+  return item
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
 
-/**
- * Redirects to a specified path with an encoded message as a query parameter.
- * @param {('error' | 'success')} type - The type of message, either 'error' or 'success'.
- * @param {string} path - The path to redirect to.
- * @param {string} message - The message to be encoded and added as a query parameter.
- * @returns {never} This function doesn't return as it triggers a redirect.
- */
-export function encodedRedirect(
-  type: "error" | "success",
-  path: string,
-  message: string,
-) {
-  return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
+
+export const isValidParam = (param: string | string[]): param is string => {
+  return !Array.isArray(param);
 }
+
+export const capitalization = (item: string) => {
+  return item.charAt(0).toUpperCase() + item.slice(1);
+};

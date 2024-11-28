@@ -1,20 +1,30 @@
-export type UserRole = "incharge" | "member" | "shift-incharge";
-export type Shifts = "A" | "B" | "C" | "D";
-export type UserStatus = "active" | "inactive";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+
+
+
+export type UserRole = "incharge" | "member" | "shift_incharge";
+
 export type Member = {
-  shift: string;
   id: number;
+  created_at: string;
   name: string;
-  phone: string;
-  role: UserRole;
+  phoneNumber: string;
+  date_of_birth: string;
+  cnic: string;
+  address: string;
+  ehad_duration: string;
+  role: MemberRole;
   status: UserStatus;
+  shift: Shift;
+  invite_link: string;
+  temporary_password: boolean;
 };
 export type UserInfo = {
   id: number;
   shift: string;
   name: string;
   phone: string;
-  role: UserRole;
+  role: MemberRole;
   status: UserStatus;
 };
 
@@ -30,15 +40,19 @@ export interface Breadcrumbs {
 }
 
 export type UserDetails = {
+  id: number;
   name: string;
-  phone: string;
-  age: number;
+  phoneNumber: string;
   cnic: string;
-  ehadDuration: string;
+  ehad_duration: string;
   shift: string;
-  role: UserRole;
+  role: MemberRole
   address: string;
   status: UserStatus;
+  created_at: string;
+  date_of_birth: string;
+  invite_link: string;
+  temporary_password: boolean;
 };
 
 export interface MembersProps {
@@ -68,10 +82,4 @@ export enum RequestActionTitles {
   Approve = "approve",
   Reject = "reject",
   ViewDetails = "view details",
-}
-
-export enum Table {
-  Attendance = "attendance",
-  Member = "member",
-  User = "user",
 }
