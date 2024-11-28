@@ -6,7 +6,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { UserRole } from "@/constant/constant";
+import { MemberRole } from "@/constant/constant";
 import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
@@ -33,14 +33,14 @@ export const UpdateDevUserSchema = z.object({
   phoneNumber: z
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  role: z.enum([UserRole.Member, UserRole.ShiftIncharge, UserRole.Incharge], {
+  role: z.enum([MemberRole.Member, MemberRole.ShiftIncharge, MemberRole.Incharge], {
     errorMap: () => {
       return { message: "Update user role" };
     },
   }),
 });
 
-export type UpdateDevUserRole = z.infer<typeof UpdateDevUserSchema>;
+export type UpdateDevUserRoleType = z.infer<typeof UpdateDevUserSchema>;
 
 const UpdateDevUserFrom = () => {
   const phoneNumberMask = useMask({
@@ -48,7 +48,7 @@ const UpdateDevUserFrom = () => {
     replacement: { _: /\d/ },
   });
 
-  const form = useForm<UpdateDevUserRole>({
+  const form = useForm<UpdateDevUserRoleType>({
     resolver: zodResolver(UpdateDevUserSchema),
     defaultValues: {
       phoneNumber: "",
@@ -61,7 +61,7 @@ const UpdateDevUserFrom = () => {
     formState: { errors },
   } = form;
 
-  const handleSubmission = async (values: UpdateDevUserRole) => {
+  const handleSubmission = async (values: UpdateDevUserRoleType) => {
     try {
       // there is nothing in response in case of insert data
       const result = await updateDevUserRole(values);
