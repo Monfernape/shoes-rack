@@ -95,7 +95,7 @@ const config: Config = {
           },
         },
         loader:{
-          DEFAULT: "hsla(var(--loder-color))",
+          DEFAULT: "hsla(var(--loader-color))",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -63,7 +63,7 @@
     --status-accept-background: 120, 70%, 80%, 0.2;
     --status-rejected: 0, 100%, 40%;
     --status-rejected-background:  0, 100%, 40%, 0.2;
-    --loder-color:0, 0%, 100%, 0.6;
+    --loader-color:0, 0%, 100%, 0.6;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -101,7 +101,7 @@
     --status-accept-background: 120, 70%, 80%, 0.2;
     --status-rejected: 0, 100%, 40%;
     --status-rejected-background:  0, 100%, 40%, 0.2;
-    --loder-color:0, 0%, 100%, 0.6;
+    --loader-color:0, 0%, 100%, 0.6;
   }
 }
 

@@ -17,21 +17,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Plus as PlusIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
 import { Shift } from "@/constant/constant";
-import { useSearchContext } from "@/hooks/useSearchContext";
 import { getMembers } from "../actions/getMembers";
-import { Loader } from "@/common/Loader/Loader";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 export const MemberList = () => {
   const { toast } = useToast();
   const route = useRouter();
-  const { searchValue } = useSearchContext();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("key");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
   const columns: ColumnDef<Member>[] = [
@@ -81,7 +81,7 @@ export const MemberList = () => {
   const fetchMembers = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await getMembers(searchValue);
+      const response = await getMembers(searchQuery);
       setFilteredMember(response.data);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -97,7 +97,7 @@ export const MemberList = () => {
       }
     }
     setIsLoading(false);
-  }, [searchValue]);
+  }, [searchQuery]);
 
   useEffect(() => {
     fetchMembers();
@@ -109,8 +109,7 @@ export const MemberList = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-
-  const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC , Shift.ShiftD];
+  const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD];
 
   const groupedData = allShifts.map((shift) => {
     const usersInShift = filteredMember.filter((user) => user.shift === shift);
@@ -136,7 +135,7 @@ export const MemberList = () => {
 
   return (
     <StandardPage {...StandardPageProps}>
-      {isLoading && <Loader />}
+      {isLoading && <DataSpinner />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -156,14 +155,16 @@ export const MemberList = () => {
         <TableBody>
           {groupedData.map((shiftGroup, index) => (
             <React.Fragment key={`${shiftGroup}-${index}`}>
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
-                >
-                  Shift {shiftGroup.shift}
-                </TableCell>
-              </TableRow>
+              {shiftGroup.members.length > 0 && (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
+                  >
+                    Shift {shiftGroup.shift}
+                  </TableCell>
+                </TableRow>
+              )}
               {shiftGroup.members.map((row) => (
                 <TableRow key={row.id}>
                   {table

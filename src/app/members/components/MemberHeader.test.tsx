@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberHeader } from "./MemberHeader";
-import { MemberContextProvider } from "@/context/SearchContextProvider";
 
 describe("Header Component", () => {
   beforeAll(() => {
@@ -17,23 +16,25 @@ describe("Header Component", () => {
         removeEventListener: vi.fn(),
       })),
     });
+    vi.mock("next/navigation", () => {
+      const actual = vi.importActual("next/navigation");
+      return {
+        ...actual,
+        useRouter: vi.fn(() => ({
+          push: vi.fn(),
+        })),
+        usePathname: vi.fn(),
+      };
+    });
   });
 
   it("Input Event Triggered", async () => {
-    render(
-      <MemberContextProvider>
-        <MemberHeader />
-      </MemberContextProvider>
-    );
+    render(<MemberHeader />);
     fireEvent.click(screen.getByTestId("searchInput"));
   });
 
   it("Input Event Triggered", async () => {
-    render(
-      <MemberContextProvider>
-        <MemberHeader />
-      </MemberContextProvider>
-    );
+    render(<MemberHeader />);
     const searchInput = screen.getByTestId("searchInput") as HTMLInputElement;
 
     fireEvent.change(searchInput, { target: { value: "test input" } });
@@ -42,11 +43,7 @@ describe("Header Component", () => {
   });
 
   it("Button is clicked", async () => {
-    render(
-      <MemberContextProvider>
-        <MemberHeader />
-      </MemberContextProvider>
-    );
+    render(<MemberHeader />);
     fireEvent.click(screen.getByTestId("addMemberButton"));
   });
 });

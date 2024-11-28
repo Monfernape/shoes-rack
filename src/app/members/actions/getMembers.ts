@@ -3,18 +3,21 @@
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 
-export const getMembers = async (query: string) => {
+export const getMembers = async (query: string | null) => {
   const supabase = await getSupabaseClient();
 
-  // Verifying if the search query contains a number or a string in order to add a search column to the member table.
-  const searchColumn = !Number(query) ? "name" : "phoneNumber";
+    const columns = ['name', 'address', 'phoneNumber', 'cnic'];
+    
+    const orConditions = columns.map(col => {
+      return `${col}.ilike.%${query ?? ""}%`; 
+    });
 
-  const { data, error } = await supabase
-    .from(Tables.Members)
+    const { data, error } = await supabase
+    .from(Tables.Members) 
     .select()
-    .ilike(searchColumn, `%${query}%`);
+    .or(orConditions.join(','));
 
-  if (error) {
+    if (error) {
     return {
       success: false,
       message: "There are no members available at this time.",

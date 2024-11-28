@@ -1,27 +1,24 @@
 "use client";
 
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Sidebar } from "@/app/layout/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
 import { Plus } from "lucide-react";
 import { Routes } from "@/lib/routes";
-import MemberContext, {
-  MemberContextType,
-} from "@/context/SearchContextProvider";
 import useMediaQuery from "@/hooks/use-media-query";
 import useDebounce from "@/hooks/useDebounce";
 
 export const MemberHeader = () => {
-
   const pathname = usePathname();
+  const router = useRouter();
   const isSmallScreen = useMediaQuery("sm");
   const [search, setSearch] = useState("");
   const debounceValue = useDebounce(search, 500);
-  const { setSearchValue } = useContext(MemberContext) as MemberContextType;
+ 
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isTitleHide, setIsTitleHide] = useState<boolean>(false);
 
@@ -29,12 +26,16 @@ export const MemberHeader = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   useEffect(() => {
-    setSearchValue(debounceValue);
+    if (debounceValue.length) {
+      router.push(`${Routes.Member}?key=${debounceValue}`);
+    } else {
+      router.push(Routes.Member);
+    }
   }, [debounceValue]);
 
   return (
@@ -70,7 +71,7 @@ export const MemberHeader = () => {
                   onBlur={() => {
                     setIsTitleHide(false);
                   }}
-                  onChange={handleChange}
+                  onChange={handleSearchQueryChange}
                   className={`pr-4 py-2 h-7 ${
                     isTitleHide ? "w-32 pl-10" : "w-2 pl-6"
                   } md:w-60 md:pl-10 rounded text-xs`}
