@@ -53,7 +53,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   attendance,
 }) => {
   const params = useParams();
-  const attendanceId = params.id;
+  const attendanceId = params?.id;
 
   const loginUser = {
     id: 227,
