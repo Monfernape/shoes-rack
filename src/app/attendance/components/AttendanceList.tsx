@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/table";
 
 import { useToast } from "@/hooks/use-toast";
-import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
 import { AttendanceStatus, Shift } from "@/constant/constant";
@@ -71,7 +70,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
       {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }) => <UserStatusBadge status={row.getValue("status")} />,
+        cell: () => {},
       },
       {
         id: "actions",

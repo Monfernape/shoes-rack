@@ -17,10 +17,9 @@ import { createAttendance } from "../actions/create-attendance";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
-import { MemberRole } from "@/constant/constant";
+import { MemberRole, UserStatus } from "@/constant/constant";
 import { updateAttendance } from "../actions/update-attendance";
 import { useParams } from "next/navigation";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 import { isValidParam } from "@/utils/utils";
 
 interface AttendanceFormBuilderProps {
@@ -54,16 +53,29 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   attendance,
 }) => {
   const params = useParams();
-  const attendanceId = params?.attendanceId;
-  const loginUser = useUser();
+  const attendanceId = params.id;
+
+  const loginUser = {
+    id: 227,
+    name: "Alice Johnson",
+    shift: "A",
+    role: MemberRole.Member,
+    status: UserStatus.Active,
+    phone: "123-456-7890",
+    address: "123 Main St, Anytown, USA",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    deleted_at: null,
+  };
 
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
       memberId:
-        loginUser && loginUser.role === MemberRole.Member
+        loginUser.role === MemberRole.Member
           ? loginUser.id.toString()
           : attendance?.memberId,
+
       startTime: attendance?.startTime ?? "",
       endTime: attendance?.endTime || "",
     },
