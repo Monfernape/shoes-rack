@@ -26,21 +26,11 @@ import { Routes } from "@/lib/routes";
 import { Shift } from "@/constant/constant";
 import { getMembers } from "../actions/getMembers";
 import { DataSpinner } from "@/common/Loader/Loader";
-import { useUser } from "@/hooks/useGetLoggedinUser";
-import { localNumberFormat } from "@/utils/formattedPhoneNumber";
-import { formatRole } from "@/utils/formatRole";
 
-interface Props {
-  data: Member[];
-  success: boolean;
-  message: string;
-}
-
-export const MemberList = ({ members }: { members: Props }) => {
+export const MemberList = () => {
   const { toast } = useToast();
-  const loginUser = useUser()
-  const { data : membersData, success } = members;
   const route = useRouter();
+  
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
@@ -56,7 +46,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>,
+      cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
     },
     {
       accessorKey: "shift",
@@ -69,7 +59,7 @@ export const MemberList = ({ members }: { members: Props }) => {
       accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
-        <div className="capitalize">{formatRole(row.getValue("role"))}</div>
+        <div className="capitalize">{row.getValue("role")}</div>
       ),
     },
     {
@@ -84,12 +74,7 @@ export const MemberList = ({ members }: { members: Props }) => {
         return <span>Action</span>;
       },
       cell: ({ row }) => {
-        return (
-          <MemberTableActionRender
-            memberInfo={row.original}
-            loginUser={loginUser}
-          />
-        );
+        return <MemberTableActionRender memberInfo={row.original} />;
       },
     },
   ];
@@ -97,24 +82,27 @@ export const MemberList = ({ members }: { members: Props }) => {
   const fetchMembers = useCallback(async () => {
     const response = await getMembers(searchQuery);
     startTransition(() => {
-    try {
-      setFilteredMember(response.data);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast({
-          title: "No Members Found",
-          description: error.message,
-        });
-      } else {
-        toast({
-          title: "No Members Found",
-          description: "An unknown error occurred",
-        });
+      try {
+        setFilteredMember(response.data);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast({
+            title: "No Members Found",
+            description: error.message,
+          });
+        } else {
+          toast({
+            title: "No Members Found",
+            description: "An unknown error occurred",
+          });
+        }
       }
-    }
-  })
-    
+    });
   }, [searchQuery]);
+
+  useEffect(() => {
+    fetchMembers();
+  }, [fetchMembers]);
 
   const table = useReactTable({
     data: filteredMember,
@@ -125,17 +113,19 @@ export const MemberList = ({ members }: { members: Props }) => {
   const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD];
 
   const groupedData = allShifts.map((shift) => {
-    const usersInShift = membersData.filter((user) => user.shift === shift);
+    const usersInShift = filteredMember.filter((user) => user.shift === shift);
     return {
       shift: shift,
       members: usersInShift,
     };
   });
+
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
+
   const StandardPageProps = {
-    hasContent: !!membersData.length,
+    hasContent: !!filteredMember.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
     buttonIcon: <PlusIcon />,
@@ -143,6 +133,7 @@ export const MemberList = ({ members }: { members: Props }) => {
     onAction: handleNavigation,
     labelForActionButton: "Add member",
   };
+
   return (
     <StandardPage {...StandardPageProps}>
       {isPending && <DataSpinner />}
@@ -161,6 +152,7 @@ export const MemberList = ({ members }: { members: Props }) => {
             </TableRow>
           ))}
         </TableHeader>
+
         <TableBody>
           {groupedData.map((shiftGroup, index) => (
             <React.Fragment key={`${shiftGroup}-${index}`}>
