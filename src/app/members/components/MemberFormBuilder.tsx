@@ -43,9 +43,9 @@ import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
-  id: number;
+  id:number,
 }
-const USER_ROLES = [
+export const USER_ROLES = [
   {
     role: "Member",
     value: MemberRole.Member,
