@@ -1,6 +1,6 @@
 "use server";
 import { Tables } from "@/lib/db";
-import { Shift, UserRole, UserStatus } from "@/constant/constant";
+import { Shift, MemberRole, UserStatus } from "@/constant/constant";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { DevUserType } from "../components/AddDevUserForm";
@@ -17,7 +17,7 @@ export const addDevUser = async (values: DevUserType) => {
     name: 'Testing User',
     date_of_birth: currentData,
     ehad_duration: currentData,
-    role: UserRole.Member,
+    role: MemberRole.Member,
     cnic: "31333-3333333-3",
     address: "Testing Street 12",
     shift: Shift.ShiftA,
