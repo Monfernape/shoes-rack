@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname } from "next/navigation";
-import { Plus as PlusIcon} from "lucide-react";
+import { Plus as PlusIcon } from "lucide-react";
 import { Routes } from "@/lib/routes";
 import { LeaveBreadcrumbs } from "./LeaveBreadcrumbs";
+import NavigationButton from "@/common/NavigationButton";
 
 export const LeavesHeader = () => {
   const pathname = usePathname();
@@ -59,9 +60,10 @@ export const LeavesHeader = () => {
                 />
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
-              <Button data-testid="addMemberButton" className="h-7">
-                <PlusIcon /> <span className="hidden md:block">Create Leave</span>
-              </Button>
+              <NavigationButton
+                path={Routes.AddLeaveRequest}
+                buttonText="Create Leave Request"
+              />
             </div>
           )}
         </div>
