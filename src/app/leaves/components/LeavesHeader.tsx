@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname } from "next/navigation";
-import { Plus as PlusIcon } from "lucide-react";
 import { Routes } from "@/lib/routes";
 import { LeaveBreadcrumbs } from "./LeaveBreadcrumbs";
 import NavigationButton from "@/common/NavigationButton";
