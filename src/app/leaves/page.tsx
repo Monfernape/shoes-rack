@@ -1,12 +1,16 @@
 import React from "react";
 import { LeavesRequestList } from "./components/LeavesRequestList";
 import { PageLayout } from "../layout/PageLayout";
+import { LeavesHeader } from "./components/LeavesHeader";
 
 const Page = () => {
   return (
-    <PageLayout>
-      <LeavesRequestList />
-    </PageLayout>
+    <>
+      <LeavesHeader />
+      <PageLayout>
+        <LeavesRequestList />
+      </PageLayout>
+    </>
   );
 };
 
