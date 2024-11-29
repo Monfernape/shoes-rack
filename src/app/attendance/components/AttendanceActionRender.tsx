@@ -8,31 +8,27 @@ import {
 } from "lucide-react";
 import { AttendanceStatus, MemberRole } from "@/constant/constant";
 import { useRouter } from "next/navigation";
+import { Routes } from "@/lib/routes";
 import { deleteAttendance } from "../actions/deleteAttendance";
 import { toast } from "@/hooks/use-toast";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
-interface MemberInfo {
-  shift: string;
-  role: string;
-  status: string;
-  id: number;
-}
-interface AttendanceData {
+interface Attendance {
   shift: string;
   status: string;
   id: number;
 }
 
 type Props = {
-  loginUser: MemberInfo;
-  attendanceData: AttendanceData;
+  attendance: Attendance;
 };
 
-const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
+const AttendanceActionRender = ({ attendance }: Props) => {
   const router = useRouter();
+  const loginUser = useUser();
 
   const handleEditInfo = (id: number) => {
-    router.push(`/attendance/edit/${id}`);
+    router.push(`${Routes.EditAttendance}/${id}`);
   };
 
   const handleDeleteMember = async (id: number) => {
@@ -56,13 +52,13 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
     {
       title: "Edit Info",
       id: 2,
-      onClick: () => handleEditInfo(attendanceData.id),
+      onClick: () => handleEditInfo(attendance.id),
       icon: <EditIcon size={16} />,
     },
     {
       title: "Delete Member",
       id: 3,
-      onClick: () => handleDeleteMember(attendanceData.id),
+      onClick: () => handleDeleteMember(attendance.id),
       icon: <TrashIcon size={16} className="text-red-500" />,
       className: "text-red-500",
     },
@@ -84,22 +80,21 @@ const AttendanceActionRender = ({ loginUser, attendanceData }: Props) => {
   ];
 
   const actionMenu = React.useMemo(() => {
-    switch (loginUser.role) {
+    switch (loginUser?.role) {
       case MemberRole.Member:
-        return attendanceData.status === AttendanceStatus.Pending
+        return attendance.status === AttendanceStatus.Pending
           ? [...baseActions]
           : [];
       case MemberRole.ShiftIncharge:
-        return attendanceData.shift === loginUser.shift
+        return attendance.shift === loginUser?.shift
           ? [...ApprovelRequest]
           : [];
       case MemberRole.Incharge:
-      case MemberRole.SuperAdmin:
         return [...ApprovelRequest];
       default:
         return [];
     }
-  }, [loginUser.role, attendanceData.status]);
+  }, [loginUser?.role, attendance.status]);
 
   return <ActionsMenu actions={actionMenu} />;
 };

@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LeaveRequestStatus, LeaveTypes, UserRole, UserStatus } from "@/constant/constant";
+import { LeaveRequestStatus, LeaveTypes, MemberRole, UserStatus } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
 import { createLeaveRequest } from "../../actions/createLeaveRequest";
@@ -72,7 +72,7 @@ const loginUser: User = {
   id: 1,
   name: "Alice Johnson",
   shift: "A",
-  role: "incharge",
+  role: MemberRole.Incharge,
   status: UserStatus.Active,
   phone: "123-456-7890",
   address: "123 Main St, Anytown, USA",
@@ -106,7 +106,7 @@ export const LeaveRequestFormBuilder = ({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
       memberId:
-        loginUser.role !== UserRole.Member
+        loginUser.role !== MemberRole.Member
           ? leaves?.memberId?.toString() ?? ""
           : loginUser.id.toString(),
       leaveType: leaves?.leaveType ?? LeaveTypes.Personal,

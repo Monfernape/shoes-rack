@@ -3,8 +3,6 @@ import { describe, expect, it, vi } from "vitest";
 import { MemberFormBuilder } from "./MemberFormBuilder";
 import { createUser } from "../actions/createUser";
 
-
-
 type TestElement = Document | Element | Window | Node;
 
 function hasInputValue(e: TestElement, inputValue: string) {
@@ -58,7 +56,7 @@ describe("UserForm", async () => {
       fireEvent.click(option);
     });
     // Submitting the form
-    expect(screen.getByTestId("form-valid")).toHaveFormValues({
+    expect(screen.getByTestId("form")).toHaveFormValues({
       name: "Mubasher",
       phoneNumber: "0305-6812063",
       role: "member",

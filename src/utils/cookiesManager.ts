@@ -20,8 +20,10 @@ export const clearCookies = (values: string[]) => {
 
 export const getCookies = (name: string) => {
   const cookie = cookies().get(name);
+
   if (cookie) {
     const values = JSON.parse(cookie.value);
+
     return values;
   } else {
     return null;
