@@ -15,9 +15,9 @@ export const createLeaveRequest = async (
   const { error } = await supabase.from(Tables.Leaves).insert({
     memberId: Number(values.memberId),
     leaveType: values.leaveType,
-    startDate: values.startDate.toISOString(),
-    endDate: values.endDate.toISOString(),
-    reasonForLeave: values.reason,
+    startDate: values.date.from.toISOString(),
+    endDate: values.date.to.toISOString(),
+    reason: values.reason,
     status: LeaveRequestStatus.Pending,
   });
 

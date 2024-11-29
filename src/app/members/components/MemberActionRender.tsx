@@ -5,18 +5,18 @@ import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { Member, UserDetails } from "@/types";
+import { Member } from "@/types";
 import { Attendance } from "@/app/attendance/components/AttendanceList";
 import { Routes } from "@/lib/routes";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 type Props = {
   memberInfo: Member | Attendance;
-  loginUser?: UserDetails;
 };
 
-const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
+const MemberTableActionRender = ({ memberInfo }: Props) => {
   const { status, id, shift } = memberInfo;
-
+  const loginUser = useUser();
   const router = useRouter();
   const { toast } = useToast();
   const handleViewDetails = () => {

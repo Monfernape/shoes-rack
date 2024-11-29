@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo, useState } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import {
@@ -13,6 +15,8 @@ import { LeaveRequestDetails } from "../modal/LeaveRequestDetails";
 import { deleteLeaveRequest } from "../actions/delete-leave-request";
 import { toast } from "@/hooks/use-toast";
 import { processLeaveRequest } from "../actions/process-leave-request";
+import { Routes } from "@/lib/routes";
+import { useRouter } from "next/navigation";
 
 const loggedUser = {
   name: "John Smith",
@@ -24,6 +28,8 @@ interface Props {
 }
 
 const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
+  const router = useRouter();
+
   const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
   const { id: requestId } = leaveRequestDetails;
@@ -31,8 +37,8 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
     setIsOpenViewModal(!isOpenViewModal);
   };
 
-  const handleEditInfo = () => {
-    return;
+  const handleEditInfo = (requestId: number) => {
+    router.push(`${Routes.EditLeaveRequest}/${requestId}`);
   };
 
   const handleDeleteRequest = async (requestId: number) => {
@@ -79,21 +85,16 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
       {
         title: "Edit",
         id: 2,
-        onClick: handleEditInfo,
+        onClick: () => {
+          handleEditInfo(requestId);
+        },
         icon: <EditIcon size={16} />,
       },
       {
         title: "Delete",
         id: 3,
         onClick: () => {
-          if (requestId !== undefined) {
-            handleDeleteRequest(requestId);
-          } else {
-            toast({
-              title: "Error",
-              description: "Request ID is missing.",
-            });
-          }
+          handleDeleteRequest(requestId);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
@@ -119,14 +120,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
         title: "Accept",
         id: 4,
         onClick: () => {
-          if (requestId !== undefined) {
-            handleLeaveRequestStatus(requestId, LeavesRequestStatus.Approved);
-          } else {
-            toast({
-              title: "Error",
-              description: "Request ID is missing.",
-            });
-          }
+          handleLeaveRequestStatus(requestId, LeavesRequestStatus.Approved);
         },
         icon: <CheckCircleIcon size={16} />,
       },
@@ -134,14 +128,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
         title: "Reject",
         id: 4,
         onClick: () => {
-          if (requestId !== undefined) {
-            handleLeaveRequestStatus(requestId, LeavesRequestStatus.Reject);
-          } else {
-            toast({
-              title: "Error",
-              description: "Request ID is missing.",
-            });
-          }
+          handleLeaveRequestStatus(requestId, LeavesRequestStatus.Reject);
         },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
       },

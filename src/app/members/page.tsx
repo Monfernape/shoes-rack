@@ -1,16 +1,14 @@
 import React from "react";
 import { MemberList } from "./components/MemberList";
 import { PageLayout } from "../layout/PageLayout";
-import { MemeberHeader } from "./components/MemeberHeader";
-import { getMembers } from "./actions/getMembers";
-const Page = async () => {
-  const members = await getMembers();
+import { MemberHeader } from "./components/MemberHeader";
 
+const Page = async () => {
   return (
     <>
-      <MemeberHeader />
+      <MemberHeader />
       <PageLayout>
-        <MemberList members={members} />
+        <MemberList />
       </PageLayout>
     </>
   );

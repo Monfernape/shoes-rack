@@ -17,11 +17,11 @@ import {
 } from "@/components/ui/table";
 
 import { useToast } from "@/hooks/use-toast";
-import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
-import MemberTableActionRender from "@/app/members/components/MemberActionRender";
 import { AttendanceStatus, Shift } from "@/constant/constant";
+
+import AttendanceActionRender from "./AttendanceActionRender";
 
 export interface Attendance {
   member: string;
@@ -70,7 +70,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
       {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }) => <UserStatusBadge status={row.getValue("status")} />,
+        cell: () => {},
       },
       {
         id: "actions",
@@ -79,7 +79,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <MemberTableActionRender memberInfo={row.original} />;
+          return <AttendanceActionRender attendance={row.original} />;
         },
       },
     ],

@@ -1,11 +1,11 @@
 import { MemberFormBuilder } from "@/app/members/components/MemberFormBuilder";
 import React from "react";
-import { MemeberHeader } from "../components/MemeberHeader";
+import { MemberHeader } from "../components/MemberHeader";
 
 const Page = () => {
   return (
     <div>
-      <MemeberHeader />
+      <MemberHeader />
       <MemberFormBuilder />
     </div>
   );

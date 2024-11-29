@@ -21,26 +21,14 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { getMembers } from "@/app/members/actions/getMembers";
-import { Member, User } from "@/types";
-import { MemberRole,  UserStatus } from "@/constant/constant";
+import { Member } from "@/types";
+import { MemberRole, UserStatus } from "@/constant/constant";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface SelectFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
 }
-
-const loginUser: User = {
-  id: 1,
-  name: "Alice Johnson",
-  shift: "A",
-  role: MemberRole.Incharge,
-  status: UserStatus.Active,
-  phone: "123-456-7890",
-  address: "123 Main St, Anytown, USA",
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  deleted_at: null,
-};
 
 const MemberSelector = <T extends FieldValues>({
   control,
@@ -52,11 +40,11 @@ const MemberSelector = <T extends FieldValues>({
   });
 
   const [members, setMembers] = useState<Member[]>([]);
-
+  const loginUser = useUser();
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await getMembers();
+        const response = await getMembers("");
         if (response.success) {
           setMembers(response.data);
         } else {
@@ -76,8 +64,8 @@ const MemberSelector = <T extends FieldValues>({
       .filter(
         (member) =>
           member.status === UserStatus.Active &&
-          (loginUser.role === MemberRole.Incharge ||
-            member.shift === loginUser.shift)
+          (loginUser?.role === MemberRole.Incharge ||
+            member.shift === loginUser?.shift)
       )
       .map(({ id, name }) => ({
         id: id.toString(),
@@ -95,9 +83,9 @@ const MemberSelector = <T extends FieldValues>({
           <FormControl>
             <Select
               {...field}
-              value={loginUser.role === MemberRole.Member  ? loginUser.name : field.value}
+              value={field.value}
               onValueChange={field.onChange}
-              disabled={loginUser.role === MemberRole.Member}
+              disabled={loginUser?.role === MemberRole.Member}
             >
               <SelectTrigger
                 data-testid="memberId"
