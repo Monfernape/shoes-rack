@@ -44,7 +44,7 @@ const MemberSelector = <T extends FieldValues>({
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await getMembers();
+        const response = await getMembers("");
         if (response.success) {
           setMembers(response.data);
         } else {

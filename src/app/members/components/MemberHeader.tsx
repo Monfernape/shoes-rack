@@ -1,23 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Sidebar } from "@/app/layout/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
 import { Routes } from "@/lib/routes";
-
+import useMediaQuery from "@/hooks/use-media-query";
+import useDebounce from "@/hooks/useDebounce";
 import NavigationButton from "@/common/NavigationButton";
-export const MemeberHeader = () => {
+
+export const MemberHeader = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const isSmallScreen = useMediaQuery("sm");
+  const [search, setSearch] = useState("");
+  const debounceValue = useDebounce(search, 500);
+ 
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isTitleHide, setIsTitleHide] = useState<boolean>(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    if (debounceValue.length) {
+      router.push(`${Routes.Members}?key=${debounceValue}`);
+    } else {
+      router.push(Routes.Members);
+    }
+  }, [debounceValue]);
 
   return (
     <div className="sticky top-0 z-50 w-full">
@@ -37,7 +56,7 @@ export const MemeberHeader = () => {
                 <HamburgerMenuIcon className="h-6 w-6 text-black" />
               </Button>
             )}
-            {!isTitleHide && <MemberBreadCrumbs />}
+            {(!isTitleHide || !isSmallScreen) && <MemberBreadCrumbs />}
           </div>
           {pathname !== Routes.AddMember && pathname !== Routes.Login && (
             <div className="flex items-center space-x-2">
@@ -52,6 +71,7 @@ export const MemeberHeader = () => {
                   onBlur={() => {
                     setIsTitleHide(false);
                   }}
+                  onChange={handleSearchQueryChange}
                   className={`pr-4 py-2 h-7 ${
                     isTitleHide ? "w-32 pl-10" : "w-2 pl-6"
                   } md:w-60 md:pl-10 rounded text-xs`}

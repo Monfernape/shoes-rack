@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
-import { MemeberHeader } from "./MemeberHeader";
+import { MemberHeader } from "./MemberHeader";
 
 describe("Header Component", () => {
   beforeAll(() => {
@@ -17,6 +17,16 @@ describe("Header Component", () => {
             }),
           };
         },
+      };
+    });
+    vi.mock("next/navigation", () => {
+      const actual = vi.importActual("next/navigation");
+      return {
+        ...actual,
+        useRouter: vi.fn(() => ({
+          push: vi.fn(),
+        })),
+        usePathname: vi.fn(),
       };
     });
   });
@@ -35,12 +45,12 @@ describe("Header Component", () => {
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemeberHeader />);
+    render(<MemberHeader />);
     fireEvent.click(screen.getByTestId("searchInput"));
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemeberHeader />);
+    render(<MemberHeader />);
     const searchInput = screen.getByTestId("searchInput") as HTMLInputElement;
 
     fireEvent.change(searchInput, { target: { value: "test input" } });
@@ -49,7 +59,7 @@ describe("Header Component", () => {
   });
 
   it("Button is clicked", async () => {
-    render(<MemeberHeader />);
+    render(<MemberHeader />);
     fireEvent.click(screen.getByTestId("addMemberButton"));
   });
 });

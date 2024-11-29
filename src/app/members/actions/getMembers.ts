@@ -1,17 +1,24 @@
 "use server";
 
-import { UserStatus } from "@/constant/constant";
-import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 import { Tables } from "@/lib/db";
+import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
+import { UserStatus } from "@/constant/constant";
 
-export const getMembers = async () => {
+export const getMembers = async (query: string | null) => {
   const supabase = await getSupabaseClient();
-  const { data, error } = await supabase
-    .from(Tables.Members)
-    .select("*")
-    .neq("status", UserStatus.Deactivated);
 
-  if (error) {
+    const columns = ['name', 'address', 'phoneNumber', 'cnic'];
+    
+    const orConditions = columns.map(col => {
+      return `${col}.ilike.%${query ?? ""}%`; 
+    });
+
+    const { data, error } = await supabase
+    .from(Tables.Members) 
+    .select()
+    .or(orConditions.join(',')).neq("status", UserStatus.Deactivated);
+
+    if (error) {
     return {
       success: false,
       message: "There are no members available at this time.",
