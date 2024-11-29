@@ -10,6 +10,7 @@ export enum Routes {
   Members = "/members",
   AddMember = "/members/add",
   EditMember = "/members/edit",
+  MemberDetails = "/members/details",
   ShiftIncharge = "/shift-incharge",
   MissingShoes = "/missing-shoes",
   AddMissingShoes = "/add-missing-shoes",
