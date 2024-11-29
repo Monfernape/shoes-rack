@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import {
   ColumnDef,
   flexRender,
@@ -15,95 +21,59 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {  LeaveRequestsTypes } from "@/types";
+import { LeaveRequestsTypes } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon } from "lucide-react";
 import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
-
-import { LeavesRequestStatus } from "@/types";
-
-const leaveRequests = [
-  {
-    id: 1,
-    leaveType: "Sick Leave",
-    startDate: "2024-11-01",
-    endDate: "2024-11-03",
-    status: LeavesRequestStatus.Approved,
-    reason: "Flu",
-    requestedBy: "John Doe",
-  },
-  {
-    id: 2,
-    leaveType: "Vacation",
-    startDate: "2024-12-10",
-    endDate: "2024-12-20",
-    status: LeavesRequestStatus.Pending,
-    reason: "Family vacation",
-    requestedBy: "Jane Smith",
-  },
-  {
-    id: 3,
-    leaveType: "Personal Leave",
-    startDate: "2024-11-15",
-    endDate: "2024-11-16",
-    status: LeavesRequestStatus.Approved,
-    reason: "Personal matter",
-    requestedBy: "Emily Johnson",
-  },
-  {
-    id: 4,
-    leaveType: "Maternity Leave",
-    startDate: "2024-12-01",
-    endDate: "2025-05-31",
-    status: LeavesRequestStatus.Pending,
-    reason: "Childbirth",
-    requestedBy: "Sarah Brown",
-  },
-  {
-    id: 5,
-    leaveType: "Unpaid Leave",
-    startDate: "2024-11-20",
-    endDate: "2024-11-25",
-    status: LeavesRequestStatus.Reject,
-    reason: "Travel",
-    requestedBy: "Michael Lee",
-  },
-];
-
+import { useRouter, useSearchParams } from "next/navigation";
+import { getAllLeaveRequests } from "../actions/get-all-leave-requests";
+import { toast } from "@/hooks/use-toast";
+import { DataSpinner } from "@/common/Loader/Loader";
+import { Routes } from "@/lib/routes";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 export const LeavesRequestList = () => {
+  const route = useRouter();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("key");
+  const [isPending, startTransition] = useTransition();
+  const [filteredLeaves, setFilteredLeaves] = useState<LeaveRequestsTypes[]>(
+    []
+  );
   const columns: ColumnDef<LeaveRequestsTypes>[] = useMemo(
     () => [
       {
         accessorKey: "requestedBy",
         header: "Requested By",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("requestedBy")}</div>
+          <div className="capitalize">
+            {row.getValue("requestedBy") ?? "--"}
+          </div>
         ),
       },
       {
         accessorKey: "leaveType",
         header: "Leave Type",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("leaveType")}</div>
+          <div className="capitalize">{row.getValue("leaveType") ?? "--"}</div>
         ),
       },
       {
         accessorKey: "startDate",
         header: "Start Date",
-        cell: ({ row }) => <div>{row.getValue("startDate")}</div>,
+        cell: ({ row }) => <div>{row.getValue("startDate") ?? "--"}</div>,
       },
       {
         accessorKey: "endDate",
         header: "End Date",
-        cell: ({ row }) => <div>{row.getValue("endDate")}</div>,
+        cell: ({ row }) => <div>{row.getValue("endDate") ?? "--"}</div>,
       },
       {
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => (
-          <LeavesStatusBadge status={row.getValue("status")} />
+          <LeavesStatusBadge status={row.getValue("status") ?? "--"} />
         ),
       },
       {
@@ -120,18 +90,43 @@ export const LeavesRequestList = () => {
     []
   );
 
+  const fetchMembers = useCallback(async () => {
+    const response = await getAllLeaveRequests(searchQuery);
+    startTransition(() => {
+      try {
+        setFilteredLeaves(response);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast({
+            title: "No Leave Request Found",
+            description: error.message,
+          });
+        } else {
+          toast({
+            title: "No Leave Request Found",
+            description: "An unknown error occurred",
+          });
+        }
+      }
+    });
+  }, [searchQuery]);
+
+  useEffect(() => {
+    fetchMembers();
+  }, [fetchMembers]);
+
   const table = useReactTable({
-    data: leaveRequests,
+    data: filteredLeaves,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const handleNavigate = () => {
-    alert("nativgation function trigger");
+    route.push(Routes.AddLeaveRequest);
   };
 
   const StandardPageProps = {
-    hasContent: !!leaveRequests.length,
+    hasContent: !!filteredLeaves.length,
     title: "Add member",
     description: "This is where you can see all shoes rack members",
     buttonIcon: <PlusIcon />,
@@ -142,6 +137,7 @@ export const LeavesRequestList = () => {
 
   return (
     <StandardPage {...StandardPageProps}>
+      {isPending && <DataSpinner />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -159,7 +155,7 @@ export const LeavesRequestList = () => {
         </TableHeader>
 
         <TableBody>
-          {leaveRequests.map((row: LeaveRequestsTypes) => (
+          {filteredLeaves?.map((row: LeaveRequestsTypes) => (
             <TableRow key={row.id}>
               {table
                 .getRowModel()
@@ -172,7 +168,7 @@ export const LeavesRequestList = () => {
                 ))}
             </TableRow>
           ))}
-          {!leaveRequests.length && (
+          {!filteredLeaves.length && (
             <TableRow>
               <TableCell colSpan={6} className="text-center">
                 No Leave Request Found
