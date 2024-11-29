@@ -31,12 +31,13 @@ export const MemberHeader = () => {
   };
 
   useEffect(() => {
-    if (debounceValue.length) {
+    const shouldNavigateToMembers = pathname === Routes.Members;
+    if (debounceValue) {
       router.push(`${Routes.Members}?key=${debounceValue}`);
-    } else {
+    } else if (shouldNavigateToMembers) {
       router.push(Routes.Members);
     }
-  }, [debounceValue]);
+  }, [debounceValue, pathname]);
 
   return (
     <div className="sticky top-0 z-50 w-full">
