@@ -1,8 +1,9 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { LeaveTypes } from "@/constant/constant";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { LeaveRequestStatus, LeaveTypes } from "@/constant/constant";
 import { LeaveRequestFormBuilder } from "./LeaveRequestFormBuilder";
 import { useParams, useRouter } from "next/navigation";
 import { Mock } from "vitest";
+import { createLeaveRequest } from "../../actions/createLeaveRequest";
 
 vi.mock("next/navigation", async () => {
   return {
@@ -18,6 +19,15 @@ describe("Leave request Form Testing", () => {
       name: LeaveTypes.Sick,
     },
   ];
+
+  const mockPayload = {
+    memberId: 119,
+    leaveType: LeaveTypes.Vacation,
+    startDate: "2024/11/20",
+    endDate: "2024/11/26",
+    reason: "Due to some personal reason",
+    status: LeaveRequestStatus.Pending,
+  };
 
   beforeEach(() => {
     (useParams as Mock).mockReturnValue({
@@ -50,5 +60,14 @@ describe("Leave request Form Testing", () => {
     fireEvent.submit(submitButton);
 
     fireEvent.click(submitButton);
+  });
+  it("calls createLeaveRequest with mock form data on submit", async () => {
+    const submit = vi.fn().mockImplementation(createLeaveRequest);
+    await waitFor(() => {
+      submit({
+        ...mockPayload,
+      });
+    });
+    expect(submit).toHaveBeenCalledTimes(1);
   });
 });
