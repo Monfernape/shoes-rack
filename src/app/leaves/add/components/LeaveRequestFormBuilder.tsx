@@ -1,10 +1,10 @@
 "use client";
+
 import React from "react";
 import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,13 +22,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LeaveTypes, MemberRole, UserStatus } from "@/constant/constant";
+import { LeaveRequestStatus, LeaveTypes, MemberRole, UserStatus } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
-import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
-import { User } from "@/types";
 import { createLeaveRequest } from "../../actions/createLeaveRequest";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
+import { useParams, useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import { updateLeaveRequest } from "../../actions/updated-leave-request";
+import { User } from "@/types";
+import { startOfDay } from "date-fns";
+import { Routes } from "@/lib/routes";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -39,15 +43,17 @@ export const leaveRequestSchema = z.object({
     LeaveTypes.Sick,
     LeaveTypes.Vacation,
   ]),
-  startDate: z
-    .date({
-      message: "Date must be selected.",
-    })
-    .refine((date) => date >= startOfDay(new Date()), {
-      message: "Start Date must be today or in the future.",
+  date: z.object({
+    from: z
+      .date({
+        message: "Date range must be selected.",
+      })
+      .refine((date) => date >= startOfDay(new Date()), {
+        message: "Start Date must be today or in the future.",
+      }),
+    to: z.date({
+      message: "End Date must be selected.",
     }),
-  endDate: z.date({
-    message: "End Date must be selected.",
   }),
   reason: z.string().min(10, {
     message: "Please provide a reason for leave.",
@@ -75,37 +81,72 @@ const loginUser: User = {
   deleted_at: null,
 };
 
-export const LeaveRequestFormBuilder = () => {
+type LeaveRequest = {
+  id: number;
+  leaveType: LeaveTypes;
+  startDate: Date;
+  endDate: Date;
+  reason: string;
+  memberId: number;
+  created_at?: string,
+  status?: LeaveRequestStatus
+};
+
+interface LeaveRequestFormBuilderProps {
+  leaves?: LeaveRequest;
+}
+
+export const LeaveRequestFormBuilder = ({
+  leaves,
+}: LeaveRequestFormBuilderProps) => {
+  const { id: leaveId } = useParams<{ id: string }>();
+  const router = useRouter();
+
   const form = useForm<leaveRequestSchemaType>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
       memberId:
-        loginUser.role === MemberRole.Member ? loginUser.id.toString() : "",
-      leaveType: LeaveTypes.Personal,
-      startDate: undefined,
-      endDate: undefined,
-      reason: "",
+        loginUser.role !== MemberRole.Member
+          ? leaves?.memberId?.toString() ?? ""
+          : loginUser.id.toString(),
+      leaveType: leaves?.leaveType ?? LeaveTypes.Personal,
+      date: {
+        from: leaves?.startDate ? new Date(leaves?.startDate) : undefined,
+        to: leaves?.endDate ? new Date(leaves?.endDate) : undefined,
+      },
+      reason: leaves?.reason ?? "",
     },
     mode: "all",
   });
 
-  const {
-    formState: { errors, isValid },
-    trigger,
-    setValue,
-  } = form;
+  const { errors, isValid } = form.formState;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
-    createLeaveRequest(values);
+    try {
+      if (!leaveId) {
+        createLeaveRequest(values);
+        toast({
+          title: "Success",
+          description: "Leave request created successfully",
+        });
+      } else {
+        updateLeaveRequest(Number(leaveId), values);
+        toast({
+          title: "Success",
+          description: "Leave request updated successfully",
+        });
+      }
+      router.push(Routes.LeaveRequest);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description: "Something went wrong! Please try again.",
+        });
+      }
+    }
   }
 
-  const handleDateChange = (dateRange: DateRange | undefined) => {
-    if (dateRange?.from && dateRange?.to) {
-      setValue("startDate", dateRange.from);
-      setValue("endDate", dateRange.to);
-    }
-    trigger();
-  };
   return (
     <FormWrapper>
       <FormTitle title="Request Leave" />
@@ -145,16 +186,20 @@ export const LeaveRequestFormBuilder = () => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
-            name="startDate"
-            render={() => (
-              <>
-                <FormLabel>Date Range</FormLabel>
-                <DatePickerWithRange handleChange={handleDateChange} />
+            name={"date"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Date</FormLabel>
+                <FormControl>
+                  <DatePickerWithRange
+                    onChange={field.onChange}
+                    value={field.value}
+                  />
+                </FormControl>
                 <FormMessage />
-              </>
+              </FormItem>
             )}
           />
 
@@ -184,7 +229,7 @@ export const LeaveRequestFormBuilder = () => {
               disabled={!isValid}
               className="text-xs"
             >
-              Submit
+              {leaveId ? "Update" : "Submit"}
             </Button>
           </div>
         </form>

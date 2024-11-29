@@ -21,7 +21,7 @@ import { Plus as PlusIcon } from "lucide-react";
 import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
 
-import { LeavesRequestStatus } from "@/types"; 
+import { LeavesRequestStatus } from "@/types";
 
 const leaveRequests = [
   {
@@ -113,11 +113,7 @@ export const LeavesRequestList = () => {
           return <span>Action</span>;
         },
         cell: ({ row }) => {
-          return (
-            <LeaveTableActionRender
-              leaveRequestDetails={ row.original }
-            />
-          );
+          return <LeaveTableActionRender leaveRequestDetails={row.original} />;
         },
       },
     ],
