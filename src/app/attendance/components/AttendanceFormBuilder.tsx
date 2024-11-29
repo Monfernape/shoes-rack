@@ -17,7 +17,7 @@ import { createAttendance } from "../actions/create-attendance";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
-import { MemberRole, UserStatus } from "@/constant/constant";
+import { MemberRole } from "@/constant/constant";
 import { updateAttendance } from "../actions/update-attendance";
 import { useParams } from "next/navigation";
 import { isValidParam } from "@/utils/utils";
@@ -57,7 +57,6 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   const attendanceId = params?.id;
 
  const loginUser = useUser();
-console.log("LoginUserAttendance**",loginUser);
 
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),

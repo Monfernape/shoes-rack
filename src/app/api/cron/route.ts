@@ -1,4 +1,3 @@
-import { Member } from "@/types";
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { NextResponse } from "next/server";

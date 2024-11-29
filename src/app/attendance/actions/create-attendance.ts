@@ -9,7 +9,6 @@ import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 export const createAttendance = async (values: AttendanceFormValues) => {
   const loginUser = await getLoggedInUser();
-  console.log("LoginUser**",loginUser)
   const supabase = await getSupabaseClient();
 
   const payload = {
