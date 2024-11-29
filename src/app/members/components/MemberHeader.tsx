@@ -7,10 +7,10 @@ import { Input } from "@/components/ui/input";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter } from "next/navigation";
 import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
-import { Plus } from "lucide-react";
 import { Routes } from "@/lib/routes";
 import useMediaQuery from "@/hooks/use-media-query";
 import useDebounce from "@/hooks/useDebounce";
+import NavigationButton from "@/common/NavigationButton";
 
 export const MemberHeader = () => {
   const pathname = usePathname();
@@ -78,9 +78,10 @@ export const MemberHeader = () => {
                 />
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
-              <Button data-testid="addMemberButton" className="h-7">
-                <Plus /> <span className="hidden md:block">Add Member </span>
-              </Button>
+              <NavigationButton
+                path={Routes.AddMember}
+                buttonText="Add Member"
+              />
             </div>
           )}
         </div>

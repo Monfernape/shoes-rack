@@ -1,20 +1,23 @@
+import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberHeader } from "./MemberHeader";
 
 describe("Header Component", () => {
   beforeAll(() => {
-    Object.defineProperty(window, "matchMedia", {
-      writable: true,
-      value: vi.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      })),
+    vi.mock("next/headers", () => {
+      return {
+        cookies: () => {
+          return {
+            get: vi.fn().mockReturnValue({
+              name: "loginUser",
+              value:
+                '{"id":148,"created_at":"2024-11-15T11:17:10.486126+00:00","name":"Testing User","phoneNumber":"923057692655","date_of_birth":"2024-08-31","cnic":"33333-3333333-3","address":"test","ehad_duration":"2025-03-30","role":"shift_incharge","status":"active","shift":"D","invite_link":"","temporary_password":true}',
+              path: "/",
+            }),
+          };
+        },
+      };
     });
     vi.mock("next/navigation", () => {
       const actual = vi.importActual("next/navigation");
@@ -26,6 +29,19 @@ describe("Header Component", () => {
         usePathname: vi.fn(),
       };
     });
+  });
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
   });
 
   it("Input Event Triggered", async () => {
