@@ -31,7 +31,6 @@ import { getAllLeaveRequests } from "../actions/get-all-leave-requests";
 import { toast } from "@/hooks/use-toast";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { Routes } from "@/lib/routes";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 
 export const LeavesRequestList = () => {
   const route = useRouter();
