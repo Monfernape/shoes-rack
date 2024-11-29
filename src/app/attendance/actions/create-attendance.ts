@@ -5,8 +5,11 @@ import { AttendanceFormValues } from "../components/AttendanceFormBuilder";
 import { Routes } from "@/lib/routes";
 import { AttendanceStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 export const createAttendance = async (values: AttendanceFormValues) => {
+  const loginUser = await getLoggedInUser();
+  console.log("LoginUser**",loginUser)
   const supabase = await getSupabaseClient();
 
   const payload = {
@@ -17,6 +20,8 @@ export const createAttendance = async (values: AttendanceFormValues) => {
   const { error } = await supabase.from(Tables.Attendance).insert({
     ...payload,
     status: AttendanceStatus.Pending,
+    role:loginUser.role,
+    shift:loginUser.shift
   });
 
   if (error) {

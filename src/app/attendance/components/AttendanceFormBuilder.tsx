@@ -21,6 +21,7 @@ import { MemberRole, UserStatus } from "@/constant/constant";
 import { updateAttendance } from "../actions/update-attendance";
 import { useParams } from "next/navigation";
 import { isValidParam } from "@/utils/utils";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface AttendanceFormBuilderProps {
   attendance?: AttendanceFormValues;
@@ -55,24 +56,14 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   const params = useParams();
   const attendanceId = params?.id;
 
-  const loginUser = {
-    id: 227,
-    name: "Alice Johnson",
-    shift: "A",
-    role: MemberRole.Member,
-    status: UserStatus.Active,
-    phone: "123-456-7890",
-    address: "123 Main St, Anytown, USA",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    deleted_at: null,
-  };
+ const loginUser = useUser();
+console.log("LoginUserAttendance**",loginUser);
 
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
       memberId:
-        loginUser.role === MemberRole.Member
+        loginUser?.role === MemberRole.Member
           ? loginUser.id.toString()
           : attendance?.memberId,
 
