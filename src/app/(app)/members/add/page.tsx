@@ -1,6 +1,7 @@
-import { MemberFormBuilder } from "@/app/members/components/MemberFormBuilder";
+
 import React from "react";
 import { MemberHeader } from "../components/MemberHeader";
+import { MemberFormBuilder } from "../components/MemberFormBuilder";
 
 const Page = () => {
   return (
