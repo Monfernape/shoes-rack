@@ -1,7 +1,7 @@
 import React from "react";
 import { LeavesRequestList } from "./components/LeavesRequestList";
-import { PageLayout } from "../layout/PageLayout";
 import { LeavesHeader } from "./components/LeavesHeader";
+import { PageLayout } from "@/app/layout/PageLayout";
 
 const Page = () => {
   return (
