@@ -1,8 +1,8 @@
 "use server";
 
 import { Tables } from "@/lib/db";
-import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
 import { UserStatus } from "@/constant/constant";
+import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
 export const getMembers = async (query: string | null) => {
   const supabase = await getSupabaseClient();

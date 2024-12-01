@@ -1,5 +1,5 @@
 "use client";
-import { logoutUser } from "@/app/members/actions/logoutUser";
+import { logoutUser } from "@/app/(auth)/login/actions/logoutUser";
 import { Button } from "@/components/ui/button";
 import { MemberRole } from "@/constant/constant";
 import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";

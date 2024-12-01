@@ -31,7 +31,6 @@ import {
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import FormWrapper from "../../../common/FormWrapper";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
@@ -40,6 +39,7 @@ import { createUser } from "../actions/createUser";
 import { updateUser } from "../actions/update-user";
 import { Member } from "@/types";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
+import FormWrapper from "@/common/FormWrapper";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
