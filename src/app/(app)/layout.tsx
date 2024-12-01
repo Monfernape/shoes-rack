@@ -5,7 +5,7 @@ import { cx } from "class-variance-authority";
 import { Routes } from "@/lib/routes";
 import { Sidebar } from "../layout/components/Sidebar";
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);

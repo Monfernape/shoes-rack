@@ -6,12 +6,11 @@ import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Member } from "@/types";
-import { Attendance } from "@/app/attendance/components/AttendanceList";
 import { Routes } from "@/lib/routes";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 
 type Props = {
-  memberInfo: Member | Attendance;
+  memberInfo: Member;
 };
 
 const MemberTableActionRender = ({ memberInfo }: Props) => {
