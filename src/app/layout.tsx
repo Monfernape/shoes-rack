@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Suspense>children</Suspense>
+        <Suspense>{children}</Suspense>
       </body>
     </html>
   );
