@@ -20,10 +20,10 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { getMembers } from "@/app/members/actions/getMembers";
 import { Member } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
 import { useUser } from "@/hooks/useGetLoggedinUser";
+import { getMembers } from "@/app/(app)/members/actions/getMembers";
 
 interface SelectFieldProps<T extends FieldValues> {
   control: Control<T>;
@@ -44,7 +44,7 @@ const MemberSelector = <T extends FieldValues>({
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await getMembers();
+        const response = await getMembers("");
         if (response.success) {
           setMembers(response.data);
         } else {
