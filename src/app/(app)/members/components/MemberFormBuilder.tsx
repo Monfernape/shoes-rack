@@ -31,7 +31,6 @@ import {
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import FormWrapper from "../../../common/FormWrapper";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
@@ -40,12 +39,13 @@ import { createUser } from "../actions/createUser";
 import { updateUser } from "../actions/update-user";
 import { Member } from "@/types";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
+import FormWrapper from "@/common/FormWrapper";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
-  id: number;
+  id:number,
 }
-const USER_ROLES = [
+export const USER_ROLES = [
   {
     role: "Member",
     value: MemberRole.Member,
@@ -85,7 +85,7 @@ export const userBuilderSchema = z.object({
     message: "Name is required",
   }),
   phoneNumber: z
-    .string({ message: "Phone is required" })
+    .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   date_of_birth: z.date().max(new Date(Date.now()), "under age"),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),

@@ -1,8 +1,9 @@
 "use server";
 
 import { Tables } from "@/lib/db";
-import { getSupabaseClient } from "../../../utils/supabase/supabaseClient";
-import { getMembers } from "@/app/members/actions/getMembers";
+import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { getMembers } from "../../members/actions/getMembers";
+
 
 export const getAttendance = async () => {
   const supabase = await getSupabaseClient();
