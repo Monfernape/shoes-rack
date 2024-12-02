@@ -1,6 +1,6 @@
 "use server";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 const createFetch =
   (options: Pick<RequestInit, "next" | "cache">) =>
   (url: RequestInfo | URL, init?: RequestInit) => {
@@ -11,7 +11,11 @@ const createFetch =
   };
 export async function getSupabaseClient() {
   return createServerComponentClient(
-    { cookies },
+    {
+      cookies: function (): ReadonlyRequestCookies {
+        throw new Error("Function not implemented.");
+      }
+    }, // Empty object for configuration
     {
       options: {
         global: {
