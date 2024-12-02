@@ -9,5 +9,5 @@ export default function RootLayout({
   if (process.env.NODE_ENV !== "development") {
     notFound();
   }
-  return <div>{children}</div>;
+  return <div className="h-screen">{children}</div>;
 }

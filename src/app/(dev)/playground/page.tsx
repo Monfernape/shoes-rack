@@ -4,12 +4,10 @@ import UpdateDevUserFrom from "./components/UpdateDevUserForm";
 
 const Page = () => {
   return (
-    
-      <FormWrapper>
-        <AddDevUserForm />
-        <UpdateDevUserFrom />
-      </FormWrapper>
-    
+    <FormWrapper>
+      <AddDevUserForm />
+      <UpdateDevUserFrom />
+    </FormWrapper>
   );
 };
 
