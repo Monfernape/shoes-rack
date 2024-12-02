@@ -47,7 +47,7 @@ export const LeavesRequestList = () => {
         header: "Requested By",
         cell: ({ row }) => (
           <div className="capitalize">
-            {row.getValue("requestedBy") ?? "--"}
+            {row.getValue("requestedBy")}
           </div>
         ),
       },
@@ -55,24 +55,24 @@ export const LeavesRequestList = () => {
         accessorKey: "leaveType",
         header: "Leave Type",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("leaveType") ?? "--"}</div>
+          <div className="capitalize">{row.getValue("leaveType")}</div>
         ),
       },
       {
         accessorKey: "startDate",
         header: "Start Date",
-        cell: ({ row }) => <div>{row.getValue("startDate") ?? "--"}</div>,
+        cell: ({ row }) => <div>{row.getValue("startDate")}</div>,
       },
       {
         accessorKey: "endDate",
         header: "End Date",
-        cell: ({ row }) => <div>{row.getValue("endDate") ?? "--"}</div>,
+        cell: ({ row }) => <div>{row.getValue("endDate")}</div>,
       },
       {
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => (
-          <LeavesStatusBadge status={row.getValue("status") ?? "--"} />
+          <LeavesStatusBadge status={row.getValue("status")} />
         ),
       },
       {

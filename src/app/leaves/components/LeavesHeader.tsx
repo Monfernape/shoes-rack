@@ -31,13 +31,13 @@ export const LeavesHeader = () => {
   };
 
   useEffect(() => {
-    const shouldNavigateToLeaves = pathname === Routes.Members;
-    if (debounceValue.length ) {
-      router.push(`${Routes.LeaveRequest}?key=${debounceValue}`);
-    } else if(shouldNavigateToLeaves){
+    const shouldNavigateToLeaves = pathname === Routes.LeaveRequest;
+    if (!debounceValue.length && shouldNavigateToLeaves) {
       router.push(Routes.LeaveRequest);
+    } else {
+      router.push(`${Routes.LeaveRequest}?key=${debounceValue}`);
     }
-  }, [debounceValue , pathname]);
+  }, [debounceValue, pathname]);
 
   return (
     <div className="sticky top-0 z-50 w-full">
@@ -80,7 +80,7 @@ export const LeavesHeader = () => {
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
               <NavigationButton
-                path={Routes.AddMember}
+                path={Routes.LeaveRequest}
                 buttonText="Add Member"
               />
             </div>
