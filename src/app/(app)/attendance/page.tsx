@@ -6,11 +6,11 @@ import { PageLayout } from "@/app/layout/PageLayout";
 const Page = async () => {
   const attendance = await getAttendance();
   return (
-    <Suspense>
-      <PageLayout>
+    <PageLayout>
+      <Suspense>
         <AttendanceList attendance={attendance} />
-      </PageLayout>
-    </Suspense>
+      </Suspense>
+    </PageLayout>
   );
 };
 
