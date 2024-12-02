@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Suspense } from "react";
-
+export const dynamic = 'force-dynamic'
 // Define metadata as a named export
 export const metadata: Metadata = {
   title: "Shoes Rack",
@@ -16,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Suspense>{children}</Suspense>
+        {children}
       </body>
     </html>
   );
