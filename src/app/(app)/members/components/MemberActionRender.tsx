@@ -18,8 +18,10 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
   const loginUser = useUser();
   const router = useRouter();
   const { toast } = useToast();
+
   const handleViewDetails = () => {
-    return;
+    router.push(`${Routes.MemberDetails}/${id}`);
+
   };
 
   const handleEditInfo = () => {

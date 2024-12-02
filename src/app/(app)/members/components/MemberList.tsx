@@ -128,12 +128,12 @@ export const MemberList = () => {
 
   const StandardPageProps = {
     hasContent: !!filteredMember.length,
-    title: "Add member",
-    description: "This is where you can see all shoes rack members",
+    title: "Add Leaves",
+    description: "This is where you can see all leave request",
     buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: handleNavigation,
-    labelForActionButton: "Add member",
+    labelForActionButton: "Add Leaves",
   };
 
   return (

@@ -2,7 +2,7 @@ import React from "react";
 import { LeaveRequestFormBuilder } from "./components/LeaveRequestFormBuilder";
 import { LeavesHeader } from "../components/LeavesHeader";
 
-const page = async () => {
+const Page = async () => {
   return (
     <>
       <LeavesHeader />
@@ -11,4 +11,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Page;
