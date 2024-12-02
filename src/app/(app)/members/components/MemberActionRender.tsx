@@ -104,7 +104,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
       default:
         return [];
     }
-  }, [status, loginUser?.role ]);
+  }, [status , loginUser?.role]);
 
   return <ActionsMenu actions={actionMenu} />;
 };

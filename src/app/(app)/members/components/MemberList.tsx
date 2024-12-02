@@ -30,7 +30,7 @@ import { DataSpinner } from "@/common/Loader/Loader";
 export const MemberList = () => {
   const { toast } = useToast();
   const route = useRouter();
-  
+
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
@@ -79,11 +79,13 @@ export const MemberList = () => {
     },
   ];
 
-  const fetchMembers = useCallback(async () => {
-    const response = await getMembers(searchQuery);
-    startTransition(() => {
+  const fetchMembers = useCallback(() => {
+    (async function fetchData() {
       try {
-        setFilteredMember(response.data);
+        const response = await getMembers(searchQuery);
+        startTransition(() => {
+          setFilteredMember(response.data);
+        });
       } catch (error: unknown) {
         if (error instanceof Error) {
           toast({
@@ -97,7 +99,7 @@ export const MemberList = () => {
           });
         }
       }
-    });
+    })();
   }, [searchQuery]);
 
   useEffect(() => {
