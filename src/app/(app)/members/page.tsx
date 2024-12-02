@@ -1,16 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { MemberList } from "./components/MemberList";
-import { PageLayout } from "../layout/PageLayout";
 import { MemberHeader } from "./components/MemberHeader";
+import { PageLayout } from "@/app/layout/PageLayout";
 
-const Page = async () => {
+const Page = () => {
   return (
-    <>
+    <Suspense>
       <MemberHeader />
       <PageLayout>
         <MemberList />
       </PageLayout>
-    </>
+    </Suspense>
   );
 };
 

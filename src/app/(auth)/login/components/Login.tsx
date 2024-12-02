@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import LogoImage from "../../../../public/assets/imgs/logo.png"
+import LogoImage from "../../../../../public/assets/imgs/logo.png"
 import {
   Form,
   FormControl,
@@ -22,9 +22,9 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { useMask } from "@react-input/mask";
 import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
-import { loginUser } from "@/app/members/actions/loginUser";
 import Image from "next/image";
 import FormWrapper from "@/common/FormWrapper";
+import { loginUser } from "@/app/(auth)/login/actions/loginUser";
 
 const userSchema = z.object({
   phoneNumber: z
@@ -48,7 +48,7 @@ export const LoginPage = () => {
   });
 
   const phoneNumberMask = useMask({
-    mask: "03__-_______",
+    mask: "____-_______",
     replacement: { _: /\d/ },
   });
 

@@ -1,9 +1,9 @@
 import React from "react";
-import { PageLayout } from "../layout/PageLayout";
 import { AttendanceList } from "./components/AttendanceList";
 import { getAttendance } from "./actions/getAttendance";
+import { PageLayout } from "@/app/layout/PageLayout";
 
-const Page = async () => {
+const page =  async () => {
   const attendance = await getAttendance();
   return (
     <PageLayout>
@@ -12,4 +12,4 @@ const Page = async () => {
   );
 };
 
-export default Page;
+export default page;
