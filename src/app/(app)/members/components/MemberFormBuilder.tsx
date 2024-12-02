@@ -148,7 +148,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
   } = form;
 
   const dateformatter = (date: Date) => {
-   return 
+   return date
   }
   const handleSubmission = async (values: UserBuilder | UpdateUser) => {
     
@@ -255,7 +255,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                         <Button
                           data-testid="date_of_birth"
                           variant={"outline"}
-                          onClick = {()=>{console.log("Values",field.value)}}
+                         
                           className={cn(
                             `justify-start text-left font-normal
                         ${field.value} && "text-muted-foreground
