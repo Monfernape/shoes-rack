@@ -5,6 +5,8 @@ import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { leaveRequestSchema } from "../add/components/LeaveRequestFormBuilder";
 import { z } from "zod";
 import { LeaveRequestStatus } from "@/constant/constant";
+import { revalidatePath } from "next/cache";
+import { Routes } from "@/lib/routes";
 
 export const updateLeaveRequest = async (
   requestId: number,
@@ -26,4 +28,6 @@ export const updateLeaveRequest = async (
   if (error) {
     throw error.message;
   }
+
+  revalidatePath(Routes.LeaveRequest);
 };

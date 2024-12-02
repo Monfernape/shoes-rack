@@ -68,12 +68,12 @@ export enum LeavesRequestStatus {
 }
 export interface LeaveRequestsTypes {
   id: number;
-  leaveType?: string;
-  startDate?: string;
-  endDate?: string;
-  status?: LeavesRequestStatus;
-  reason?: string;
-  requestedBy?: string;
+  leaveType: string;
+  startDate: string;
+  endDate: string;
+  status: LeavesRequestStatus;
+  reason: string;
+  requestedBy: string;
 }
 
 export enum RequestActionTitles {
