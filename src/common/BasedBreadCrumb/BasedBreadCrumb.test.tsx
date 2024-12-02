@@ -1,3 +1,4 @@
+import React from "react";
 import { render } from "@testing-library/react";
 import { BasedBreadCrumb } from "./BasedBreadCrumb";
 import { Mock, describe, it, vi } from "vitest";
@@ -7,7 +8,7 @@ import { Routes } from "@/lib/routes";
 
 const mockBreadcrumbs: Breadcrumbs[] = [
   { href: Routes.Members, label: "Member" },
-  { href: Routes.AddMember, label: "New Member" },
+  { href: Routes.AddMember, label: "Add Member" },
 ];
 
 vi.mock("next/navigation", () => ({

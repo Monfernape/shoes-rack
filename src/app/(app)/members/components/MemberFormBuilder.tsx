@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { addDays, format } from "date-fns";
+import {  format } from "date-fns";
 import { MemberRole, Shift } from "@/constant/constant";
 import {
   Select,
@@ -87,7 +87,7 @@ export const userBuilderSchema = z.object({
   phoneNumber: z
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  date_of_birth: z.date().max(new Date(Date.now()), "under age"),
+  date_of_birth: z.date().max(new Date(Date.now()), "Under age"),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
   shift: z.enum([Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD], {
     errorMap: () => {
@@ -103,10 +103,19 @@ export const userBuilderSchema = z.object({
       },
     }
   ),
-  ehad_duration: z
-    .date()
-    .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
-});
+  ehad_duration: z.date().refine(
+    (date) => {
+      const today = new Date();
+      const minDate = new Date();
+      minDate.setDate(today.getDate() - 30);
+      return date <= minDate; 
+    },
+    {
+      message: "Ehad Duration must be more than 30 days ago",
+    }
+  ),
+})
+
 type MemberFormBuilder = {
   member?: Member;
 };
@@ -414,7 +423,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
             data-testid="submit"
             disabled={!member && !form.formState.isValid}
           >
-            Submit
+            {member?.id ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>
