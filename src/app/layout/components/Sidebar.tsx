@@ -20,10 +20,10 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     logoutUser();
   };
 
-  if(isSidebarOpen){
-    return null
+  if (isSidebarOpen) {
+    return null;
   }
-  
+
   return (
     <aside
       className={`
@@ -35,9 +35,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     >
       <div className="flex flex-col h-full bg-sidebar-background">
         <div className="flex items-center justify-between p-4 text-gray-700 hover:bg-gray-100 rounded-lg">
-          <h1
-            className={`text-sm font-medium text-gray-800 truncate sm:block`}
-          >
+          <h1 className={`text-sm font-medium text-gray-800 truncate sm:block`}>
             Shoes Rack
           </h1>
           <Button
