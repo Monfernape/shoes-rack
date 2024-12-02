@@ -32,8 +32,8 @@ export const LeavesHeader = () => {
 
   useEffect(() => {
     const shouldNavigateToLeaves = pathname === Routes.LeaveRequest;
-    if (!debounceValue.length && shouldNavigateToLeaves) {
-      router.push(Routes.LeaveRequest);
+    if (!debounceValue.length) {
+      router.push(shouldNavigateToLeaves ? Routes.LeaveRequest : Routes.AddLeaveRequest);
     } else {
       router.push(`${Routes.LeaveRequest}?key=${debounceValue}`);
     }
@@ -80,8 +80,8 @@ export const LeavesHeader = () => {
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
               <NavigationButton
-                path={Routes.LeaveRequest}
-                buttonText="Add Member"
+                path={Routes.AddLeaveRequest}
+                buttonText="Create Leave Request"
               />
             </div>
           )}
