@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useCallback, useEffect, useState, useTransition } from "react";
 import {
   ColumnDef,
@@ -26,11 +25,11 @@ import { Routes } from "@/lib/routes";
 import { Shift } from "@/constant/constant";
 import { getMembers } from "../actions/getMembers";
 import { DataSpinner } from "@/common/Loader/Loader";
-
+import { formatRole } from "@/utils/formatRole";
+import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 export const MemberList = () => {
   const { toast } = useToast();
   const route = useRouter();
-
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
@@ -46,7 +45,7 @@ export const MemberList = () => {
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
+      cell: ({ row }) => <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>,
     },
     {
       accessorKey: "shift",
@@ -59,7 +58,7 @@ export const MemberList = () => {
       accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("role")}</div>
+        <div className="capitalize">{formatRole(row.getValue("role"))}</div>
       ),
     },
     {
@@ -78,7 +77,6 @@ export const MemberList = () => {
       },
     },
   ];
-
   const fetchMembers = useCallback(() => {
     (async function fetchData() {
       try {
@@ -101,19 +99,15 @@ export const MemberList = () => {
       }
     })();
   }, [searchQuery]);
-
   useEffect(() => {
     fetchMembers();
   }, [fetchMembers]);
-
   const table = useReactTable({
     data: filteredMember,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
   const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD];
-
   const groupedData = allShifts.map((shift) => {
     const usersInShift = filteredMember.filter((user) => user.shift === shift);
     return {
@@ -121,11 +115,9 @@ export const MemberList = () => {
       members: usersInShift,
     };
   });
-
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
-
   const StandardPageProps = {
     hasContent: !!filteredMember.length,
     title: "Add Leaves",
@@ -135,10 +127,8 @@ export const MemberList = () => {
     onAction: handleNavigation,
     labelForActionButton: "Add Leaves",
   };
-
-  return (
+  return !!filteredMember.length && !isPending ? (
     <StandardPage {...StandardPageProps}>
-      {isPending && <DataSpinner />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -154,10 +144,9 @@ export const MemberList = () => {
             </TableRow>
           ))}
         </TableHeader>
-
         <TableBody>
           {groupedData.map((shiftGroup, index) => (
-            <React.Fragment key={`${shiftGroup}-${index}`}>
+            <React.Fragment key={`${shiftGroup.shift}-${index}`}>
               {shiftGroup.members.length > 0 && (
                 <TableRow>
                   <TableCell
@@ -189,12 +178,14 @@ export const MemberList = () => {
           {!groupedData.length && (
             <TableRow>
               <TableCell colSpan={6} className="text-center">
-                No Member Found
+                No Members Found
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
     </StandardPage>
+  ) : (
+    <DataSpinner />
   );
 };

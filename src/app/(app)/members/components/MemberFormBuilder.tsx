@@ -40,6 +40,7 @@ import { updateUser } from "../actions/update-user";
 import { Member } from "@/types";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
+import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
@@ -121,11 +122,12 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
     replacement: { _: /\d/ },
   });
 
+  const formattedPhoneNumber = localNumberFormat(member?.phoneNumber);
   const form = useForm<UserBuilder>({
     resolver: zodResolver(userBuilderSchema),
     defaultValues: {
       name: member?.name ?? "",
-      phoneNumber: member?.phoneNumber ?? "",
+      phoneNumber: formattedPhoneNumber ?? "",
       date_of_birth: member ? new Date(member?.date_of_birth) : undefined,
       cnic: member?.cnic ?? "",
       shift: member?.shift ?? Shift.ShiftA,
@@ -136,11 +138,20 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
     mode: "all",
   });
 
+
+
+
+
+
   const {
     formState: { errors },
   } = form;
 
+  const dateformatter = (date: Date) => {
+   return 
+  }
   const handleSubmission = async (values: UserBuilder | UpdateUser) => {
+    
     try {
       const result = member
         ? await updateUser({ ...values, id: member?.id })
@@ -206,7 +217,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     hasError={errors?.phoneNumber && true}
                   />
                 </FormControl>
-                <FormMessage data-testId="phone_error" />
+                <FormMessage data-testid="phone_error" />
               </FormItem>
             )}
           />
@@ -225,7 +236,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     hasError={errors?.cnic && true}
                   />
                 </FormControl>
-                <FormMessage data-testId="cnic_error" />
+                <FormMessage data-testid="cnic_error" />
               </FormItem>
             )}
           />
@@ -244,6 +255,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                         <Button
                           data-testid="date_of_birth"
                           variant={"outline"}
+                          onClick = {()=>{console.log("Values",field.value)}}
                           className={cn(
                             `justify-start text-left font-normal
                         ${field.value} && "text-muted-foreground
@@ -274,7 +286,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormMessage data-testId="date_of_birth_error" />
+                  <FormMessage data-testid="date_of_birth_error" />
                 </FormItem>
               );
             }}
@@ -295,7 +307,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     data-testid="address"
                   />
                 </FormControl>
-                <FormMessage data-testId="address_error" />
+                <FormMessage data-testid="address_error" />
               </FormItem>
             )}
           />
@@ -312,6 +324,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                       <Button
                         data-testid="ehad_duration"
                         variant={"outline"}
+                        onClick={()=>{dateformatter(field.value)}}
                         className={cn(
                           `justify-start text-left font-normal text-xs
                           ${field.value} && "text-muted-foreground
@@ -342,7 +355,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormMessage data-testId="ehad_duration_error" />
+                <FormMessage data-testid="ehad_duration_error" />
               </FormItem>
             )}
           />
@@ -369,7 +382,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormMessage data-testId="shift_error" />
+                <FormMessage data-testid="shift_error" />
               </FormItem>
             )}
           />

@@ -14,6 +14,7 @@ import { MemberRole } from "@/constant/constant";
 import { getAge } from "@/utils/ageFormater";
 
 export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
+
   return (
     <Card>
       <CardContent className="text-left space-y-6 mt-6">
