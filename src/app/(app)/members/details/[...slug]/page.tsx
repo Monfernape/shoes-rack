@@ -1,7 +1,7 @@
 import React from "react";
 import { UserDetails } from "@/types";
-import { MemberDetails } from "../../components/MemberDetails";
 import { MemberRole, UserStatus } from "@/constant/constant";
+import { MemberDetails } from "../../components/MemberDetails";
 
 const userInfo: UserDetails = {
   id: 151,
