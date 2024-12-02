@@ -80,7 +80,7 @@ export const MemberList = () => {
   ];
 
   const fetchMembers = useCallback(() => {
-    const fetchData = async () => {
+    (async function fetchData() {
       try {
         const response = await getMembers(searchQuery);
         startTransition(() => {
@@ -99,9 +99,7 @@ export const MemberList = () => {
           });
         }
       }
-    };
-
-    fetchData();
+    })();
   }, [searchQuery]);
 
   useEffect(() => {

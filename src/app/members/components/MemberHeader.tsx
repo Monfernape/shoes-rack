@@ -32,10 +32,10 @@ export const MemberHeader = () => {
 
   useEffect(() => {
     const shouldNavigateToMembers = pathname === Routes.Members;
-    if (debounceValue) {
-      router.push(`${Routes.Members}?key=${debounceValue}`);
-    } else if (shouldNavigateToMembers) {
+    if (!debounceValue && shouldNavigateToMembers) {
       router.push(Routes.Members);
+    } else {
+      router.push(`${Routes.Members}?key=${debounceValue}`);
     }
   }, [debounceValue, pathname]);
 
