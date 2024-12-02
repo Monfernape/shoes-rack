@@ -48,7 +48,7 @@ export const LoginPage = () => {
   });
 
   const phoneNumberMask = useMask({
-    mask: "03__-_______",
+    mask: "____-_______",
     replacement: { _: /\d/ },
   });
 
