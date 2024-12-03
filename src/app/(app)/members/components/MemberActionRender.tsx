@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useTransition } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
@@ -21,23 +20,20 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
   const { toast } = useToast();
 
   const handleViewDetails = () => {
-
     router.push(`${Routes.MemberDetails}/${id}`);
-
   };
 
   const handleEditInfo = () => {
-
     router.push(`${Routes.EditMember}/${id}`);
   };
 
   const handleDeleteMember = async () => {
     try {
-    await deleteMember(id);
+      await deleteMember(id);
       toast({
         title: "Member deleted successfully",
       });
-   return  router.refresh()
+
 
     } catch (error) {
       if (error instanceof Error) {
@@ -108,7 +104,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
       default:
         return [];
     }
-  }, [status , loginUser?.role]);
+  }, [status, loginUser?.role]);
 
   return <ActionsMenu actions={actionMenu} />;
 };

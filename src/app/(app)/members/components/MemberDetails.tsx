@@ -12,6 +12,7 @@ import {
 import { UserDetails } from "@/types";
 import { MemberRole } from "@/constant/constant";
 import { getAge } from "@/utils/ageFormater";
+import { dateformatter } from "@/utils/dateFormatter";
 
 export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
 
@@ -74,7 +75,7 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
               <p className="text-xs">
                 <span className="font-medium text-muted-foreground">
                   Phone:
-                </span>{" "}
+                </span>
                 {userInfo.phoneNumber}
               </p>
             </div>
@@ -93,15 +94,15 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
               <p className="text-xs">
                 <span className="font-medium text-muted-foreground">
                   Ehad Duration:
-                </span>{" "}
-                {userInfo.ehad_duration} years
+                </span>
+                { dateformatter(new Date(userInfo.ehad_duration))  } 
               </p>
             </div>
             <div className="pl-12 space-y-2">
               <p className="text-xs">
                 <span className="font-medium text-muted-foreground">
                   Shift:
-                </span>{" "}
+                </span>
                 {userInfo.shift}
               </p>
             </div>
