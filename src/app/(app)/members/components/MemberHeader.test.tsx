@@ -60,7 +60,7 @@ describe("Header Component", () => {
     expect(searchInput.value).toBe("test input");
   });
 
-  it("Button is clicked when role is Member", async () => {
+  it("Button is clicked", async () => {
     render(<MemberHeader />);
 
     // Parse the mocked loginUser cookie
@@ -71,7 +71,6 @@ describe("Header Component", () => {
       const addButton = await screen.findByTestId("addMemberButton");
       fireEvent.click(addButton);
 
-      // Add assertions for what happens after the click
     }
   });
 });
