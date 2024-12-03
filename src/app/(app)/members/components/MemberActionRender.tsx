@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
@@ -33,8 +34,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
       toast({
         title: "Member deleted successfully",
       });
-
-
+      router.refresh()
     } catch (error) {
       if (error instanceof Error) {
         toast({

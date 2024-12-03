@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -27,13 +27,14 @@ import { getMembers } from "../actions/getMembers";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { formatRole } from "@/utils/formatRole";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
-export const MemberList = () => {
+
+export const MemberList = ({member} : {member:Member[]}) => {
   const { toast } = useToast();
   const route = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
-  const [filteredMember, setFilteredMember] = useState<Member[]>([]);
+  const [filteredMember, setFilteredMember] = useState<Member[]>(member);
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -77,7 +78,8 @@ export const MemberList = () => {
       },
     },
   ];
-  const fetchMembers = useCallback(() => {
+
+  useEffect(() => {
     (async function fetchData() {
       try {
         const response = await getMembers(searchQuery);
@@ -98,10 +100,8 @@ export const MemberList = () => {
         }
       }
     })();
-  }, [searchQuery]);
-  useEffect(() => {
-    fetchMembers();
-  }, [fetchMembers]);
+  }, [searchQuery,member]);
+
   const table = useReactTable({
     data: filteredMember,
     columns,
@@ -185,7 +185,7 @@ export const MemberList = () => {
         </TableBody>
       </Table>
     </StandardPage>
-  ) : (
+  ) : filteredMember.length === 0 ? (<div>No Data Found</div>) :  (
     <DataSpinner />
   );
 };
