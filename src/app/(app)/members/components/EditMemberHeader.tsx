@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
-import { DetailMemberBreadCrumbs } from "./DetailMemberBreadCrumbs";
+import { EditMemberBreadCrumbs } from "./EditMemberBreadCrumbs";
 
 export const  EditMemberHeader = ({ id }: { id: string }) => {
   const pathname = usePathname();
@@ -44,7 +44,7 @@ export const  EditMemberHeader = ({ id }: { id: string }) => {
                 <HamburgerMenuIcon className="h-6 w-6 text-black" />
               </Button>
             )}
-            <DetailMemberBreadCrumbs id={id} />
+            <EditMemberBreadCrumbs id={id} />
           </div>
         </div>
       </header>
