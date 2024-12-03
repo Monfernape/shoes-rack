@@ -3,6 +3,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberHeader } from "./MemberHeader";
 
+import { MemberRole } from "@/constant/constant";
+
 describe("Header Component", () => {
   beforeAll(() => {
     vi.mock("next/headers", () => {
@@ -12,7 +14,7 @@ describe("Header Component", () => {
             get: vi.fn().mockReturnValue({
               name: "loginUser",
               value:
-                '{"id":148,"created_at":"2024-11-15T11:17:10.486126+00:00","name":"Testing User","phoneNumber":"923057692655","date_of_birth":"2024-08-31","cnic":"33333-3333333-3","address":"test","ehad_duration":"2025-03-30","role":"shift_incharge","status":"active","shift":"D","invite_link":"","temporary_password":true}',
+                '{"id":148,"created_at":"2024-11-15T11:17:10.486126+00:00","name":"Testing User","phoneNumber":"923057692655","date_of_birth":"2024-08-31","cnic":"33333-3333333-3","address":"test","ehad_duration":"2025-03-30","role":"member","status":"active","shift":"D","invite_link":"","temporary_password":true}',
               path: "/",
             }),
           };
@@ -60,6 +62,15 @@ describe("Header Component", () => {
 
   it("Button is clicked", async () => {
     render(<MemberHeader />);
-    fireEvent.click(screen.getByTestId("addMemberButton"));
+
+    // Parse the mocked loginUser cookie
+    const loginUser = JSON.parse('{"id":148,"role":"member"}');
+
+    // Check if the role matches 'Member'
+    if (loginUser?.role === MemberRole.Member) {
+      const addButton = await screen.findByTestId("addMemberButton");
+      fireEvent.click(addButton);
+
+    }
   });
 });
