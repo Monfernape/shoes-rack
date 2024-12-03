@@ -1,20 +1,64 @@
 "use client";
+import React from "react";
 import { logoutUser } from "@/app/(auth)/login/actions/logoutUser";
 import { Button } from "@/components/ui/button";
-import { MemberRole } from "@/constant/constant";
-import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
-import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
+import { Routes } from "@/lib/routes";
+import {} from "@radix-ui/react-icons";
 import Link from "next/link";
-import React from "react";
+import {
+  DashboardIcon,
+  ExclamationTriangleIcon,
+  Cross1Icon,
+  ExitIcon,
+  GearIcon,
+} from "@radix-ui/react-icons";
+import {
+  BellIcon,
+  CalendarIcon,
+  ClipboardIcon,
+  HandCoinsIcon,
+} from "lucide-react";
 
 interface Props {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
+const roleBasedRoutes = [
+  {
+    name: "Dashboard",
+    route: Routes.Dashboard,
+    icon: <DashboardIcon />,
+  },
+  {
+    name: "Notifications",
+    route: Routes.Notification,
+    icon: <BellIcon />,
+  },
+  {
+    name: "Attendance",
+    route: Routes.Attendance,
+    icon: <CalendarIcon />,
+  },
+  {
+    name: "Leave Requests",
+    route: Routes.LeaveRequest,
+    icon: <ClipboardIcon />,
+  },
+  {
+    name: "Missing Shoes",
+    route: Routes.MissingShoes,
+    icon: <ExclamationTriangleIcon />,
+  },
+  {
+    name: "Funds",
+    route: Routes.Fund,
+    icon: <HandCoinsIcon />,
+  },
+];
+
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   // TODO : role will be dynamic after user login
-  const roleBasedRoutes = useAccessibleRoutes(MemberRole.Incharge);
 
   const onLogoutUser = () => {
     logoutUser();
