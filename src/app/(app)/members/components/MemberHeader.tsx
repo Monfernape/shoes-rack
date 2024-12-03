@@ -11,6 +11,8 @@ import { Routes } from "@/lib/routes";
 import useMediaQuery from "@/hooks/use-media-query";
 import useDebounce from "@/hooks/useDebounce";
 import NavigationButton from "@/common/NavigationButton";
+import { MemberRole } from "@/constant/constant";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 export const MemberHeader = () => {
   const pathname = usePathname();
@@ -18,7 +20,7 @@ export const MemberHeader = () => {
   const isSmallScreen = useMediaQuery("sm");
   const [search, setSearch] = useState("");
   const debounceValue = useDebounce(search, 500);
- 
+  const loginUser = useUser();
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isTitleHide, setIsTitleHide] = useState<boolean>(false);
 
@@ -33,7 +35,7 @@ export const MemberHeader = () => {
   useEffect(() => {
     const shouldNavigateToMembers = pathname === Routes.Members;
     if (!debounceValue) {
-      router.push(shouldNavigateToMembers ? Routes.Members : Routes.AddMember); 
+      router.push(shouldNavigateToMembers ? Routes.Members : Routes.AddMember);
     } else {
       router.push(`${Routes.Members}?key=${debounceValue}`);
     }
@@ -79,10 +81,12 @@ export const MemberHeader = () => {
                 />
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
-              <NavigationButton
-                path={Routes.AddMember}
-                buttonText="Add Member"
-              />
+              {loginUser?.role === MemberRole.Member && (
+                <NavigationButton
+                  path={Routes.AddMember}
+                  buttonText="Add Member"
+                />
+              )}
             </div>
           )}
         </div>

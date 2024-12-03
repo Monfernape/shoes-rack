@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {  format } from "date-fns";
+import { format } from "date-fns";
 import { MemberRole, Shift } from "@/constant/constant";
 import {
   Select,
@@ -40,10 +40,10 @@ import { updateUser } from "../actions/update-user";
 import { Member } from "@/types";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
-
+import { useParams } from "next/navigation";
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
-  id:number,
+  id: number;
 }
 export const USER_ROLES = [
   {
@@ -87,7 +87,12 @@ export const userBuilderSchema = z.object({
   phoneNumber: z
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  date_of_birth: z.date().max(new Date(Date.now()), "Under age"),
+  date_of_birth: z
+    .date()
+    .max(
+      new Date(Date.now() - 16 * 365 * 24 * 60 * 60 * 1000),
+      "Member must be at least 16 years old"
+    ),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
   shift: z.enum([Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD], {
     errorMap: () => {
@@ -108,19 +113,21 @@ export const userBuilderSchema = z.object({
       const today = new Date();
       const minDate = new Date();
       minDate.setDate(today.getDate() - 30);
-      return date <= minDate; 
+      return date <= minDate;
     },
     {
       message: "Ehad Duration must be more than 30 days ago",
     }
   ),
-})
+});
 
 type MemberFormBuilder = {
   member?: Member;
 };
 export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
   const { toast } = useToast();
+  const params = useParams();
+
   const phoneNumberMask = useMask({
     mask: "___________",
     replacement: { _: /\d/ },
@@ -423,7 +430,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
             data-testid="submit"
             disabled={!member && !form.formState.isValid}
           >
-            {member?.id ? "Update" : "Submit"}
+            {params?.id ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>
