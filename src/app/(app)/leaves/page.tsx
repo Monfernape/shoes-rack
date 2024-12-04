@@ -4,9 +4,9 @@ import { LeavesRequestList } from "./components/LeavesRequestList";
 import { LeavesHeader } from "./components/LeavesHeader";
 import { PageLayout } from "@/app/layout/PageLayout";
 import { getAllLeaveRequests } from "./actions/get-all-leave-requests";
-import { Filter } from "@/common/Filter/Filter";
 import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import { LeaveFilter } from "@/common/Filter/LeaveFilter";
 
 interface Leaves {
   searchParams: Record<string, string>
@@ -23,7 +23,7 @@ const Page = async({ searchParams }: Leaves) => {
   return (
     <>
       <LeavesHeader breadcrumbs={breadcrumbs} />
-      <Filter loginUser={loginUser} />
+      <LeaveFilter loginUser={loginUser} />
       <PageLayout>
         <LeavesRequestList leaves={leaves}/>
       </PageLayout>

@@ -24,7 +24,7 @@ export const getAllLeaveRequests = async (id: number) => {
   let query = supabase
     .from("leaves")
     .select(
-      `id,memberId, leaveType, startDate, endDate, status, reason, members(name)`
+      `id, memberId, leaveType, startDate, endDate, status, reason, members(name)`
     );
 
   if (loginUser.role === MemberRole.Member) {
@@ -35,18 +35,14 @@ export const getAllLeaveRequests = async (id: number) => {
       .filter(
         (member) =>
           member.status === UserStatus.Active &&
-          loginUser?.role === MemberRole.ShiftIncharge &&
-          member.shift === loginUser?.shift
+          member.shift === loginUser.shift
       )
       .some((member) => member.id === id);
-    if (activeMember) {
-      query = query.eq("memberId", id);
-    } else {
-      query = query.eq("memberId", loginUser.id);
-    }
-  } else if (loginUser?.role === MemberRole.Incharge && !id) {
-    query = query;
-  } else {
+
+    query = activeMember
+      ? query.eq("memberId", id)
+      : query.eq("memberId", loginUser.id);
+  } else if (loginUser.role === MemberRole.Incharge && id) {
     query = query.eq("memberId", id);
   }
 
@@ -56,18 +52,14 @@ export const getAllLeaveRequests = async (id: number) => {
     return [];
   }
 
-  const leaveRequestsWithMembers = leaves.map((leave) => {
-    return {
-      id: leave.id,
-      leaveType: leave.leaveType,
-      startDate: leave.startDate,
-      endDate: leave.endDate,
-      status: leave.status,
-      reason: leave.reason,
-      requestedBy: leave.members.name,
-      memberId: leave.memberId,
-    };
-  });
-
-  return leaveRequestsWithMembers;
+  return leaves.map((leave) => ({
+    id: leave.id,
+    leaveType: leave.leaveType,
+    startDate: leave.startDate,
+    endDate: leave.endDate,
+    status: leave.status,
+    reason: leave.reason,
+    requestedBy: leave.members.name,
+    memberId: leave.memberId,
+  }));
 };
