@@ -12,6 +12,8 @@ import useDebounce from "@/hooks/useDebounce";
 import NavigationButton from "@/common/NavigationButton";
 import { Breadcrumbs } from "@/types";
 import { BasedBreadCrumb } from "@/common/BasedBreadCrumb/BasedBreadCrumb";
+import { useUser } from "@/hooks/useGetLoggedinUser";
+import { MemberRole } from "@/constant/constant";
 
 export const MemberHeader = ({
   breadcrumbs,
@@ -19,6 +21,7 @@ export const MemberHeader = ({
   breadcrumbs: Breadcrumbs[];
 }) => {
   const pathname = usePathname();
+  const user = useUser();
   const router = useRouter();
   const isSmallScreen = useMediaQuery("sm");
   const [search, setSearch] = useState("");
@@ -37,7 +40,7 @@ export const MemberHeader = ({
 
   useEffect(() => {
     if (!debounceValue) {
-      router.push( Routes.Members );
+      router.push(Routes.Members);
     } else {
       router.push(`${Routes.Members}?key=${debounceValue}`);
     }
@@ -85,10 +88,12 @@ export const MemberHeader = ({
                 />
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
               </div>
-              <NavigationButton
-                path={Routes.AddMember}
-                buttonText="Add Member"
-              />
+              {user?.role !== MemberRole.Member && (
+                <NavigationButton
+                  path={Routes.AddMember}
+                  buttonText="Add Member"
+                />
+              )}
             </div>
           )}
         </div>
