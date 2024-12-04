@@ -3,7 +3,6 @@ import React from "react";
 import { logoutUser } from "@/app/(auth)/login/actions/logoutUser";
 import { Button } from "@/components/ui/button";
 import { Routes } from "@/lib/routes";
-import {} from "@radix-ui/react-icons";
 import Link from "next/link";
 import {
   DashboardIcon,
@@ -58,7 +57,6 @@ const roleBasedRoutes = [
 ];
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
-  // TODO : role will be dynamic after user login
 
   const onLogoutUser = () => {
     logoutUser();
