@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useMask } from "@react-input/mask";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,7 +41,6 @@ import { Member } from "@/types";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {

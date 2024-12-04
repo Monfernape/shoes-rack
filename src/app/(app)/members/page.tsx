@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { MemberList } from "./components/MemberList";
 import { MemberHeader } from "./components/MemberHeader";
 import { PageLayout } from "@/app/layout/PageLayout";
@@ -11,7 +11,7 @@ const breadcrumbs: Breadcrumbs[] = [{ href: Routes.Members, label: "Members" }];
 
 const Page = async () => {
   const { data: member } = await getMembers("");
-  const user = await getLoggedInUser()
+
   return (
        <>
         <MemberHeader breadcrumbs={breadcrumbs} />
