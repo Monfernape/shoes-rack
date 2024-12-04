@@ -5,7 +5,6 @@ import { PageLayout } from "@/app/layout/PageLayout";
 import { getMembers } from "./actions/getMembers";
 import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
-import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 const breadcrumbs: Breadcrumbs[] = [{ href: Routes.Members, label: "Members" }];
 
