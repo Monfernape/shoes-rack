@@ -4,6 +4,7 @@ import { getUserById } from "../../actions/get-user-by-id";
 import {  InfoMemberHeader } from "../../components/EditMemberHeader";
 import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 type Parameters = {
   params: {
@@ -12,7 +13,7 @@ type Parameters = {
 };
 const Page = async ({ params }: Parameters) => {
   const { id } = params;
-
+  const user = await getLoggedInUser()
   const breadcrumbs: Breadcrumbs[] = [
     { href: Routes.Members, label: "Members" },
     { href: `${Routes.EditMember}/${id}`, label: "Edit Member" },
@@ -22,7 +23,7 @@ const Page = async ({ params }: Parameters) => {
   return (
     <div className="flex flex-col ">
       <InfoMemberHeader breadcrumbs={breadcrumbs} />
-      <MemberFormBuilder member={member} />
+      <MemberFormBuilder member={member} user = {user} />
     </div>
   );
 };

@@ -2,6 +2,8 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { MemberFormBuilder } from "./MemberFormBuilder";
 import { createUser } from "../actions/createUser";
+import { Member } from "@/types";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 
 type TestElement = Document | Element | Window | Node;
 
@@ -29,19 +31,30 @@ const formTargets = [
 ];
 const selection = [
   {
-    testId: "shift",
-    value: "A",
-    text: "Shift 12:00am to 00:06am",
-  },
-  {
     testId: "role",
     value: "member",
     text: "Member",
   },
 ];
+
 describe("UserForm", async () => {
   it("validates the form fields", async () => {
-    render(<MemberFormBuilder />);
+    const loginUser: Member = {
+      id: 232,
+      created_at: "2024-11-26T13:38:23.700892+00:00",
+      name: "Mubashir",
+      phoneNumber: "923056872063",
+      date_of_birth: "2024-11-01",
+      cnic: "",
+      address: "",
+      ehad_duration: "2025-01-02",
+      role: MemberRole.ShiftIncharge,
+      shift: Shift.ShiftC,
+      invite_link: "",
+      temporary_password: false,
+      status: UserStatus.Active,
+    };
+    render(<MemberFormBuilder user={loginUser} />);
     // Inputs
     formTargets.map((target) => {
       const input = screen.getByTestId(target.testId);
@@ -62,7 +75,7 @@ describe("UserForm", async () => {
       role: "member",
       cnic: "31303-2943130-9",
       address: "123 Main St",
-      shift: "A",
+      shift: "C",
     });
     fireEvent.click(screen.getByTestId("submit"));
     // mock function selection
@@ -74,7 +87,7 @@ describe("UserForm", async () => {
       role: "member",
       cnic: "31303-2943130-9",
       address: "123 Main St",
-      shift: "A",
+      shift: "C",
     };
     await waitFor(() => {
       expect(mock(user));

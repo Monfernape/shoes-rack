@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useMask } from "@react-input/mask";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,10 +41,11 @@ import { Member } from "@/types";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
-  id:number,
+  id: number;
 }
 export const USER_ROLES = [
   {
@@ -65,19 +66,19 @@ export const USER_ROLES = [
 const SHIFT_TIMING = [
   {
     time: "Shift 12:00am to 00:06am",
-    value: Shift.ShiftA,
+    shift: Shift.ShiftA,
   },
   {
     time: "Shift 00:06am to 00:12pm",
-    value: Shift.ShiftB,
+    shift: Shift.ShiftB,
   },
   {
     time: "Shift 00:12pm to 00:06pm",
-    value: Shift.ShiftC,
+    shift: Shift.ShiftC,
   },
   {
     time: "Shift 00:06pm to 00:12am",
-    value: Shift.ShiftD,
+    shift: Shift.ShiftD,
   },
 ];
 
@@ -110,9 +111,11 @@ export const userBuilderSchema = z.object({
 });
 type MemberFormBuilder = {
   member?: Member;
+  user : Member
 };
-export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
+export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
   const { toast } = useToast();
+
   const phoneNumberMask = useMask({
     mask: "___________",
     replacement: { _: /\d/ },
@@ -121,6 +124,22 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
     mask: "3____-_______-_",
     replacement: { _: /\d/ },
   });
+  const showShiftTime = (user: Member) => {
+   
+    if (member) return member.shift;
+    if (user?.role === MemberRole.ShiftIncharge) {
+      const shift = SHIFT_TIMING.find((member) => {
+
+        return member.shift === user?.shift;
+      });
+      return shift?.shift;
+    }
+    if(user?.role === MemberRole.Incharge) {
+      return Shift.ShiftA
+    }
+  };
+
+  const shiftTiming = showShiftTime(user);
 
   const formattedPhoneNumber = localNumberFormat(member?.phoneNumber);
   const form = useForm<UserBuilder>({
@@ -130,7 +149,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
       phoneNumber: formattedPhoneNumber ?? "",
       date_of_birth: member ? new Date(member?.date_of_birth) : undefined,
       cnic: member?.cnic ?? "",
-      shift: member?.shift ?? Shift.ShiftA,
+      shift: shiftTiming ,
       address: member?.address ?? "",
       role: member?.role ?? MemberRole.Member,
       ehad_duration: member ? new Date(member?.ehad_duration) : new Date(),
@@ -138,18 +157,11 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
     mode: "all",
   });
 
-
-
-
-
-
   const {
     formState: { errors },
   } = form;
 
-
   const handleSubmission = async (values: UserBuilder | UpdateUser) => {
-    
     try {
       const result = member
         ? await updateUser({ ...values, id: member?.id })
@@ -253,7 +265,6 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                         <Button
                           data-testid="date_of_birth"
                           variant={"outline"}
-                         
                           className={cn(
                             `justify-start text-left font-normal
                         ${field.value} && "text-muted-foreground
@@ -365,13 +376,17 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                 <Label>Shift </Label>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
-                    <SelectTrigger className="flex-1" data-testid="shift">
+                    <SelectTrigger
+                      className="flex-1"
+                      data-testid="shift"
+                      disabled={user?.role === MemberRole.ShiftIncharge && true}
+                    >
                       <SelectValue placeholder={"select shift"} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
                         {SHIFT_TIMING.map((shift) => (
-                          <SelectItem key={shift.value} value={shift.value}>
+                          <SelectItem key={shift.shift} value={shift.shift}>
                             {shift.time}
                           </SelectItem>
                         ))}
