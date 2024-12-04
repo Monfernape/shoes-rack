@@ -15,7 +15,7 @@ import { getAge } from "@/utils/ageFormater";
 import { dateformatter } from "@/utils/dateFormatter";
 
 export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
-
+    const dateFormat =    dateformatter(new Date(userInfo.ehad_duration))  
   return (
     <Card>
       <CardContent className="text-left space-y-6 mt-6">
@@ -95,7 +95,7 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
                 <span className="font-medium text-muted-foreground">
                   Ehad Duration:
                 </span>
-                { dateformatter(new Date(userInfo.ehad_duration))  } 
+               {dateFormat}
               </p>
             </div>
             <div className="pl-12 space-y-2">

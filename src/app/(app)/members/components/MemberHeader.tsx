@@ -6,19 +6,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter } from "next/navigation";
-import { MemberBreadCrumbs } from "./MemberBreadCrumbs";
 import { Routes } from "@/lib/routes";
 import useMediaQuery from "@/hooks/use-media-query";
 import useDebounce from "@/hooks/useDebounce";
 import NavigationButton from "@/common/NavigationButton";
+import { Breadcrumbs } from "@/types";
+import { BasedBreadCrumb } from "@/common/BasedBreadCrumb/BasedBreadCrumb";
 
-export const MemberHeader = () => {
+export const MemberHeader = ({
+  breadcrumbs,
+}: {
+  breadcrumbs: Breadcrumbs[];
+}) => {
   const pathname = usePathname();
   const router = useRouter();
   const isSmallScreen = useMediaQuery("sm");
   const [search, setSearch] = useState("");
   const debounceValue = useDebounce(search, 500);
- 
+
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isTitleHide, setIsTitleHide] = useState<boolean>(false);
 
@@ -31,9 +36,8 @@ export const MemberHeader = () => {
   };
 
   useEffect(() => {
-    const shouldNavigateToMembers = pathname === Routes.Members;
     if (!debounceValue) {
-      router.push(shouldNavigateToMembers ? Routes.Members : Routes.AddMember); 
+      router.push( Routes.Members );
     } else {
       router.push(`${Routes.Members}?key=${debounceValue}`);
     }
@@ -57,7 +61,9 @@ export const MemberHeader = () => {
                 <HamburgerMenuIcon className="h-6 w-6 text-black" />
               </Button>
             )}
-            {(!isTitleHide || !isSmallScreen) && <MemberBreadCrumbs />}
+            {(!isTitleHide || !isSmallScreen) && (
+              <BasedBreadCrumb breadcrumbs={breadcrumbs} />
+            )}
           </div>
           {pathname !== Routes.AddMember && pathname !== Routes.Login && (
             <div className="flex items-center space-x-2">

@@ -1,30 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Sidebar } from "@/app/layout/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Routes } from "@/lib/routes";
-import { EditMemberBreadCrumbs } from "./EditMemberBreadCrumbs";
+import { BasedBreadCrumb } from "@/common/BasedBreadCrumb/BasedBreadCrumb";
+import { Breadcrumbs } from "@/types";
 
-export const  EditMemberHeader = ({ id }: { id: string }) => {
+export const InfoMemberHeader = ({
+  breadcrumbs,
+}: {
+  breadcrumbs: Breadcrumbs[];
+}) => {
   const pathname = usePathname();
-  const router = useRouter();
-
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
-
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-
-  useEffect(() => {
-    const shouldNavigateToMembers = pathname === Routes.Members;
-
-    router.push(
-      shouldNavigateToMembers ? Routes.Members : `${Routes.EditMember}/${id}`
-    );
-  }, [pathname]);
 
   return (
     <div className="sticky top-0 z-50 w-full">
@@ -44,7 +38,7 @@ export const  EditMemberHeader = ({ id }: { id: string }) => {
                 <HamburgerMenuIcon className="h-6 w-6 text-black" />
               </Button>
             )}
-            <EditMemberBreadCrumbs id={id} />
+            <BasedBreadCrumb breadcrumbs={breadcrumbs} />
           </div>
         </div>
       </header>

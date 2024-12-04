@@ -2,7 +2,12 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberHeader } from "./MemberHeader";
+import { Breadcrumbs } from "@/types";
+import { Routes } from "@/lib/routes";
 
+const breadcrumbs: Breadcrumbs[] = [
+  { href: Routes.Members, label: "Members" },
+];
 describe("Header Component", () => {
   beforeAll(() => {
     vi.mock("next/headers", () => {
@@ -45,12 +50,12 @@ describe("Header Component", () => {
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemberHeader />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} />);
     fireEvent.click(screen.getByTestId("searchInput"));
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemberHeader />);
+    render(<MemberHeader  breadcrumbs={breadcrumbs} />);
     const searchInput = screen.getByTestId("searchInput") as HTMLInputElement;
 
     fireEvent.change(searchInput, { target: { value: "test input" } });
@@ -59,7 +64,7 @@ describe("Header Component", () => {
   });
 
   it("Button is clicked", async () => {
-    render(<MemberHeader />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} />);
     fireEvent.click(screen.getByTestId("addMemberButton"));
   });
 });
