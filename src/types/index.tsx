@@ -68,6 +68,7 @@ export enum LeavesRequestStatus {
 }
 export interface LeaveRequestsTypes {
   id: number;
+  memberId?: number
   leaveType: string;
   startDate: string;
   endDate: string;

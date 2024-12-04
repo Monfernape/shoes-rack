@@ -1,11 +1,7 @@
 "use client";
 
 import React, {
-  useCallback,
-  useEffect,
   useMemo,
-  useState,
-  useTransition,
 } from "react";
 import {
   ColumnDef,
@@ -26,20 +22,14 @@ import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon } from "lucide-react";
 import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
-import { useRouter, useSearchParams } from "next/navigation";
-import { getAllLeaveRequests } from "../actions/get-all-leave-requests";
-import { toast } from "@/hooks/use-toast";
-import { DataSpinner } from "@/common/Loader/Loader";
+import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
-export const LeavesRequestList = () => {
+interface LeavesRequestList {
+  leaves: LeaveRequestsTypes[];
+}
+export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
   const route = useRouter();
-  const searchParams = useSearchParams();
-  const searchQuery = searchParams.get("key");
-  const [isPending, startTransition] = useTransition();
-  const [filteredLeaves, setFilteredLeaves] = useState<LeaveRequestsTypes[]>(
-    []
-  );
   const columns: ColumnDef<LeaveRequestsTypes>[] = useMemo(
     () => [
       {
@@ -87,33 +77,8 @@ export const LeavesRequestList = () => {
     []
   );
 
-  const fetchMembers = useCallback(async () => {
-    const response = await getAllLeaveRequests(searchQuery);
-    try {
-      startTransition(() => {
-        setFilteredLeaves(response);
-      });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast({
-          title: "No Leave Request Found",
-          description: error.message,
-        });
-      } else {
-        toast({
-          title: "No Leave Request Found",
-          description: "An unknown error occurred",
-        });
-      }
-    }
-  }, [searchQuery]);
-
-  useEffect(() => {
-    fetchMembers();
-  }, [fetchMembers]);
-
   const table = useReactTable({
-    data: filteredLeaves,
+    data: leaves,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -123,18 +88,17 @@ export const LeavesRequestList = () => {
   };
 
   const StandardPageProps = {
-    hasContent: !!filteredLeaves.length,
-    title: "Add member",
-    description: "This is where you can see all shoes rack members",
+    hasContent: !!leaves?.length,
+    title: "Add Leave",
+    description: "This is where you can see leave requests",
     buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: handleNavigate,
-    labelForActionButton: "Add member",
+    labelForActionButton: "Add Leave",
   };
 
   return (
     <StandardPage {...StandardPageProps}>
-      {isPending && <DataSpinner />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -152,7 +116,7 @@ export const LeavesRequestList = () => {
         </TableHeader>
 
         <TableBody>
-          {filteredLeaves?.map((row: LeaveRequestsTypes) => (
+          {leaves?.map((row: LeaveRequestsTypes) => (
             <TableRow key={row.id}>
               {table
                 .getRowModel()
@@ -165,7 +129,7 @@ export const LeavesRequestList = () => {
                 ))}
             </TableRow>
           ))}
-          {!filteredLeaves.length && (
+          {!leaves?.length && (
             <TableRow>
               <TableCell colSpan={6} className="text-center">
                 No Leave Request Found

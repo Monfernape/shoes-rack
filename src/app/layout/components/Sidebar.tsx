@@ -49,8 +49,8 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           <ul className="p-2 space-y-2 text-xs">
-            {roleBasedRoutes.map((r) => (
-              <li key={r.route}>
+            {roleBasedRoutes.map((r, index) => (
+              <li key={index}>
                 <Link
                   href={r.route}
                   className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
