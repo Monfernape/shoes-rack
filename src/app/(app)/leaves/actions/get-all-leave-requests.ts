@@ -1,37 +1,71 @@
 "use server";
 
+import { LeaveTypes, MemberRole, UserStatus } from "@/constant/constant";
+import { LeavesRequestStatus } from "@/types";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { getMembers } from "../../members/actions/getMembers";
 
-export const getAllLeaveRequests = async (query: string | null) => {
+interface LeaveRequest {
+  id: number;
+  leaveType: LeaveTypes;
+  startDate: string;
+  endDate: string;
+  status: LeavesRequestStatus;
+  reason: string;
+  memberId: number;
+  members: { name: string };
+}
+
+export const getAllLeaveRequests = async (id: number) => {
   const supabase = await getSupabaseClient();
+  const loginUser = await getLoggedInUser();
 
-  const columns = ["reason", "leaveType"];
-
-  const searchQueryConditions = columns.map((col) => {
-    return `${col}.ilike.%${query ?? ""}%`;
-  });
-
-  const { data: leaves, error } = await supabase
+  let query = supabase
     .from("leaves")
-    .select()
-    .or(searchQueryConditions.join(","));
-  const { data: members } = await getMembers(query);
+    .select(
+      `id,memberId, leaveType, startDate, endDate, status, reason, members(name)`
+    );
+
+  if (loginUser.role === MemberRole.Member) {
+    query = query.eq("memberId", loginUser.id);
+  } else if (loginUser.role === MemberRole.ShiftIncharge) {
+    const response = await getMembers("");
+    const activeMember = response.data
+      .filter(
+        (member) =>
+          member.status === UserStatus.Active &&
+          loginUser?.role === MemberRole.ShiftIncharge &&
+          member.shift === loginUser?.shift
+      )
+      .some((member) => member.id === id);
+    if (activeMember) {
+      query = query.eq("memberId", id);
+    } else {
+      query = query.eq("memberId", loginUser.id);
+    }
+  } else if (loginUser?.role === MemberRole.Incharge && !id) {
+    query = query;
+  } else {
+    query = query.eq("memberId", id);
+  }
+
+  const { data: leaves, error } = await query.returns<LeaveRequest[]>();
 
   if (error) {
     return [];
   }
 
-  const leaveRequestsWithMembers = leaves.map((leaves) => {
-    const member = members.find((m) => m.id === leaves.memberId);
+  const leaveRequestsWithMembers = leaves.map((leave) => {
     return {
-      id: leaves.id,
-      requestedBy: member?.name,
-      leaveType: leaves.leaveType,
-      startDate: leaves.startDate,
-      endDate: leaves.endDate,
-      status: leaves.status,
-      reason: leaves.reason,
+      id: leave.id,
+      leaveType: leave.leaveType,
+      startDate: leave.startDate,
+      endDate: leave.endDate,
+      status: leave.status,
+      reason: leave.reason,
+      requestedBy: leave.members.name,
+      memberId: leave.memberId,
     };
   });
 

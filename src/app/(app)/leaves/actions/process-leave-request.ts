@@ -5,6 +5,7 @@ import { Routes } from "@/lib/routes";
 import { LeavesRequestStatus } from "@/types";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { revalidatePath } from "next/cache";
+import { hasLeaveRequestPermission } from "./has-leave-request-permission";
 
 interface Props {
   requestId: number;
@@ -16,14 +17,19 @@ export const processLeaveRequest = async ({
   requestStatus,
 }: Props) => {
   const supabase = await getSupabaseClient();
-  const { error } = await supabase
-    .from(Tables.Leaves)
-    .update({ status: requestStatus })
-    .eq("id", requestId);
+  const isLeaveRequestAllowed = await hasLeaveRequestPermission(requestId);
 
-  if (error) {
-    throw error.message;
+  if (isLeaveRequestAllowed) {
+    const { error } = await supabase
+      .from(Tables.Leaves)
+      .update({ status: requestStatus })
+      .eq("id", requestId);
+
+    if (error) {
+      throw error.message;
+    }
+
+    revalidatePath(Routes.LeaveRequest);
   }
-
-  revalidatePath(Routes.LeaveRequest);
+  return;
 };

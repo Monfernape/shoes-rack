@@ -1,19 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  Control,
-  FieldPath,
-  FieldValues,
-  useController,
-} from "react-hook-form";
-import {
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  FormField,
-} from "@/components/ui/form";
-import {
   Select,
   SelectTrigger,
   SelectValue,
@@ -25,20 +12,12 @@ import { MemberRole, UserStatus } from "@/constant/constant";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 import { getMembers } from "@/app/(app)/members/actions/getMembers";
 
-interface SelectFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name: FieldPath<T>;
+interface SelectFieldProps {
+  value: string;
+  onValueChange: (value: string) => void;
 }
 
-const MemberSelector = <T extends FieldValues>({
-  control,
-  name,
-}: SelectFieldProps<T>) => {
-  const { fieldState } = useController({
-    control,
-    name,
-  });
-
+const MemberSelector = ({ value, onValueChange }: SelectFieldProps) => {
   const [members, setMembers] = useState<Member[]>([]);
   const loginUser = useUser();
   useEffect(() => {
@@ -46,7 +25,10 @@ const MemberSelector = <T extends FieldValues>({
       try {
         const response = await getMembers("");
         if (response.success) {
-          setMembers(response.data);
+          const activeMember = response.data.filter(
+            (member) => member.status === UserStatus.Active
+          );
+          setMembers(activeMember);
         } else {
           console.error("Error fetching members:", response.message);
         }
@@ -56,60 +38,52 @@ const MemberSelector = <T extends FieldValues>({
     };
 
     fetchMembers();
-  }, []);
+  }, [loginUser]);
 
-  // Memoized calculation of active members based on user role and shift
   const roleBaseMembers = useMemo(() => {
-    return members
-      .filter(
-        (member) =>
-          member.status === UserStatus.Active &&
-          (loginUser?.role === MemberRole.Incharge ||
-            member.shift === loginUser?.shift)
-      )
-      .map(({ id, name }) => ({
-        id: id.toString(),
-        name,
-      }));
+    if (loginUser?.role === MemberRole.Incharge) {
+      return members;
+    } else if (loginUser?.role === MemberRole.Member) {
+      return members.filter((member) => loginUser?.id === member.id);
+    } else {
+      return members
+        .filter(
+          (member) =>
+            loginUser?.role === MemberRole.ShiftIncharge &&
+            member.shift === loginUser?.shift
+        )
+        .map(({ id, name }) => ({
+          id: id,
+          name,
+        }));
+    }
   }, [members]);
 
   return (
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>User Name</FormLabel>
-          <FormControl>
-            <Select
-              {...field}
-              value={field.value}
-              onValueChange={field.onChange}
-              disabled={loginUser?.role === MemberRole.Member}
-            >
-              <SelectTrigger
-                data-testid="memberId"
-                className={`border rounded-md p-2 ${
-                  fieldState?.error?.message
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }`}
-              >
-                <SelectValue data-testId="select" placeholder="Select a user" />
-              </SelectTrigger>
-              <SelectContent>
-                {roleBaseMembers?.map((option) => (
-                  <SelectItem key={option.id} value={option.id}>
-                    {option.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+    <Select
+      value={value}
+      onValueChange={(value) => {
+        onValueChange(value);
+      }}
+      disabled={loginUser?.role === MemberRole.Member}
+    >
+      <SelectTrigger
+        data-testid="memberId"
+        className={`border rounded-md p-2 border-gray-300`}
+      >
+        <SelectValue data-testId="select" placeholder="Select user" />
+      </SelectTrigger>
+      <SelectContent>
+        {loginUser?.role === MemberRole.Incharge && (
+          <SelectItem value={"0"}>Select all user</SelectItem>
+        )}
+        {roleBaseMembers?.map((option) => (
+          <SelectItem key={option.id.toString()} value={option.id.toString()}>
+            {option.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 };
 

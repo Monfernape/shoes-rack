@@ -17,11 +17,7 @@ import { toast } from "@/hooks/use-toast";
 import { processLeaveRequest } from "../actions/process-leave-request";
 import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
-
-const loggedUser = {
-  name: "John Smith",
-  role: "incharge",
-};
+import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface Props {
   leaveRequestDetails: LeaveRequestsTypes;
@@ -29,7 +25,7 @@ interface Props {
 
 const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
   const router = useRouter();
-
+  const loginUser = useUser();
   const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
   const { id: requestId } = leaveRequestDetails;
@@ -117,7 +113,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
   const statusActions = useMemo(
     () => [
       {
-        title: "Accept",
+        title: "Approve",
         id: 4,
         onClick: () => {
           handleLeaveRequestStatus(requestId, LeavesRequestStatus.Approved);
@@ -136,20 +132,31 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
     []
   );
 
+  const onShiftInchareMenu = () => {
+    if (leaveRequestDetails.memberId === loginUser?.id) {
+      return leaveRequestDetails.status === LeavesRequestStatus.Pending
+        ? [...viewInfo, ...baseActions]
+        : [...viewInfo];
+    } else {
+      return [...viewInfo, ...statusActions];
+    }
+  };
+
   const actionMenu = useMemo(() => {
-    switch (loggedUser.role) {
+    switch (loginUser?.role) {
       case MemberRole.Member:
         return leaveRequestDetails.status === LeavesRequestStatus.Pending
           ? [...viewInfo, ...baseActions]
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
+        return onShiftInchareMenu();
       case MemberRole.Incharge:
         return [...viewInfo, ...statusActions];
 
       default:
         return [];
     }
-  }, [leaveRequestDetails.status]);
+  }, [leaveRequestDetails.status, loginUser]);
 
   return (
     <>
