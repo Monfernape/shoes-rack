@@ -8,7 +8,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Member } from "@/types";
 import { Routes } from "@/lib/routes";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 
 type Props = {
   memberInfo: Member;

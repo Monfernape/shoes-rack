@@ -35,7 +35,6 @@ export const MemberList = ({
   member: Member[];
   user: Member;
 }) => {
-  console.log("user****", user);
   const { toast } = useToast();
   const route = useRouter();
   const searchParams = useSearchParams();
@@ -44,7 +43,6 @@ export const MemberList = ({
   const [filteredMember, setFilteredMember] = useState<Member[]>([]);
 
   useEffect(() => {
-    console.log("try***");
     if (searchQuery) {
       (async function fetchData() {
         try {
@@ -144,7 +142,7 @@ export const MemberList = ({
     onAction: handleNavigation,
     labelForActionButton: "Add Leaves",
   };
-  console.log("filterMember.length", !!filteredMember.length);
+
   return !!filteredMember.length && !isPending ? (
     <StandardPage {...StandardPageProps}>
       <Table>

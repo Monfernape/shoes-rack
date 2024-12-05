@@ -35,12 +35,10 @@ export const MemberHeader = ({
   };
 
   useEffect(() => {
-   
     if (debounceValue) {
-      console.log("debounceValue***",debounceValue)
-    return   router.push(`${Routes.Members}?key=${debounceValue}`);
+      return router.push(`${Routes.Members}?key=${debounceValue}`);
     }
-   return  router.push(pathname);
+    return router.push(pathname);
   }, [debounceValue, pathname]);
 
   return (

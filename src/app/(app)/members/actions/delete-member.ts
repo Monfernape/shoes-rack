@@ -3,9 +3,6 @@ import { UserStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { hasPermission } from "./has-permission";
-import { revalidatePath } from "next/cache";
-import { Routes } from "@/lib/routes";
-import { redirect } from "next/navigation";
 
 export const deleteMember = async (id: number) => {
   const supabase = await getSupabaseClient();
