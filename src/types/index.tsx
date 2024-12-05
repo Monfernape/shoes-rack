@@ -74,7 +74,7 @@ export enum LeavesRequestStatus {
   Reject = "rejected",
 }
 
-export interface LeaveRequestsTypes {
+export type LeaveRequestsTypes = {
   id: number;
   memberId: number
   leaveType: LeaveTypes;

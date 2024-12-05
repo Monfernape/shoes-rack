@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  LeaveTypes, MemberRole,
+  LeaveTypes,
 } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
@@ -88,9 +88,9 @@ export const LeaveRequestFormBuilder = ({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
       memberId:
-        loginUser?.role !== MemberRole.Member
+        loginUser?.role !== "member"
           ? leaves?.memberId?.toString() ?? ""
-          : loginUser?.name.toString(),
+          : loginUser.id?.toString(),
       leaveType: leaves?.leaveType ?? LeaveTypes.Personal,
       date: {
         from: leaves?.startDate ? new Date(leaves?.startDate) : undefined,
