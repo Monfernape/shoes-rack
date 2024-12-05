@@ -19,8 +19,11 @@ import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 
+interface LeaveRequest extends LeaveRequestsTypes {
+  requestedBy: string;
+}
 interface Props {
-  leaveRequestDetails: LeaveRequestsTypes;
+  leaveRequestDetails: LeaveRequest;
 }
 
 const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
@@ -132,7 +135,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
     []
   );
 
-  const onShiftInchareMenu = () => {
+  const shiftInchargeActionMenu = (function onShiftInchareMenu() {
     if (leaveRequestDetails.memberId === loginUser?.id) {
       return leaveRequestDetails.status === LeavesRequestStatus.Pending
         ? [...viewInfo, ...baseActions]
@@ -140,7 +143,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
     } else {
       return [...viewInfo, ...statusActions];
     }
-  };
+  })();
 
   const actionMenu = useMemo(() => {
     switch (loginUser?.role) {
@@ -149,7 +152,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
           ? [...viewInfo, ...baseActions]
           : [...viewInfo];
       case MemberRole.ShiftIncharge:
-        return onShiftInchareMenu();
+        return shiftInchargeActionMenu;
       case MemberRole.Incharge:
         return [...viewInfo, ...statusActions];
 

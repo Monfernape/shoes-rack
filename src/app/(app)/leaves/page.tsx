@@ -1,5 +1,5 @@
-"use server"
-import React  from "react";
+"use server";
+import React from "react";
 import { LeavesRequestList } from "./components/LeavesRequestList";
 import { LeavesHeader } from "./components/LeavesHeader";
 import { PageLayout } from "@/app/layout/PageLayout";
@@ -8,13 +8,15 @@ import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { LeaveFilter } from "@/common/Filter/LeaveFilter";
 
-interface Leaves {
-  searchParams: Record<string, string>
-}
-const Page = async({ searchParams }: Leaves) => {
-  const id = Number(searchParams.id);
+type Props = {
+  searchParams: {
+    search: string;
+  };
+};
+const Page = async ({ searchParams }: Props) => {
+  const id = searchParams;
   const loginUser = await getLoggedInUser();
-  const leaves = await getAllLeaveRequests(id);
+  const leaves = await getAllLeaveRequests(Number(id));
 
   const breadcrumbs = [
     { href: Routes.LeaveRequest, label: "Leaves" },
@@ -25,7 +27,7 @@ const Page = async({ searchParams }: Leaves) => {
       <LeavesHeader breadcrumbs={breadcrumbs} />
       <LeaveFilter loginUser={loginUser} />
       <PageLayout>
-        <LeavesRequestList leaves={leaves}/>
+        <LeavesRequestList leaves={leaves} />
       </PageLayout>
     </>
   );

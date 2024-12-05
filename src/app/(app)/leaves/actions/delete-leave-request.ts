@@ -4,13 +4,21 @@ import { Tables } from "@/lib/db";
 import { Routes } from "@/lib/routes";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { revalidatePath } from "next/cache";
-import { hasLeaveRequestPermission } from "./has-leave-request-permission";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import { getLeaveRequestById } from "./get-leave-request-by-id";
+import { getAccessToUser } from "@/utils/getAccessToUser";
 
 export const deleteLeaveRequest = async (requestId: number) => {
   const supabase = await getSupabaseClient();
-  const isLeaveRequestAllowed = await hasLeaveRequestPermission(requestId)
+  const loginUser = await getLoggedInUser();
+  const leaveRequest = await getLeaveRequestById(requestId);
 
-  if(isLeaveRequestAllowed){
+  const { role : loggedUserRole, id: loggedUserId } = loginUser;
+  const { status, memberId } = leaveRequest;
+
+  const isAccessToUser = getAccessToUser({loggedUserId, loggedUserRole,memberId, status })
+
+  if(isAccessToUser){
     const { error } = await supabase
     .from(Tables.Leaves)
     .delete()
