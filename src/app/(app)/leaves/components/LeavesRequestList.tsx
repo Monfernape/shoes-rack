@@ -1,8 +1,6 @@
 "use client";
 
-import React, {
-  useMemo,
-} from "react";
+import React, { useMemo } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -25,12 +23,15 @@ import LeaveTableActionRender from "./LeaveActionRender";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
+interface LeaveRequest extends LeaveRequestsTypes {
+  requestedBy: string;
+}
 interface LeavesRequestList {
-  leaves: LeaveRequestsTypes[];
+  leaves: LeaveRequest[];
 }
 export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
   const route = useRouter();
-  const columns: ColumnDef<LeaveRequestsTypes>[] = useMemo(
+  const columns: ColumnDef<LeaveRequest>[] = useMemo(
     () => [
       {
         accessorKey: "requestedBy",
@@ -116,7 +117,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
         </TableHeader>
 
         <TableBody>
-          {leaves?.map((row: LeaveRequestsTypes) => (
+          {leaves?.map((row: LeaveRequest) => (
             <TableRow key={row.id}>
               {table
                 .getRowModel()

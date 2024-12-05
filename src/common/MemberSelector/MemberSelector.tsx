@@ -49,8 +49,9 @@ const MemberSelector = ({ value, onValueChange }: SelectFieldProps) => {
       return members
         .filter(
           (member) =>
-            loginUser?.role === MemberRole.ShiftIncharge &&
-            member.shift === loginUser?.shift
+            loginUser?.id === member.id ||
+            (member?.role === MemberRole.Member &&
+              loginUser?.shift === member.shift)
         )
         .map(({ id, name }) => ({
           id: id,

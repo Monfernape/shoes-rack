@@ -22,7 +22,7 @@ export const LeaveFilter = ({ loginUser }: { loginUser: User }) => {
 
   useEffect(() => {
     if (loginUser?.role === MemberRole.ShiftIncharge && search === "") {
-      setSearch(loginUser.id?.toString() ?? "");
+      setSearch(loginUser.id?.toString());
     }
   }, [loginUser, search]);
 

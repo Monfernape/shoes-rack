@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,9 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  LeaveRequestStatus,
   LeaveTypes,
-  MemberRole,
 } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
@@ -36,7 +34,7 @@ import { toast } from "@/hooks/use-toast";
 import { updateLeaveRequest } from "../../actions/updated-leave-request";
 import { startOfDay } from "date-fns";
 import { Routes } from "@/lib/routes";
-import { useUser } from "@/hooks/useGetLoggedinUser";
+import { LeaveRequestsTypes, User } from "@/types";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -72,34 +70,27 @@ const LEAVE_REQUEST_TYPES = [
   LeaveTypes.Vacation,
 ];
 
-type LeaveRequest = {
-  id: number;
-  leaveType: LeaveTypes;
-  startDate: Date;
-  endDate: Date;
-  reason: string;
-  memberId: number;
-  created_at?: string;
-  status?: LeaveRequestStatus;
-};
+interface LeaveRequest extends LeaveRequestsTypes {
+  created_at: string,
+}
 interface LeaveRequestFormBuilderProps {
-  leaves?: LeaveRequest;
+  leaves?: LeaveRequest,
+  loginUser?: User,
 }
 
 export const LeaveRequestFormBuilder = ({
   leaves,
+  loginUser,
 }: LeaveRequestFormBuilderProps) => {
   const { id: leaveId } = useParams<{ id: string }>();
   const router = useRouter();
-  const loginUser = useUser();
-
   const form = useForm<leaveRequestSchemaType>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
       memberId:
-        loginUser?.role !== MemberRole.Member
+        loginUser?.role !== "member"
           ? leaves?.memberId?.toString() ?? ""
-          : loginUser?.name.toString(),
+          : loginUser.id?.toString(),
       leaveType: leaves?.leaveType ?? LeaveTypes.Personal,
       date: {
         from: leaves?.startDate ? new Date(leaves?.startDate) : undefined,
@@ -110,13 +101,9 @@ export const LeaveRequestFormBuilder = ({
     mode: "all",
   });
 
-  const {formState:{ errors, isValid } , setValue} = form;
-
-  useEffect(()=>{
-    if(loginUser?.role === MemberRole.Member){
-      setValue("memberId" , loginUser?.id.toString() ?? "")
-    }
-  },[loginUser])
+  const {
+    formState: { errors, isValid },
+  } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
     try {
@@ -143,7 +130,6 @@ export const LeaveRequestFormBuilder = ({
       }
     }
   }
-  
   return (
     <FormWrapper>
       <FormTitle title="Request Leave" />
