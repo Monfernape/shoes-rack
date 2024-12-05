@@ -28,13 +28,49 @@ import { DataSpinner } from "@/common/Loader/Loader";
 import { formatRole } from "@/utils/formatRole";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
-export const MemberList = ({member} : {member:Member[]}) => {
+export const MemberList = ({
+  member,
+  user,
+}: {
+  member: Member[];
+  user: Member;
+}) => {
+  console.log("user****", user);
   const { toast } = useToast();
   const route = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
-  const [filteredMember, setFilteredMember] = useState<Member[]>(member);
+  const [filteredMember, setFilteredMember] = useState<Member[]>([]);
+
+  useEffect(() => {
+    console.log("try***");
+    if (searchQuery) {
+      (async function fetchData() {
+        try {
+          const response = await getMembers(searchQuery);
+          startTransition(() => {
+            setFilteredMember(response.data);
+          });
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            toast({
+              title: "No Members Found",
+              description: error.message,
+            });
+          } else {
+            toast({
+              title: "No Members Found",
+              description: "An unknown error occurred",
+            });
+          }
+        }
+      })();
+    } else {
+      setFilteredMember(member);
+    }
+  }, [searchQuery, member]);
+
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -46,7 +82,9 @@ export const MemberList = ({member} : {member:Member[]}) => {
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>,
+      cell: ({ row }) => (
+        <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>
+      ),
     },
     {
       accessorKey: "shift",
@@ -74,33 +112,12 @@ export const MemberList = ({member} : {member:Member[]}) => {
         return <span>Action</span>;
       },
       cell: ({ row }) => {
-        return <MemberTableActionRender memberInfo={row.original} />;
+        return (
+          <MemberTableActionRender memberInfo={row.original} loginUser={user} />
+        );
       },
     },
   ];
-
-  useEffect(() => {
-    (async function fetchData() {
-      try {
-        const response = await getMembers(searchQuery);
-        startTransition(() => {
-          setFilteredMember(response.data);
-        });
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          toast({
-            title: "No Members Found",
-            description: error.message,
-          });
-        } else {
-          toast({
-            title: "No Members Found",
-            description: "An unknown error occurred",
-          });
-        }
-      }
-    })();
-  }, [searchQuery,member]);
 
   const table = useReactTable({
     data: filteredMember,
@@ -127,6 +144,7 @@ export const MemberList = ({member} : {member:Member[]}) => {
     onAction: handleNavigation,
     labelForActionButton: "Add Leaves",
   };
+  console.log("filterMember.length", !!filteredMember.length);
   return !!filteredMember.length && !isPending ? (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -185,7 +203,9 @@ export const MemberList = ({member} : {member:Member[]}) => {
         </TableBody>
       </Table>
     </StandardPage>
-  ) : filteredMember.length === 0 ? (<div>No Data Found</div>) :  (
+  ) : member.length === 0 ? (
+    <div>No Data Found</div>
+  ) : (
     <DataSpinner />
   );
 };

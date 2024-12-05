@@ -1,13 +1,11 @@
+import { Routes } from "@/lib/routes";
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberHeader } from "./MemberHeader";
 import { Breadcrumbs } from "@/types";
-import { Routes } from "@/lib/routes";
 
-const breadcrumbs: Breadcrumbs[] = [
-  { href: Routes.Members, label: "Members" },
-];
+const breadcrumbs: Breadcrumbs[] = [{ href: Routes.Members, label: "Members" }];
 describe("Header Component", () => {
   beforeAll(() => {
     vi.mock("next/headers", () => {
@@ -17,7 +15,7 @@ describe("Header Component", () => {
             get: vi.fn().mockReturnValue({
               name: "loginUser",
               value:
-                '{"id":148,"created_at":"2024-11-15T11:17:10.486126+00:00","name":"Testing User","phoneNumber":"923057692655","date_of_birth":"2024-08-31","cnic":"33333-3333333-3","address":"test","ehad_duration":"2025-03-30","role":"shift_incharge","status":"active","shift":"D","invite_link":"","temporary_password":true}',
+                '{"id":148,"created_at":"2024-11-15T11:17:10.486126+00:00","name":"Testing User","phoneNumber":"923057692655","date_of_birth":"2024-08-31","cnic":"33333-3333333-3","address":"test","ehad_duration":"2025-03-30","role":"shift_incharge","status":"active","shift":"A","invite_link":"","temporary_password":true}',
               path: "/",
             }),
           };
@@ -31,7 +29,7 @@ describe("Header Component", () => {
         useRouter: vi.fn(() => ({
           push: vi.fn(),
         })),
-        usePathname: vi.fn(),
+        usePathname: vi.fn().mockReturnValue(Routes.Members),
       };
     });
   });
@@ -55,7 +53,7 @@ describe("Header Component", () => {
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemberHeader  breadcrumbs={breadcrumbs} />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} />);
     const searchInput = screen.getByTestId("searchInput") as HTMLInputElement;
 
     fireEvent.change(searchInput, { target: { value: "test input" } });

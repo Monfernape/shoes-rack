@@ -4,7 +4,7 @@ import { MemberDetails } from "@/app/(app)/members/components/MemberDetails";
 import { getUserById } from "@/app/(app)/members/actions/get-user-by-id";
 import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
-import { InfoMemberHeader } from "../../components/EditMemberHeader";
+import { MemberHeader } from "../../components/MemberHeader";
 
 type Parameters = {
   params: {
@@ -21,7 +21,7 @@ const Page = async ({ params }: Parameters) => {
   const userInfo = await getUserById(id);
   return (
     <div>
-      <InfoMemberHeader  breadcrumbs={breadcrumbs} />
+      <MemberHeader  breadcrumbs={breadcrumbs} />
       <FormWrapper>
         <MemberDetails userInfo={userInfo} />
       </FormWrapper>

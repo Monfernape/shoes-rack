@@ -1,10 +1,10 @@
 import React from "react";
 import { MemberFormBuilder } from "../../components/MemberFormBuilder";
 import { getUserById } from "../../actions/get-user-by-id";
-import {  InfoMemberHeader } from "../../components/EditMemberHeader";
 import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import { MemberHeader } from "../../components/MemberHeader";
 
 type Parameters = {
   params: {
@@ -22,7 +22,7 @@ const Page = async ({ params }: Parameters) => {
 
   return (
     <div className="flex flex-col ">
-      <InfoMemberHeader breadcrumbs={breadcrumbs} />
+      <MemberHeader breadcrumbs={breadcrumbs} />
       <MemberFormBuilder member={member} user = {user} />
     </div>
   );

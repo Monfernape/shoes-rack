@@ -12,11 +12,12 @@ import { useUser } from "@/hooks/useGetLoggedinUser";
 
 type Props = {
   memberInfo: Member;
+  loginUser : Member
 };
 
-const MemberTableActionRender = ({ memberInfo }: Props) => {
+const MemberTableActionRender = ({ memberInfo ,loginUser}: Props) => {
   const { status, id, shift } = memberInfo;
-  const loginUser = useUser();
+
   const router = useRouter();
   const { toast } = useToast();
 

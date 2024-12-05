@@ -3,8 +3,8 @@ import React from "react";
 import { MemberFormBuilder } from "../components/MemberFormBuilder";
 import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
-import { InfoMemberHeader } from "../components/EditMemberHeader";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import { MemberHeader } from "../components/MemberHeader";
 
 const breadcrumbs: Breadcrumbs[] = [
   { href: Routes.Members, label: "Members" },
@@ -15,7 +15,7 @@ const Page = async () => {
   const user =await  getLoggedInUser()
   return (
     <div>
-      <InfoMemberHeader breadcrumbs={breadcrumbs}/>
+      <MemberHeader breadcrumbs={breadcrumbs}/>
       <MemberFormBuilder user = {user} />
     </div>
   );
