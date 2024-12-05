@@ -8,13 +8,8 @@ import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { LeaveFilter } from "@/common/Filter/LeaveFilter";
 
-type Props = {
-  searchParams: {
-    search: string;
-  };
-};
-const Page = async ({ searchParams }: Props) => {
-  const id = searchParams;
+const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
+  const { id } = searchParams || {};
   const loginUser = await getLoggedInUser();
   const leaves = await getAllLeaveRequests(Number(id));
 
