@@ -8,18 +8,18 @@ import { usePathname, useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import useDebounce from "@/hooks/useDebounce";
 import NavigationButton from "@/common/NavigationButton";
-import { Breadcrumbs } from "@/types";
+import { Breadcrumbs, Member } from "@/types";
 import { BasedBreadCrumb } from "@/common/BasedBreadCrumb/BasedBreadCrumb";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 import { MemberRole } from "@/constant/constant";
 
 export const MemberHeader = ({
   breadcrumbs,
+  user
 }: {
   breadcrumbs: Breadcrumbs[];
+  user:Member
 }) => {
   const pathname = usePathname();
-  const user = useUser();
   const router = useRouter();
   const [search, setSearch] = useState("");
   const debounceValue = useDebounce(search, 500);

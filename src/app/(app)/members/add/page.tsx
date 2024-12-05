@@ -15,7 +15,7 @@ const Page = async () => {
   const user =await  getLoggedInUser()
   return (
     <div>
-      <MemberHeader breadcrumbs={breadcrumbs}/>
+      <MemberHeader breadcrumbs={breadcrumbs} user = {user}/>
       <MemberFormBuilder user = {user} />
     </div>
   );

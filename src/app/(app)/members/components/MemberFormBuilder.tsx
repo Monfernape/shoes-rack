@@ -409,7 +409,9 @@ export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
                     value={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger className="flex-1" data-testid="role">
+                    <SelectTrigger className="flex-1" data-testid="role"
+                   disabled={!member && true} 
+                    >
                       <SelectValue placeholder="select role" />
                     </SelectTrigger>
                     <SelectContent data-testid="role">

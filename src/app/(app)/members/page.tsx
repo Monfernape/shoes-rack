@@ -15,7 +15,7 @@ const Page = async () => {
 
   return (
     <>
-      <MemberHeader breadcrumbs={breadcrumbs} />
+      <MemberHeader breadcrumbs={breadcrumbs} user = {user} />
       <PageLayout>
         <MemberList member={member} user={user} />
       </PageLayout>

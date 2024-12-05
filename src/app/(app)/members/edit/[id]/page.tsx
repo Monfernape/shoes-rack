@@ -22,7 +22,7 @@ const Page = async ({ params }: Parameters) => {
 
   return (
     <div className="flex flex-col ">
-      <MemberHeader breadcrumbs={breadcrumbs} />
+      <MemberHeader breadcrumbs={breadcrumbs} user = {user} />
       <MemberFormBuilder member={member} user = {user} />
     </div>
   );

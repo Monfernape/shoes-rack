@@ -40,8 +40,7 @@ export const MemberList = ({
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
-  const [filteredMember, setFilteredMember] = useState<Member[]>([]);
-
+  const [filteredMember, setFilteredMember] = useState<Member[]>(member);
   useEffect(() => {
     if (searchQuery) {
       (async function fetchData() {
@@ -135,15 +134,18 @@ export const MemberList = ({
   };
   const StandardPageProps = {
     hasContent: !!filteredMember.length,
-    title: "Add Leaves",
-    description: "This is where you can see all leave request",
+    title: "Add Member",
+    description: "This is where you can add members",
     buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: handleNavigation,
-    labelForActionButton: "Add Leaves",
+    labelForActionButton: "Add Member",
   };
 
-  return !!filteredMember.length && !isPending ? (
+  if (filteredMember.length === 0) {
+    return <div className="text-center font-semibold">No Data Found</div>;
+  }
+  return !isPending ? (
     <StandardPage {...StandardPageProps}>
       <Table>
         <TableHeader>
@@ -201,8 +203,6 @@ export const MemberList = ({
         </TableBody>
       </Table>
     </StandardPage>
-  ) : member.length === 0 ? (
-    <div>No Data Found</div>
   ) : (
     <DataSpinner />
   );

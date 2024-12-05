@@ -3,7 +3,25 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { it, describe, vi } from "vitest";
 import { MemberHeader } from "./MemberHeader";
-import { Breadcrumbs } from "@/types";
+import { Breadcrumbs, Member } from "@/types";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+
+
+const loginUser: Member = {
+  id: 232,
+  created_at: "2024-11-26T13:38:23.700892+00:00",
+  name: "Mubashir",
+  phoneNumber: "923056872063",
+  date_of_birth: "2024-11-01",
+  cnic: "",
+  address: "",
+  ehad_duration: "2025-01-02",
+  role: MemberRole.ShiftIncharge,
+  shift: Shift.ShiftC,
+  invite_link: "",
+  temporary_password: false,
+  status: UserStatus.Active,
+};
 
 const breadcrumbs: Breadcrumbs[] = [{ href: Routes.Members, label: "Members" }];
 describe("Header Component", () => {
@@ -48,12 +66,12 @@ describe("Header Component", () => {
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemberHeader breadcrumbs={breadcrumbs} />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} user = {loginUser} />);
     fireEvent.click(screen.getByTestId("searchInput"));
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemberHeader breadcrumbs={breadcrumbs} />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} user = {loginUser} />);
     const searchInput = screen.getByTestId("searchInput") as HTMLInputElement;
 
     fireEvent.change(searchInput, { target: { value: "test input" } });
@@ -62,7 +80,7 @@ describe("Header Component", () => {
   });
 
   it("Button is clicked", async () => {
-    render(<MemberHeader breadcrumbs={breadcrumbs} />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} user = {loginUser} />);
     fireEvent.click(screen.getByTestId("addMemberButton"));
   });
 });

@@ -4,11 +4,10 @@ import { Tables } from "@/lib/db";
 import { UserStatus } from "@/constant/constant";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
-export const getMembers = async (query?: string | null) => {
- 
+export const getMembers = async (query: string | null) => {
   const supabase = await getSupabaseClient();
 
-  const columns = ["name", "address", "phoneNumber", "cnic"];
+  const columns = ["name"];
 
   const orConditions = columns.map((col) => {
     return `${col}.ilike.%${query ?? ""}%`;

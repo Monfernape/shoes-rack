@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
@@ -11,10 +11,10 @@ import { Routes } from "@/lib/routes";
 
 type Props = {
   memberInfo: Member;
-  loginUser : Member
+  loginUser: Member;
 };
 
-const MemberTableActionRender = ({ memberInfo ,loginUser}: Props) => {
+const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const { status, id, shift } = memberInfo;
 
   const router = useRouter();
@@ -34,7 +34,7 @@ const MemberTableActionRender = ({ memberInfo ,loginUser}: Props) => {
       toast({
         title: "Member deleted successfully",
       });
-      router.refresh()
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -96,7 +96,7 @@ const MemberTableActionRender = ({ memberInfo ,loginUser}: Props) => {
   const actionMenu = React.useMemo(() => {
     switch (loginUser?.role) {
       case MemberRole.Incharge:
-        return [...baseActions, ...viewInfo];
+        return [...baseActions, ...viewInfo, ...resendInvite];
       case MemberRole.ShiftIncharge:
         return checkShiftMembers(loginUser?.shift, shift);
       case MemberRole.Member:

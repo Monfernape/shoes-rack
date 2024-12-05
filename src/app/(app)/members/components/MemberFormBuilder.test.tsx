@@ -29,13 +29,7 @@ const formTargets = [
     value: "123 Main St",
   },
 ];
-const selection = [
-  {
-    testId: "role",
-    value: "member",
-    text: "Member",
-  },
-];
+
 
 describe("UserForm", async () => {
   it("validates the form fields", async () => {
@@ -61,14 +55,7 @@ describe("UserForm", async () => {
       fireEvent.change(input, { target: { value: target.value } });
       expect(hasInputValue(input, target.value)).toBe(true);
     });
-    // Selection;
-    selection.map((target) => {
-      const selectTrigger = screen.getByTestId(target.testId);
-      fireEvent.click(selectTrigger);
-      const option = screen.getByRole("option", { name: target.text });
-      fireEvent.click(option);
-    });
-    // Submitting the form
+
     expect(screen.getByTestId("form")).toHaveFormValues({
       name: "Mubasher",
       phoneNumber: "0305-6812063",
