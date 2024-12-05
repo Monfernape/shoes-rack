@@ -9,6 +9,7 @@ import {
   ExclamationTriangleIcon,
   Cross1Icon,
   ExitIcon,
+  PersonIcon,
   GearIcon,
 } from "@radix-ui/react-icons";
 import {
@@ -23,11 +24,16 @@ interface Props {
   toggleSidebar: () => void;
 }
 
-const roleBasedRoutes = [
+const routes = [
   {
     name: "Dashboard",
     route: Routes.Dashboard,
     icon: <DashboardIcon />,
+  },
+  {
+    name: "Members",
+    route: Routes.Members,
+    icon: <PersonIcon />,
   },
   {
     name: "Notifications",
@@ -91,7 +97,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           <ul className="p-2 space-y-2 text-xs">
-            {roleBasedRoutes.map((r) => (
+            {routes.map((r) => (
               <li key={r.route}>
                 <Link
                   href={r.route}
