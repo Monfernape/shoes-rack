@@ -15,54 +15,73 @@ import {
 import {
   BellIcon,
   CalendarIcon,
+  ChartNoAxesCombinedIcon,
   ClipboardIcon,
   HandCoinsIcon,
 } from "lucide-react";
+import { useUser } from "@/hooks/useGetLoggedinUser";
+import { MemberRole } from "@/constant/constant";
 
 interface Props {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
-const routes = [
-  {
-    name: "Dashboard",
-    route: Routes.Dashboard,
-    icon: <DashboardIcon />,
-  },
-  {
-    name: "Members",
-    route: Routes.Members,
-    icon: <PersonIcon />,
-  },
-  {
-    name: "Notifications",
-    route: Routes.Notification,
-    icon: <BellIcon />,
-  },
-  {
-    name: "Attendance",
-    route: Routes.Attendance,
-    icon: <CalendarIcon />,
-  },
-  {
-    name: "Leave Requests",
-    route: Routes.LeaveRequest,
-    icon: <ClipboardIcon />,
-  },
-  {
-    name: "Missing Shoes",
-    route: Routes.MissingShoes,
-    icon: <ExclamationTriangleIcon />,
-  },
-  {
-    name: "Funds",
-    route: Routes.Fund,
-    icon: <HandCoinsIcon />,
-  },
-];
+interface Route {
+  name: string;
+  route: Routes;
+  icon: React.ReactElement;
+}
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
+  const loginUser = useUser();
+
+  const routes: Route[] = [
+    {
+      name: "Dashboard",
+      route: Routes.Dashboard,
+      icon: <DashboardIcon />,
+    },
+    {
+      name: "Members",
+      route: Routes.Members,
+      icon: <PersonIcon />,
+    },
+    {
+      name: "Notifications",
+      route: Routes.Notification,
+      icon: <BellIcon />,
+    },
+    {
+      name: "Attendance",
+      route: Routes.Attendance,
+      icon: <CalendarIcon />,
+    },
+    {
+      name: "Leave Requests",
+      route: Routes.LeaveRequest,
+      icon: <ClipboardIcon />,
+    },
+    {
+      name: "Missing Shoes",
+      route: Routes.MissingShoes,
+      icon: <ExclamationTriangleIcon />,
+    },
+    ...(loginUser?.role !== MemberRole.Member
+      ? [
+          {
+            name: "Attendance Report",
+            route: Routes.AttendanceReport,
+            icon: <ChartNoAxesCombinedIcon />,
+          },
+          {
+            name: "Funds",
+            route: Routes.Fund,
+            icon: <HandCoinsIcon />,
+          },
+        ]
+      : []),
+  ];
 
   const onLogoutUser = () => {
     logoutUser();
@@ -78,7 +97,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
             ${isSidebarOpen ? "block" : "hidden"}
             fixed top-0 right-0 inset-y-0 left-0 z-30 w-48 bg-sidebar shadow-md transform transition-transform duration-300 ease-in-out
                 ${
-                  isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }  lg:translate-x-0 lg:block lg:fixed`}
     >
       <div className="flex flex-col h-full bg-sidebar-background">
