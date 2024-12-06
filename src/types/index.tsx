@@ -4,6 +4,13 @@ import { LeaveTypes, MemberRole, Shift, UserStatus } from "@/constant/constant";
 
 export type UserRole = "incharge" | "member" | "shift_incharge";
 
+export type AttendanceReportStatus =
+  | "excellent"
+  | "good"
+  | "verygood"
+  | "average"
+  | "low";
+
 export type Member = {
   id: number;
   created_at: string;

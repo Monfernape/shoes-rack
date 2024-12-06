@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { format } from "date-fns";
 import { MemberRole, Shift } from "@/constant/constant";
 import {
   Select,
@@ -23,14 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
@@ -41,6 +32,7 @@ import { Member } from "@/types";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
 import { useParams } from "next/navigation";
+import { DatePicker } from "@/components/ui/datepicker";
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
   id: number;
@@ -246,54 +238,10 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
             )}
           />
 
-          <FormField
+          <DatePicker
             control={form.control}
             name="date_of_birth"
-            render={({ field }) => {
-              return (
-                <FormItem className="flex flex-col">
-                  <Label>Date of birth</Label>
-
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          data-testid="date_of_birth"
-                          variant={"outline"}
-                          className={cn(
-                            `justify-start text-left font-normal
-                        ${field.value} && "text-muted-foreground
-                        ${
-                          errors?.date_of_birth &&
-                          "border-red-500 border focus-visible:ring-0"
-                        }
-                          `
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto w-3.5 h-3.5" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      className="w-auto p-0"
-                      data-testid="calender"
-                    >
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage data-testId="date_of_birth_error" />
-                </FormItem>
-              );
-            }}
+            label="Date of Birth"
           />
 
           <FormField
@@ -315,52 +263,10 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
               </FormItem>
             )}
           />
-
-          <FormField
+          <DatePicker
             control={form.control}
             name="ehad_duration"
-            render={({ field }) => (
-              <FormItem className="flex flex-col flex-1">
-                <Label>Ehad duration</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        data-testid="ehad_duration"
-                        variant={"outline"}
-                        className={cn(
-                          `justify-start text-left font-normal text-xs
-                          ${field.value} && "text-muted-foreground
-                          ${
-                            errors?.ehad_duration &&
-                            "border-red-500 border focus-visible:ring-0"
-                          }
-                           `
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto w-3.5 h-3.5" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-auto p-0"
-                    data-testid="ehad_calender"
-                  >
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage data-testId="ehad_duration_error" />
-              </FormItem>
-            )}
+            label="Ehad duration"
           />
 
           <FormField

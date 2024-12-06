@@ -42,3 +42,11 @@ export enum Cookies {
   LoginUser = "loginUser",
   Session = "session",
 }
+
+export enum AttendanceProgress {
+  Excellent = "excellent",
+  VeryGood = "verygood",
+  Good = "good",
+  Average = "average",
+  low = "low",
+}
