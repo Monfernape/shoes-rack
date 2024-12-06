@@ -20,6 +20,7 @@ import { useMask } from "@react-input/mask";
 import { Eye as EyeIcon, EyeOff as EyeOffIcon } from "lucide-react";
 import { addDevUser } from "../actions/add-dev-user";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
+import { Card } from "@/components/ui/card";
 
 export const DevUserSchema = z.object({
   name: z.string().min(1, {
@@ -77,12 +78,14 @@ const AddDevUserForm = () => {
   };
 
   return (
+    <Card className="p-6 max-w-xlg mx-auto mb-6">
     <Form {...form}>
       <form
         action={() => form.handleSubmit(handleSubmission)()}
         className="space-y-4"
         data-testid="form-valid"
       >
+      
         <FormTitle title="Add Dev User" />
 
         <FormField
@@ -162,6 +165,7 @@ const AddDevUserForm = () => {
         </Button>
       </form>
     </Form>
+    </Card>
   );
 };
 

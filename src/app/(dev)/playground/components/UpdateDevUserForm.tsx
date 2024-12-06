@@ -28,6 +28,7 @@ import { Input } from "@/components/ui/input";
 import { useMask } from "@react-input/mask";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { USER_ROLES } from "@/app/(app)/members/components/MemberFormBuilder";
+import { Card } from "@/components/ui/card";
 
 export const UpdateDevUserSchema = z.object({
   phoneNumber: z
@@ -86,6 +87,8 @@ const UpdateDevUserFrom = () => {
   };
 
   return (
+    <div className=" pb-6">
+    <Card className="p-6 max-w-xlg mx-auto">
     <Form {...form}>
       <form
         action={() => form.handleSubmit(handleSubmission)()}
@@ -158,6 +161,8 @@ const UpdateDevUserFrom = () => {
         </Button>
       </form>
     </Form>
+    </Card>
+    </div>
   );
 };
 
