@@ -4,6 +4,13 @@ import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 
 export type UserRole = "incharge" | "member" | "shift_incharge";
 
+export type AttendanceReportStatus =
+  | "excellent"
+  | "good"
+  | "verygood"
+  | "average"
+  | "low";
+
 export type Member = {
   id: number;
   created_at: string;
@@ -66,6 +73,7 @@ export enum LeavesRequestStatus {
   Approved = "approved",
   Reject = "rejected",
 }
+
 export interface LeaveRequestsTypes {
   id: number;
   leaveType: string;

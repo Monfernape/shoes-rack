@@ -18,10 +18,13 @@ import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { Input } from "@/components/ui/input";
 import { useMask } from "@react-input/mask";
 import { Eye as EyeIcon, EyeOff as EyeOffIcon } from "lucide-react";
-import { addDevUser } from "../actions/addDevUser";
+import { addDevUser } from "../actions/add-dev-user";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 export const DevUserSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
   phoneNumber: z
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
@@ -39,6 +42,7 @@ const AddDevUserForm = () => {
   const form = useForm<DevUserType>({
     resolver: zodResolver(DevUserSchema),
     defaultValues: {
+      name: "",
       phoneNumber: "",
       password: undefined,
     },
@@ -81,6 +85,25 @@ const AddDevUserForm = () => {
       >
         <FormTitle title="Add Dev User" />
 
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <Label>Name</Label>
+              <FormControl>
+                <Input
+                  placeholder="Enter Name"
+                  {...field}
+                  data-testid="name"
+                  name="name"
+                  hasError={errors?.name && true}
+                />
+              </FormControl>
+              <FormMessage data-testid="name-error" />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="phoneNumber"

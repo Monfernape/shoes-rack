@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { addDays, format } from "date-fns";
 import { MemberRole, Shift } from "@/constant/constant";
 import {
   Select,
@@ -23,14 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
@@ -42,6 +33,8 @@ import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
+import { useParams } from "next/navigation";
+import { DatePicker } from "@/components/ui/datepicker";
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
   id: number;
@@ -88,7 +81,12 @@ export const userBuilderSchema = z.object({
   phoneNumber: z
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  date_of_birth: z.date().max(new Date(Date.now()), "under age"),
+  date_of_birth: z
+    .date()
+    .max(
+      new Date(Date.now() - 16 * 365 * 24 * 60 * 60 * 1000),
+      "Member must be at least 16 years old"
+    ),
   cnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
   shift: z.enum([Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD], {
     errorMap: () => {
@@ -104,16 +102,26 @@ export const userBuilderSchema = z.object({
       },
     }
   ),
-  ehad_duration: z
-    .date()
-    .min(addDays(new Date(), 30), "Minmum Ehad Duration is one Month"),
+  ehad_duration: z.date().refine(
+    (date) => {
+      const today = new Date();
+      const minDate = new Date();
+      minDate.setDate(today.getDate() - 30);
+      return date <= minDate;
+    },
+    {
+      message: "Ehad Duration must be more than 30 days ago",
+    }
+  ),
 });
+
 type MemberFormBuilder = {
   member?: Member;
-  user : Member
+  user: Member;
 };
-export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
+export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
   const { toast } = useToast();
+  const params = useParams();
 
   const phoneNumberMask = useMask({
     mask: "___________",
@@ -124,22 +132,20 @@ export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
     replacement: { _: /\d/ },
   });
   const showShiftTime = (user: Member) => {
-   
     if (member) return member.shift;
     if (user?.role === MemberRole.ShiftIncharge) {
       const shift = SHIFT_TIMING.find((member) => {
-
         return member.shift === user?.shift;
       });
       return shift?.shift;
     }
-    if(user?.role === MemberRole.Incharge) {
-      return Shift.ShiftA
+    if (user?.role === MemberRole.Incharge) {
+      return Shift.ShiftA;
     }
   };
 
   const shiftTiming = showShiftTime(user);
-
+  console.log("Member***", member);
   const formattedPhoneNumber = localNumberFormat(member?.phoneNumber);
   const form = useForm<UserBuilder>({
     resolver: zodResolver(userBuilderSchema),
@@ -148,7 +154,7 @@ export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
       phoneNumber: formattedPhoneNumber ?? "",
       date_of_birth: member ? new Date(member?.date_of_birth) : undefined,
       cnic: member?.cnic ?? "",
-      shift: shiftTiming ,
+      shift: shiftTiming,
       address: member?.address ?? "",
       role: member?.role ?? MemberRole.Member,
       ehad_duration: member ? new Date(member?.ehad_duration) : new Date(),
@@ -250,54 +256,11 @@ export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
             )}
           />
 
-          <FormField
+          <DatePicker
             control={form.control}
             name="date_of_birth"
-            render={({ field }) => {
-              return (
-                <FormItem className="flex flex-col">
-                  <Label>Date of birth</Label>
-
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          data-testid="date_of_birth"
-                          variant={"outline"}
-                          className={cn(
-                            `justify-start text-left font-normal
-                        ${field.value} && "text-muted-foreground
-                        ${
-                          errors?.date_of_birth &&
-                          "border-red-500 border focus-visible:ring-0"
-                        }
-                          `
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto w-3.5 h-3.5" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      className="w-auto p-0"
-                      data-testid="calender"
-                    >
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage data-testid="date_of_birth_error" />
-                </FormItem>
-              );
-            }}
+            label="Date of Birth"
+            defaultDate={member ? new Date(member?.date_of_birth) : new Date()}
           />
 
           <FormField
@@ -319,52 +282,11 @@ export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
               </FormItem>
             )}
           />
-
-          <FormField
+          <DatePicker
             control={form.control}
             name="ehad_duration"
-            render={({ field }) => (
-              <FormItem className="flex flex-col flex-1">
-                <Label>Ehad duration</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        data-testid="ehad_duration"
-                        variant={"outline"}
-                        className={cn(
-                          `justify-start text-left font-normal text-xs
-                          ${field.value} && "text-muted-foreground
-                          ${
-                            errors?.ehad_duration &&
-                            "border-red-500 border focus-visible:ring-0"
-                          }
-                           `
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto w-3.5 h-3.5" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-auto p-0"
-                    data-testid="ehad_calender"
-                  >
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage data-testid="ehad_duration_error" />
-              </FormItem>
-            )}
+            label="Ehad duration"
+            defaultDate={member ? new Date(member?.ehad_duration) : new Date()}
           />
 
           <FormField
@@ -409,8 +331,10 @@ export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
                     value={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger className="flex-1" data-testid="role"
-                   disabled={!member && true} 
+                    <SelectTrigger
+                      className="flex-1"
+                      data-testid="role"
+                      disabled={!member && true}
                     >
                       <SelectValue placeholder="select role" />
                     </SelectTrigger>
@@ -440,7 +364,7 @@ export const MemberFormBuilder = ({ member,user }: MemberFormBuilder) => {
             data-testid="submit"
             disabled={!member && !form.formState.isValid}
           >
-            Submit
+            {params?.id ? "Update" : "Submit"}
           </Button>
         </form>
       </Form>

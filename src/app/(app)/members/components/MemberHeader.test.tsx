@@ -6,7 +6,6 @@ import { MemberHeader } from "./MemberHeader";
 import { Breadcrumbs, Member } from "@/types";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 
-
 const loginUser: Member = {
   id: 232,
   created_at: "2024-11-26T13:38:23.700892+00:00",
@@ -66,12 +65,12 @@ describe("Header Component", () => {
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemberHeader breadcrumbs={breadcrumbs} user = {loginUser} />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} user={loginUser} />);
     fireEvent.click(screen.getByTestId("searchInput"));
   });
 
   it("Input Event Triggered", async () => {
-    render(<MemberHeader breadcrumbs={breadcrumbs} user = {loginUser} />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} user={loginUser} />);
     const searchInput = screen.getByTestId("searchInput") as HTMLInputElement;
 
     fireEvent.change(searchInput, { target: { value: "test input" } });
@@ -80,7 +79,7 @@ describe("Header Component", () => {
   });
 
   it("Button is clicked", async () => {
-    render(<MemberHeader breadcrumbs={breadcrumbs} user = {loginUser} />);
+    render(<MemberHeader breadcrumbs={breadcrumbs} user={loginUser} />);
     fireEvent.click(screen.getByTestId("addMemberButton"));
   });
 });
