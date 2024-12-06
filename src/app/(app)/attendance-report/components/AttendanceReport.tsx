@@ -31,7 +31,7 @@ type AttendanceProps = {
 export const AttendanceReportList = ({ data }: { data: AttendanceProps[] }) => {
   const { toast } = useToast();
 
-  function getMonth(createdAt: string): string {
+  const getMonth = (createdAt: string): string => {
     const date = new Date(createdAt);
     return date.toLocaleString("en-US", { month: "long" });
   }
@@ -83,16 +83,16 @@ export const AttendanceReportList = ({ data }: { data: AttendanceProps[] }) => {
   useEffect(() => {
     if (!data) {
       toast({
-        title: "No Attendance Status Found",
-        description: "There are no members available at this time.",
+        title: "No attendance report found",
+        description: "No attendance report is available at this time",
       });
     } else {
       toast({
-        title: "Attendance status loaded successfully",
-        description: "You can now see all attendance Status.",
+        title: "Attendance report loaded successfully",
+        description: "You can see attendance report.",
       });
     }
-  }, [data, toast]);
+  }, [data]);
 
   return (
     <Table>

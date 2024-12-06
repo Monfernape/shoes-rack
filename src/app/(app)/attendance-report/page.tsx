@@ -1,10 +1,10 @@
 import React from "react";
 import { PageLayout } from "../../layout/PageLayout";
-import { AttendanceReportList } from "./components/AttendanceStatus";
+import { AttendanceReportList } from "./components/AttendanceReport";
 import { AttendanceProgress } from "@/constant/constant";
 
 const Page = async () => {
-  const data = [
+  const attendanceReport = [
     {
       name: "John Doe",
       id: "1",
@@ -44,7 +44,7 @@ const Page = async () => {
 
   return (
     <PageLayout>
-      <AttendanceReportList data={data} />
+      <AttendanceReportList data={attendanceReport} />
     </PageLayout>
   );
 };

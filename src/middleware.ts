@@ -5,7 +5,7 @@ import { getSession } from "./utils/supabase/getSession";
 import { getLoggedInUser } from "./utils/getLoggedInUser";
 import { MemberRole } from "./constant/constant";
 
-const restrictedPaths: Routes[] = [Routes.AttendanceStatus];
+const restrictedPaths: Routes[] = [Routes.AttendanceReport];
 
 export default async function updateSession(request: NextRequest) {
   const isTokenValid = await getSession();
