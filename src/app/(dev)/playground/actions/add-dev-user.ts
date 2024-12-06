@@ -11,7 +11,11 @@ export const addDevUser = async (values: DevUserType) => {
   const supabase = await getSupabaseClient();
 
   const currentDate = new Date();
-  const dateOfBirth = new Date(2003, 1, 10).toISOString();
+
+  const dateOfBirth = new Date(
+    currentDate.setFullYear(currentDate.getFullYear() - 18)
+  ).toISOString();
+  
   const ehadDuration = new Date(
     currentDate.setFullYear(currentDate.getFullYear() - 1)
   ).toISOString();
