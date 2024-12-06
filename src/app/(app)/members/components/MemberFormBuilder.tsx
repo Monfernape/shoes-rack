@@ -145,7 +145,6 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
   };
 
   const shiftTiming = showShiftTime(user);
-  console.log("Member***", member);
   const formattedPhoneNumber = localNumberFormat(member?.phoneNumber);
   const form = useForm<UserBuilder>({
     resolver: zodResolver(userBuilderSchema),
