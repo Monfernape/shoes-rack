@@ -3,7 +3,8 @@ import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { UpdateDevUserRoleType } from "../components/UpdateDevUserForm";
 import { intlNumberFormat } from "@/utils/formattedPhoneNumber";
-
+import { addCookies } from "@/utils/cookiesManager";
+import { Cookies } from "@/constant/constant";
 
 export const updateDevUserRole = async (values: UpdateDevUserRoleType) => {
   const supabase = await getSupabaseClient();
@@ -17,10 +18,15 @@ export const updateDevUserRole = async (values: UpdateDevUserRoleType) => {
     .eq("phoneNumber", formattedPhoneNumber)
     .select("*")
     .single();
+  console.log({ updatedDevUser });
 
   if (error) {
     throw error;
   } else {
+    addCookies({
+      name: Cookies.LoginUser,
+      values: updatedDevUser,
+    });
     return updatedDevUser;
   }
 };
