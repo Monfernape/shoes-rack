@@ -14,10 +14,13 @@ import {
   User as UserIcon,
 } from "lucide-react";
 
+interface LeaveRequest extends LeaveRequestsTypes {
+  requestedBy: string;
+}
 interface Props {
   isOpenViewModal: boolean;
   setIsOpenViewModal: (state: boolean) => void;
-  leaveRequestDetails: LeaveRequestsTypes;
+  leaveRequestDetails: LeaveRequest;
 }
 
 export const LeaveRequestDetails = ({
