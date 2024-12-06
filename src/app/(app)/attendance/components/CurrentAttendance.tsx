@@ -145,11 +145,6 @@ export const CurrentAttendance = ({ loginUser }: Props) => {
       },
     },
   });
-
-  const handelMarkAttendance = () => {
-    const markAttendancePayload = todayAttendance.map(({ id, status }) => ({ id, status }));
-    console.log({ markAttendancePayload })
-  };
   
 
   return (
@@ -187,7 +182,7 @@ export const CurrentAttendance = ({ loginUser }: Props) => {
             </TableBody>
           </Table>
           <div className="flex justify-end pt-6">
-            <Button className="text-xs" onClick={() => handelMarkAttendance()}>
+            <Button className="text-xs">
               Submit
             </Button>
           </div>
