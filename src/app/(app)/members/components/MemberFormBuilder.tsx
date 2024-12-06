@@ -61,7 +61,7 @@ export const USER_ROLES = [
   },
 ];
 
-const SHIFT_TIMING = [
+export const SHIFT_TIMING = [
   {
     time: "Shift 12:00am to 00:06am",
     value: Shift.ShiftA,

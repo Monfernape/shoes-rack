@@ -19,8 +19,6 @@ export const createAttendance = async (values: AttendanceFormValues) => {
   const { error } = await supabase.from(Tables.Attendance).insert({
     ...payload,
     status: AttendanceStatus.Pending,
-    role:loginUser.role,
-    shift:loginUser.shift
   });
 
   if (error) {
