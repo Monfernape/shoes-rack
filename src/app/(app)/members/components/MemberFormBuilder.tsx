@@ -31,6 +31,8 @@ import { updateUser } from "../actions/update-user";
 import { Member } from "@/types";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
+import { localNumberFormat } from "@/utils/formattedPhoneNumber";
+
 import { useParams } from "next/navigation";
 import { DatePicker } from "@/components/ui/datepicker";
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
@@ -56,19 +58,19 @@ export const USER_ROLES = [
 const SHIFT_TIMING = [
   {
     time: "Shift 12:00am to 00:06am",
-    value: Shift.ShiftA,
+    shift: Shift.ShiftA,
   },
   {
     time: "Shift 00:06am to 00:12pm",
-    value: Shift.ShiftB,
+    shift: Shift.ShiftB,
   },
   {
     time: "Shift 00:12pm to 00:06pm",
-    value: Shift.ShiftC,
+    shift: Shift.ShiftC,
   },
   {
     time: "Shift 00:06pm to 00:12am",
-    value: Shift.ShiftD,
+    shift: Shift.ShiftD,
   },
 ];
 
@@ -115,8 +117,9 @@ export const userBuilderSchema = z.object({
 
 type MemberFormBuilder = {
   member?: Member;
+  user: Member;
 };
-export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
+export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
   const { toast } = useToast();
   const params = useParams();
 
@@ -128,15 +131,29 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
     mask: "3____-_______-_",
     replacement: { _: /\d/ },
   });
+  const showShiftTime = (user: Member) => {
+    if (member) return member.shift;
+    if (user?.role === MemberRole.ShiftIncharge) {
+      const shift = SHIFT_TIMING.find((member) => {
+        return member.shift === user?.shift;
+      });
+      return shift?.shift;
+    }
+    if (user?.role === MemberRole.Incharge) {
+      return Shift.ShiftA;
+    }
+  };
 
+  const shiftTiming = showShiftTime(user);
+  const formattedPhoneNumber = localNumberFormat(member?.phoneNumber);
   const form = useForm<UserBuilder>({
     resolver: zodResolver(userBuilderSchema),
     defaultValues: {
       name: member?.name ?? "",
-      phoneNumber: member?.phoneNumber ?? "",
+      phoneNumber: formattedPhoneNumber ?? "",
       date_of_birth: member ? new Date(member?.date_of_birth) : undefined,
       cnic: member?.cnic ?? "",
-      shift: member?.shift ?? Shift.ShiftA,
+      shift: shiftTiming,
       address: member?.address ?? "",
       role: member?.role ?? MemberRole.Member,
       ehad_duration: member ? new Date(member?.ehad_duration) : new Date(),
@@ -214,7 +231,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     hasError={errors?.phoneNumber && true}
                   />
                 </FormControl>
-                <FormMessage data-testId="phone_error" />
+                <FormMessage data-testid="phone_error" />
               </FormItem>
             )}
           />
@@ -233,7 +250,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     hasError={errors?.cnic && true}
                   />
                 </FormControl>
-                <FormMessage data-testId="cnic_error" />
+                <FormMessage data-testid="cnic_error" />
               </FormItem>
             )}
           />
@@ -242,6 +259,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
             control={form.control}
             name="date_of_birth"
             label="Date of Birth"
+            defaultDate={member ? new Date(member?.date_of_birth) : new Date()}
           />
 
           <FormField
@@ -259,7 +277,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     data-testid="address"
                   />
                 </FormControl>
-                <FormMessage data-testId="address_error" />
+                <FormMessage data-testid="address_error" />
               </FormItem>
             )}
           />
@@ -267,6 +285,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
             control={form.control}
             name="ehad_duration"
             label="Ehad duration"
+            defaultDate={member ? new Date(member?.ehad_duration) : new Date()}
           />
 
           <FormField
@@ -277,13 +296,17 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                 <Label>Shift </Label>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
-                    <SelectTrigger className="flex-1" data-testid="shift">
+                    <SelectTrigger
+                      className="flex-1"
+                      data-testid="shift"
+                      disabled={user?.role === MemberRole.ShiftIncharge && true}
+                    >
                       <SelectValue placeholder={"select shift"} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
                         {SHIFT_TIMING.map((shift) => (
-                          <SelectItem key={shift.value} value={shift.value}>
+                          <SelectItem key={shift.shift} value={shift.shift}>
                             {shift.time}
                           </SelectItem>
                         ))}
@@ -291,7 +314,7 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormMessage data-testId="shift_error" />
+                <FormMessage data-testid="shift_error" />
               </FormItem>
             )}
           />
@@ -307,7 +330,11 @@ export const MemberFormBuilder = ({ member }: MemberFormBuilder) => {
                     value={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger className="flex-1" data-testid="role">
+                    <SelectTrigger
+                      className="flex-1"
+                      data-testid="role"
+                      disabled={!member && true}
+                    >
                       <SelectValue placeholder="select role" />
                     </SelectTrigger>
                     <SelectContent data-testid="role">

@@ -33,17 +33,19 @@ interface DatePickerProps<T extends FieldValues> {
   label: string;
   control: Control<T>;
   name: FieldPath<T>;
+  defaultDate: Date;
 }
 
 export function DatePicker<T extends FieldValues>({
   label,
   control,
   name,
+  defaultDate
 }: DatePickerProps<T>) {
-  const startYear = getYear(new Date()) - 60;
-  const endYear = getYear(new Date());
+  const startYear = getYear(new Date(defaultDate)) - 60;
+  const endYear = getYear(new Date(defaultDate));
 
-  const [date, setDate] = React.useState<Date>(new Date());
+  const [date, setDate] = React.useState<Date>(defaultDate);
   const months = [
     "January",
     "February",

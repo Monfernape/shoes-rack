@@ -116,16 +116,16 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           <ul className="p-2 space-y-2 text-xs">
-            {routes.map((role , index) => (
-              <li key={index}>
+            {routes.map((route , index) => (
+              <li key={`route-${index}`}>
                 <Link
-                  href={role.route}
+                  href={route.route}
                   className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                 >
                   <span className="text-xs mr-3">
-                    {React.cloneElement(role.icon, { className: "w-3.5 h-3.5" })}
+                    {React.cloneElement(route.icon, { className: "w-3.5 h-3.5" })}
                   </span>
-                  <span className="text-xs">{role.name}</span>
+                  <span className="text-xs">{route.name}</span>
                 </Link>
               </li>
             ))}
