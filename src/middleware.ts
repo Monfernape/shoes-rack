@@ -5,7 +5,7 @@ import { getSession } from "./utils/supabase/getSession";
 import { getLoggedInUser } from "./utils/getLoggedInUser";
 import { MemberRole } from "./constant/constant";
 
-const restrictedPaths: Routes[] = [Routes.AttendanceReport];
+const restrictedPaths: Routes[] = [Routes.AttendanceReport , Routes.MarkAttendance];
 
 export default async function updateSession(request: NextRequest) {
   const isTokenValid = await getSession();
@@ -22,7 +22,7 @@ export default async function updateSession(request: NextRequest) {
     loginUser.role === MemberRole.Member &&
     isRestrictedPath
   ) {
-    return NextResponse.redirect(new URL(Routes.Members, request.url));
+    return NextResponse.redirect(new URL(Routes.Attendance, request.url));
   }
   return NextResponse.next({
     request: {
