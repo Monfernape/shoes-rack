@@ -13,8 +13,6 @@ export const updateDevUserRole = async (values: UpdateDevUserRoleType) => {
 
   const loggedInUser = await getLoggedInUser();
 
-  console.log({ loggedInUser,formattedPhoneNumber });
-
   const { data: updatedDevUser, error } = await supabase
     .from(Tables.Members)
     .update({
@@ -23,7 +21,6 @@ export const updateDevUserRole = async (values: UpdateDevUserRoleType) => {
     .eq("phoneNumber", formattedPhoneNumber)
     .select("*")
     .single();
-  console.log({ updatedDevUser });
 
   if (error) {
     throw error;
