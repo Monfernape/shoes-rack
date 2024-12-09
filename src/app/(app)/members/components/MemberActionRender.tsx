@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Info, Trash2, Edit, Send } from "lucide-react";
@@ -7,19 +8,20 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Member } from "@/types";
 import { Routes } from "@/lib/routes";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 
 type Props = {
   memberInfo: Member;
+  loginUser: Member;
 };
 
-const MemberTableActionRender = ({ memberInfo }: Props) => {
+const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const { status, id, shift } = memberInfo;
-  const loginUser = useUser();
+
   const router = useRouter();
   const { toast } = useToast();
+
   const handleViewDetails = () => {
-    return;
+    router.push(`${Routes.MemberDetails}/${id}`);
   };
 
   const handleEditInfo = () => {
@@ -32,7 +34,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
       toast({
         title: "Member deleted successfully",
       });
-      return router.refresh();
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -94,7 +96,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
   const actionMenu = React.useMemo(() => {
     switch (loginUser?.role) {
       case MemberRole.Incharge:
-        return [...baseActions, ...viewInfo];
+        return [...baseActions, ...viewInfo, ...resendInvite];
       case MemberRole.ShiftIncharge:
         return checkShiftMembers(loginUser?.shift, shift);
       case MemberRole.Member:
@@ -102,7 +104,7 @@ const MemberTableActionRender = ({ memberInfo }: Props) => {
       default:
         return [];
     }
-  }, [status]);
+  }, [status, loginUser?.role]);
 
   return <ActionsMenu actions={actionMenu} />;
 };

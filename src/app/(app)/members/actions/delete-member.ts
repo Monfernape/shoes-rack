@@ -14,9 +14,11 @@ export const deleteMember = async (id: number) => {
         status: UserStatus.Deactivated,
       })
       .eq("id", id);
+  
     if (error) {
       throw error;
     }
+
   }
   return;
 };

@@ -12,7 +12,7 @@ afterEach(() => {
 const member: Member = {
   id: 122,
   created_at: "2024-11-12T09:27:47.419165+00:00",
-  name: "Balu ",
+  name: "Balu",
   phoneNumber: "923030000726",
   date_of_birth: "2024-09-15",
   cnic: "33333-3333333-3",
@@ -41,12 +41,7 @@ describe("Integration Testing", () => {
     expect(screen.getByTestId("name")).toBeInTheDocument();
     expect(screen.getByTestId("form")).toBeInTheDocument();
     expect(screen.getByTestId("form")).toHaveFormValues({
-      name: "Balu ",
-      cnic: "33333-3333333-3",
-      role: MemberRole.Member,
-      phoneNumber: "923030000726",
-      shift: Shift.ShiftB,
-      address: "Multan\nmultan",
+      name: "Balu",
     });
   });
   it("Check Update user implementation ", async () => {

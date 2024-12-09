@@ -121,9 +121,22 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
             Attendance Form
           </h1>
 
-          {/* This selector is used to select members based on the role of the logged-in user. */}
-          <MemberSelector control={form.control} name="memberId" />
-
+          <FormField
+            control={form.control}
+            name={"memberId"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>User Name</FormLabel>
+                <FormControl>
+                  <MemberSelector
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="startTime"

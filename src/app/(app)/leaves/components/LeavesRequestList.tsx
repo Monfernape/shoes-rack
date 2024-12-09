@@ -15,65 +15,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {  LeaveRequestsTypes } from "@/types";
+import { LeaveRequestsTypes } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon } from "lucide-react";
 import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/lib/routes";
 
-import { LeavesRequestStatus } from "@/types";
-
-const leaveRequests = [
-  {
-    id: 1,
-    leaveType: "Sick Leave",
-    startDate: "2024-11-01",
-    endDate: "2024-11-03",
-    status: LeavesRequestStatus.Approved,
-    reason: "Flu",
-    requestedBy: "John Doe",
-  },
-  {
-    id: 2,
-    leaveType: "Vacation",
-    startDate: "2024-12-10",
-    endDate: "2024-12-20",
-    status: LeavesRequestStatus.Pending,
-    reason: "Family vacation",
-    requestedBy: "Jane Smith",
-  },
-  {
-    id: 3,
-    leaveType: "Personal Leave",
-    startDate: "2024-11-15",
-    endDate: "2024-11-16",
-    status: LeavesRequestStatus.Approved,
-    reason: "Personal matter",
-    requestedBy: "Emily Johnson",
-  },
-  {
-    id: 4,
-    leaveType: "Maternity Leave",
-    startDate: "2024-12-01",
-    endDate: "2025-05-31",
-    status: LeavesRequestStatus.Pending,
-    reason: "Childbirth",
-    requestedBy: "Sarah Brown",
-  },
-  {
-    id: 5,
-    leaveType: "Unpaid Leave",
-    startDate: "2024-11-20",
-    endDate: "2024-11-25",
-    status: LeavesRequestStatus.Reject,
-    reason: "Travel",
-    requestedBy: "Michael Lee",
-  },
-];
-
-
-export const LeavesRequestList = () => {
-  const columns: ColumnDef<LeaveRequestsTypes>[] = useMemo(
+interface LeaveRequest extends LeaveRequestsTypes {
+  requestedBy: string;
+}
+interface LeavesRequestList {
+  leaves: LeaveRequest[];
+}
+export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
+  const route = useRouter();
+  const columns: ColumnDef<LeaveRequest>[] = useMemo(
     () => [
       {
         accessorKey: "requestedBy",
@@ -121,23 +79,23 @@ export const LeavesRequestList = () => {
   );
 
   const table = useReactTable({
-    data: leaveRequests,
+    data: leaves,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const handleNavigate = () => {
-    alert("nativgation function trigger");
+    route.push(Routes.AddLeaveRequest);
   };
 
   const StandardPageProps = {
-    hasContent: !!leaveRequests.length,
-    title: "Add member",
-    description: "This is where you can see all shoes rack members",
+    hasContent: !!leaves?.length,
+    title: "Add Leave",
+    description: "This is where you can see leave requests",
     buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: handleNavigate,
-    labelForActionButton: "Add member",
+    labelForActionButton: "Add Leave",
   };
 
   return (
@@ -159,7 +117,7 @@ export const LeavesRequestList = () => {
         </TableHeader>
 
         <TableBody>
-          {leaveRequests.map((row: LeaveRequestsTypes) => (
+          {leaves?.map((row: LeaveRequest) => (
             <TableRow key={row.id}>
               {table
                 .getRowModel()
@@ -172,7 +130,7 @@ export const LeavesRequestList = () => {
                 ))}
             </TableRow>
           ))}
-          {!leaveRequests.length && (
+          {!leaves?.length && (
             <TableRow>
               <TableCell colSpan={6} className="text-center">
                 No Leave Request Found

@@ -1,8 +1,15 @@
-import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+import { LeaveTypes, MemberRole, Shift, UserStatus } from "@/constant/constant";
 
 
 
 export type UserRole = "incharge" | "member" | "shift_incharge";
+
+export type AttendanceReportStatus =
+  | "excellent"
+  | "good"
+  | "verygood"
+  | "average"
+  | "low";
 
 export type Member = {
   id: number;
@@ -66,14 +73,15 @@ export enum LeavesRequestStatus {
   Approved = "approved",
   Reject = "rejected",
 }
-export interface LeaveRequestsTypes {
+
+export type LeaveRequestsTypes = {
   id: number;
-  leaveType?: string;
-  startDate?: string;
-  endDate?: string;
-  status?: LeavesRequestStatus;
-  reason?: string;
-  requestedBy?: string;
+  memberId: number
+  leaveType: LeaveTypes;
+  startDate: string;
+  endDate: string;
+  status: LeavesRequestStatus;
+  reason: string;
 }
 
 export enum RequestActionTitles {

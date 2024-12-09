@@ -33,8 +33,8 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
     <div>
       <Breadcrumb>
         <BreadcrumbList data-testid="breadCrumb">
-          {updatedBreadCrumbs.map((breadcrumb) => (
-            <div key={breadcrumb.href} className="flex items-center">
+          {updatedBreadCrumbs.map((breadcrumb,index) => (
+              <div key={breadcrumb.href} className="flex items-center">
               <BreadcrumbItem>
                 <BreadcrumbLink
                   asChild
@@ -44,12 +44,16 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
                       : "transition-colors"
                   }`}
                 >
-                  <Link href={breadcrumb.href} data-testid="mytest" role="link">
+                  <Link
+                    href={breadcrumb.href}
+                    data-testid="mytest"
+                    role="link"
+                  >
                     {breadcrumb.label}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              {updatedBreadCrumbs.length > 1 && <BreadcrumbSeparator />}
+              {index + 1 !== updatedBreadCrumbs.length && <BreadcrumbSeparator />}
             </div>
           ))}
         </BreadcrumbList>

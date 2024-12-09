@@ -1,20 +1,87 @@
 "use client";
+import React from "react";
 import { logoutUser } from "@/app/(auth)/login/actions/logoutUser";
 import { Button } from "@/components/ui/button";
-import { MemberRole } from "@/constant/constant";
-import { useAccessibleRoutes } from "@/hooks/useAccessibleRoutes";
-import { Cross1Icon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
+import { Routes } from "@/lib/routes";
 import Link from "next/link";
-import React from "react";
+import {
+  DashboardIcon,
+  ExclamationTriangleIcon,
+  Cross1Icon,
+  ExitIcon,
+  PersonIcon,
+  GearIcon,
+} from "@radix-ui/react-icons";
+import {
+  BellIcon,
+  CalendarIcon,
+  ChartNoAxesCombinedIcon,
+  ClipboardIcon,
+  HandCoinsIcon,
+} from "lucide-react";
+import { useUser } from "@/hooks/useGetLoggedinUser";
+import { MemberRole } from "@/constant/constant";
 
 interface Props {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
+interface Route {
+  name: string;
+  route: Routes;
+  icon: React.ReactElement;
+}
+
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
-  // TODO : role will be dynamic after user login
-  const roleBasedRoutes = useAccessibleRoutes(MemberRole.Incharge);
+  const loginUser = useUser();
+
+  const routes: Route[] = [
+    {
+      name: "Dashboard",
+      route: Routes.Dashboard,
+      icon: <DashboardIcon />,
+    },
+    {
+      name: "Members",
+      route: Routes.Members,
+      icon: <PersonIcon />,
+    },
+    {
+      name: "Notifications",
+      route: Routes.Notification,
+      icon: <BellIcon />,
+    },
+    {
+      name: "Attendance",
+      route: Routes.Attendance,
+      icon: <CalendarIcon />,
+    },
+    {
+      name: "Leave Requests",
+      route: Routes.LeaveRequest,
+      icon: <ClipboardIcon />,
+    },
+    {
+      name: "Missing Shoes",
+      route: Routes.MissingShoes,
+      icon: <ExclamationTriangleIcon />,
+    },
+    ...(loginUser?.role !== MemberRole.Member
+      ? [
+          {
+            name: "Attendance Report",
+            route: Routes.AttendanceReport,
+            icon: <ChartNoAxesCombinedIcon />,
+          },
+          {
+            name: "Funds",
+            route: Routes.Fund,
+            icon: <HandCoinsIcon />,
+          },
+        ]
+      : []),
+  ];
 
   const onLogoutUser = () => {
     logoutUser();
@@ -30,7 +97,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
             ${isSidebarOpen ? "block" : "hidden"}
             fixed top-0 right-0 inset-y-0 left-0 z-30 w-48 bg-sidebar shadow-md transform transition-transform duration-300 ease-in-out
                 ${
-                  isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }  lg:translate-x-0 lg:block lg:fixed`}
     >
       <div className="flex flex-col h-full bg-sidebar-background">
@@ -49,16 +116,16 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           <ul className="p-2 space-y-2 text-xs">
-            {roleBasedRoutes.map((r) => (
-              <li key={r.route}>
+            {routes.map((route , index) => (
+              <li key={`route-${index}`}>
                 <Link
-                  href={r.route}
+                  href={route.route}
                   className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                 >
                   <span className="text-xs mr-3">
-                    {React.cloneElement(r.icon, { className: "w-3.5 h-3.5" })}
+                    {React.cloneElement(route.icon, { className: "w-3.5 h-3.5" })}
                   </span>
-                  <span className="text-xs">{r.name}</span>
+                  <span className="text-xs">{route.name}</span>
                 </Link>
               </li>
             ))}

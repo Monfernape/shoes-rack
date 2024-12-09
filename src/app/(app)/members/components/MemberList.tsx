@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useCallback, useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -26,15 +25,49 @@ import { Routes } from "@/lib/routes";
 import { Shift } from "@/constant/constant";
 import { getMembers } from "../actions/getMembers";
 import { DataSpinner } from "@/common/Loader/Loader";
+import { formatRole } from "@/utils/formatRole";
+import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
-export const MemberList = () => {
+export const MemberList = ({
+  member,
+  user,
+}: {
+  member: Member[];
+  user: Member;
+}) => {
   const { toast } = useToast();
   const route = useRouter();
-  
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
-  const [filteredMember, setFilteredMember] = useState<Member[]>([]);
+  const [filteredMember, setFilteredMember] = useState<Member[]>(member);
+  useEffect(() => {
+    if (searchQuery) {
+      (async function fetchData() {
+        try {
+          const response = await getMembers(searchQuery);
+          startTransition(() => {
+            setFilteredMember(response.data);
+          });
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            toast({
+              title: "No Members Found",
+              description: error.message,
+            });
+          } else {
+            toast({
+              title: "No Members Found",
+              description: "An unknown error occurred",
+            });
+          }
+        }
+      })();
+    } else {
+      setFilteredMember(member);
+    }
+  }, [searchQuery, member]);
+
   const columns: ColumnDef<Member>[] = [
     {
       accessorKey: "name",
@@ -46,7 +79,9 @@ export const MemberList = () => {
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
+      cell: ({ row }) => (
+        <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>
+      ),
     },
     {
       accessorKey: "shift",
@@ -59,7 +94,7 @@ export const MemberList = () => {
       accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("role")}</div>
+        <div className="capitalize">{formatRole(row.getValue("role"))}</div>
       ),
     },
     {
@@ -74,44 +109,19 @@ export const MemberList = () => {
         return <span>Action</span>;
       },
       cell: ({ row }) => {
-        return <MemberTableActionRender memberInfo={row.original} />;
+        return (
+          <MemberTableActionRender memberInfo={row.original} loginUser={user} />
+        );
       },
     },
   ];
-
-  const fetchMembers = useCallback(async () => {
-    const response = await getMembers(searchQuery);
-    startTransition(() => {
-      try {
-        setFilteredMember(response.data);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          toast({
-            title: "No Members Found",
-            description: error.message,
-          });
-        } else {
-          toast({
-            title: "No Members Found",
-            description: "An unknown error occurred",
-          });
-        }
-      }
-    });
-  }, [searchQuery]);
-
-  useEffect(() => {
-    fetchMembers();
-  }, [fetchMembers]);
 
   const table = useReactTable({
     data: filteredMember,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
   const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD];
-
   const groupedData = allShifts.map((shift) => {
     const usersInShift = filteredMember.filter((user) => user.shift === shift);
     return {
@@ -119,24 +129,24 @@ export const MemberList = () => {
       members: usersInShift,
     };
   });
-
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
-
   const StandardPageProps = {
     hasContent: !!filteredMember.length,
-    title: "Add member",
-    description: "This is where you can see all shoes rack members",
+    title: "Add Member",
+    description: "This is where you can add members",
     buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: handleNavigation,
-    labelForActionButton: "Add member",
+    labelForActionButton: "Add Member",
   };
 
-  return (
+  if (filteredMember.length === 0) {
+    return <div className="text-center font-semibold">No Data Found</div>;
+  }
+  return !isPending ? (
     <StandardPage {...StandardPageProps}>
-      {isPending && <DataSpinner />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -152,10 +162,9 @@ export const MemberList = () => {
             </TableRow>
           ))}
         </TableHeader>
-
         <TableBody>
           {groupedData.map((shiftGroup, index) => (
-            <React.Fragment key={`${shiftGroup}-${index}`}>
+            <React.Fragment key={`${shiftGroup.shift}-${index}`}>
               {shiftGroup.members.length > 0 && (
                 <TableRow>
                   <TableCell
@@ -187,12 +196,14 @@ export const MemberList = () => {
           {!groupedData.length && (
             <TableRow>
               <TableCell colSpan={6} className="text-center">
-                No Member Found
+                No Members Found
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
     </StandardPage>
+  ) : (
+    <DataSpinner />
   );
 };

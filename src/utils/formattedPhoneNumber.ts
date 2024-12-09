@@ -13,8 +13,8 @@ export const intlNumberFormat = (phoneNumber: string) => {
   return formattedPhoneNumber;
 };
 
-export const localNumberFormat = (phoneNumber: string) => {
-  const formattedPhoneNumber = phoneNumber.startsWith(PAKISTAN_COUNTRY_CODE)
+export const localNumberFormat = (phoneNumber: string | undefined) => {
+  const formattedPhoneNumber = phoneNumber &&  phoneNumber.startsWith(PAKISTAN_COUNTRY_CODE)
     ? "0" + phoneNumber.slice(2)
     : phoneNumber;
   return formattedPhoneNumber;
