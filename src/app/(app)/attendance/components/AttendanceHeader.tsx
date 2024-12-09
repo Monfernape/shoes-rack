@@ -47,7 +47,7 @@ export const AttendanceHeader = ({ breadcrumbs }: Props) => {
             <div className="flex items-center space-x-2">
               <NavigationButton
                 path={Routes.AddAttendance}
-                buttonText="Create Leave"
+                buttonText="Create Attendance"
               />
             </div>
           )}
