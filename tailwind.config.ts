@@ -68,6 +68,7 @@ const config: Config = {
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           background: "hsl(var(--sidebar-background))",
+          active:"hsl(var(--sidebar-active))",
           inactive: {
             DEFAULT: "hsl(var(--status-inactive))",
             background: "hsla(var(--status-inactive-background))",
