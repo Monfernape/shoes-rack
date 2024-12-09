@@ -3,6 +3,8 @@ import React from "react";
 import AttendanceFormBuilder from "../../components/AttendanceFormBuilder";
 
 import { getAttendanceById } from "../../actions/getAttendanceById";
+import { Routes } from "@/lib/routes";
+import { AttendanceHeader } from "../../components/AttendanceHeader";
 
 const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
   const { id: attendanceId } = params;
@@ -17,8 +19,20 @@ const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
       console.error("Error fetching attendance:", error);
     }
   }
+  const breadcrumbs = [
+    { href: Routes.Attendance, label: "Attendance" },
+    {
+      href: `${Routes.EditAttendance}/${attendanceId}`,
+      label: "Edit Attendance",
+    },
+  ];
 
-  return <AttendanceFormBuilder attendance={attendanceData} />;
+  return (
+    <>
+      <AttendanceHeader breadcrumbs={breadcrumbs} />
+      <AttendanceFormBuilder attendance={attendanceData} />;
+    </>
+  );
 };
 
 export default AttendanceForm;
