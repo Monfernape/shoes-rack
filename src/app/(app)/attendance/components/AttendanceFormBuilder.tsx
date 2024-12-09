@@ -56,7 +56,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   const params = useParams();
   const attendanceId = params?.id;
 
- const loginUser = useUser();
+  const loginUser = useUser();
 
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
@@ -72,6 +72,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
+   
     if (isValidParam(attendanceId)) {
       const updatedValue = {
         id: attendanceId,
@@ -96,8 +97,10 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               title: "Attendance submitted successfully",
               description: "You will receive a message shortly.",
             });
+            
           }
         }
+  
       } catch (error) {
         if (error instanceof Error) {
           toast({
@@ -105,16 +108,18 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
           });
         }
 
-        return;
+  
       }
+     
     }
+    return 
   };
 
   return (
     <FormWrapper>
       <Form {...form}>
         <form
-          action={() => form.handleSubmit(onSubmit)()}
+          action={ () =>  form.handleSubmit(onSubmit)()}
           className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
         >
           <h1 className="text-2xl font-bold text-center mb-6">
