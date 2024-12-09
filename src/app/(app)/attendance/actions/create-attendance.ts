@@ -5,10 +5,8 @@ import { Routes } from "@/lib/routes";
 import { AttendanceStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 export const createAttendance = async (values: AttendanceFormValues) => {
-  const loginUser = await getLoggedInUser();
   const supabase = await getSupabaseClient();
 
   const payload = {
