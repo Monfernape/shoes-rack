@@ -13,7 +13,7 @@ import { Label } from "@radix-ui/react-label";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { updateDevUserRole } from "../actions/updateDevUserRole";
+import { updateDevUserRole } from "../actions/update-dev-user-role";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -28,16 +28,20 @@ import { Input } from "@/components/ui/input";
 import { useMask } from "@react-input/mask";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { USER_ROLES } from "@/app/(app)/members/components/MemberFormBuilder";
+import { Card } from "@/components/ui/card";
 
 export const UpdateDevUserSchema = z.object({
   phoneNumber: z
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  role: z.enum([MemberRole.Member, MemberRole.ShiftIncharge, MemberRole.Incharge], {
-    errorMap: () => {
-      return { message: "Update user role" };
-    },
-  }),
+  role: z.enum(
+    [MemberRole.Member, MemberRole.ShiftIncharge, MemberRole.Incharge],
+    {
+      errorMap: () => {
+        return { message: "Update user role" };
+      },
+    }
+  ),
 });
 
 export type UpdateDevUserRoleType = z.infer<typeof UpdateDevUserSchema>;
@@ -83,6 +87,8 @@ const UpdateDevUserFrom = () => {
   };
 
   return (
+    <div className=" pb-6">
+    <Card className="p-6 max-w-xlg mx-auto">
     <Form {...form}>
       <form
         action={() => form.handleSubmit(handleSubmission)()}
@@ -155,6 +161,8 @@ const UpdateDevUserFrom = () => {
         </Button>
       </form>
     </Form>
+    </Card>
+    </div>
   );
 };
 
