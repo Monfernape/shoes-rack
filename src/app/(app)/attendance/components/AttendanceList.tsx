@@ -19,21 +19,9 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
-import { AttendanceStatus, Shift } from "@/constant/constant";
-
 import AttendanceActionRender from "./AttendanceActionRender";
+import { Attendance } from "@/types";
 
-export interface Attendance {
-  member: string;
-  id: number;
-  startTime: string;
-  endTime: string;
-  status: AttendanceStatus;
-  created_at: string;
-  memberId: number;
-  name: string;
-  shift: Shift;
-}
 interface AttendanceProps {
   attendance: Attendance[];
 }
