@@ -1,12 +1,12 @@
 import React from 'react'
-import { CurrentAttendance } from '../components/CurrentAttendance'
 import { getLoggedInUser } from '@/utils/getLoggedInUser'
+import { AttendanceReview } from '../components/CurrentAttendance';
 
 const Page = async() => {
   const loginUser = await getLoggedInUser();
   return (
     <div>
-       <CurrentAttendance loginUser={loginUser} />
+       <AttendanceReview loginUser={loginUser} />
     </div>
   )
 }

@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AttendanceStatus, MemberRole, Shift } from "@/constant/constant";
-import { User } from "@/types";
+import { Attendance, User } from "@/types";
 import {
   ColumnDef,
   flexRender,
@@ -20,16 +20,9 @@ import {
 } from "@tanstack/react-table";
 import React, { useMemo, useState } from "react";
 
-export interface Attendance {
-  id: number;
-  name: string;
-  shift: Shift;
-  startTime: string;
-  endTime: string;
-  status: AttendanceStatus;
-}
+type Attendances = Omit<Attendance, "memberId" | "created_at" | "member">;
 
-const attendance: Attendance[] = [
+const attendance: Attendances[] = [
   {
     id: 1,
     name: "John Doe",
@@ -59,10 +52,10 @@ const attendance: Attendance[] = [
 type Props = {
   loginUser: User;
 };
-export const CurrentAttendance = ({ loginUser }: Props) => {
-  const [todayAttendance, setTodayAttendance] = useState(attendance);
+export const AttendanceReview = ({ loginUser }: Props) => {
+  const [attendences, setTodayAttendance] = useState(attendance);
 
-  const onChangeAttendanceStatus = (id: number) => {
+  const handleChangeAttendanceStatus = (id: number) => {
     setTodayAttendance((prev) => {
       return prev.map((attendance) =>
         attendance.id === id
@@ -79,13 +72,11 @@ export const CurrentAttendance = ({ loginUser }: Props) => {
   };
 
   const isAttendanceMarked = (id: number) => {
-    const attendance = todayAttendance.find(
-      (attendance) => attendance.id === id
-    );
-    return attendance?.status === AttendanceStatus.Approve ? true : false;
+    const attendance = attendences.find((attendance) => attendance.id === id);
+    return attendance?.status === AttendanceStatus.Approve;
   };
 
-  const columns: ColumnDef<Attendance>[] = useMemo(
+  const columns: ColumnDef<Attendances>[] = useMemo(
     () => [
       {
         accessorKey: "name",
@@ -122,21 +113,20 @@ export const CurrentAttendance = ({ loginUser }: Props) => {
         cell: ({ row }) => {
           return (
             <Switch
-              className="data-[state=checked]:bg-status-active"
               checked={isAttendanceMarked(row.getValue("id"))}
               onCheckedChange={() =>
-                onChangeAttendanceStatus(row.getValue("id"))
+                handleChangeAttendanceStatus(row.getValue("id"))
               }
             />
           );
         },
       },
     ],
-    [todayAttendance, loginUser]
+    [attendences, loginUser]
   );
 
   const table = useReactTable({
-    data: todayAttendance,
+    data: attendences,
     columns,
     getCoreRowModel: getCoreRowModel(),
     initialState: {
@@ -145,7 +135,6 @@ export const CurrentAttendance = ({ loginUser }: Props) => {
       },
     },
   });
-  
 
   return (
     <div className="p-8">
@@ -182,9 +171,7 @@ export const CurrentAttendance = ({ loginUser }: Props) => {
             </TableBody>
           </Table>
           <div className="flex justify-end pt-6">
-            <Button className="text-xs">
-              Submit
-            </Button>
+            <Button className="text-xs">Submit</Button>
           </div>
         </CardContent>
       </Card>

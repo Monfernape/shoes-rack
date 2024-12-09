@@ -22,7 +22,7 @@ export default async function updateSession(request: NextRequest) {
     loginUser.role === MemberRole.Member &&
     isRestrictedPath
   ) {
-    return NextResponse.redirect(new URL(Routes.Attendance, request.url));
+    return NextResponse.redirect(new URL(Routes.Members, request.url));
   }
   return NextResponse.next({
     request: {

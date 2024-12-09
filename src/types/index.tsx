@@ -1,4 +1,4 @@
-import { MemberRole, Shift, UserStatus } from "@/constant/constant";
+import { AttendanceStatus, MemberRole, Shift, UserStatus } from "@/constant/constant";
 
 
 
@@ -90,4 +90,16 @@ export enum RequestActionTitles {
   Approve = "approve",
   Reject = "reject",
   ViewDetails = "view details",
+}
+
+export interface Attendance {
+  member: string;
+  id: number;
+  startTime: string;
+  endTime: string;
+  status: AttendanceStatus;
+  created_at: string;
+  memberId: number;
+  name: string;
+  shift: Shift;
 }
