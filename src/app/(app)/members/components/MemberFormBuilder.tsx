@@ -55,7 +55,6 @@ export const USER_ROLES = [
   },
 ];
 
-
 export const userBuilderSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required",
@@ -174,7 +173,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
     <FormWrapper>
       <Form {...form}>
         <form
-          action={() => form.handleSubmit(handleSubmission)()}
+          action={form.handleSubmit(handleSubmission) as unknown as string}
           className="space-y-4"
           data-testid="form"
         >

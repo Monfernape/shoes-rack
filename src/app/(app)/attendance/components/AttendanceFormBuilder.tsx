@@ -119,7 +119,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
     <FormWrapper>
       <Form {...form}>
         <form
-          action={ () =>  form.handleSubmit(onSubmit)()}
+          action={  form.handleSubmit(onSubmit) as unknown as string}
           className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
         >
           <h1 className="text-2xl font-bold text-center mb-6">
