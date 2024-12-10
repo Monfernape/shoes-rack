@@ -4,7 +4,6 @@ export enum MemberRole {
   Member = "member",
 }
 
-
 export enum Shift {
   ShiftA = "A",
   ShiftB = "B",
@@ -49,4 +48,11 @@ export enum AttendanceProgress {
   Good = "good",
   Average = "average",
   low = "low",
+}
+
+export enum AttendancePercentage {
+  Excellent = 90,
+  VeryGood = 80,
+  Good = 70,
+  Average = 60,
 }
