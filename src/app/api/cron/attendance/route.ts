@@ -10,61 +10,57 @@ import * as cron from "node-cron";
 
 export async function GET() {
   try {
-    cron.schedule("0 0 0 * * *", async () => {
-      const supabase = await getSupabaseClient();
+    console.log("HI");
+    // cron.schedule("0 0 0 * * *", async () => {
+    const supabase = await getSupabaseClient();
 
-      const { data: allAttendance, error } = await supabase
-        .from(Tables.Attendance)
-        .select(`*,${Tables.Members} (role,shift,phoneNumber)`)
-        .eq("status", AttendanceStatus.Pending);
+    const getAllAttendance = supabase
+      .from(Tables.Attendance)
+      .select(`* , ${Tables.Members} (shift,role,name)`)
+      .eq("status", AttendanceStatus.Pending);
+    // .eq("created_at", Date.now() - 1);
 
-      // Get All Attendances and Incharge Phone Number
-      if (error) {
-        throw error;
-      }
-      // In case of Holidays
-      if (allAttendance?.length === 0) {
-        return;
-      }
+    const getInchargePhoneNumber = supabase
+      .from(Tables.Members)
+      .select(`phoneNumber`)
+      .eq("role", MemberRole.Incharge);
 
-      // Filter All Shift Incharges Attendance
-      const shiftInchargesAttendance = allAttendance?.filter(
-        (attendance) => attendance.members.role === MemberRole.ShiftIncharge
-      );
+    const getShiftInchargePhoneNumbers = supabase
+      .from(Tables.Members)
+      .select(`phoneNumber,shift`)
+      .eq("role", MemberRole.ShiftIncharge);
 
-      //Send Notification to Incharge
-      const inchargeAttendance = allAttendance?.find(
-        (attendance) => attendance.members.role === MemberRole.Incharge
-      );
-      // handle Incharge Notification
+    const [
+      { data: allAttendance },
+      { data: inchargePhoneNumber },
+      { data: shiftInchargePhoneNumber },
+    ] = await Promise.all([
+      getAllAttendance,
+      getInchargePhoneNumber,
+      getShiftInchargePhoneNumbers,
+    ]);
+    console.log("data", allAttendance);
+    // In case of Holidays
+    if (allAttendance?.length === 0) {
+      return;
+    }
 
-      // in case of absence of incharge then we will go to member table for getting phone number of the incharge
-      if (!inchargeAttendance) {
-        await supabase.from(Tables.Members).select("phoneNumber");
-        // handle Incharge Notification
-      }
+    if (inchargePhoneNumber) {
+      // send Notification to Incharge
+      // return;
+    }
 
-      //Send Notification to Shift Incharge
-      for (let shiftTiming of SHIFT_TIMING) {
-        const shiftInchargePhoneNumber = shiftInchargesAttendance?.find(
-          (attendance) => attendance.members.shift === shiftTiming.shift
+    if (shiftInchargePhoneNumber) {
+      for (let shift of shiftInchargePhoneNumber) {
+        allAttendance?.filter(
+          (attendance) => attendance.members.shift === shift.shift
         );
-        if (shiftInchargePhoneNumber) {
-          // Handle Whatsapp Notification for  attended Shift Incharge
-          return;
-        }
-        const { error } = await supabase
-          .from(Tables.Members)
-          .select("phoneNumber")
-          .eq("role", MemberRole.ShiftIncharge)
-          .eq("shift", shiftTiming.shift);
-        if (error) {
-          throw error;
-        }
-        // Handle Whatsapp Notification for Un attended Shift Incharge
-        return;
+
+        // Send Notification to the shift Incharges
       }
-    });
+    }
+
+    // });
     return NextResponse.json({ data: "Success", status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 500 });
