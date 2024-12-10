@@ -4,7 +4,6 @@ export enum MemberRole {
   Member = "member",
 }
 
-
 export enum Shift {
   ShiftA = "A",
   ShiftB = "B",
@@ -49,4 +48,13 @@ export enum AttendanceProgress {
   Good = "good",
   Average = "average",
   low = "low",
+}
+
+export enum MissingShoeStatus {
+  Missing = "missing",
+  Found = "found",
+  OwnerNotified = "owner_notified",
+  OwnerReceived = "owner_received",
+  OwnerNotUpdated = "owner_not_updated",
+  Closed = "closed",
 }

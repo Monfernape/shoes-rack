@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 import { MemberRole } from "@/constant/constant";
+import useMediaQuery from "@/hooks/use-media-query";
 
 interface Props {
   isSidebarOpen: boolean;
@@ -35,6 +36,7 @@ interface Route {
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const loginUser = useUser();
+  const isSmallScreen = useMediaQuery("sm");
 
   const routes: Route[] = [
     {
@@ -87,14 +89,10 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     logoutUser();
   };
 
-  if (isSidebarOpen) {
-    return null;
-  }
-
   return (
     <aside
       className={`
-            ${isSidebarOpen ? "block" : "hidden"}
+            ${isSidebarOpen || !isSmallScreen ? "block" : "hidden"}
             fixed top-0 right-0 inset-y-0 left-0 z-30 w-48 bg-sidebar shadow-md transform transition-transform duration-300 ease-in-out
                 ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
