@@ -100,12 +100,12 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
 
   const StandardPageProps = {
     hasContent: !!attendance.length,
-    title: "Add Attendance",
+    title: "Add attendance",
     description: "This is where you can see all attendance",
     buttonIcon: <Plus />,
     actionButton: true,
     onAction: addAttendance,
-    labelForActionButton: "Add Attendance",
+    labelForActionButton: "Add attendance",
   };
 
   return (
