@@ -33,7 +33,7 @@ export enum LeaveRequestStatus {
 
 export enum AttendanceStatus {
   Pending = "pending",
-  Approve = "approved",
+  Approve = "approve",
   Reject = "reject",
 }
 
