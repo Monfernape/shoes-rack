@@ -31,7 +31,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export const missingShoesSchema = z.object({
   color: z.string().min(1, {
-    message: "Color must be selected.",
+    message: "Color must be required.",
   }),
   type: z.enum([
     ShoesTyes.Boots,
@@ -50,7 +50,7 @@ export const missingShoesSchema = z.object({
       message: "Size must be a number between 1 and 50.",
     }
   ),
-  time: z.date().refine((val) => val <= new Date(), {
+  time: z.date().refine((val) => val.getTime() <= new Date().getTime(), {
     message: "The time cannot be in the future.",
   }),
   ownerName: z.string().min(1, {
@@ -60,7 +60,7 @@ export const missingShoesSchema = z.object({
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
   ownerAddress: z.string().min(1, {
-    message: "Color must be selected.",
+    message: "The owner address  must be required.",
   }),
 });
 
@@ -114,7 +114,6 @@ export const MissingShoesFormBuilder = () => {
           action={() => form.handleSubmit(onSubmit)()}
           className="space-y-4"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name={"color"}
@@ -156,8 +155,6 @@ export const MissingShoesFormBuilder = () => {
                 </FormItem>
               )}
             />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name={"size"}
@@ -187,7 +184,6 @@ export const MissingShoesFormBuilder = () => {
                 </FormItem>
               )}
             />
-          </div>
           <FormField
             control={form.control}
             name="ownerName"
@@ -230,10 +226,10 @@ export const MissingShoesFormBuilder = () => {
             name="ownerAddress"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Owner Cnic</FormLabel>
+                <FormLabel>Owner Address</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Please provide a brief description of your leave reason."
+                    placeholder="Address"
                     data-testid="leaveReason"
                     hasError={Boolean(errors.ownerAddress)}
                     className={`resize-none focus-visible:ring-0`}
