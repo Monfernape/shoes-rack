@@ -50,6 +50,13 @@ export enum AttendanceProgress {
   low = "low",
 }
 
+export enum AttendancePercentage {
+  Excellent = 90,
+  VeryGood = 80,
+  Good = 70,
+  Average = 60,
+}
+
 export enum MissingShoeStatus {
   Missing = "missing",
   Found = "found",
