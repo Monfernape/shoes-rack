@@ -1,6 +1,10 @@
 "use server";
 
-import { AttendancePercentage, AttendanceProgress } from "@/constant/constant";
+import {
+  AttendancePercentage,
+  AttendanceProgress,
+  AttendanceStatus,
+} from "@/constant/constant";
 import { getAttendance } from "../../attendance/actions/getAttendance";
 
 export const getAttendanceReport = async () => {
@@ -9,26 +13,26 @@ export const getAttendanceReport = async () => {
   if (!attendanceData) return [];
 
   const getStatus = (percentage: number): AttendanceProgress => {
-    if (percentage > AttendancePercentage.Excellent) {
-      return AttendanceProgress.Excellent;
+    switch (true) {
+      case percentage > AttendancePercentage.Excellent:
+        return AttendanceProgress.Excellent;
+      case percentage > AttendancePercentage.VeryGood:
+        return AttendanceProgress.VeryGood;
+      case percentage > AttendancePercentage.Good:
+        return AttendanceProgress.Good;
+      case percentage > AttendancePercentage.Average:
+        return AttendanceProgress.Average;
+      default:
+        return AttendanceProgress.low;
     }
-    if (percentage > AttendancePercentage.VeryGood) {
-      return AttendanceProgress.VeryGood;
-    }
-    if (percentage > AttendancePercentage.Good) {
-      return AttendanceProgress.Good;
-    }
-    if (percentage > AttendancePercentage.Average) {
-      return AttendanceProgress.Average;
-    }
-    return AttendanceProgress.low;
   };
 
   // Get the first day of the month and today's date
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
-  const isWithinCurrentMonth = (dateString: string): boolean => {
+  // Total attendance days of current month
+  const totalAttendanceDays = (dateString: string) => {
     const date = new Date(dateString);
     return date >= firstDayOfMonth && date <= today;
   };
@@ -37,29 +41,29 @@ export const getAttendanceReport = async () => {
     new Set(attendanceData.map((attendance) => attendance.memberId))
   );
 
-  return uniqueMembers.map((memberId) => {
+  const monthlyAttendanceReport = uniqueMembers.map((memberId) => {
     const memberAttendance = attendanceData.filter(
       (attendance) =>
         attendance.memberId === memberId &&
-        isWithinCurrentMonth(attendance.created_at)
+        totalAttendanceDays(attendance.created_at)
     );
 
     const presentDays = new Set(
       memberAttendance
-        .filter((attendance) => attendance.status === "approved")
+        .filter((attendance) => attendance.status === AttendanceStatus.Approve)
         .map((attendance) => attendance.created_at?.split("T")[0])
     );
 
     const absentDays = new Set(
       memberAttendance
-        .filter((attendance) => attendance.status === "reject")
+        .filter((attendance) => attendance.status === AttendanceStatus.Reject)
         .map((attendance) => attendance.created_at?.split("T")[0])
     );
 
     // For the time being i do this i created a separate ticket for it ans it fix in next Pr.
     const leaveDays = new Set(
       memberAttendance
-        .filter((attendance) => attendance.status === "pending")
+        .filter((attendance) => attendance.status === AttendanceStatus.Pending)
         .map((attendance) => attendance.created_at?.split("T")[0])
     );
 
@@ -85,4 +89,5 @@ export const getAttendanceReport = async () => {
       createdAt: memberInfo?.created_at,
     };
   });
+  return monthlyAttendanceReport;
 };
