@@ -22,9 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  LeaveTypes,
-} from "@/constant/constant";
+import { LeaveTypes } from "@/constant/constant";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { DatePickerWithRange } from "@/common/DateRangePicker/DateRangePicker";
 import { createLeaveRequest } from "../../actions/createLeaveRequest";
@@ -71,11 +69,11 @@ const LEAVE_REQUEST_TYPES = [
 ];
 
 interface LeaveRequest extends LeaveRequestsTypes {
-  created_at: string,
+  created_at: string;
 }
 interface LeaveRequestFormBuilderProps {
-  leaves?: LeaveRequest,
-  loginUser?: User,
+  leaves?: LeaveRequest;
+  loginUser?: User;
 }
 
 export const LeaveRequestFormBuilder = ({
@@ -136,7 +134,7 @@ export const LeaveRequestFormBuilder = ({
       <Form {...form}>
         <form
           data-testid="leaveRequestForm"
-          action={() => form.handleSubmit(onSubmit)()}
+          action={form.handleSubmit(onSubmit) as unknown as string}
           className="space-y-4"
         >
           <FormField
