@@ -29,7 +29,7 @@ import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { ShoesTyes } from "@/constant/constant";
 import { Textarea } from "@/components/ui/textarea";
 
-export const missingShoesSchema = z.object({
+export const MissingShoesSchema = z.object({
   color: z.string().min(1, {
     message: "Color must be required.",
   }),
@@ -64,7 +64,7 @@ export const missingShoesSchema = z.object({
   }),
 });
 
-export type MissingSchemaType = z.infer<typeof missingShoesSchema>;
+export type MissingSchemaType = z.infer<typeof MissingShoesSchema>;
 
 export const MissingShoesFormBuilder = () => {
   const phoneNumberMask = useMask({
@@ -73,7 +73,7 @@ export const MissingShoesFormBuilder = () => {
   });
 
   const form = useForm<MissingSchemaType>({
-    resolver: zodResolver(missingShoesSchema),
+    resolver: zodResolver(MissingShoesSchema),
     defaultValues: {
       color: "",
       type: ShoesTyes.Formal,
@@ -99,7 +99,7 @@ export const MissingShoesFormBuilder = () => {
     formState: { errors, isValid },
   } = form;
 
-  function onSubmit(values: z.infer<typeof missingShoesSchema>) {
+  function onSubmit(values: z.infer<typeof MissingShoesSchema>) {
     return values;
   }
   return (
