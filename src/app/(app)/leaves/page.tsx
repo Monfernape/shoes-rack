@@ -15,7 +15,7 @@ const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
 
   const breadcrumbs = [
     { href: Routes.LeaveRequest, label: "Leaves" },
-    { href: Routes.AddLeaveRequest, label: "New Leave Request" },
+    { href: Routes.AddLeaveRequest, label: "New leave request" },
   ];
   return (
     <>

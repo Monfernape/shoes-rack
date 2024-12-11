@@ -8,7 +8,7 @@ import { MemberHeader } from "../components/MemberHeader";
 
 const breadcrumbs: Breadcrumbs[] = [
   { href: Routes.Members, label: "Members" },
-  { href: `${Routes.AddMember}`, label: "Add Member" },
+  { href: `${Routes.AddMember}`, label: "Add member" },
 ];
 
 const Page = async () => {

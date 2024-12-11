@@ -8,7 +8,7 @@ const Page = async () => {
   const loginUser = await getLoggedInUser();
   const breadcrumbs = [
     { href: Routes.LeaveRequest, label: "Leaves" },
-    { href: `${Routes.AddLeaveRequest}`, label: "New Leave Request" },
+    { href: `${Routes.AddLeaveRequest}`, label: "New leave request" },
   ];
   return (
     <>
