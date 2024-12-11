@@ -50,3 +50,12 @@ export enum AttendanceProgress {
   Average = "average",
   low = "low",
 }
+
+export enum ShoesTyes {
+  Sneakers = "sneakers",
+  Boots = "boots",
+  Sandals = "Sandals",
+  DressShoes = "dress-shoes",
+  Formal = "formal",
+  Other = "other",
+}
