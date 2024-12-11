@@ -106,7 +106,6 @@ export const MissingShoesFormBuilder = () => {
     <FormWrapper>
       <FormTitle
         title="Report Missing Shoe"
-        description="Please provide details about the missing shoe"
       />
       <Form {...form}>
         <form
