@@ -25,8 +25,9 @@ import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { Input } from "@/components/ui/input";
 import { useMask } from "@react-input/mask";
 import { DateTimePicker } from "@/common/DateTimePicker/DateTimePicker";
-import { CNIC_VALIDATOR_REGEX, PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
+import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { ShoesTyes } from "@/constant/constant";
+import { Textarea } from "@/components/ui/textarea";
 
 export const missingShoesSchema = z.object({
   color: z.string().min(1, {
@@ -58,7 +59,9 @@ export const missingShoesSchema = z.object({
   ownerPhoneNumber: z
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  ownerCnic: z.string().regex(CNIC_VALIDATOR_REGEX, "CNIC is not valid"),
+  ownerAddress: z.string().min(1, {
+    message: "Color must be selected.",
+  }),
 });
 
 export type MissingSchemaType = z.infer<typeof missingShoesSchema>;
@@ -66,10 +69,6 @@ export type MissingSchemaType = z.infer<typeof missingShoesSchema>;
 export const MissingShoesFormBuilder = () => {
   const phoneNumberMask = useMask({
     mask: "___________",
-    replacement: { _: /\d/ },
-  });
-  const cnicMask = useMask({
-    mask: "3____-_______-_",
     replacement: { _: /\d/ },
   });
 
@@ -82,7 +81,7 @@ export const MissingShoesFormBuilder = () => {
       time: undefined,
       ownerName: "",
       ownerPhoneNumber: "",
-      ownerCnic: "",
+      ownerAddress: "",
     },
     mode: "all",
   });
@@ -101,7 +100,7 @@ export const MissingShoesFormBuilder = () => {
   } = form;
 
   function onSubmit(values: z.infer<typeof missingShoesSchema>) {
-    return values
+    return values;
   }
   return (
     <FormWrapper>
@@ -228,16 +227,17 @@ export const MissingShoesFormBuilder = () => {
           />
           <FormField
             control={form.control}
-            name="ownerCnic"
+            name="ownerAddress"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Owner Cnic</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="30000-0000000-0"
+                  <Textarea
+                    placeholder="Please provide a brief description of your leave reason."
+                    data-testid="leaveReason"
+                    hasError={Boolean(errors.ownerAddress)}
+                    className={`resize-none focus-visible:ring-0`}
                     {...field}
-                    ref={cnicMask}
-                    hasError={errors?.ownerCnic && true}
                   />
                 </FormControl>
                 <FormMessage />
