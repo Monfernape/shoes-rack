@@ -6,7 +6,7 @@ import { Routes } from "@/lib/routes";
 const AttendanceForm = () => {
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Attendance" },
-    { href: Routes.AddAttendance, label: "Add Attendance" },
+    { href: Routes.AddAttendance, label: "Add attendance" },
   ];
   return (
     <>
