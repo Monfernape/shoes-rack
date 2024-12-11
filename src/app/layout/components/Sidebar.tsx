@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 import { MemberRole } from "@/constant/constant";
+import { usePathname } from "next/navigation";
 
 interface Props {
   isSidebarOpen: boolean;
@@ -35,6 +36,7 @@ interface Route {
 
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const loginUser = useUser();
+  const pathname = usePathname()
 
   const routes: Route[] = [
     {
@@ -120,7 +122,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
               <li key={`route-${index}`}>
                 <Link
                   href={route.route}
-                  className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                  className={`flex items-center p-2 text-gray-700 ${route.route === pathname ? 'bg-sidebar-active' : ""} hover:bg-gray-100 rounded-lg`}
                 >
                   <span className="text-xs mr-3">
                     {React.cloneElement(route.icon, { className: "w-3.5 h-3.5" })}
