@@ -4,11 +4,14 @@ import {
   AttendancePercentage,
   AttendanceProgress,
   AttendanceStatus,
+  LeaveRequestStatus,
 } from "@/constant/constant";
 import { getAttendance } from "../../attendance/actions/getAttendance";
+import { getleaves } from "../../leaves/actions/get-leave-request-by-date";
 
 export const getAttendanceReport = async () => {
   const attendanceData = await getAttendance();
+  const leaveData = await getleaves();
 
   if (!attendanceData) return [];
 
@@ -27,67 +30,50 @@ export const getAttendanceReport = async () => {
     }
   };
 
-  // Get the first day of the month and today's date
-  const today = new Date();
-  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-
-  // Total attendance days of current month
-  const totalAttendanceDays = (dateString: string) => {
-    const date = new Date(dateString);
-    return date >= firstDayOfMonth && date <= today;
+  const getTotalDaysInCurrentMonth = (): number => {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
   };
 
-  const uniqueMembers = Array.from(
-    new Set(attendanceData.map((attendance) => attendance.memberId))
-  );
+  const totalDaysInMonth = getTotalDaysInCurrentMonth();
+
+  const uniqueMembers = Array.from(new Set(attendanceData.map(({ memberId }) => memberId)));
 
   const monthlyAttendanceReport = uniqueMembers.map((memberId) => {
-    const memberAttendance = attendanceData.filter(
-      (attendance) =>
-        attendance.memberId === memberId &&
-        totalAttendanceDays(attendance.created_at)
-    );
+    const memberAttendance = attendanceData.filter(({ memberId: id }) => id === memberId);
 
     const presentDays = new Set(
       memberAttendance
-        .filter((attendance) => attendance.status === AttendanceStatus.Approve)
-        .map((attendance) => attendance.created_at?.split("T")[0])
+        .filter(({ status }) => status === AttendanceStatus.Approve)
+        .map(({ created_at }) => created_at.split("T")[0])
     );
 
     const absentDays = new Set(
       memberAttendance
-        .filter((attendance) => attendance.status === AttendanceStatus.Reject)
-        .map((attendance) => attendance.created_at?.split("T")[0])
+        .filter(({ status }) => status === AttendanceStatus.Reject)
+        .map(({ created_at }) => created_at.split("T")[0])
     );
 
-    // For the time being i do this i created a separate ticket for it ans it fix in next Pr.
-    const leaveDays = new Set(
-      memberAttendance
-        .filter((attendance) => attendance.status === AttendanceStatus.Pending)
-        .map((attendance) => attendance.created_at?.split("T")[0])
-    );
+    const approvedLeavesCount = leaveData.filter(
+      ({ memberId: id, status }) => id === memberId && status === LeaveRequestStatus.Approve
+    ).length;
 
-    const totalDaysInMonth = today.getDate(); // Number of days up to today
-    const monthlyPresentCount = presentDays.size;
-    const attendancePercentage = (
-      (monthlyPresentCount / totalDaysInMonth) *
-      100
-    ).toFixed(2);
+    const attendancePercentage = ((presentDays.size / totalDaysInMonth) * 100).toFixed(2);
     const status = getStatus(parseFloat(attendancePercentage));
 
-    const memberInfo = attendanceData.find(
-      (attendance) => attendance.memberId === memberId
-    );
+    const memberInfo = attendanceData.find(({ memberId: id }) => id === memberId);
 
     return {
-      name: memberInfo?.name,
+      name: memberInfo?.name ,
       attendancePercentage: `${attendancePercentage}%`,
       status,
-      present: monthlyPresentCount,
+      present: presentDays.size,
       absent: absentDays.size,
-      leave: leaveDays.size,
+      leave: approvedLeavesCount,
       createdAt: memberInfo?.created_at,
     };
   });
+
   return monthlyAttendanceReport;
 };
+
