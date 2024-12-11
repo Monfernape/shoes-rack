@@ -28,8 +28,8 @@ export default function NotFound() {
         <div className="space-y-4">
           <h2 className="text-3xl font-bold text-gray-900">Page Not Found</h2>
         </div>
-        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 justify-center">
-          <Button asChild>
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 justify-center items-center">
+          <Button asChild className="w-36">
             <Link
               href={Routes.Members}
               className="flex items-center justify-center"
