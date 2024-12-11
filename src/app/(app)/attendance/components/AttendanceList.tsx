@@ -19,21 +19,9 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
-import { AttendanceStatus, Shift } from "@/constant/constant";
-
 import AttendanceActionRender from "./AttendanceActionRender";
+import { Attendance } from "@/types";
 
-export interface Attendance {
-  member: string;
-  id: number;
-  startTime: string;
-  endTime: string;
-  status: AttendanceStatus;
-  created_at: string;
-  memberId: number;
-  name: string;
-  shift: Shift;
-}
 interface AttendanceProps {
   attendance: Attendance[];
 }
@@ -112,12 +100,12 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
 
   const StandardPageProps = {
     hasContent: !!attendance.length,
-    title: "Add Attendance",
+    title: "Add attendance",
     description: "This is where you can see all attendance",
     buttonIcon: <Plus />,
     actionButton: true,
     onAction: addAttendance,
-    labelForActionButton: "Add Attendance",
+    labelForActionButton: "Add attendance",
   };
 
   return (

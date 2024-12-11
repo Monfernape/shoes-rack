@@ -56,3 +56,12 @@ export enum AttendancePercentage {
   Good = 70,
   Average = 60,
 }
+
+export enum MissingShoeStatus {
+  Missing = "missing",
+  Found = "found",
+  OwnerNotified = "owner_notified",
+  OwnerReceived = "owner_received",
+  OwnerNotUpdated = "owner_not_updated",
+  Closed = "closed",
+}
