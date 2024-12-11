@@ -1,4 +1,5 @@
 "use client";
+import React, { useMemo } from "react";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import {
   Table,
@@ -8,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MissingShoeStatus, Shift } from "@/constant/constant";
+import { MissingShoeStatus } from "@/constant/constant";
 import {
   ColumnDef,
   flexRender,
@@ -16,7 +17,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Plus as PlusIcon } from "lucide-react";
-import React, { useMemo } from "react";
 
 const shoes = [
   {
