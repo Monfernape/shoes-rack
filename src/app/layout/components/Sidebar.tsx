@@ -22,6 +22,7 @@ import {
 import { useUser } from "@/hooks/useGetLoggedinUser";
 import { MemberRole } from "@/constant/constant";
 import useMediaQuery from "@/hooks/use-media-query";
+import { usePathname } from "next/navigation";
 
 interface Props {
   isSidebarOpen: boolean;
@@ -37,6 +38,7 @@ interface Route {
 export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const loginUser = useUser();
   const isSmallScreen = useMediaQuery("sm");
+  const pathname = usePathname();
 
   const routes: Route[] = [
     {
@@ -95,7 +97,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
             ${isSidebarOpen || !isSmallScreen ? "block" : "hidden"}
             fixed top-0 right-0 inset-y-0 left-0 z-30 w-48 bg-sidebar shadow-md transform transition-transform duration-300 ease-in-out
                 ${
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+                  isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }  lg:translate-x-0 lg:block lg:fixed`}
     >
       <div className="flex flex-col h-full bg-sidebar-background">
@@ -114,14 +116,18 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           <ul className="p-2 space-y-2 text-xs">
-            {routes.map((route , index) => (
+            {routes.map((route, index) => (
               <li key={`route-${index}`}>
                 <Link
                   href={route.route}
-                  className="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                  className={`flex items-center p-2 text-gray-700 ${
+                    route.route === pathname ? "bg-sidebar-active" : ""
+                  } hover:bg-gray-100 rounded-lg`}
                 >
                   <span className="text-xs mr-3">
-                    {React.cloneElement(route.icon, { className: "w-3.5 h-3.5" })}
+                    {React.cloneElement(route.icon, {
+                      className: "w-3.5 h-3.5",
+                    })}
                   </span>
                   <span className="text-xs">{route.name}</span>
                 </Link>
