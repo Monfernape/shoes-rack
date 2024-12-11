@@ -14,13 +14,13 @@ export const getAttendanceReport = async () => {
 
   const getStatus = (percentage: number): AttendanceProgress => {
     switch (true) {
-      case percentage > AttendancePercentage.Excellent:
+      case percentage >= AttendancePercentage.Excellent:
         return AttendanceProgress.Excellent;
-      case percentage > AttendancePercentage.VeryGood:
+      case percentage >= AttendancePercentage.VeryGood:
         return AttendanceProgress.VeryGood;
-      case percentage > AttendancePercentage.Good:
+      case percentage >= AttendancePercentage.Good:
         return AttendanceProgress.Good;
-      case percentage > AttendancePercentage.Average:
+      case percentage >= AttendancePercentage.Average:
         return AttendanceProgress.Average;
       default:
         return AttendanceProgress.low;
