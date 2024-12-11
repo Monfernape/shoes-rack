@@ -15,7 +15,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Plus } from "lucide-react";
+import { Plus as PlusIcon } from "lucide-react";
 import React, { useMemo } from "react";
 
 const shoes = [
@@ -26,8 +26,8 @@ const shoes = [
     ownerName: "John Doe",
     ownerPhoneNumber: "+1234567890",
     ownerAddress: "123 Main St, Springfield, IL",
-    date: "2024-12-09",
-    shift: Shift.ShiftA,
+    time: "2024-12-09",
+    type:"formal"
   },
   {
     color: "Blue",
@@ -36,8 +36,8 @@ const shoes = [
     ownerName: "Alice Smith",
     ownerPhoneNumber: "+0987654321",
     ownerAddress: "456 Oak Rd, Rivertown, TX",
-    date: "2024-12-08",
-    shift: Shift.ShiftB,
+    time: "2024-12-08",
+    type:"formal"
   },
 ];
 
@@ -48,8 +48,8 @@ type MissingShoes = {
   ownerName: string;
   ownerPhoneNumber: string;
   ownerAddress: string;
-  date: string;
-  shift: Shift;
+  time: string;
+  type: string
 };
 
 export const MissingShoes = () => {
@@ -75,24 +75,24 @@ export const MissingShoes = () => {
         cell: ({ row }) => <div>{row.getValue("ownerAddress")}</div>,
       },
       {
-        accessorKey: "date",
-        header: "Date",
-        cell: ({ row }) => <div>{row.getValue("date")}</div>,
-      },
-      {
-        accessorKey: "shift",
-        header: "shift",
-        cell: ({ row }) => <div>{row.getValue("shift")}</div>,
+        accessorKey: "time",
+        header: "Time Lost",
+        cell: ({ row }) => <div>{row.getValue("time")}</div>,
       },
       {
         accessorKey: "size",
-        header: "size",
+        header: "Size",
         cell: ({ row }) => <div>{row.getValue("size")}</div>,
       },
       {
         accessorKey: "color",
-        header: "color",
+        header: "Color",
         cell: ({ row }) => <div>{row.getValue("color")}</div>,
+      },
+      {
+        accessorKey: "type",
+        header: "Shoes Type",
+        cell: ({ row }) => <div>{row.getValue("type")}</div>,
       },
       {
         accessorKey: "status",
@@ -122,12 +122,12 @@ export const MissingShoes = () => {
 
   const StandardPageProps = {
     hasContent: !!shoes.length,
-    title: "Add Missing Shoes",
+    title: "Add missing shoes",
     description: "This is where you can see all missing shoes.",
-    buttonIcon: <Plus />,
+    buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: addMissingShoes,
-    labelForActionButton: "Add Missing Shoes",
+    labelForActionButton: "Add missing shoes",
   };
   return (
     <StandardPage {...StandardPageProps}>
@@ -150,7 +150,7 @@ export const MissingShoes = () => {
           {table.getRowModel().rows.map((row) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell key={cell.id} className="capitalize">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}

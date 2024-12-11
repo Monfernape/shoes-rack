@@ -6,8 +6,8 @@ import { PageLayout } from "@/app/layout/PageLayout";
 
 const Page = () => {
   const breadcrumbs = [
-    { href: Routes.MissingShoes, label: "Missing Shoes" },
-    { href: Routes.AddMissingShoes, label: "Add Missing Shoes" },
+    { href: Routes.MissingShoes, label: "Missing shoes" },
+    { href: Routes.AddMissingShoes, label: "Add missing shoes" },
   ];
   return (
     <div>
