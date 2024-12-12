@@ -28,6 +28,8 @@ import { DateTimePicker } from "@/common/DateTimePicker/DateTimePicker";
 import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { ShoesTyes } from "@/constant/constant";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
+import { createMissingShoesReport } from "../../actions/create-missing-shoes-report";
 
 export const MissingShoesSchema = z.object({
   color: z.string().min(1, {
@@ -99,90 +101,103 @@ export const MissingShoesFormBuilder = () => {
     formState: { errors, isValid },
   } = form;
 
-  function onSubmit(values: z.infer<typeof MissingShoesSchema>) {
-    return values;
-  }
+  const onSubmit = async (values: z.infer<typeof MissingShoesSchema>) => {
+    try {
+      const error = await createMissingShoesReport(values);
+
+      if (!error) {
+        toast({
+          title: "Report submitted successfully",
+        });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "Report is not submitted successfully",
+        });
+      }
+    }
+  };
+
   return (
     <FormWrapper>
-      <FormTitle
-        title="Report Missing Shoe"
-      />
+      <FormTitle title="Report Missing Shoe" />
       <Form {...form}>
         <form
           data-testid="leaveRequestForm"
           action={() => form.handleSubmit(onSubmit)()}
           className="space-y-4"
         >
-            <FormField
-              control={form.control}
-              name={"color"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Red, Blue, Black" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Shoes Type</FormLabel>
-                  <FormControl>
-                    <Select
-                      {...field}
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <SelectTrigger data-testid="leave-type" id="type">
-                        <SelectValue placeholder="Select shoe type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {SHOES_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"size"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Size</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., 42, 8.5, 9" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"time"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Time Lost</FormLabel>
-                  <FormControl>
-                    <DateTimePicker
-                      time={field.value}
-                      onChangeTime={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name={"color"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Color</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., Red, Blue, Black" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Shoes Type</FormLabel>
+                <FormControl>
+                  <Select
+                    {...field}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger data-testid="leave-type" id="type">
+                      <SelectValue placeholder="Select shoe type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {SHOES_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"size"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Size</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., 42, 8.5, 9" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"time"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Time Lost</FormLabel>
+                <FormControl>
+                  <DateTimePicker
+                    time={field.value}
+                    onChangeTime={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="ownerName"
