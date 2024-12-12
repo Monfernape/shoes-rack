@@ -1,10 +1,10 @@
 import React from 'react'
-import { MissingShoesFormBuilder } from '../components/MissingShoesFormBuilder';
 
 const Page = () => {
   return (
     <div>
-        <MissingShoesFormBuilder />
+      Missing Shoes Form Builder
+        {/* Will add Missng Shoes form build */}
     </div>
   )
 }
