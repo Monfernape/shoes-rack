@@ -1,7 +1,7 @@
 import React from "react";
-import { MissingShoes } from "./components/MissingShoes";
+import { MissingShoes } from "./Components/MissingShoes";
 import { Routes } from "@/lib/routes";
-import { MissingShoesHeader } from "./components/MissingShoesHeader";
+import { MissingShoesHeader } from "./Components/MissingShoesHeader";
 import { PageLayout } from "@/app/layout/PageLayout";
 
 const Page = () => {
