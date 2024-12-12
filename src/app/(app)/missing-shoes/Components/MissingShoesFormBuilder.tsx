@@ -66,6 +66,15 @@ export const MissingShoesSchema = z.object({
 
 export type MissingSchemaType = z.infer<typeof MissingShoesSchema>;
 
+const SHOES_TYPES = [
+  ShoesTyes.Boots,
+  ShoesTyes.DressShoes,
+  ShoesTyes.Sandals,
+  ShoesTyes.Sneakers,
+  ShoesTyes.Formal,
+  ShoesTyes.Other,
+];
+
 export const MissingShoesFormBuilder = () => {
   const phoneNumberMask = useMask({
     mask: "___________",
@@ -85,15 +94,6 @@ export const MissingShoesFormBuilder = () => {
     },
     mode: "all",
   });
-
-  const SHOES_TYPES = [
-    ShoesTyes.Boots,
-    ShoesTyes.DressShoes,
-    ShoesTyes.Sandals,
-    ShoesTyes.Sneakers,
-    ShoesTyes.Formal,
-    ShoesTyes.Other,
-  ];
 
   const {
     formState: { errors, isValid },

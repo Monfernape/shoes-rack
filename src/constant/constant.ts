@@ -4,7 +4,6 @@ export enum MemberRole {
   Member = "member",
 }
 
-
 export enum Shift {
   ShiftA = "A",
   ShiftB = "B",
@@ -54,7 +53,7 @@ export enum AttendanceProgress {
 export enum ShoesTyes {
   Sneakers = "sneakers",
   Boots = "boots",
-  Sandals = "Sandals",
+  Sandals = "sandals",
   DressShoes = "dress-shoes",
   Formal = "formal",
   Other = "other",
