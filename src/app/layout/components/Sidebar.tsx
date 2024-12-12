@@ -95,6 +95,9 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     <aside
       className={`
             ${isSidebarOpen || !isSmallScreen ? "block" : "hidden"}
+            ${isSidebarOpen ? "block" : "hidden"} ${
+        !loginUser?.temporary_password ? "top-10" : ""
+      }
             fixed top-0 right-0 inset-y-0 left-0 z-30 w-48 bg-sidebar shadow-md transform transition-transform duration-300 ease-in-out
                 ${
                   isSidebarOpen ? "translate-x-0" : "-translate-x-full"

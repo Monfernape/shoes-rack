@@ -33,7 +33,7 @@ export const addDevUser = async (values: DevUserType) => {
     shift: Shift.ShiftA,
     invite_link: "",
     status: UserStatus.Active,
-    temporary_password: false,
+    temporary_password: true,
   };
   const { error } = await supabase.from(Tables.Members).insert({
     ...updatedValues,
