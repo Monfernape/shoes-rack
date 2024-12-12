@@ -4,7 +4,7 @@ import { MissingShoesFormBuilder } from '../components/MissingShoesFormBuilder';
 const Page = () => {
   return (
     <div>
-        <MissingShoesFormBuilder />
+      <MissingShoesFormBuilder />
     </div>
   )
 }
