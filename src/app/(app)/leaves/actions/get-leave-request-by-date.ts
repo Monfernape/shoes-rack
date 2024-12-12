@@ -1,13 +1,13 @@
+import moment from "moment";
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
 export const getleaves = async () => {
   const supabase = await getSupabaseClient();
 
-  // Get the current month's start and end dates
-  const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).toISOString();
+  // Get the current month's start and end dates using moment
+  const startOfMonth = moment().startOf('month').toISOString();
+  const endOfMonth = moment().endOf('month').toISOString();
 
   const { data, error } = await supabase
     .from(Tables.Leaves)
@@ -21,3 +21,4 @@ export const getleaves = async () => {
 
   return data;
 };
+

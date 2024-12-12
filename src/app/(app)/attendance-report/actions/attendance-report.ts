@@ -45,13 +45,13 @@ export const getAttendanceReport = async () => {
     const presentDays = new Set(
       memberAttendance
         .filter(({ status }) => status === AttendanceStatus.Approve)
-        .map(({ created_at }) => created_at.split("T")[0])
+        .map(({ created_at }) => new Date(created_at).toLocaleDateString())
     );
 
     const absentDays = new Set(
       memberAttendance
         .filter(({ status }) => status === AttendanceStatus.Reject)
-        .map(({ created_at }) => created_at.split("T")[0])
+        .map(({ created_at }) => new Date(created_at).toLocaleDateString())
     );
 
     const approvedLeavesCount = leaveData.filter(
