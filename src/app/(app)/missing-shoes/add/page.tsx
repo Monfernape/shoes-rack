@@ -1,12 +1,8 @@
 import React from 'react'
-import { MissingShoesFormBuilder } from '@/app/(app)/missing-shoes/components/MissingShoesFormBuilder';
+import { MissingShoesFormBuilder } from '../components/MissingShoesFormBuilder';
 
 const Page = () => {
-  return (
-    <div>
-      <MissingShoesFormBuilder />
-    </div>
-  )
+  return  <MissingShoesFormBuilder />
 }
 
 export default Page;
