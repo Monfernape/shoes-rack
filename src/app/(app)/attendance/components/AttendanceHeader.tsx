@@ -1,13 +1,8 @@
 "use client";
-
-import React, { useState } from "react";
-import { Sidebar } from "@/app/layout/components/Sidebar";
-import { Button } from "@/components/ui/button";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import React from "react";
 import { usePathname } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import NavigationButton from "@/common/NavigationButton";
-import { BasedBreadCrumb } from "@/common/BasedBreadCrumb/BasedBreadCrumb";
 import { Breadcrumbs } from "@/types";
 import { HeaderWrapper } from "@/common/HeaderWapper/HeaderWrapper";
 

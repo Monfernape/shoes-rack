@@ -1,5 +1,4 @@
 "use client";
-
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
@@ -10,7 +9,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { HeaderWrapper } from "@/common/HeaderWapper/HeaderWrapper";
 import useDebounce from "@/hooks/useDebounce";
-
 interface Props {
   breadcrumbs: Breadcrumbs[];
   user: Member;
@@ -43,6 +41,7 @@ export const MemberHeader = ({ breadcrumbs, user }: Props) => {
             <Input
               type="search"
               placeholder="Search..."
+              data-testid="searchInput"
               onFocus={() => setIsTitleHide(true)}
               onBlur={() => setIsTitleHide(false)}
               onChange={handleSearchQueryChange}
@@ -53,10 +52,7 @@ export const MemberHeader = ({ breadcrumbs, user }: Props) => {
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
           </div>
           {user?.role !== MemberRole.Member && (
-            <NavigationButton
-              path={Routes.AddMember}
-              buttonText="Add Member"
-            />
+            <NavigationButton path={Routes.AddMember} buttonText="Add Member" />
           )}
         </>
       )}

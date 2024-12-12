@@ -1,7 +1,5 @@
 "use client";
-
 import React from "react";
-
 import NavigationButton from "@/common/NavigationButton";
 import { Routes } from "@/lib/routes";
 import { Breadcrumbs } from "@/types";
