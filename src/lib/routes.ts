@@ -13,7 +13,7 @@ export enum Routes {
   MemberDetails = "/members/details",
   ShiftIncharge = "/shift-incharge",
   MissingShoes = "/missing-shoes",
-  AddMissingShoes = "/add-missing-shoes",
+  AddMissingShoes = "/missing-shoes/add",
   LeaveRequest = "/leaves",
   AddLeaveRequest = "/leaves/add",
   Playground = "/playground",

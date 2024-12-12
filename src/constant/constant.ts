@@ -57,11 +57,16 @@ export enum AttendancePercentage {
   Average = 60,
 }
 
+export enum ShoesTyes {
+  Sneakers = "sneakers",
+  Boots = "boots",
+  Sandals = "sandals",
+  DressShoes = "dress-shoes",
+  Formal = "formal",
+  Other = "other",
+}
+
 export enum MissingShoeStatus {
   Missing = "missing",
   Found = "found",
-  OwnerNotified = "owner_notified",
-  OwnerReceived = "owner_received",
-  OwnerNotUpdated = "owner_not_updated",
-  Closed = "closed",
 }
