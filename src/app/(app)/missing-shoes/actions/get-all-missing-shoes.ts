@@ -2,7 +2,6 @@
 
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { date } from "zod";
 
 export const getAllMissingShoes = async () => {
   const supabase = await getSupabaseClient();
