@@ -18,7 +18,7 @@ import {
 } from "@tanstack/react-table";
 import { Plus as PlusIcon } from "lucide-react";
 import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
-import { MissingShoesActions } from "../MissingShoesActions";
+import { MissingShoesActions } from "./MissingShoesActions";
 
 type MissingShoes = {
   id: number;
