@@ -1,5 +1,5 @@
 import React from 'react'
-import { MissingShoesFormBuilder } from '../Components/MissingShoesFormBuilder';
+import { MissingShoesFormBuilder } from '../components/MissingShoesFormBuilder';
 
 const Page = () => {
   return (
