@@ -69,8 +69,4 @@ export enum ShoesTyes {
 export enum MissingShoeStatus {
   Missing = "missing",
   Found = "found",
-  OwnerNotified = "owner_notified",
-  OwnerReceived = "owner_received",
-  OwnerNotUpdated = "owner_not_updated",
-  Closed = "closed",
 }
