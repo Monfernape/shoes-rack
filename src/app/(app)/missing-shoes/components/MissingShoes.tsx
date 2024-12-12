@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MissingShoeStatus } from "@/constant/constant";
+import { MissingShoeStatus, ShoesTyes } from "@/constant/constant";
 import {
   ColumnDef,
   flexRender,
@@ -17,42 +17,25 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Plus as PlusIcon } from "lucide-react";
-
-const shoes = [
-  {
-    color: "Red",
-    status: MissingShoeStatus.Missing,
-    size: 42,
-    ownerName: "John Doe",
-    ownerPhoneNumber: "+1234567890",
-    ownerAddress: "123 Main St, Springfield, IL",
-    time: "2024-12-09",
-    type:"formal"
-  },
-  {
-    color: "Blue",
-    status: MissingShoeStatus.Found,
-    size: 38,
-    ownerName: "Alice Smith",
-    ownerPhoneNumber: "+0987654321",
-    ownerAddress: "456 Oak Rd, Rivertown, TX",
-    time: "2024-12-08",
-    type:"formal"
-  },
-];
+import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
+import { MissingShoesActions } from "../MissingShoesActions";
 
 type MissingShoes = {
+  id: number;
   color: string;
-  status: string;
-  size: number;
+  status: MissingShoeStatus;
+  size: string;
   ownerName: string;
   ownerPhoneNumber: string;
   ownerAddress: string;
   time: string;
-  type: string
+  type: ShoesTyes;
 };
 
-export const MissingShoes = () => {
+interface Props {
+  missingShoesData: MissingShoes[];
+}
+export const MissingShoes = ({ missingShoesData }: Props) => {
   const columns: ColumnDef<MissingShoes>[] = useMemo(
     () => [
       {
@@ -97,16 +80,21 @@ export const MissingShoes = () => {
       {
         accessorKey: "status",
         header: "Status",
-        //Status badge will be replace with text
-        cell: ({ row }) => <div>{row.getValue("status")}</div>,
+        cell: ({ row }) => (
+          <div>
+            {<MissingShoesStatusBadge status={row.getValue("status")} />}
+          </div>
+        ),
       },
       {
-        id: "actions",
+        id: "id",
         enableHiding: false,
         header: () => {
           return <div>Action</div>;
         },
-        // Action cell will be created
+        cell: ({ row }) => (
+          <div> {<MissingShoesActions missingShoesId={row.original.id} />}</div>
+        ),
       },
     ],
     []
@@ -115,13 +103,13 @@ export const MissingShoes = () => {
   const addMissingShoes = () => {};
 
   const table = useReactTable({
-    data: shoes,
+    data: missingShoesData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const StandardPageProps = {
-    hasContent: !!shoes.length,
+    hasContent: !!missingShoesData.length,
     title: "Add missing shoes",
     description: "This is where you can see all missing shoes.",
     buttonIcon: <PlusIcon />,
