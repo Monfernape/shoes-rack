@@ -50,6 +50,13 @@ export enum AttendanceProgress {
   low = "low",
 }
 
+export enum AttendancePercentage {
+  Excellent = 90,
+  VeryGood = 80,
+  Good = 70,
+  Average = 60,
+}
+
 export enum ShoesTyes {
   Sneakers = "sneakers",
   Boots = "boots",
@@ -57,4 +64,13 @@ export enum ShoesTyes {
   DressShoes = "dress-shoes",
   Formal = "formal",
   Other = "other",
+}
+
+export enum MissingShoeStatus {
+  Missing = "missing",
+  Found = "found",
+  OwnerNotified = "owner_notified",
+  OwnerReceived = "owner_received",
+  OwnerNotUpdated = "owner_not_updated",
+  Closed = "closed",
 }

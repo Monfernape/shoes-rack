@@ -5,7 +5,7 @@ export enum Routes {
   Attendance = "/attendance",
   AddAttendance = "/attendance/add",
   EditAttendance = "/attendance/edit",
-  MarkAttendance = "/attendance/mark",
+  MarkAttendance = "/attendance/review",
   Fund = "/fund",
   Members = "/members",
   AddMember = "/members/add",
