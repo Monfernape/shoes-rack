@@ -3,26 +3,24 @@
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
-export const getAllMissingShoes = async () => {
+export const getAllMissingShoesReport = async () => {
   const supabase = await getSupabaseClient();
 
-  const { data: missingShoesData, error } = await supabase
-    .from(Tables.MissingShoes)
-    .select("*");
-
-  if (error) {
-    return [];
-  }
-
-  return missingShoesData.map((missingShoes) => ({
+  const { data:missingShoes, error } = await supabase.from(Tables.MissingShoes).select("*");
+  
+  const missingShoesReports = (missingShoes || []).map((missingShoes) => ({
     id: missingShoes.id,
-    color: missingShoes.color,
-    type: missingShoes.type,
+    shoesToken: missingShoes.shoes_token,
+    description: missingShoes.description,
     status: missingShoes.status,
-    size: missingShoes.size,
-    ownerName: missingShoes.ownerName,
+    ownerName: missingShoes.owner_name,
     time: new Date(missingShoes.time).toLocaleString(),
-    ownerPhoneNumber: missingShoes.ownerPhoneNumber,
-    ownerAddress: missingShoes.ownerAddress,
+    ownerPhoneNumber: missingShoes.owner_phone_number,
+    ownerAddress: missingShoes.owner_address,
   }));
+
+  return {
+    missingShoesReports,
+    error,
+  }
 };
