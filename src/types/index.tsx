@@ -3,7 +3,13 @@ import { AttendanceStatus, LeaveTypes, MemberRole, Shift, UserStatus } from "@/c
 
 
 export type UserRole = "incharge" | "member" | "shift_incharge";
-
+export type Notifcations =   {
+  id: number;
+  memberId: number;
+  title: string;
+  isRead: boolean;
+  path: string;
+};
 export type AttendanceReportStatus =
   | "excellent"
   | "good"

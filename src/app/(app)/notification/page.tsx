@@ -1,10 +1,9 @@
 import React from "react";
 import { NotificationLayout } from "./components/NotificationLayout";
 import { Routes } from "@/lib/routes";
-import { NotificationContainer } from "./components/NotificationContainer";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
-const notificationDetails = [
+const notifications = [
   {
     id: 1,
     memberId: 1,
@@ -36,11 +35,7 @@ const notificationDetails = [
 
 const Page = async () => {
   const user = await getLoggedInUser();
-  return (
-    <NotificationLayout notificationDetails={notificationDetails}>
-      <NotificationContainer user={user} />
-    </NotificationLayout>
-  );
+  return <NotificationLayout user={user} notifications={notifications} />;
 };
 
 export default Page;

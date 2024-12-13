@@ -1,25 +1,26 @@
 "use client";
-import { Search as SearchIcon, Trash as TrashIcon,Dot as DotIcon } from "lucide-react";
-import Link from "next/link";
 import React from "react";
-import { Button } from "@/components/ui/button";
+import {
+  Search as SearchIcon,
+  Trash as TrashIcon,
+  Dot as DotIcon,
+} from "lucide-react";
+import Link from "next/link";import { Button } from "@/components/ui/button";
 import { Routes } from "@/lib/routes";
+import { useSearchParams } from "next/navigation";
+import { NotificationContainer } from "./NotificationContainer";
+import { Notifcations, UserDetails } from "@/types";
 
 type NotificationLayoutProps = {
-  children: React.ReactNode;
-  notificationDetails?: {
-    id: number;
-    memberId: number;
-    title: string;
-    isRead: boolean;
-    path: string;
-  }[];
+  user: UserDetails;
+  notifications?: Notifcations[];
 };
 export const NotificationLayout = ({
-  children,
-  notificationDetails,
+  user,
+  notifications,
 }: NotificationLayoutProps) => {
-
+  const searchParams = useSearchParams();
+  const notificationId = searchParams.get("notificationid");
   return (
     <div className="flex  h-full ">
       <div className="w-72  border-r h-full ">
@@ -34,11 +35,14 @@ export const NotificationLayout = ({
           </div>
         </div>
         <ul className="text-gray-700  ">
-          {notificationDetails?.map((notification) => (
-            <li className=" border-b ">
+          {notifications?.map((notification) => (
+            <li className=" border-b " key ={notification.id}>
               <Link
-                key  = {notification.id}
-                className={` flex items-center justify-center hover:bg-gray-100 px-2 py-2 text-xs  `}
+                key={notification.id}
+                className={` flex items-center justify-center hover:bg-gray-100 px-2 py-2 text-xs ${
+                  Number(notificationId) === notification.id &&
+                  "bg-sidebar-active"
+                }  `}
                 href={`${Routes.Notification}?notificationid=${notification.id}`}
               >
                 <div className="flex gap-2">
@@ -59,9 +63,9 @@ export const NotificationLayout = ({
                       </p>
                     </div>
                   </div>
-                  <div className="flex align-middle items-center flex-col mt-[-2px]">
-                    {notification.isRead && <DotIcon className="w-6 h-auto" />}
-                    <p className="">1y</p>
+                  <div className="flex align-middle items-center flex-col ">
+                    {notification.isRead && <DotIcon className="w-8 h-auto mt-[-6px]" />}
+                    <p className="mt-">1y</p>
                   </div>
                 </div>
               </Link>
@@ -73,7 +77,10 @@ export const NotificationLayout = ({
         <div className="h-16 flex justify-between items-center border-b p-4  ">
           <div className=" flex items-center">Notification</div>
           <div className="flex gap-2">
-            <Button variant={"outline"} className="text-status-inactive">
+            <Button
+              variant={"outline"}
+              className="text-status-inactive hover:text-status-inactive"
+            >
               <div className="flex gap-2 items-center justify-center">
                 <TrashIcon />
                 <h4 className="font-medium text-sm"> Delete Notification</h4>
@@ -81,7 +88,7 @@ export const NotificationLayout = ({
             </Button>
           </div>
         </div>
-        {children}
+        <NotificationContainer user={user} notificationId={notificationId} />
       </div>
     </div>
   );
