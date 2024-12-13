@@ -9,6 +9,7 @@ export type Notifcations =   {
   title: string;
   isRead: boolean;
   path: string;
+  created_at:Date;
 };
 export type AttendanceReportStatus =
   | "excellent"
