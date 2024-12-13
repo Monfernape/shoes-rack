@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MissingShoeStatus, ShoesTyes } from "@/constant/constant";
 import {
   ColumnDef,
   flexRender,
@@ -19,24 +18,22 @@ import {
 import { Plus as PlusIcon } from "lucide-react";
 import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
 import { MissingShoesActions } from "../add/components/MissingShoesActions";
-
-type MissingShoes = {
-  id: number;
-  color: string;
-  status: MissingShoeStatus;
-  size: string;
-  ownerName: string;
-  ownerPhoneNumber: string;
-  ownerAddress: string;
-  time: string;
-  type: ShoesTyes;
-};
+import { MissingShoeReport } from "@/types";
+import { toast } from "@/hooks/use-toast";
+import { PostgrestError } from "@supabase/supabase-js";
 
 interface Props {
-  missingShoesData: MissingShoes[];
+  missingShoesReports: MissingShoeReport[];
+  error: PostgrestError | null;
 }
-export const MissingShoes = ({ missingShoesData }: Props) => {
-  const columns: ColumnDef<MissingShoes>[] = useMemo(
+export const MissingShoes = ({ missingShoesReports, error }: Props) => {
+  if (error) {
+    toast({
+      title: error ? error.message : "",
+    });
+  }
+
+  const columns: ColumnDef<MissingShoeReport>[] = useMemo(
     () => [
       {
         accessorKey: "ownerName",
@@ -53,29 +50,14 @@ export const MissingShoes = ({ missingShoesData }: Props) => {
         ),
       },
       {
-        accessorKey: "ownerAddress",
-        header: "Address",
-        cell: ({ row }) => <div>{row.getValue("ownerAddress")}</div>,
-      },
-      {
         accessorKey: "time",
         header: "Time Lost",
         cell: ({ row }) => <div>{row.getValue("time")}</div>,
       },
       {
-        accessorKey: "size",
-        header: "Size",
-        cell: ({ row }) => <div>{row.getValue("size")}</div>,
-      },
-      {
-        accessorKey: "color",
-        header: "Color",
-        cell: ({ row }) => <div>{row.getValue("color")}</div>,
-      },
-      {
-        accessorKey: "type",
-        header: "Shoes Type",
-        cell: ({ row }) => <div>{row.getValue("type")}</div>,
+        accessorKey: "shoesToken",
+        header: "Shoes Token",
+        cell: ({ row }) => <div>{row.getValue("shoesToken")}</div>,
       },
       {
         accessorKey: "status",
@@ -103,19 +85,19 @@ export const MissingShoes = ({ missingShoesData }: Props) => {
   const addMissingShoes = () => {};
 
   const table = useReactTable({
-    data: missingShoesData,
+    data: missingShoesReports,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const StandardPageProps = {
-    hasContent: !!missingShoesData.length,
+    hasContent: !!missingShoesReports.length,
     title: "Add missing shoes",
     description: "This is where you can see all missing shoes.",
     buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: addMissingShoes,
-    labelForActionButton: "Add missing shoes",
+    labelForActionButton: "Add shoe",
   };
   return (
     <StandardPage {...StandardPageProps}>
