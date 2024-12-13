@@ -10,6 +10,7 @@ import { Routes } from "@/lib/routes";
 import { useSearchParams } from "next/navigation";
 import { NotificationContainer } from "./NotificationContainer";
 import { Notifcations, UserDetails } from "@/types";
+import { format } from "date-fns";
 
 type NotificationLayoutProps = {
   user: UserDetails;
@@ -65,7 +66,7 @@ export const NotificationLayout = ({
                   </div>
                   <div className="flex align-middle items-center flex-col ">
                     {notification.isRead && <DotIcon className="w-8 h-auto mt-[-6px]" />}
-                    <p className="mt-">1y</p>
+                    <p className="mt-">{format(notification.created_at,'P')}</p>
                   </div>
                 </div>
               </Link>

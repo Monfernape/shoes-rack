@@ -12,6 +12,7 @@ const notifications = [
     path: `${Routes.Notification}`,
     description:
       "Please approve the attendance records for [specific department/team] at your earliest convenience ",
+    created_at: new Date(Date.now()),
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ const notifications = [
     path: `${Routes.Notification}`,
     description:
       "Please approve the attendance records for [specific department/team] at your earliest convenience ",
+    created_at: new Date(Date.now()),
   },
   {
     id: 3,
@@ -30,6 +32,7 @@ const notifications = [
     path: `${Routes.Notification}`,
     description:
       "Please approve the attendance records for [specific department/team] at your earliest convenience ",
+    created_at: new Date(Date.now()),
   },
 ];
 
