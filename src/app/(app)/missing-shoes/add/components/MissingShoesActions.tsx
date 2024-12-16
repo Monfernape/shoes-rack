@@ -11,18 +11,21 @@ import {
 import { MissingShoeStatus } from "@/constant/constant";
 import { processMissingShoeStatus } from "../../actions/process-missing-shoe-status";
 import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/lib/routes";
 
 export const MissingShoesActions = ({
   missingShoesId,
 }: {
   missingShoesId: number;
 }) => {
+  const router = useRouter();
   const handleEditInfo = (id: number) => {
     return id;
   };
 
   const handleViewDetails = (id: number) => {
-    return id;
+    router.push(`${Routes.MissingShoesDetails}/${id}`);
   };
 
   const handleMissingShoesStatus = async (
