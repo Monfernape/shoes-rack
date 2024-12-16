@@ -22,6 +22,7 @@ import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { reportMissingShoe } from "../../actions/create-missing-shoes-report";
+import { MissingShoeReport } from "@/types";
 
 export const MissingShoesSchema = z.object({
   shoesToken: z.string().min(1, {
@@ -46,7 +47,10 @@ export const MissingShoesSchema = z.object({
 
 export type MissingSchemaType = z.infer<typeof MissingShoesSchema>;
 
-export const MissingShoesFormBuilder = () => {
+interface Props {
+  missingShoe?: MissingShoeReport;
+}
+export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
   const phoneNumberMask = useMask({
     mask: "___________",
     replacement: { _: /\d/ },
@@ -55,12 +59,12 @@ export const MissingShoesFormBuilder = () => {
   const form = useForm<MissingSchemaType>({
     resolver: zodResolver(MissingShoesSchema),
     defaultValues: {
-      shoesToken: "",
-      description: "",
-      time: undefined,
-      ownerName: "",
-      ownerPhoneNumber: "",
-      ownerAddress: "",
+      shoesToken: missingShoe?.shoesToken ?? "",
+      description: missingShoe?.description ?? "",
+      time: missingShoe?.time ? new Date(missingShoe.time) : new Date(),
+      ownerName: missingShoe?.ownerName ?? "",
+      ownerPhoneNumber: missingShoe?.ownerPhoneNumber ?? "",
+      ownerAddress: missingShoe?.ownerAddress ?? "",
     },
     mode: "all",
   });
