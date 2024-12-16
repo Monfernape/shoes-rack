@@ -9,20 +9,11 @@ import {
   MapPinIcon,
 } from "lucide-react";
 import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
-import { MissingShoeStatus } from "@/constant/constant";
-
-const shoeInfo = {
-  tokenNumber: "MS12345",
-  timeLost: "2023-07-15T14:30:00",
-  description:
-    "Red Nike running shoes, size 42. Last seen in the gym locker room.",
-  status: MissingShoeStatus.Found,
-  ownerName: "John Doe",
-  ownerPhone: "+1 (555) 123-4567",
-  ownerAddress: "123 Main St, Anytown, AN 12345",
-};
-
-export const MissingShoesReportDetails = () => {
+import { MissingShoeReport } from "@/types";
+interface Props {
+    missingShoe:MissingShoeReport
+}
+export const MissingShoesReportDetails = ({missingShoe}:Props) => {
   return (
     <div className="flex justify-center m-8">
     <Card className="w-full max-w-xl">
@@ -33,7 +24,7 @@ export const MissingShoesReportDetails = () => {
               Missing Shoes Report
             </h2>
           </div>
-          <MissingShoesStatusBadge status={shoeInfo.status} />
+          <MissingShoesStatusBadge status={missingShoe.status} />
         </div>
 
         <div className="text-gray-700">
@@ -45,7 +36,7 @@ export const MissingShoesReportDetails = () => {
               <span>Shoes Token</span>
             </h3>
             <div className="pl-12 space-y-2">
-              <p className="text-xs">{shoeInfo.tokenNumber}</p>
+              <p className="text-xs">{missingShoe.shoesToken}</p>
             </div>
           </div>
         </div>
@@ -62,8 +53,8 @@ export const MissingShoesReportDetails = () => {
               <p className="text-xs">
                 <span className="font-medium text-muted-foreground">
                   Time Lost:
-                </span>{" "}
-                {shoeInfo.timeLost}
+                </span>
+                {missingShoe.time}
               </p>
             </div>
           </div>
@@ -78,7 +69,7 @@ export const MissingShoesReportDetails = () => {
               <span>Shoe Description</span>
             </h3>
             <div className="pl-12 space-y-2">
-              <p className="text-xs">{shoeInfo.description}</p>
+              <p className="text-xs">{missingShoe.description}</p>
             </div>
           </div>
         </div>
@@ -93,8 +84,8 @@ export const MissingShoesReportDetails = () => {
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">
-                <span className="font-medium text-muted-foreground">Name:</span>{" "}
-                {shoeInfo.ownerName}
+                <span className="font-medium text-muted-foreground">Name:</span>
+                {missingShoe.ownerName}
               </p>
             </div>
           </div>
@@ -112,8 +103,8 @@ export const MissingShoesReportDetails = () => {
               <p className="text-xs">
                 <span className="font-medium text-muted-foreground">
                   Phone:
-                </span>{" "}
-                {shoeInfo.ownerPhone}
+                </span>
+                {missingShoe.ownerPhoneNumber}
               </p>
             </div>
           </div>
@@ -128,7 +119,7 @@ export const MissingShoesReportDetails = () => {
               <span>Address</span>
             </h3>
             <div className="pl-12 space-y-2">
-              <p className="text-xs">{shoeInfo.ownerAddress}</p>
+              <p className="text-xs">{missingShoe.ownerAddress}</p>
             </div>
           </div>
         </div>
