@@ -23,6 +23,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { reportMissingShoe } from "../../actions/create-missing-shoes-report";
 import { MissingShoeReport } from "@/types";
+import { updateMissingShoeReport } from "../../actions/update-missing-shoe-details";
+import { Routes } from "@/lib/routes";
+import { useRouter } from "next/navigation";
 
 export const MissingShoesSchema = z.object({
   shoesToken: z.string().min(1, {
@@ -51,6 +54,7 @@ interface Props {
   missingShoe?: MissingShoeReport;
 }
 export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
+  const router = useRouter();
   const phoneNumberMask = useMask({
     mask: "___________",
     replacement: { _: /\d/ },
@@ -75,13 +79,18 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
 
   const onSubmit = async (values: z.infer<typeof MissingShoesSchema>) => {
     try {
-      const error = await reportMissingShoe(values);
-
-      if (!error) {
+      if (!missingShoe?.id) {
+        await reportMissingShoe(values);
         toast({
           title: "Report submitted successfully",
         });
+      } else {
+        await updateMissingShoeReport(missingShoe.id, values);
+        toast({
+          title: "Report updated successfully",
+        });
       }
+      router.push(Routes.MissingShoes);
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -210,7 +219,7 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
               disabled={!isValid}
               className="text-xs"
             >
-              Submit
+              {missingShoe?.id ? "Update" : " Submit"}
             </Button>
           </div>
         </form>
