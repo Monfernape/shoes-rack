@@ -1,6 +1,5 @@
 import React from "react";
 import { NotificationLayout } from "./components/NotificationLayout";
-import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 
