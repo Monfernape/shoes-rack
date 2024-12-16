@@ -23,10 +23,11 @@ export const HeaderWrapper = ({ breadcrumbs, children }: HeaderWrapperProps) => 
     setSidebarOpen(!isSidebarOpen);
   };
 
+  console.log({loggedInUser})
   return (
     <div
       className={`sticky z-50 w-full ${
-        !loggedInUser?.temporary_password ? "top-10" : "top-0"
+        loggedInUser?.temporary_password ? "top-10" : "top-0"
       }`}
     >
       {isSidebarOpen && (
