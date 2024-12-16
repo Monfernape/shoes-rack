@@ -9,17 +9,22 @@ import {
   InfoIcon,
 } from "lucide-react";
 import { MissingShoeStatus } from "@/constant/constant";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/lib/routes";
 
 export const MissingShoesActions = ({
   missingShoesId,
 }: {
   missingShoesId: number;
 }) => {
+  const router = useRouter();
   const handleEditInfo = (id: number) => {
     return id;
   };
 
-  const handleViewDetails = (id: number) => {return id};
+  const handleViewDetails = (id: number) => {
+    router.push(`${Routes.MissingShoesDetails}/${id}`);
+  };
 
   const handleMissingShoesStatus = async (
     id: number,
