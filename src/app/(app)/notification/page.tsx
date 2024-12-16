@@ -3,35 +3,39 @@ import { NotificationLayout } from "./components/NotificationLayout";
 import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
+
 const notifications = [
   {
     id: 1,
-    memberId: 1,
-    isRead: true,
+    member_id: 1,
+    is_read: true,
     title: "Attendance list update",
-    path: `${Routes.Notification}`,
+    sender_id:null,
+    system_generated:true,
     description:
       "Please approve the attendance records for [specific department/team] at your earliest convenience ",
     created_at: new Date(Date.now()),
   },
   {
     id: 2,
-    memberId: 2,
-    title: "Leave request update",
-    isRead: true,
-    path: `${Routes.Notification}`,
+    member_id: 2,
+    is_read: true,
+    title: "Leave list update",
+    sender_id:null,
+    system_generated:true,
     description:
-      "Please approve the attendance records for [specific department/team] at your earliest convenience ",
+      "Please approve the leave records for [specific department/team] at your earliest convenience ",
     created_at: new Date(Date.now()),
   },
   {
     id: 3,
-    memberId: 3,
-    title: "Missing Shoes update",
-    isRead: true,
-    path: `${Routes.Notification}`,
+    member_id: 3,
+    is_read: true,
+    title: "Missing shoes update",
+    sender_id:null,
+    system_generated:true,
     description:
-      "Please approve the attendance records for [specific department/team] at your earliest convenience ",
+      "Please approve the missing shoes records for [specific department/team] at your earliest convenience ",
     created_at: new Date(Date.now()),
   },
 ];

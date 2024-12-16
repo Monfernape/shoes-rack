@@ -65,7 +65,7 @@ export const NotificationLayout = ({
                     </div>
                   </div>
                   <div className="flex align-middle items-center flex-col ">
-                    {notification.isRead && <DotIcon className="w-8 h-auto mt-[-6px]" />}
+                    {notification.is_read && <DotIcon className="w-8 h-auto mt-[-6px]" />}
                     <p className="mt-">{format(notification.created_at,'P')}</p>
                   </div>
                 </div>

@@ -5,11 +5,14 @@ import { AttendanceStatus, LeaveTypes, MemberRole, Shift, UserStatus } from "@/c
 export type UserRole = "incharge" | "member" | "shift_incharge";
 export type Notifications =   {
   id: number;
-  memberId: number;
+  member_id: number;
   title: string;
-  isRead: boolean;
-  path: string;
+  is_read: boolean;
   created_at:Date;
+  sender_id:null | number,
+  system_generated : boolean ,
+  description:string,
+
 };
 export type AttendanceReportStatus =
   | "excellent"
