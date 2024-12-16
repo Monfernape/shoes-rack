@@ -4,7 +4,7 @@ import { getAttendanceReport } from "./actions/attendance-report";
 import { AttendanceReportList } from "./components/AttendanceReport";
 
 const Page = async () => {
-  const attendanceReport = await getAttendanceReport(); 
+  const attendanceReport = await getAttendanceReport();
 
   return (
     <PageLayout>
