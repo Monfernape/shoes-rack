@@ -23,7 +23,6 @@ export const HeaderWrapper = ({ breadcrumbs, children }: HeaderWrapperProps) => 
     setSidebarOpen(!isSidebarOpen);
   };
 
-  console.log({loggedInUser})
   return (
     <div
       className={`sticky z-50 w-full ${
