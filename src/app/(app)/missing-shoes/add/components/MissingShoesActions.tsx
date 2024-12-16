@@ -9,6 +9,8 @@ import {
   InfoIcon,
 } from "lucide-react";
 import { MissingShoeStatus } from "@/constant/constant";
+import { processMissingShoeStatus } from "../../actions/process-missing-shoe-status";
+import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
@@ -30,10 +32,24 @@ export const MissingShoesActions = ({
     id: number,
     status: MissingShoeStatus
   ) => {
-    return {
-      id,
-      status,
-    };
+    try {
+      await processMissingShoeStatus({
+        missingShoeId: id,
+        missingShoeStatus: status,
+      });
+      toast({
+        title: "Success",
+        description: "Status updated successfully.",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description:
+            "There was an issue updating the status. Please try again.",
+        });
+      }
+    }
   };
 
   const actionMenu = useMemo(
