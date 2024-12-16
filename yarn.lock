@@ -1082,10 +1082,10 @@
   dependencies:
     jose "^4.14.4"
 
-"@supabase/auth-js@2.66.1":
-  version "2.66.1"
-  resolved "https://registry.yarnpkg.com/@supabase/auth-js/-/auth-js-2.66.1.tgz#40d9e7d98206123afc169877ecfe3fea33a4a0ae"
-  integrity sha512-kOW+04SuDXmP2jRX9JL1Rgzduj8BcOG1qC3RaWdZsxnv89svNCdLRv8PfXW3QPKJdw0k1jF30OlQDPkzbDEL9w==
+"@supabase/auth-js@2.65.1":
+  version "2.65.1"
+  resolved "https://registry.yarnpkg.com/@supabase/auth-js/-/auth-js-2.65.1.tgz#4f6ab9ece2e6613d2648ecf5482800f3766479ea"
+  integrity sha512-IA7i2Xq2SWNCNMKxwmPlHafBQda0qtnFr8QnyyBr+KaSxoXXqEzFCnQ1dGTy6bsZjVBgXu++o3qrDypTspaAPw==
   dependencies:
     "@supabase/node-fetch" "^2.6.14"
 
@@ -2285,7 +2285,7 @@ es-abstract@^1.17.5, es-abstract@^1.22.1, es-abstract@^1.22.3, es-abstract@^1.23
     unbox-primitive "^1.0.2"
     which-typed-array "^1.1.15"
 
-es-define-property@^1.0.0, es-define-property@^1.0.1:
+es-define-property@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/es-define-property/-/es-define-property-1.0.1.tgz#983eb2f9a6724e9303f61addf011c72e09e0b0fa"
   integrity sha512-e3nRfgfUZ4rNGL232gUgX06QNyyez04KdjFrF+LTRoOXmrOgFKDg4BCdsjW8EnT69eqdYGmRpJwiPVYNrCaW3g==
@@ -2947,6 +2947,13 @@ has-property-descriptors@^1.0.0, has-property-descriptors@^1.0.2:
   dependencies:
     es-define-property "^1.0.0"
 
+has-proto@^1.0.1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/has-proto/-/has-proto-1.2.0.tgz#5de5a6eabd95fdffd9818b43055e8065e39fe9d5"
+  integrity sha512-KIL7eQPfHQRC8+XluaIw7BHUwwqL19bQn4hzNgdr+1wXoU0KKj6rufu47lhY7KbJR2C6T6+PfyN0Ea7wkSS+qQ==
+  dependencies:
+    dunder-proto "^1.0.0"
+
 has-proto@^1.0.3:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/has-proto/-/has-proto-1.1.0.tgz#deb10494cbbe8809bce168a3b961f42969f5ed43"
@@ -2954,7 +2961,7 @@ has-proto@^1.0.3:
   dependencies:
     call-bind "^1.0.7"
 
-has-symbols@^1.0.3, has-symbols@^1.1.0:
+has-symbols@^1.0.3:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.1.0.tgz#fc9c6a783a084951d0b971fe1018de813707a338"
   integrity sha512-1cDNdwJ2Jaohmb3sg4OmKaMBwuC48sYni5HUw2DvsC8LjGTLK9h+eb1X6RyuOHe4hT0ULCW68iomhjUoKUqlPQ==
