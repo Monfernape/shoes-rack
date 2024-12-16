@@ -33,8 +33,8 @@ export enum LeaveRequestStatus {
 
 export enum AttendanceStatus {
   Pending = "pending",
-  Approve = "approved",
-  Reject = "rejected",
+  Approve = "approve",
+  Reject = "reject",
 }
 
 export enum Cookies {
