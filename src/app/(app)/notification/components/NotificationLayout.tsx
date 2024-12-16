@@ -9,12 +9,12 @@ import Link from "next/link";import { Button } from "@/components/ui/button";
 import { Routes } from "@/lib/routes";
 import { useSearchParams } from "next/navigation";
 import { NotificationContainer } from "./NotificationContainer";
-import { Notifcations, UserDetails } from "@/types";
+import { Notifications, UserDetails } from "@/types";
 import { format } from "date-fns";
 
 type NotificationLayoutProps = {
   user: UserDetails;
-  notifications?: Notifcations[];
+  notifications?: Notifications[];
 };
 export const NotificationLayout = ({
   user,
