@@ -9,7 +9,7 @@ export const getMissingShoeById = async (requestId: number) => {
     .from(Tables.MissingShoes)
     .select()
     .eq("id", requestId)
-    .maybeSingle();
+    .single();
 
   if (error) {
     throw error.message;

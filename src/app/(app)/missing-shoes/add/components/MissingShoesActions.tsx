@@ -21,7 +21,7 @@ export const MissingShoesActions = ({
 }) => {
   const router = useRouter();
   const handleEditInfo = (id: number) => {
-    return id;
+    router.push(`${Routes.EditMissingShoes}/${id}`);
   };
 
   const handleViewDetails = (id: number) => {
