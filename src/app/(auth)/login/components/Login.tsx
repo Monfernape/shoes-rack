@@ -23,7 +23,6 @@ import { toast } from "@/hooks/use-toast";
 import { useMask } from "@react-input/mask";
 import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import Image from "next/image";
-import FormWrapper from "@/common/FormWrapper";
 import { loginUser } from "@/app/(auth)/login/actions/loginUser";
 
 const userSchema = z.object({
