@@ -1,53 +1,25 @@
 import React from "react";
-import { NotificationLayout } from "./components/NotificationLayout";
-import { getLoggedInUser } from "@/utils/getLoggedInUser";
-import { NotificationType } from "@/constant/constant";
+import { BellIcon } from "lucide-react";
+import { StandardPage } from "@/common/StandardPage/StandardPage";
+import { HeaderWrapper } from "@/common/HeaderWapper/HeaderWrapper";
+import { Breadcrumbs } from "@/types";
+import { Routes } from "@/lib/routes";
 
-const notifications = [
-  {
-    id: 1,
-    member_id: 1,
-    is_read: true,
-    title: "Attendance list update",
-    sender_id: null,
-    system_generated: true,
-    description:
-      "Please approve the attendance records for [specific department/team] at your earliest convenience ",
-    created_at: new Date(Date.now()),
-    type: NotificationType.Attendance,
-    members: null,
-  },
-  {
-    id: 2,
-    member_id: 2,
-    is_read: true,
-    title: "Leave list update",
-    sender_id: null,
-    system_generated: true,
-    description:
-      "Please approve the leave records for [specific department/team] at your earliest convenience ",
-    created_at: new Date(Date.now()),
-    type: NotificationType.Leave,
-    members: null,
-  },
-  {
-    id: 3,
-    member_id: 3,
-    is_read: true,
-    title: "Missing shoes update",
-    sender_id: null,
-    system_generated: true,
-    description:
-      "Please approve the missing shoes records for [specific department/team] at your earliest convenience ",
-    created_at: new Date(Date.now()),
-    type: NotificationType.MissingShoes,
-    members: null,
-  },
-];
+const breadcrumbs: Breadcrumbs[] = [{ href: Routes.Notification, label: "Notification" }];
+
 
 const Page = async () => {
-  const user = await getLoggedInUser();
-  return <NotificationLayout user={user} notifications={notifications} />;
-};
+  const standarPageProps = {
+    title: "Notification",
+    description: `There are 169 unread Notifications `,
+    actionButton: false,
+    buttonIcon: <BellIcon />,
+    hasContent: false,
+  };
+  return <>
+   <HeaderWrapper breadcrumbs={breadcrumbs}/>
+  <StandardPage {...standarPageProps} />
+  </>
 
+};
 export default Page;
