@@ -3,6 +3,7 @@ import {
   LeaveTypes,
   MemberRole,
   NotificationType,
+  MissingShoeStatus,
   Shift,
   UserStatus,
 } from "@/constant/constant";
@@ -122,3 +123,14 @@ export interface Attendance {
   name: string;
   shift: Shift;
 }
+
+export type MissingShoeReport = {
+  id: number;
+  status: MissingShoeStatus;
+  ownerName: string;
+  ownerPhoneNumber: string;
+  ownerAddress: string;
+  time: string;
+  shoesToken: string;
+  description: string;
+};

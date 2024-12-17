@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MissingShoeStatus } from "@/constant/constant";
 import {
   ColumnDef,
   flexRender,
@@ -17,43 +16,24 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Plus as PlusIcon } from "lucide-react";
+import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
+import { MissingShoesActions } from "../add/components/MissingShoesActions";
+import { MissingShoeReport } from "@/types";
+import { toast } from "@/hooks/use-toast";
+import { PostgrestError } from "@supabase/supabase-js";
 
-const shoes = [
-  {
-    color: "Red",
-    status: MissingShoeStatus.Missing,
-    size: 42,
-    ownerName: "John Doe",
-    ownerPhoneNumber: "+1234567890",
-    ownerAddress: "123 Main St, Springfield, IL",
-    time: "2024-12-09",
-    type:"formal"
-  },
-  {
-    color: "Blue",
-    status: MissingShoeStatus.Found,
-    size: 38,
-    ownerName: "Alice Smith",
-    ownerPhoneNumber: "+0987654321",
-    ownerAddress: "456 Oak Rd, Rivertown, TX",
-    time: "2024-12-08",
-    type:"formal"
-  },
-];
+interface Props {
+  missingShoesReports: MissingShoeReport[];
+  error: PostgrestError | null;
+}
+export const MissingShoes = ({ missingShoesReports, error }: Props) => {
+  if (error) {
+    toast({
+      title: error ? error.message : "",
+    });
+  }
 
-type MissingShoes = {
-  color: string;
-  status: string;
-  size: number;
-  ownerName: string;
-  ownerPhoneNumber: string;
-  ownerAddress: string;
-  time: string;
-  type: string
-};
-
-export const MissingShoes = () => {
-  const columns: ColumnDef<MissingShoes>[] = useMemo(
+  const columns: ColumnDef<MissingShoeReport>[] = useMemo(
     () => [
       {
         accessorKey: "ownerName",
@@ -70,43 +50,33 @@ export const MissingShoes = () => {
         ),
       },
       {
-        accessorKey: "ownerAddress",
-        header: "Address",
-        cell: ({ row }) => <div>{row.getValue("ownerAddress")}</div>,
-      },
-      {
         accessorKey: "time",
         header: "Time Lost",
         cell: ({ row }) => <div>{row.getValue("time")}</div>,
       },
       {
-        accessorKey: "size",
-        header: "Size",
-        cell: ({ row }) => <div>{row.getValue("size")}</div>,
-      },
-      {
-        accessorKey: "color",
-        header: "Color",
-        cell: ({ row }) => <div>{row.getValue("color")}</div>,
-      },
-      {
-        accessorKey: "type",
-        header: "Shoes Type",
-        cell: ({ row }) => <div>{row.getValue("type")}</div>,
+        accessorKey: "shoesToken",
+        header: "Shoes Token",
+        cell: ({ row }) => <div>{row.getValue("shoesToken")}</div>,
       },
       {
         accessorKey: "status",
         header: "Status",
-        //Status badge will be replace with text
-        cell: ({ row }) => <div>{row.getValue("status")}</div>,
+        cell: ({ row }) => (
+          <div>
+            {<MissingShoesStatusBadge status={row.getValue("status")} />}
+          </div>
+        ),
       },
       {
-        id: "actions",
+        id: "id",
         enableHiding: false,
         header: () => {
           return <div>Action</div>;
         },
-        // Action cell will be created
+        cell: ({ row }) => (
+          <div> {<MissingShoesActions missingShoesId={row.original.id} />}</div>
+        ),
       },
     ],
     []
@@ -115,19 +85,19 @@ export const MissingShoes = () => {
   const addMissingShoes = () => {};
 
   const table = useReactTable({
-    data: shoes,
+    data: missingShoesReports,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const StandardPageProps = {
-    hasContent: !!shoes.length,
+    hasContent: !!missingShoesReports.length,
     title: "Add missing shoes",
     description: "This is where you can see all missing shoes.",
     buttonIcon: <PlusIcon />,
     actionButton: true,
     onAction: addMissingShoes,
-    labelForActionButton: "Add missing shoes",
+    labelForActionButton: "Add shoe",
   };
   return (
     <StandardPage {...StandardPageProps}>

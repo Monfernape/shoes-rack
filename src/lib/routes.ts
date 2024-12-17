@@ -14,6 +14,8 @@ export enum Routes {
   ShiftIncharge = "/shift-incharge",
   MissingShoes = "/missing-shoes",
   AddMissingShoes = "/missing-shoes/add",
+  MissingShoesDetails = "/missing-shoes/details",
+  EditMissingShoes = "/missing-shoes/edit",
   LeaveRequest = "/leaves",
   AddLeaveRequest = "/leaves/add",
   Playground = "/playground",
