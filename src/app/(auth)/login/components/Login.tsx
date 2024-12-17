@@ -70,7 +70,6 @@ export const LoginPage = () => {
   } = form;
 
   return (
-    <FormWrapper>
     <div className="h-full flex items-center justify-center p-4">
     <div className="bg-white rounded-lg shadow-2xl overflow-hidden max-w-md w-full">
       <div className="flex justify-center item-center pt-8 ">
@@ -172,6 +171,5 @@ export const LoginPage = () => {
         </Form>
       </div>
     </div>
-    </FormWrapper>
   );
 };
