@@ -1,18 +1,27 @@
-import { AttendanceStatus, LeaveTypes, MemberRole, Shift, UserStatus } from "@/constant/constant";
-
-
+import {
+  AttendanceStatus,
+  LeaveTypes,
+  MemberRole,
+  NotificationType,
+  Shift,
+  UserStatus,
+} from "@/constant/constant";
 
 export type UserRole = "incharge" | "member" | "shift_incharge";
-export type Notifications =   {
+
+export type Notifications = {
   id: number;
   member_id: number;
   title: string;
   is_read: boolean;
-  created_at:Date;
-  sender_id:null | number,
-  system_generated : boolean ,
-  description:string,
-
+  created_at: Date;
+  sender_id: null | number;
+  system_generated: boolean;
+  description: string;
+  type: NotificationType | null;
+  members: null | {
+    name: string;
+  };
 };
 export type AttendanceReportStatus =
   | "excellent"
@@ -63,7 +72,7 @@ export type UserDetails = {
   cnic: string;
   ehad_duration: string;
   shift: string;
-  role: MemberRole
+  role: MemberRole;
   address: string;
   status: UserStatus;
   created_at: string;
@@ -86,13 +95,13 @@ export enum LeavesRequestStatus {
 
 export type LeaveRequestsTypes = {
   id: number;
-  memberId: number
+  memberId: number;
   leaveType: LeaveTypes;
   startDate: string;
   endDate: string;
   status: LeavesRequestStatus;
   reason: string;
-}
+};
 
 export enum RequestActionTitles {
   Edit = "edit",

@@ -24,7 +24,7 @@ export const NotificationLayout = ({
   const notificationId = searchParams.get("notificationid");
   return (
     <div className="flex  h-full ">
-      <div className="w-72  border-r h-full ">
+      <div className="w-96 border-r h-full ">
         <div className="flex justify-between items-center h-16 p-4 border-b">
           <h4 className="font-medium text-sm flex items-center">
             Notifications
@@ -40,13 +40,13 @@ export const NotificationLayout = ({
             <li className=" border-b " key ={notification.id}>
               <Link
                 key={notification.id}
-                className={` flex items-center justify-center hover:bg-gray-100 px-2 py-2 text-xs ${
+                className={` flex items-center justify-center hover:bg-gray-100 px-5  py-3 text-xs ${
                   Number(notificationId) === notification.id &&
                   "bg-sidebar-active"
                 }  `}
                 href={`${Routes.Notification}?notificationid=${notification.id}`}
               >
-                <div className="flex gap-2">
+                <div className="flex w-full justify-between gap-2">
                   <div className="flex flex-col">
                     <div className="flex justify-between items-center">
                       <p className="font-normal text-sm ">
@@ -65,7 +65,7 @@ export const NotificationLayout = ({
                     </div>
                   </div>
                   <div className="flex align-middle items-center flex-col ">
-                    {notification.is_read && <DotIcon className="w-8 h-auto mt-[-6px]" />}
+                    {notification.is_read && <DotIcon className="w-10 h-auto mt-[-8px]" />}
                     <p className="mt-">{format(notification.created_at,'P')}</p>
                   </div>
                 </div>

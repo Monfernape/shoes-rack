@@ -50,6 +50,13 @@ export enum AttendanceProgress {
   low = "low",
 }
 
+export enum NotificationType {
+  Attendance = "attendance",
+  Leave = "leave",
+  MissingShoes = "missing_shoes",
+  MonthlyReport = "monthly_report",
+  Fund = "fund",
+}
 export enum AttendancePercentage {
   Excellent = 90,
   VeryGood = 80,
