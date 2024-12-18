@@ -10,7 +10,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const missingShoe = await getMissingShoeById(Number(id));
 
   const breadcrumbs = [
-    { href: Routes.MissingShoes, label: "Missing Shoes" },
+    { href: Routes.MissingShoes, label: "Missing shoes" },
     {
       href: `${Routes.MissingShoesDetails}/${id}`,
       label: id,

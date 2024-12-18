@@ -6,10 +6,10 @@ import { MissingShoesHeader } from "../components/MissingShoesHeader";
 
 const Page = () => {
   const breadcrumbs = [
-    { href: Routes.MissingShoes, label: "Missing Shoes" },
+    { href: Routes.MissingShoes, label: "Missing shoes" },
     {
       href: Routes.AddMissingShoes,
-      label: "Add Missing Shoe Report",
+      label: "Add missing shoe report",
     },
   ];
   return (
