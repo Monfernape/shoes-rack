@@ -16,9 +16,10 @@ import {
 } from "@/components/ui/form";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { Input } from "@/components/ui/input";
+import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 
 export const FundSchema = z.object({
-  name: z.string().min(1, {
+  memberId: z.string().min(1, {
     message: "Name is required.",
   }),
   amount: z
@@ -37,7 +38,7 @@ export const FundFormBuilder = () => {
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
-      name: "",
+      memberId: "",
       amount: "",
     },
     mode: "all",
@@ -46,6 +47,7 @@ export const FundFormBuilder = () => {
   const { isValid } = form.formState;
 
   function onSubmit(values: z.infer<typeof FundSchema>) {
+    console.log({ values })
     return values;
   }
   return (
@@ -58,12 +60,15 @@ export const FundFormBuilder = () => {
         >
           <FormField
             control={form.control}
-            name={"name"}
+            name={"memberId"}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>User Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter Name" {...field} />
+                  <MemberSelector
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
