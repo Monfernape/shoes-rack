@@ -14,7 +14,10 @@ export const updateFundDetails = async (
   const supabase = await getSupabaseClient();
   const { error } = await supabase
     .from(Tables.Funds)
-    .update(values)
+    .update({
+      member_id: values.memberId,
+      amount: values.amount,
+    })
     .eq("id", fundId);
 
   if (error) {
