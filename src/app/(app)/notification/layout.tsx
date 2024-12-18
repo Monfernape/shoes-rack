@@ -37,7 +37,7 @@ const notifications = [
     system_generated: true,
     description:
       "Please approve the missing shoes records for [specific department/team] at your earliest convenience ",
-    created_at: new Date(Date.now()),
+    created_at: new Date(2024,11,11),
     type: NotificationType.MissingShoes,
     members: null,
   },

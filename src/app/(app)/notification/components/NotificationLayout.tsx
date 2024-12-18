@@ -1,14 +1,10 @@
 "use client";
 import React from "react";
-import {
-  Search as SearchIcon,
-  Dot as DotIcon,
-} from "lucide-react";
+import { Dot as DotIcon } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Routes } from "@/lib/routes";
 import { Notifications } from "@/types";
-import { format } from "date-fns";
+import { formatDistance } from "date-fns";
 import { usePathname } from "next/navigation";
 type NotificationLayoutProps = {
   children: React.ReactNode;
@@ -27,15 +23,10 @@ export default function NotificationLayout({
   return (
     <div className="flex  h-full ">
       <div className="w-96  border-r h-full ">
-        <div className="flex justify-between items-center h-16 p-4 border-b">
-          <h4 className="font-medium text-sm flex items-center">
+        <div className="flex   items-center h-16 py-4 px-5 border-b">
+          <h4 className="font-medium text-sm text-center flex items-center">
             Notifications
           </h4>
-          <div className="flex justify-end gap-1 items-center">
-            <Button variant={"outline"} className="w-8 h-8">
-              <SearchIcon />
-            </Button>
-          </div>
         </div>
         <ul className="text-gray-700  ">
           {allnotification?.map((notification) => {
@@ -53,7 +44,7 @@ export default function NotificationLayout({
                   href={`${Routes.Notification}/${notification.id}`}
                 >
                   <div className="flex   w-full gap-2">
-                    <div className="flex flex-col flex-1">
+                    <div className="flex flex-col">
                       <div className="flex justify-between items-center">
                         <p className="font-normal text-sm ">
                           {notification.title}
@@ -70,14 +61,14 @@ export default function NotificationLayout({
                         </p>
                       </div>
                     </div>
-                    <div className="flex align-middle items-center flex-col">
+                    <div className="flex align-middle items-center flex-col flex-1">
                       <div className="min-w-8 h-8 ">
                         {notification.is_read && (
                           <DotIcon className="w-8 h-auto mt-[-6px]" />
                         )}
                       </div>
                       <p className="mt-[-8px]">
-                        {format(notification.created_at, "P")}
+                        {formatDistance(Date.now(), notification.created_at)}
                       </p>
                     </div>
                   </div>
