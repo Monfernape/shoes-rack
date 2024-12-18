@@ -122,7 +122,7 @@ export type MissingShoeReport = {
 
 export type FundType = {
   id: number;
-  created_at: string;
+  createdAt: string;
   memberId: string;
   amount: string;
 };

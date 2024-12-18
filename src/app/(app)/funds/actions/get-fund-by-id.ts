@@ -15,5 +15,10 @@ export const getFundDetailsById = async (fundId: number) => {
     throw error.message;
   }
 
-  return data;
+  return {
+    id: data.id,
+    createdAt: data.created_at,
+    memberId: data.member_id,
+    amount: data.amount,
+  };
 };
