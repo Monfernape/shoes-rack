@@ -119,3 +119,10 @@ export type MissingShoeReport = {
   shoesToken: string;
   description: string;
 };
+
+export type FundType = {
+  id: number;
+  created_at: string;
+  memberId: string;
+  amount: string;
+};

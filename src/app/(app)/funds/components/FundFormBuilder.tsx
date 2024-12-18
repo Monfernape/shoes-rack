@@ -21,6 +21,8 @@ import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { addFunds } from "../actions/add-funds";
+import { FundType } from "@/types";
+import { updateFundDetails } from "../actions/update-fund-details";
 
 export const FundSchema = z.object({
   memberId: z.string().min(1, {
@@ -38,13 +40,17 @@ export const FundSchema = z.object({
 
 export type FundSchemaType = z.infer<typeof FundSchema>;
 
-export const FundFormBuilder = () => {
+interface Props {
+  funds?: FundType;
+}
+
+export const FundFormBuilder = ({ funds }: Props) => {
   const router = useRouter();
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
-      memberId: "",
-      amount: "",
+      memberId: funds?.memberId ?? "",
+      amount: funds?.amount ?? "",
     },
     mode: "all",
   });
@@ -53,11 +59,19 @@ export const FundFormBuilder = () => {
 
   function onSubmit(values: z.infer<typeof FundSchema>) {
     try {
-      addFunds(values);
-      toast({
-        title: "Success",
-        description: "Fund added successfully",
-      });
+      if (!funds?.id) {
+        addFunds(values);
+        toast({
+          title: "Success",
+          description: "Fund added successfully",
+        });
+      } else {
+        updateFundDetails(funds?.id, values);
+        toast({
+          title: "Success",
+          description: "Fund updated successfully",
+        });
+      }
       router.push(Routes.Fund);
     } catch (error) {
       if (error instanceof Error) {
@@ -108,7 +122,7 @@ export const FundFormBuilder = () => {
 
           <div className="flex justify-end">
             <Button type="submit" disabled={!isValid} className="text-xs">
-              Submit
+              {funds?.id ? "Update" : "Submit"}
             </Button>
           </div>
         </form>
