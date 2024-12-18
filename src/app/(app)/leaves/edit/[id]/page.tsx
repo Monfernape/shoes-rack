@@ -10,7 +10,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   const breadcrumbs = [
     { href: Routes.LeaveRequest, label: "Leaves" },
-    { href: `${Routes.EditLeaveRequest}/${id}`, label: "Edit Leave Request" },
+    { href: `${Routes.EditLeaveRequest}/${id}`, label: "Edit leave request" },
   ];
 
   return (

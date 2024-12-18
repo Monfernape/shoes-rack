@@ -1,10 +1,12 @@
 import React from "react";
-import { MissingShoes } from "./components/MissingShoes";
 import { Routes } from "@/lib/routes";
-import { MissingShoesHeader } from "./components/MissingShoesHeader";
 import { PageLayout } from "@/app/layout/PageLayout";
+import { MissingShoesHeader } from "./components/MissingShoesHeader";
+import { MissingShoes } from "./components/MissingShoes";
+import { getAllMissingShoesReport } from "./actions/get-all-missing-shoes";
 
-const Page = () => {
+const Page = async() => {
+  const {missingShoesReports , error} = await getAllMissingShoesReport();
   const breadcrumbs = [
     { href: Routes.MissingShoes, label: "Missing shoes" },
     { href: Routes.AddMissingShoes, label: "Add missing shoes" },
@@ -13,7 +15,7 @@ const Page = () => {
     <div>
       <MissingShoesHeader breadcrumbs={breadcrumbs} />
       <PageLayout>
-        <MissingShoes />
+        <MissingShoes missingShoesReports={missingShoesReports}  error={error}/>
       </PageLayout>
     </div>
   );

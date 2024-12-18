@@ -16,11 +16,12 @@ type Parameters = {
 const Page = async ({ params }: Parameters) => {
   const { id } = params;
   const user = await getLoggedInUser()
+  const userInfo = await getUserById(id);
+
   const breadcrumbs: Breadcrumbs[] = [
     { href: Routes.Members, label: "Members" },
-    { href: `${Routes.MemberDetails}/${id}`, label: "Member details" },
+    { href: `${Routes.MemberDetails}/${id}`, label: userInfo.name },
   ];
-  const userInfo = await getUserById(id);
   return (
     <div>
       <MemberHeader  breadcrumbs={breadcrumbs} user = {user} />

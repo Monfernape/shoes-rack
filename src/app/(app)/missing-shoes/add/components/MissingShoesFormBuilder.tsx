@@ -14,42 +14,26 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { Input } from "@/components/ui/input";
 import { useMask } from "@react-input/mask";
 import { DateTimePicker } from "@/common/DateTimePicker/DateTimePicker";
 import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
-import { ShoesTyes } from "@/constant/constant";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
+import { reportMissingShoe } from "../../actions/create-missing-shoes-report";
+import { MissingShoeReport } from "@/types";
+import { updateMissingShoeReport } from "../../actions/update-missing-shoe-details";
+import { Routes } from "@/lib/routes";
+import { useRouter } from "next/navigation";
 
 export const MissingShoesSchema = z.object({
-  color: z.string().min(1, {
-    message: "Color must be required.",
+  shoesToken: z.string().min(1, {
+    message: "Shoes Token must be required.",
   }),
-  type: z.enum([
-    ShoesTyes.Boots,
-    ShoesTyes.DressShoes,
-    ShoesTyes.Sandals,
-    ShoesTyes.Sneakers,
-    ShoesTyes.Formal,
-    ShoesTyes.Other,
-  ]),
-  size: z.string().refine(
-    (val) => {
-      const sizeNumber = parseFloat(val);
-      return !isNaN(sizeNumber) && sizeNumber >= 1 && sizeNumber <= 50;
-    },
-    {
-      message: "Size must be a number between 1 and 50.",
-    }
-  ),
+  description: z.string().min(1, {
+    message: "Shoes description must be required.",
+  }),
   time: z.date().refine((val) => val.getTime() <= new Date().getTime(), {
     message: "The time cannot be in the future.",
   }),
@@ -66,16 +50,11 @@ export const MissingShoesSchema = z.object({
 
 export type MissingSchemaType = z.infer<typeof MissingShoesSchema>;
 
-const SHOES_TYPES = [
-  ShoesTyes.Boots,
-  ShoesTyes.DressShoes,
-  ShoesTyes.Sandals,
-  ShoesTyes.Sneakers,
-  ShoesTyes.Formal,
-  ShoesTyes.Other,
-];
-
-export const MissingShoesFormBuilder = () => {
+interface Props {
+  missingShoe?: MissingShoeReport;
+}
+export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
+  const router = useRouter();
   const phoneNumberMask = useMask({
     mask: "___________",
     replacement: { _: /\d/ },
@@ -84,13 +63,12 @@ export const MissingShoesFormBuilder = () => {
   const form = useForm<MissingSchemaType>({
     resolver: zodResolver(MissingShoesSchema),
     defaultValues: {
-      color: "",
-      type: ShoesTyes.Formal,
-      size: "",
-      time: undefined,
-      ownerName: "",
-      ownerPhoneNumber: "",
-      ownerAddress: "",
+      shoesToken: missingShoe?.shoesToken ?? "",
+      description: missingShoe?.description ?? "",
+      time: missingShoe?.time ? new Date(missingShoe.time) : new Date(),
+      ownerName: missingShoe?.ownerName ?? "",
+      ownerPhoneNumber: missingShoe?.ownerPhoneNumber ?? "",
+      ownerAddress: missingShoe?.ownerAddress ?? "",
     },
     mode: "all",
   });
@@ -99,90 +77,86 @@ export const MissingShoesFormBuilder = () => {
     formState: { errors, isValid },
   } = form;
 
-  function onSubmit(values: z.infer<typeof MissingShoesSchema>) {
-    return values;
-  }
+  const onSubmit = async (values: z.infer<typeof MissingShoesSchema>) => {
+    try {
+      if (!missingShoe?.id) {
+        await reportMissingShoe(values);
+        toast({
+          title: "Report submitted successfully",
+        });
+      } else {
+        await updateMissingShoeReport(missingShoe.id, values);
+        toast({
+          title: "Report updated successfully",
+        });
+      }
+      router.push(Routes.MissingShoes);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "Report is not submitted successfully",
+          description: error.message,
+        });
+      }
+    }
+  };
+
   return (
     <FormWrapper>
-      <FormTitle
-        title="Report Missing Shoe"
-      />
+      <FormTitle title="Report Missing Shoe" />
       <Form {...form}>
         <form
           data-testid="leaveRequestForm"
           action={() => form.handleSubmit(onSubmit)()}
           className="space-y-4"
         >
-            <FormField
-              control={form.control}
-              name={"color"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Red, Blue, Black" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Shoes Type</FormLabel>
-                  <FormControl>
-                    <Select
-                      {...field}
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <SelectTrigger data-testid="leave-type" id="type">
-                        <SelectValue placeholder="Select shoe type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {SHOES_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"size"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Size</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., 42, 8.5, 9" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"time"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Time Lost</FormLabel>
-                  <FormControl>
-                    <DateTimePicker
-                      time={field.value}
-                      onChangeTime={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name={"shoesToken"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Shoes Token</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., 101, 110, 120" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"time"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Time Lost</FormLabel>
+                <FormControl>
+                  <DateTimePicker
+                    time={field.value}
+                    onChangeTime={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Shoes Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Shoes Description"
+                    hasError={Boolean(errors.description)}
+                    className={`resize-none focus-visible:ring-0`}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="ownerName"
@@ -216,7 +190,7 @@ export const MissingShoesFormBuilder = () => {
                     hasError={errors?.ownerPhoneNumber && true}
                   />
                 </FormControl>
-                <FormMessage data-testid="phone_error" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -229,7 +203,6 @@ export const MissingShoesFormBuilder = () => {
                 <FormControl>
                   <Textarea
                     placeholder="Address"
-                    data-testid="leaveReason"
                     hasError={Boolean(errors.ownerAddress)}
                     className={`resize-none focus-visible:ring-0`}
                     {...field}
@@ -246,7 +219,7 @@ export const MissingShoesFormBuilder = () => {
               disabled={!isValid}
               className="text-xs"
             >
-              Submit
+              {missingShoe?.id ? "Update" : " Submit"}
             </Button>
           </div>
         </form>
