@@ -23,7 +23,7 @@ const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
     { href: Routes.Attendance, label: "Attendance" },
     {
       href: `${Routes.EditAttendance}/${attendanceId}`,
-      label: "Edit Attendance",
+      label: "Edit attendance",
     },
   ];
 

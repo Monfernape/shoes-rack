@@ -9,7 +9,7 @@ const page = async () => {
   const attendance = await getAttendance();
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Attendance" },
-    { href: Routes.AddAttendance, label: "Add attendance" },
+    { href: Routes.AddAttendance, label: "Review attendance" },
   ];
   return (
     <>
