@@ -16,6 +16,10 @@ import {
 } from "@/components/ui/form";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { Input } from "@/components/ui/input";
+import { createFunds } from "../actions/create-funds";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/lib/routes";
 
 export const FundSchema = z.object({
   name: z.string().min(1, {
@@ -34,6 +38,7 @@ export const FundSchema = z.object({
 export type FundSchemaType = z.infer<typeof FundSchema>;
 
 export const FundFormBuilder = () => {
+  const router = useRouter();
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
@@ -46,7 +51,21 @@ export const FundFormBuilder = () => {
   const { isValid } = form.formState;
 
   function onSubmit(values: z.infer<typeof FundSchema>) {
-    return values;
+    try {
+      createFunds(values);
+      toast({
+        title: "Success",
+        description: "Fund added successfully",
+      });
+      router.push(Routes.Fund);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description: "Something went wrong! Please try again.",
+        });
+      }
+    }
   }
   return (
     <FormWrapper>
