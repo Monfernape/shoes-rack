@@ -27,6 +27,6 @@
     }
    
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/attendance/route.tsx", "src/app/(app)/attendance-report/components/MyDocument.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/cron/notifications/attendance-report/route.tsx", "src/app/(app)/attendance-report/components/MyDocument.js"],
   "exclude": ["node_modules"]
 }
