@@ -1,9 +1,10 @@
 import React from "react";
 import { Routes } from "@/lib/routes";
 import { PageLayout } from "@/app/layout/PageLayout";
-import { MissingShoesHeader } from "./components/MissingShoesHeader";
-import { MissingShoes } from "./components/MissingShoes";
+
 import { getAllMissingShoesReport } from "./actions/get-all-missing-shoes";
+import { MissingShoes } from "./components/MissingShoes";
+import { MissingShoesHeader } from "./components/MissingShoesHeader";
 
 const Page = async() => {
   const {missingShoesReports , error} = await getAllMissingShoesReport();
