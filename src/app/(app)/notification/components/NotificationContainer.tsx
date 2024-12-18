@@ -53,7 +53,7 @@ export const NotificationContainer = ({
             href={Routes.Attendance}
             className="text-sm font-medium text-blue-500"
           >
-            {`${Routes.Attendance}`}
+            `${Routes.Attendance}`
           </Link>
         </div>
       </div>

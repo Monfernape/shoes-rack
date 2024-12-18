@@ -55,7 +55,7 @@ export enum NotificationType {
   Leave = "leave",
   MissingShoes = "missing_shoes",
   MonthlyReport = "monthly_report",
-  Fund = "fund",
+  Funds = "funds",
 }
 export enum AttendancePercentage {
   Excellent = 90,
