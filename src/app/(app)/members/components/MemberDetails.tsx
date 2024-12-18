@@ -60,6 +60,12 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
                 {userInfo.role}
               </p>
             </div>
+            <div className="pl-12 space-y-2">
+              <p className="text-xs">
+              <span className="font-medium text-muted-foreground">Shift:</span>{" "}
+                {userInfo.shift}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -69,13 +75,11 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
                 <PhoneIcon className="w-4 h-4" />
               </div>
-              <span>Contact Information</span>
+              <span>Contact number</span>
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">
-                <span className="font-medium text-muted-foreground">
-                  Phone:
-                </span>
+            
                 {userInfo.phoneNumber}
               </p>
             </div>
@@ -88,24 +92,15 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
                 <BriefcaseIcon className="w-4 h-4" />
               </div>
-              <span>Work Information</span>
+              <span>Ehad Duration</span>
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">
-                <span className="font-medium text-muted-foreground">
-                  Ehad Duration:
-                </span>
+              
                {dateFormat}
               </p>
             </div>
-            <div className="pl-12 space-y-2">
-              <p className="text-xs">
-                <span className="font-medium text-muted-foreground">
-                  Shift:
-                </span>
-                {userInfo.shift}
-              </p>
-            </div>
+
           </div>
         </div>
 
