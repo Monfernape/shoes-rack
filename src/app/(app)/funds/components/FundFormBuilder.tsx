@@ -47,7 +47,6 @@ export const FundFormBuilder = () => {
   const { isValid } = form.formState;
 
   function onSubmit(values: z.infer<typeof FundSchema>) {
-    console.log({ values })
     return values;
   }
   return (
