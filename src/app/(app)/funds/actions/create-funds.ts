@@ -8,7 +8,6 @@ import { FundSchemaType } from "../components/FundFormBuilder";
 export const createFunds = async (values: FundSchemaType) => {
   const supabase = await getSupabaseClient();
   const { error } = await supabase.from(Tables.Funds).insert(values);
-   console.log({ error })
   if (error) {
     return error;
   }
