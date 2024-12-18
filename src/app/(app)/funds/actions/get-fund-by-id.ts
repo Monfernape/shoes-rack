@@ -9,7 +9,7 @@ export const getFundDetailsById = async (fundId: number) => {
     .from(Tables.Funds)
     .select()
     .eq("id", fundId)
-    .maybeSingle();
+    .single();
 
   if (error) {
     throw error.message;

@@ -21,8 +21,8 @@ import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { addFunds } from "../actions/add-funds";
-import { FundType } from "@/types";
 import { updateFundDetails } from "../actions/update-fund-details";
+import { FundType } from "@/types";
 
 export const FundSchema = z.object({
   memberId: z.string().min(1, {
@@ -77,7 +77,7 @@ export const FundFormBuilder = ({ funds }: Props) => {
       if (error instanceof Error) {
         toast({
           title: "Error",
-          description: "Something went wrong! Please try again.",
+          description: error.message,
         });
       }
     }
