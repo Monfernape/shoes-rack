@@ -13,6 +13,8 @@ import { UserDetails } from "@/types";
 import { MemberRole } from "@/constant/constant";
 import { getAge } from "@/utils/ageFormater";
 import { dateformatter } from "@/utils/dateFormatter";
+import { localNumberFormat } from "@/utils/formattedPhoneNumber";
+import { formatRole } from "@/utils/formatRole";
 
 export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
     const dateFormat =    dateformatter(new Date(userInfo.ehad_duration))  
@@ -57,7 +59,7 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
             <div className="pl-12 space-y-2">
               <p className="text-xs">
                 <span className="font-medium text-muted-foreground">Role:</span>{" "}
-                {userInfo.role}
+                {formatRole(userInfo.role)}
               </p>
             </div>
           </div>
@@ -76,7 +78,7 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
                 <span className="font-medium text-muted-foreground">
                   Phone:
                 </span>
-                {userInfo.phoneNumber}
+                {localNumberFormat(userInfo.phoneNumber)}
               </p>
             </div>
           </div>
