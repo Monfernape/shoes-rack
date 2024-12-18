@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import { Fund } from "@/types";
+import { Edit } from "lucide-react";
 
 const funds: Fund[] = [
   {
@@ -50,7 +51,7 @@ const action = [
   {
     id: 1,
     title: "Edit",
-    icon: null,
+    icon: <Edit size={16} />,
     onClick: handleEdit,
   },
 ];
