@@ -125,4 +125,6 @@ export type Fund = {
   name: string;
   amount: number;
   created_at: Date;
+  role:MemberRole;
+  member_id:number
 };
