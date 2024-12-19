@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Plus as PlusIcon } from "lucide-react";
+import { PersonIcon } from "@radix-ui/react-icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Member } from "@/types";
@@ -137,6 +138,7 @@ export const MemberList = ({
     title: "Add Member",
     description: "This is where you can add members",
     buttonIcon: <PlusIcon />,
+    icon: <PersonIcon />,
     actionButton: true,
     onAction: handleNavigation,
     labelForActionButton: "Add Member",

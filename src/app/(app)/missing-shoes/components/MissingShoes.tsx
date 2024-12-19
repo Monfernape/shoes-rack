@@ -16,6 +16,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Plus as PlusIcon } from "lucide-react";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
 import { MissingShoesActions } from "../add/components/MissingShoesActions";
 import { MissingShoeReport } from "@/types";
@@ -75,7 +76,14 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
           return <div>Action</div>;
         },
         cell: ({ row }) => (
-          <div> {<MissingShoesActions key={row.getValue("id")} missingShoesId={row.getValue("id")} />}</div>
+          <div>
+            {
+              <MissingShoesActions
+                key={row.getValue("id")}
+                missingShoesId={row.getValue("id")}
+              />
+            }
+          </div>
         ),
       },
     ],
@@ -95,6 +103,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     title: "Add missing shoes",
     description: "This is where you can see all missing shoes.",
     buttonIcon: <PlusIcon />,
+    icon: <ExclamationTriangleIcon />,
     actionButton: true,
     onAction: addMissingShoes,
     labelForActionButton: "Add shoe",
