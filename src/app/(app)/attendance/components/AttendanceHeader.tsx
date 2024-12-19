@@ -18,7 +18,7 @@ export const AttendanceHeader = ({ breadcrumbs }: Props) => {
       {pathname === Routes.Attendance && (
         <NavigationButton
           path={Routes.AddAttendance}
-          buttonText="Create Leave"
+          buttonText="Create Attendance"
         />
       )}
     </HeaderWrapper>

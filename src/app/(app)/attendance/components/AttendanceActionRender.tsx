@@ -33,7 +33,7 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
   };
 
   const handleEditInfo = (requestId: number) => {
-    router.push(`${Routes.EditLeaveRequest}/${requestId}`);
+    router.push(`${Routes.EditAttendance}/${requestId}`);
   };
 
   const handleDeleteRequest = async (requestId: number) => {
