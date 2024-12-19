@@ -68,6 +68,13 @@ export const SHIFT_TIMING = [
   },
 ];
 
+export enum NotificationType {
+  Attendance = "attendance",
+  Leave = "leave",
+  MissingShoes = "missing_shoes",
+  MonthlyReport = "monthly_report",
+  Funds = "funds",
+}
 export enum AttendancePercentage {
   Excellent = 90,
   VeryGood = 80,
