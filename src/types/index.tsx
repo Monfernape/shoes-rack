@@ -1,7 +1,9 @@
+import { FundSchemaType } from "@/app/(app)/funds/components/FundFormBuilder";
 import {
   AttendanceStatus,
   LeaveTypes,
   MemberRole,
+  NotificationType,
   MissingShoeStatus,
   Shift,
   UserStatus,
@@ -9,6 +11,20 @@ import {
 
 export type UserRole = "incharge" | "member" | "shift_incharge";
 
+export type Notifications = {
+  id: number;
+  member_id: number;
+  title: string;
+  is_read: boolean;
+  created_at: Date;
+  sender_id: null | number;
+  system_generated: boolean;
+  description: string;
+  type: NotificationType | null;
+  members: null | {
+    name: string;
+  };
+};
 export type AttendanceReportStatus =
   | "excellent"
   | "good"
@@ -128,3 +144,7 @@ export type Fund = {
   role:MemberRole;
   member_id:number
 };
+export interface FundType extends FundSchemaType {
+  id: number;
+  createdAt: string;
+}

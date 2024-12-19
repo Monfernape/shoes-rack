@@ -17,7 +17,7 @@ const statusClasses = {
   },
 } as const;
 
-export const LeavesStatusBadge = ({
+export const StatusBadge = ({
   status,
 }: {
   status: LeavesRequestStatus;

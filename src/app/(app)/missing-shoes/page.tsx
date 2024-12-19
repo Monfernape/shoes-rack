@@ -10,7 +10,7 @@ const Page = async() => {
   const {missingShoesReports , error} = await getAllMissingShoesReport();
   const breadcrumbs = [
     { href: Routes.MissingShoes, label: "Missing shoes" },
-    { href: Routes.AddMissingShoes, label: "Add missing shoes" },
+    { href: Routes.EditMissingShoes, label: "Edit shoe" },
   ];
   return (
     <div>

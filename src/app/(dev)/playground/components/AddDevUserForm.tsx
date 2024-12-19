@@ -81,7 +81,7 @@ const AddDevUserForm = () => {
     <Card className="p-6 max-w-xlg mx-auto mb-6">
     <Form {...form}>
       <form
-        action={() => form.handleSubmit(handleSubmission)()}
+        action={form.handleSubmit(handleSubmission) as unknown as string}
         className="space-y-4"
         data-testid="form-valid"
       >
