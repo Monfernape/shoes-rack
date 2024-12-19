@@ -52,7 +52,7 @@ type AttendanceReportItem = {
   leave: number;
 };
 
-export const MonthlyAttendancePdf = ({ data }: { data: AttendanceReportItem[] }) => (
+export const MonthlyAttendancePdf = ({ attendanceReport }: { attendanceReport: AttendanceReportItem[] }) => (
   <Document>
     <Page style={styles.page}>
       <Text style={styles.title}>Monthly Attendance Report</Text>
@@ -68,7 +68,7 @@ export const MonthlyAttendancePdf = ({ data }: { data: AttendanceReportItem[] })
       </View>
 
       {/* Table Rows */}
-      {data?.map((item, index) => (
+      {attendanceReport.map((item, index) => (
         <View key={index} style={styles.tableRow}>
           <Text style={styles.cell}>{item.name}</Text>
           <Text style={styles.cell}>{item.attendancePercentage}</Text>
