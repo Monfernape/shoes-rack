@@ -39,7 +39,7 @@ export async function GET() {
 
     await supabase.storage
       .from(bucketName)
-      .upload(fileName, pdfBuffer, { upsert: true });
+      .upload(fileName, pdfBuffer,);
     });
 
     return NextResponse.json({ data: "Success", status: 200 });
