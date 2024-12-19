@@ -69,13 +69,13 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
         ),
       },
       {
-        id: "id",
+        accessorKey: "id",
         enableHiding: false,
         header: () => {
           return <div>Action</div>;
         },
         cell: ({ row }) => (
-          <div> {<MissingShoesActions missingShoesId={row.original.id} />}</div>
+          <div> {<MissingShoesActions key={row.getValue("id")} missingShoesId={row.getValue("id")} />}</div>
         ),
       },
     ],

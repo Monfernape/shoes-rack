@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { MemberRole, Shift } from "@/constant/constant";
+import { MemberRole, SHIFT_TIMING, Shift } from "@/constant/constant";
 import {
   Select,
   SelectContent,
@@ -55,25 +55,6 @@ export const USER_ROLES = [
   },
 ];
 
-const SHIFT_TIMING = [
-  {
-    time: "Shift 12:00am to 00:06am",
-    shift: Shift.ShiftA,
-  },
-  {
-    time: "Shift 00:06am to 00:12pm",
-    shift: Shift.ShiftB,
-  },
-  {
-    time: "Shift 00:12pm to 00:06pm",
-    shift: Shift.ShiftC,
-  },
-  {
-    time: "Shift 00:06pm to 00:12am",
-    shift: Shift.ShiftD,
-  },
-];
-
 export const userBuilderSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required",
@@ -110,7 +91,7 @@ export const userBuilderSchema = z.object({
       return date <= minDate;
     },
     {
-      message: "Ehad Duration must be more than 30 days ago",
+      message: "Ehad duration must be more than 30 days ago",
     }
   ),
 });
@@ -192,7 +173,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
     <FormWrapper>
       <Form {...form}>
         <form
-          action={() => form.handleSubmit(handleSubmission)()}
+          action={form.handleSubmit(handleSubmission) as unknown as string}
           className="space-y-4"
           data-testid="form"
         >

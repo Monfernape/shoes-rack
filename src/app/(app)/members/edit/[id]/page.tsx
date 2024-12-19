@@ -16,7 +16,7 @@ const Page = async ({ params }: Parameters) => {
   const user = await getLoggedInUser()
   const breadcrumbs: Breadcrumbs[] = [
     { href: Routes.Members, label: "Members" },
-    { href: `${Routes.EditMember}/${id}`, label: "Edit Member" },
+    { href: `${Routes.EditMember}/${id}`, label: "Edit member" },
   ];
   const member = await getUserById(id);
 

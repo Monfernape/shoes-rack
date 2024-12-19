@@ -10,16 +10,17 @@ interface Props {
   breadcrumbs: Breadcrumbs[];
 }
 
-export const AttendanceHeader = ({ breadcrumbs }: Props) => {
+export const FundHeader = ({ breadcrumbs }: Props) => {
   const pathname = usePathname();
-
   return (
     <HeaderWrapper breadcrumbs={breadcrumbs}>
-      {pathname === Routes.Attendance && (
-        <NavigationButton
-          path={Routes.AddAttendance}
-          buttonText="Create Leave"
-        />
+      {pathname === Routes.Fund && (
+        <div className="flex items-center space-x-2">
+          <NavigationButton
+            path={Routes.AddFund}
+            buttonText="Add Shoes"
+          />
+        </div>
       )}
     </HeaderWrapper>
   );
