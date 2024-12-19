@@ -3,7 +3,7 @@ import * as cron from "node-cron";
 import ReactPDF from "@react-pdf/renderer";
 import { NextResponse } from "next/server";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { MyDocument } from "@/app/(app)/attendance-report/components/generatePdf";
+import { MonthlyAttendancePdf } from "@/app/(app)/attendance-report/components/MonthlyReportPdf";
 import { getAttendanceReport } from "@/app/(app)/attendance-report/actions/attendance-report";
 
 export async function GET() {
@@ -33,7 +33,7 @@ export async function GET() {
     // eslint-disable-next-line react/react-in-jsx-scope
     const stream = await ReactPDF.renderToStream(
       // eslint-disable-next-line react/react-in-jsx-scope
-      <MyDocument data={attendanceReport} />
+      <MonthlyAttendancePdf data={attendanceReport} />
     );
     const pdfBuffer = await streamToBuffer(stream);
 

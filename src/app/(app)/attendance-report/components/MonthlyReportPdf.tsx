@@ -52,7 +52,7 @@ type AttendanceReportItem = {
   leave: number;
 };
 
-export const MyDocument = ({ data }: { data: AttendanceReportItem[] }) => (
+export const MonthlyAttendancePdf = ({ data }: { data: AttendanceReportItem[] }) => (
   <Document>
     <Page style={styles.page}>
       <Text style={styles.title}>Monthly Attendance Report</Text>
