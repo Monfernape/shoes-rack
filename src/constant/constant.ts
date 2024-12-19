@@ -49,6 +49,24 @@ export enum AttendanceProgress {
   Average = "average",
   low = "low",
 }
+export const SHIFT_TIMING = [
+  {
+    time: "Shift 12:00am to 00:06am",
+    shift: Shift.ShiftA,
+  },
+  {
+    time: "Shift 00:06am to 00:12pm",
+    shift: Shift.ShiftB,
+  },
+  {
+    time: "Shift 00:12pm to 00:06pm",
+    shift: Shift.ShiftC,
+  },
+  {
+    time: "Shift 00:06pm to 00:12am",
+    shift: Shift.ShiftD,
+  },
+];
 
 export enum AttendancePercentage {
   Excellent = 90,

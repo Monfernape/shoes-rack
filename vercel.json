@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/cron/attendance",
+      "schedule": "0 0 * * *"
+    },
+    {
       "path": "/api/cron/notifications/monthly-attendance-report",
       "schedule": "0 6 1 * *"
     }
