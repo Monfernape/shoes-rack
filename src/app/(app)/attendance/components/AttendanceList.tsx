@@ -21,6 +21,7 @@ import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
 import { Attendance } from "@/types";
+import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
 
 interface AttendanceProps {
   attendance: Attendance[];
@@ -58,7 +59,9 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
       {
         accessorKey: "status",
         header: "Status",
-        cell: () => {},
+        cell: ({ row }) => (
+          <LeavesStatusBadge status={row.getValue("status")} />
+        ),
       },
       {
         id: "actions",
