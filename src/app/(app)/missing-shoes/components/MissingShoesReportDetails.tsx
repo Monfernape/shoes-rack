@@ -33,7 +33,7 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
                 <FootprintsIcon className="w-4 h-4" />
               </div>
-              <span>Shoes Token</span>
+              <span>Token number</span>
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">{missingShoe.shoesToken}</p>
@@ -47,13 +47,11 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
                 <ClockIcon className="w-4 h-4" />
               </div>
-              <span>Time Information</span>
+              <span>Lost time</span>
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">
-                <span className="font-medium text-muted-foreground">
-                  Time Lost:
-                </span>
+            
                 {missingShoe.time}
               </p>
             </div>
@@ -66,7 +64,7 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
                 <FileTextIcon className="w-4 h-4" />
               </div>
-              <span>Shoe Description</span>
+              <span>Shoe description</span>
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">{missingShoe.description}</p>
@@ -80,11 +78,11 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
                 <UserIcon className="w-4 h-4" />
               </div>
-              <span>Owner Information</span>
+              <span>Owner name</span>
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">
-                <span className="font-medium text-muted-foreground">Name:</span>
+
                 {missingShoe.ownerName}
               </p>
             </div>
@@ -97,13 +95,11 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
                 <PhoneIcon className="w-4 h-4" />
               </div>
-              <span>Contact Information</span>
+              <span>Contact number</span>
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">
-                <span className="font-medium text-muted-foreground">
-                  Phone:
-                </span>
+         
                 {missingShoe.ownerPhoneNumber}
               </p>
             </div>
