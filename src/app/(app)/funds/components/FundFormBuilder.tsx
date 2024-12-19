@@ -57,7 +57,7 @@ export const FundFormBuilder = ({ funds }: Props) => {
 
   const { isValid } = form.formState;
 
-  function onSubmit(values: z.infer<typeof FundSchema>) {
+  const onSubmit = async(values: z.infer<typeof FundSchema>) =>{
     try {
       if (!funds?.id) {
         addFunds(values);
@@ -72,7 +72,6 @@ export const FundFormBuilder = ({ funds }: Props) => {
           description: "Fund updated successfully",
         });
       }
-      router.push(Routes.Fund);
     } catch (error) {
       if (error instanceof Error) {
         toast({
