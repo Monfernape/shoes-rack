@@ -21,6 +21,7 @@ import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
 import { Attendance } from "@/types";
+import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 
 interface AttendanceProps {
   attendance: Attendance[];
@@ -58,7 +59,9 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
       {
         accessorKey: "status",
         header: "Status",
-        cell: () => {},
+        cell: ({ row }) => (
+          <StatusBadge status={row.getValue("status")} />
+        ),
       },
       {
         id: "actions",
@@ -100,12 +103,12 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
 
   const StandardPageProps = {
     hasContent: !!attendance.length,
-    title: "Add Attendance",
+    title: "Add attendance",
     description: "This is where you can see all attendance",
     buttonIcon: <Plus />,
     actionButton: true,
     onAction: addAttendance,
-    labelForActionButton: "Add Attendance",
+    labelForActionButton: "Add attendance",
   };
 
   return (

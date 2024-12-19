@@ -4,7 +4,6 @@ export enum MemberRole {
   Member = "member",
 }
 
-
 export enum Shift {
   ShiftA = "A",
   ShiftB = "B",
@@ -68,3 +67,15 @@ export const SHIFT_TIMING = [
     shift: Shift.ShiftD,
   },
 ];
+
+export enum AttendancePercentage {
+  Excellent = 90,
+  VeryGood = 80,
+  Good = 70,
+  Average = 60,
+}
+
+export enum MissingShoeStatus {
+  Missing = "missing",
+  Found = "found",
+}

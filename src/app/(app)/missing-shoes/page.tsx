@@ -1,9 +1,24 @@
-import React from 'react'
+import React from "react";
+import { Routes } from "@/lib/routes";
+import { PageLayout } from "@/app/layout/PageLayout";
+import { MissingShoesHeader } from "./components/MissingShoesHeader";
+import { MissingShoes } from "./components/MissingShoes";
+import { getAllMissingShoesReport } from "./actions/get-all-missing-shoes";
 
-const page = () => {
+const Page = async() => {
+  const {missingShoesReports , error} = await getAllMissingShoesReport();
+  const breadcrumbs = [
+    { href: Routes.MissingShoes, label: "Missing shoes" },
+    { href: Routes.EditMissingShoes, label: "Edit shoe" },
+  ];
   return (
-    <div>Missing Shoes page</div>
-  )
-}
+    <div>
+      <MissingShoesHeader breadcrumbs={breadcrumbs} />
+      <PageLayout>
+        <MissingShoes missingShoesReports={missingShoesReports}  error={error}/>
+      </PageLayout>
+    </div>
+  );
+};
 
-export default page
+export default Page;

@@ -22,19 +22,17 @@ import { AttendanceProgress } from "@/constant/constant";
 
 type AttendanceProps = {
   name: string;
-  id: string;
   attendancePercentage: string;
-  attendanceStatus: AttendanceProgress;
+  status: AttendanceProgress;
+  present: number;
+  absent: number;
+  leave: number;
   createdAt: string;
 };
 
 export const AttendanceReportList = ({ data }: { data: AttendanceProps[] }) => {
   const { toast } = useToast();
 
-  const getMonth = (createdAt: string): string => {
-    const date = new Date(createdAt);
-    return date.toLocaleString("en-US", { month: "long" });
-  }
 
   const columns: ColumnDef<AttendanceProps>[] = useMemo(
     () => [
@@ -46,14 +44,27 @@ export const AttendanceReportList = ({ data }: { data: AttendanceProps[] }) => {
         ),
       },
       {
-        accessorKey: "createdAt",
-        header: "Month",
+        accessorKey: "present",
+        header: "Present",
         cell: ({ row }) => (
-          <div className="capitalize">
-            {getMonth(row.getValue("createdAt"))}
-          </div>
+          <div className="capitalize">{row.getValue("present")}</div>
         ),
       },
+      {
+        accessorKey: "leave",
+        header: "Leave",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("leave")}</div>
+        ),
+      },
+      {
+        accessorKey: "absent",
+        header: "Absent",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("absent")}</div>
+        ),
+      },
+
       {
         accessorKey: "attendancePercentage",
         header: "Percentage",
@@ -64,10 +75,10 @@ export const AttendanceReportList = ({ data }: { data: AttendanceProps[] }) => {
         ),
       },
       {
-        accessorKey: "attendanceStatus",
+        accessorKey: "status",
         header: "Status",
         cell: ({ row }) => (
-          <AttendanceStatusBadge status={row.getValue("attendanceStatus")} />
+          <AttendanceStatusBadge status={row.getValue("status")} />
         ),
       },
     ],
@@ -95,32 +106,32 @@ export const AttendanceReportList = ({ data }: { data: AttendanceProps[] }) => {
   }, [data]);
 
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
   );
 };

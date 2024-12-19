@@ -20,12 +20,13 @@ export async function GET() {
       if (error) {
         throw error;
       }
+
       const allNotification = users.map((user) => ({
         title: "Review Attendance",
         system_generated: true,
         description: "Please Review Attendance",
         member_id: user.id,
-        is_read: true,
+        is_read: false,
       }));
       const { error: insertionError } = await supabase
         .from(Tables.Notification)

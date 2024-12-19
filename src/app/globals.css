@@ -64,6 +64,7 @@
     --status-rejected: 0, 100%, 40%;
     --status-rejected-background:  0, 100%, 40%, 0.2;
     --loader-color:0, 0%, 100%, 0.6;
+    --sidebar-active:216, 18.52%, 94.71%;
   }
   .dark {
     --background: 0 0% 3.9%;

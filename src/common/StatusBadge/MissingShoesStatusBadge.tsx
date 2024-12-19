@@ -1,26 +1,22 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { LeavesRequestStatus } from "@/types";
+import { MissingShoeStatus } from "@/constant/constant";
 
 const statusClasses = {
-  approved: {
+  found: {
     background: "bg-status-active-background",
     text: "text-status-active",
   },
-  pending: {
-    background: "bg-status-pending-background",
-    text: "text-status-pending",
-  },
-  rejected: {
+  missing: {
     background: "bg-status-inactive-background",
     text: "text-status-inactive",
   },
 } as const;
 
-export const LeavesStatusBadge = ({
+export const MissingShoesStatusBadge = ({
   status,
 }: {
-  status: LeavesRequestStatus;
+  status: MissingShoeStatus;
 }) => {
   const { background, text } = statusClasses[status];
 

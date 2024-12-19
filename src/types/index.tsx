@@ -1,6 +1,12 @@
-import { AttendanceStatus, LeaveTypes, MemberRole, Shift, UserStatus } from "@/constant/constant";
-
-
+import { FundSchemaType } from "@/app/(app)/funds/components/FundFormBuilder";
+import {
+  AttendanceStatus,
+  LeaveTypes,
+  MemberRole,
+  MissingShoeStatus,
+  Shift,
+  UserStatus,
+} from "@/constant/constant";
 
 export type UserRole = "incharge" | "member" | "shift_incharge";
 
@@ -53,7 +59,7 @@ export type UserDetails = {
   cnic: string;
   ehad_duration: string;
   shift: string;
-  role: MemberRole
+  role: MemberRole;
   address: string;
   status: UserStatus;
   created_at: string;
@@ -76,13 +82,13 @@ export enum LeavesRequestStatus {
 
 export type LeaveRequestsTypes = {
   id: number;
-  memberId: number
+  memberId: number;
   leaveType: LeaveTypes;
   startDate: string;
   endDate: string;
   status: LeavesRequestStatus;
   reason: string;
-}
+};
 
 export enum RequestActionTitles {
   Edit = "edit",
@@ -102,4 +108,20 @@ export interface Attendance {
   memberId: number;
   name: string;
   shift: Shift;
+}
+
+export type MissingShoeReport = {
+  id: number;
+  status: MissingShoeStatus;
+  ownerName: string;
+  ownerPhoneNumber: string;
+  ownerAddress: string;
+  time: string;
+  shoesToken: string;
+  description: string;
+};
+
+export interface FundType extends FundSchemaType {
+  id: number;
+  createdAt: string;
 }

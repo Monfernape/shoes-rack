@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
+import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import { LeaveRequestsTypes } from "@/types";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -37,7 +37,7 @@ export const LeaveRequestDetails = ({
           </DialogTitle>
           <div className="flex justify-between items-center py-4">
             {leaveRequestDetails.status && (
-              <LeavesStatusBadge status={leaveRequestDetails.status} />
+              <StatusBadge status={leaveRequestDetails.status} />
             )}
             <span className="text-xs text-gray-700">
               {leaveRequestDetails.leaveType}
