@@ -44,7 +44,7 @@ export default function NotificationLayout({
                   href={`${Routes.Notification}/${notification.id}`}
                 >
                   <div className="flex   w-full gap-2">
-                    <div className="flex flex-col">
+                    <div className="flex flex-col gap-1">
                       <div className="flex justify-between items-center">
                         <p className="font-normal text-sm ">
                           {notification.title}
@@ -63,8 +63,8 @@ export default function NotificationLayout({
                     </div>
                     <div className="flex align-middle items-center flex-col flex-1">
                       <div className="min-w-8 h-8 ">
-                        {notification.is_read && (
-                          <DotIcon className="w-8 h-auto mt-[-6px]" />
+                        {!notification.is_read && (
+                          <DotIcon className="w-8 h-auto mt-[-8px]" />
                         )}
                       </div>
                       <p className="mt-[-8px]">

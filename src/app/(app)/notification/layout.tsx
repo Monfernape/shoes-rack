@@ -5,7 +5,7 @@ const notifications = [
   {
     id: 1,
     member_id: 1,
-    is_read: true,
+    is_read: false,
     title: "Attendance list update",
     sender_id: null,
     system_generated: true,
@@ -18,7 +18,7 @@ const notifications = [
   {
     id: 2,
     member_id: 2,
-    is_read: true,
+    is_read: false,
     title: "Leave list update",
     sender_id: null,
     system_generated: true,
@@ -31,7 +31,7 @@ const notifications = [
   {
     id: 3,
     member_id: 3,
-    is_read: true,
+    is_read: false,
     title: "Missing shoes update",
     sender_id: null,
     system_generated: true,
