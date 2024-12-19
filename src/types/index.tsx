@@ -142,7 +142,8 @@ export type Fund = {
   amount: number;
   created_at: Date;
   role:MemberRole;
-  member_id:number
+  member_id:number;
+  members:Member[]
 };
 export interface FundType extends FundSchemaType {
   id: number;
