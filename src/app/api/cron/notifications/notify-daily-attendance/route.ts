@@ -3,9 +3,10 @@ import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { NextResponse } from "next/server";
 import { MemberRole, UserStatus } from "@/constant/constant";
 import * as cron from "node-cron";
+// every day at midnight
+const EVERY_DAY_AT_MIDNIGHT = "* * * * *";
 
 export async function GET() {
-  const EVERY_DAY_AT_MIDNIGHT = "0 0 * * *";
   try {
     cron.schedule(EVERY_DAY_AT_MIDNIGHT, async () => {
       const supabase = await getSupabaseClient();
