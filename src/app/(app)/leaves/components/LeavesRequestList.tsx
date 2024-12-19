@@ -18,7 +18,7 @@ import {
 import { LeaveRequestsTypes } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon } from "lucide-react";
-import { LeavesStatusBadge } from "@/common/StatusBadge/LeavesStatusBadge";
+import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
@@ -61,7 +61,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => (
-          <LeavesStatusBadge status={row.getValue("status")} />
+          <StatusBadge status={row.getValue("status")} />
         ),
       },
       {
