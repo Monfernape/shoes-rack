@@ -20,8 +20,6 @@ import { Fund } from "@/types";
 import { Edit as EditIcon, HandCoins as HandCoinsIcon } from "lucide-react";
 import { formatRole } from "@/utils/formatRole";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
-import { useRouter } from "next/navigation";
-import { Routes } from "@/lib/routes";
 
 const handleEdit = () => {};
 const action = [

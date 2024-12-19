@@ -5,7 +5,6 @@ import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { FundsHeader } from "./components/FundsHeader";
 import { Fund } from "@/types";
 import { MemberRole } from "@/constant/constant";
-import { MemberDetails } from "../members/components/MemberDetails";
 
 const breadcrumbs = [
   { href: Routes.Fund, label: "Funds" },
