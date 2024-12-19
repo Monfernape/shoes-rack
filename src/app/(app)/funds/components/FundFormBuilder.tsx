@@ -17,8 +17,6 @@ import {
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { Routes } from "@/lib/routes";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { addFunds } from "../actions/add-funds";
 import { updateFundDetails } from "../actions/update-fund-details";
@@ -45,7 +43,6 @@ interface Props {
 }
 
 export const FundFormBuilder = ({ funds }: Props) => {
-  const router = useRouter();
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
