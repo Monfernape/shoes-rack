@@ -19,6 +19,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { addFunds } from "../actions/add-funds";
+import { updateFundDetails } from "../actions/update-fund-details";
+import { FundType } from "@/types";
 
 export const FundSchema = z.object({
   memberId: z.string().min(1, {
@@ -36,12 +38,16 @@ export const FundSchema = z.object({
 
 export type FundSchemaType = z.infer<typeof FundSchema>;
 
-export const FundFormBuilder = () => {
+interface Props {
+  funds?: FundType;
+}
+
+export const FundFormBuilder = ({ funds }: Props) => {
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
-      memberId: "",
-      amount: "",
+      memberId: funds?.memberId ?? "",
+      amount: funds?.amount ?? "",
     },
     mode: "all",
   });
@@ -50,16 +56,24 @@ export const FundFormBuilder = () => {
 
   const onSubmit = async(values: z.infer<typeof FundSchema>) =>{
     try {
-      await addFunds(values);
-      toast({
-        title: "Success",
-        description: "Fund added successfully",
-      });
+      if (!funds?.id) {
+        addFunds(values);
+        toast({
+          title: "Success",
+          description: "Fund added successfully",
+        });
+      } else {
+        updateFundDetails(funds?.id, values);
+        toast({
+          title: "Success",
+          description: "Fund updated successfully",
+        });
+      }
     } catch (error) {
       if (error instanceof Error) {
         toast({
           title: "Error",
-          description: "Something went wrong! Please try again.",
+          description: error.message,
         });
       }
     }
@@ -104,7 +118,7 @@ export const FundFormBuilder = () => {
 
           <div className="flex justify-end">
             <Button type="submit" disabled={!isValid} className="text-xs">
-              Submit
+              {funds?.id ? "Update" : "Submit"}
             </Button>
           </div>
         </form>
