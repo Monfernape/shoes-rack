@@ -5,8 +5,9 @@ import { MemberRole, UserStatus } from "@/constant/constant";
 import * as cron from "node-cron";
 
 export async function GET() {
+  const EVERY_DAY_AT_MIDNIGHT = "0 0 * * *";
   try {
-    cron.schedule("0 0 0 * * *", async () => {
+    cron.schedule(EVERY_DAY_AT_MIDNIGHT, async () => {
       const supabase = await getSupabaseClient();
       const { data: users, error } = await supabase
         .from(Tables.Members)
@@ -18,18 +19,18 @@ export async function GET() {
       if (error) {
         throw error;
       }
-      for (const user of users) {
-        const { error } = await supabase.from(Tables.Notification).insert({
-          title: "Review Attendance",
-          system_generated: true,
-          description: "Please Review Attendance",
-          member_id: user.id,
-          is_read: true,
-        });
-
-        if (error) {
-          throw error;
-        }
+      const allNotification = users.map((user) => ({
+        title: "Review Attendance",
+        system_generated: true,
+        description: "Please Review Attendance",
+        member_id: user.id,
+        is_read: true,
+      }));
+      const { error: insertionError } = await supabase
+        .from(Tables.Notification)
+        .insert([...allNotification]);
+      if (insertionError) {
+        throw insertionError;
       }
     });
     return NextResponse.json({ data: "Success", status: 200 });
