@@ -8,7 +8,6 @@ export const getAllFunds = async () => {
     .from(Tables.Funds)
     .select(` *, ${Tables.Members} ( *) `);
 
-  console.log("data***", funds);
   if (error) {
     throw error;
   }
