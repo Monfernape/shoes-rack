@@ -110,7 +110,7 @@ export const userBuilderSchema = z.object({
       return date <= minDate;
     },
     {
-      message: "Ehad Duration must be more than 30 days ago",
+      message: "Ehad duration must be more than 30 days ago",
     }
   ),
 });
