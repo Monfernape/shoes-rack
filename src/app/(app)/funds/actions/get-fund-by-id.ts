@@ -5,7 +5,7 @@ import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
 export const getFundDetailsById = async (fundId: number) => {
   const supabase = await getSupabaseClient();
-  const { data, error } = await supabase
+  const { data : fundDetails, error } = await supabase
     .from(Tables.Funds)
     .select()
     .eq("id", fundId)
@@ -16,9 +16,9 @@ export const getFundDetailsById = async (fundId: number) => {
   }
 
   return {
-    id: data.id,
-    createdAt: data.created_at,
-    memberId: data.member_id,
-    amount: data.amount,
+    id: fundDetails.id,
+    createdAt: fundDetails.created_at,
+    memberId: fundDetails.member_id,
+    amount: fundDetails.amount,
   };
 };

@@ -1,3 +1,4 @@
+import { FundSchemaType } from "@/app/(app)/funds/components/FundFormBuilder";
 import {
   AttendanceStatus,
   LeaveTypes,
@@ -120,9 +121,7 @@ export type MissingShoeReport = {
   description: string;
 };
 
-export type FundType = {
+export interface FundType extends FundSchemaType {
   id: number;
   createdAt: string;
-  memberId: string;
-  amount: string;
-};
+}
