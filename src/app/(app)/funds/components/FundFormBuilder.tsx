@@ -54,7 +54,7 @@ export const FundFormBuilder = ({ funds }: Props) => {
 
   const { isValid } = form.formState;
 
-  const onSubmit = async(values: z.infer<typeof FundSchema>) =>{
+  const onSubmit = async(values: FundSchemaType) =>{
     try {
       if (!funds?.id) {
         addFunds(values);
