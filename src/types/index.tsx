@@ -136,6 +136,14 @@ export type MissingShoeReport = {
   description: string;
 };
 
+export type Fund = {
+  id: number;
+  name: string;
+  amount: number;
+  created_at: Date;
+  role:MemberRole;
+  member_id:number
+};
 export interface FundType extends FundSchemaType {
   id: number;
   createdAt: string;

@@ -13,6 +13,7 @@ const Page = async () => {
   const user = await getLoggedInUser();
   const { data: member } = await getMembers("");
 
+  
   return (
     <>
       <MemberHeader breadcrumbs={breadcrumbs} user = {user} />
