@@ -17,8 +17,6 @@ import {
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { Routes } from "@/lib/routes";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { addFunds } from "../actions/add-funds";
 
@@ -39,7 +37,6 @@ export const FundSchema = z.object({
 export type FundSchemaType = z.infer<typeof FundSchema>;
 
 export const FundFormBuilder = () => {
-  const router = useRouter();
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
@@ -51,14 +48,13 @@ export const FundFormBuilder = () => {
 
   const { isValid } = form.formState;
 
-  function onSubmit(values: z.infer<typeof FundSchema>) {
+  const onSubmit = async(values: z.infer<typeof FundSchema>) =>{
     try {
-      addFunds(values);
+      await addFunds(values);
       toast({
         title: "Success",
         description: "Fund added successfully",
       });
-      router.push(Routes.Fund);
     } catch (error) {
       if (error instanceof Error) {
         toast({
