@@ -1,27 +1,25 @@
 "use server";
-
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { AttendanceFormValues } from "../components/AttendanceFormBuilder";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { AttendanceStatus } from "@/constant/constant";
 
-interface Attendance extends AttendanceFormValues {
-  id: string;
-}
+type UpdateAttendanceStatusProps = {
+  requestId: number;
+  status: AttendanceStatus;
+};
 
-export const updateAttendance = async (attendance: Attendance) => {
+export const updateAttendanceStatus = async ({ requestId, status }: UpdateAttendanceStatusProps) => {
   const supabase = await getSupabaseClient();
 
   const { error } = await supabase
     .from(Tables.Attendance)
-    .update(attendance)
-    .eq("id", attendance.id)
-    .eq("status", AttendanceStatus.Pending);
+    .update({ status })     
+    .eq("id", requestId);
 
   if (error) {
-    return error;
+    throw error
   }
 
   redirect(Routes.Attendance);

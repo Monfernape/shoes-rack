@@ -1,6 +1,7 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { LeavesRequestStatus } from "@/types";
+import { AttendanceStatus } from "@/constant/constant";
 
 const statusClasses = {
   approved: {
@@ -20,7 +21,7 @@ const statusClasses = {
 export const StatusBadge = ({
   status,
 }: {
-  status: LeavesRequestStatus;
+  status: LeavesRequestStatus | AttendanceStatus;
 }) => {
   const { background, text } = statusClasses[status];
 

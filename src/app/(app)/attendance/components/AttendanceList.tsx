@@ -23,7 +23,7 @@ import AttendanceActionRender from "./AttendanceActionRender";
 import { Attendance } from "@/types";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 
-interface AttendanceProps {
+export interface AttendanceProps {
   attendance: Attendance[];
 }
 
