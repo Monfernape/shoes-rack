@@ -147,6 +147,7 @@ export const LeaveRequestFormBuilder = ({
                   <MemberSelector
                     value={field.value}
                     onValueChange={field.onChange}
+                    loginUser={loginUser}
                   />
                 </FormControl>
                 <FormMessage />

@@ -7,19 +7,18 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Member } from "@/types";
+import { Member, User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 import { getMembers } from "@/app/(app)/members/actions/getMembers";
 
 interface SelectFieldProps {
   value: string;
   onValueChange: (value: string) => void;
+  loginUser ?: User
 }
 
-const MemberSelector = ({ value, onValueChange }: SelectFieldProps) => {
+const MemberSelector = ({ value, onValueChange , loginUser }: SelectFieldProps) => {
   const [members, setMembers] = useState<Member[]>([]);
-  const loginUser = useUser();
   useEffect(() => {
     const fetchMembers = async () => {
       try {

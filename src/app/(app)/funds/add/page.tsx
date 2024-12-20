@@ -2,8 +2,10 @@ import React from "react";
 import { FundFormBuilder } from "../components/FundFormBuilder";
 import { Routes } from "@/lib/routes";
 import { FundHeader } from "../components/FundHeader";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
-const Page = () => {
+const Page = async() => {
+  const loginUser = await getLoggedInUser();
   const breadcrumbs = [
     { href: Routes.Fund, label: "Funds" },
     { href: Routes.AddFund, label: "New Fund" },
@@ -11,7 +13,7 @@ const Page = () => {
   return (
     <>
       <FundHeader breadcrumbs={breadcrumbs} />
-      <FundFormBuilder />
+      <FundFormBuilder loginUser={loginUser}/>
     </>
   );
 };

@@ -20,7 +20,7 @@ import { toast } from "@/hooks/use-toast";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { addFunds } from "../actions/add-funds";
 import { updateFundDetails } from "../actions/update-fund-details";
-import { FundType } from "@/types";
+import { FundType, User } from "@/types";
 
 export const FundSchema = z.object({
   memberId: z.string().min(1, {
@@ -40,9 +40,10 @@ export type FundSchemaType = z.infer<typeof FundSchema>;
 
 interface Props {
   funds?: FundType;
+  loginUser: User;
 }
 
-export const FundFormBuilder = ({ funds }: Props) => {
+export const FundFormBuilder = ({ funds , loginUser}: Props) => {
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
@@ -96,6 +97,7 @@ export const FundFormBuilder = ({ funds }: Props) => {
                   <MemberSelector
                     value={field.value}
                     onValueChange={field.onChange}
+                    loginUser={loginUser}
                   />
                 </FormControl>
                 <FormMessage />
