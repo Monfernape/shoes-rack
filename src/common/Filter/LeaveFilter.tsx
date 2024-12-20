@@ -44,6 +44,7 @@ export const LeaveFilter = ({ loginUser }: { loginUser: User }) => {
         <MemberSelector
           value={search}
           onValueChange={handleSearchQueryChange}
+          loginUser={loginUser}
         />
       </div>
     </div>

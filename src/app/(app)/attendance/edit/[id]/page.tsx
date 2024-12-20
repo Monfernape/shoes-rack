@@ -5,9 +5,11 @@ import AttendanceFormBuilder from "../../components/AttendanceFormBuilder";
 import { getAttendanceById } from "../../actions/getAttendanceById";
 import { Routes } from "@/lib/routes";
 import { AttendanceHeader } from "../../components/AttendanceHeader";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
   const { id: attendanceId } = params;
+  const loginUser = await getLoggedInUser();
 
   let attendanceData = null;
 
@@ -30,7 +32,7 @@ const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
   return (
     <>
       <AttendanceHeader breadcrumbs={breadcrumbs} />
-      <AttendanceFormBuilder attendance={attendanceData} />;
+      <AttendanceFormBuilder attendance={attendanceData} loginUser={loginUser}/>;
     </>
   );
 };

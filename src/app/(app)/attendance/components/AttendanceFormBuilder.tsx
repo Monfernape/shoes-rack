@@ -21,10 +21,11 @@ import { MemberRole } from "@/constant/constant";
 import { updateAttendance } from "../actions/update-attendance";
 import { useParams } from "next/navigation";
 import { isValidParam } from "@/utils/utils";
-import { useUser } from "@/hooks/useGetLoggedinUser";
+import { User } from "@/types";
 
 interface AttendanceFormBuilderProps {
   attendance?: AttendanceFormValues;
+  loginUser:User
 }
 
 const attendanceSchema = z
@@ -52,11 +53,10 @@ export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
 
 const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   attendance,
+  loginUser,
 }) => {
   const params = useParams();
   const attendanceId = params?.id;
-
-  const loginUser = useUser();
 
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
@@ -136,6 +136,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
                   <MemberSelector
                     value={field.value}
                     onValueChange={field.onChange}
+                    loginUser={loginUser}
                   />
                 </FormControl>
                 <FormMessage />

@@ -3,9 +3,11 @@ import { Routes } from "@/lib/routes";
 import { getFundDetailsById } from "../../actions/get-fund-by-id";
 import { FundFormBuilder } from "../../components/FundFormBuilder";
 import { FundHeader } from "../../components/FundHeader";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const id = params.id;
+  const loginUser = await getLoggedInUser();
   const funds = await getFundDetailsById(Number(id));
 
   const breadcrumbs = [
@@ -16,7 +18,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   return (
     <>
       <FundHeader breadcrumbs={breadcrumbs} />
-      <FundFormBuilder funds={funds}/>
+      <FundFormBuilder funds={funds} loginUser={loginUser}/>
     </>
   );
 };
