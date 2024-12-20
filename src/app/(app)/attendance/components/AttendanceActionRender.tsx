@@ -10,7 +10,7 @@ import {
 import { AttendanceStatus, MemberRole } from "@/constant/constant";
 import { toast } from "@/hooks/use-toast";
 import { Routes } from "@/lib/routes";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
@@ -25,6 +25,8 @@ export type AttendanceActionRenderProps = {
 const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => {
   const router = useRouter();
   const loginUser = useUser();
+  const searchParams = useSearchParams();
+  const searchQuery: string | null = searchParams.get("id");
   const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
   const { id: requestId } = attendance;
@@ -57,7 +59,9 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
     status: AttendanceStatus
   ) => {
     try {
-      await updateAttendanceStatus({attendanceId, attendanceStatus: status });
+      await updateAttendanceStatus({attendanceId, attendanceStatus: status});
+      router.push(loginUser?.role == MemberRole.ShiftIncharge ? Routes.Attendance
+        : `${Routes.Attendance}?id=${searchQuery}`);
       toast({
         title: "Success",
         description: "Request updated successfully.",
@@ -128,11 +132,20 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
   );
 
   const shiftInchargeActionMenu = (function onShiftInchareMenu() {
-    if (attendance.memberId === loginUser?.id) {
-      return attendance.status === AttendanceStatus.Pending
-        ? [...viewInfo, ...baseActions]
-        : [...viewInfo];
+    if (attendance.status === AttendanceStatus.Pending) {
+      if (attendance.memberId === loginUser?.id) {
+        return [...viewInfo, ...baseActions];
+      }
+      return [...viewInfo, ...baseActions, ...statusActions];
+    } else if (attendance.status === AttendanceStatus.Approve) {
+      if (attendance.memberId === loginUser?.id) {
+        return [...viewInfo];
+      }
+      return [...viewInfo, ...statusActions];
     } else {
+      if (attendance.memberId === loginUser?.id) {
+        return [...viewInfo];
+      }
       return [...viewInfo, ...statusActions];
     }
   })();
@@ -146,7 +159,9 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
       case MemberRole.ShiftIncharge:
         return shiftInchargeActionMenu;
       case MemberRole.Incharge:
-        return [...viewInfo, ...statusActions];
+        return attendance.status === AttendanceStatus.Pending
+        ? [...viewInfo, ...baseActions, ...statusActions]
+        : [...viewInfo, ...statusActions];
 
       default:
         return [];

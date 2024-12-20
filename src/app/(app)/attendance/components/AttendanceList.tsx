@@ -21,12 +21,15 @@ import { Plus, CalendarIcon } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
 import { Attendance } from "@/types";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/lib/routes";
 
 export interface AttendanceProps {
   attendance: Attendance[];
 }
 
 export const AttendanceList = ({ attendance }: AttendanceProps) => {
+  const router = useRouter();
   const columns: ColumnDef<Attendance>[] = useMemo(
     () => [
       {
@@ -83,7 +86,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
   });
 
   const addAttendance = () => {
-    alert("Navigation function triggered");
+    router.push(`${Routes.AddAttendance}`);
   };
 
   const StandardPageProps = {

@@ -31,6 +31,21 @@ interface LeavesRequestList {
 }
 export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
   const route = useRouter();
+  const handleNavigate = () => {
+    route.push(Routes.AddLeaveRequest);
+  };
+
+  const StandardPageProps = {
+    hasContent: !!leaves?.length ,
+    title: "Add Leave",
+    description: "This is where you can see leave requests",
+    buttonIcon: <PlusIcon />,
+   icon: <ClipboardIcon />,
+    actionButton: true,
+    onAction: handleNavigate,
+    labelForActionButton: "Add Leave",
+  };
+  
   const columns: ColumnDef<LeaveRequest>[] = useMemo(
     () => [
       {
@@ -83,22 +98,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  const handleNavigate = () => {
-    route.push(Routes.AddLeaveRequest);
-  };
-
-  const StandardPageProps = {
-    hasContent: !!leaves?.length,
-    title: "Add Leave",
-    description: "This is where you can see leave requests",
-    buttonIcon: <PlusIcon />,
-   icon: <ClipboardIcon />,
-    actionButton: true,
-    onAction: handleNavigate,
-    labelForActionButton: "Add Leave",
-  };
-
+  
   return (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -131,13 +131,6 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
                 ))}
             </TableRow>
           ))}
-          {!leaves?.length && (
-            <TableRow>
-              <TableCell colSpan={6} className="text-center">
-                No Leave Request Found
-              </TableCell>
-            </TableRow>
-          )}
         </TableBody>
       </Table>
     </StandardPage>
