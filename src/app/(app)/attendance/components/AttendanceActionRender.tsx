@@ -53,11 +53,11 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
   };
 
   const handleAttendanceStatus = async (
-    requestId: number,
+    attendanceId: number,
     status: AttendanceStatus
   ) => {
     try {
-      await updateAttendanceStatus({requestId, status });
+      await updateAttendanceStatus({attendanceId, attendanceStatus: status });
       toast({
         title: "Success",
         description: "Request updated successfully.",
