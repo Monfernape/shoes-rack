@@ -25,35 +25,49 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
   if (error) {
     throw error;
   } else {
-    // in success login case,update status and remove the invited link
     const { data: loginUser, error } = await supabase
       .from(Tables.Members)
-      .update({
-        status: UserStatus.Active,
-        invite_link: "",
-      })
+      .select("status")
       .eq("phoneNumber", formattedPhoneNumber)
-      .select("*")
       .single();
 
     if (error) {
       throw error;
     } else {
-      // getting session
-      const { session } = authUserData;
+      // Add a check to prevent deactivated users from logging in
+      if (loginUser.status === UserStatus.Deactivated) {
+        throw new Error("User not exist");
+      } else {
+        // in success login case,update status and remove the invited link
+        const { data: loginUser, error } = await supabase
+          .from(Tables.Members)
+          .update({
+            status: UserStatus.Active,
+            invite_link: "",
+          })
+          .eq("phoneNumber", formattedPhoneNumber)
+          .select("*")
+          .single();
+        if (error) {
+          throw error;
+        } else {
+          // getting session
+          const { session } = authUserData;
 
-      // addCookies function get name and values that will store against name
-      addCookies({
-        name: Cookies.LoginUser,
-        values: loginUser,
-      });
+          // addCookies function get name and values that will store against name
+          addCookies({
+            name: Cookies.LoginUser,
+            values: loginUser,
+          });
 
-      addCookies({
-        name: Cookies.Session,
-        values: session,
-      });
+          addCookies({
+            name: Cookies.Session,
+            values: session,
+          });
 
-      redirect(Routes.Members);
+          redirect(Routes.Members);
+        }
+      }
     }
   }
 };
