@@ -9,14 +9,14 @@ import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
   const { id: attendanceId } = params;
-  const loginUser = await getLoggedInUser();
-
+  
   let attendanceData = null;
 
   if (attendanceId) {
     try {
       const response = await getAttendanceById(Number(attendanceId));
-      attendanceData = response ? response.data : null;
+      
+      attendanceData = response ? response : null;
     } catch (error) {
       console.error("Error fetching attendance:", error);
     }
@@ -28,6 +28,7 @@ const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
       label: "Edit attendance",
     },
   ];
+  const loginUser = await getLoggedInUser();
 
   return (
     <>
