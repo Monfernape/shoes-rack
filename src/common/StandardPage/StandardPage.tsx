@@ -31,23 +31,18 @@ export const StandardPage = ({
       data-testid="standardPage"
     >
       <div className="flex flex-col items-start justify-center h-full max-w-lg gap-2">
-       
         <span className="bg-button-background p-2 rounded">
-        {/*  Here we will create a ticket to dynamically import this icons */}
+          {/*  Here we will create a ticket to dynamically import this icons */}
           {/* <ScrollTextIcon className="stroke-gray-500" size={20} />
            */}
-           <BellIcon/>
+          <BellIcon />
         </span>
         <h1 className="text-sm font-semibold text-gray-800">{title || ""}</h1>
         <span className="flex text-gray-700 text-sm" data-testid="description">
           {description || ""}
         </span>
         {actionButton && (
-          <Button
-            className="w-32 h-7 mt-3"
-            onClick={onAction}
-            data-testid="button"
-          >
+          <Button className=" h-7 " onClick={onAction} data-testid="button">
             {buttonIcon}
             {labelForActionButton}
           </Button>
