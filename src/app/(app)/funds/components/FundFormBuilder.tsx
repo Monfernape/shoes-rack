@@ -47,7 +47,7 @@ export const FundFormBuilder = ({ funds , loginUser}: Props) => {
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
-      memberId: funds?.memberId ?? "",
+      memberId: funds?.memberId.toString() ?? "",
       amount: funds?.amount ?? "",
     },
     mode: "all",

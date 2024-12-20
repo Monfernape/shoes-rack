@@ -71,7 +71,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
       route: Routes.MissingShoes,
       icon: <ExclamationTriangleIcon />,
     },
-    ...(loginUser?.role !== MemberRole.Member
+    ...(loginUser?.role === MemberRole.Incharge
       ? [
           // {
           //   name: "Attendance Report",
