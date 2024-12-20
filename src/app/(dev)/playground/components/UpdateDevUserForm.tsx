@@ -155,7 +155,7 @@ const UpdateDevUserFrom = () => {
         <Button
           type="submit"
           data-testid="submit"
-          disabled={!form.formState.isValid}
+          // disabled={!form.formState.isValid}
         >
           Submit
         </Button>

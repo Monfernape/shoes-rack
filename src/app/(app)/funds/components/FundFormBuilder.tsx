@@ -119,7 +119,9 @@ export const FundFormBuilder = ({ funds , loginUser}: Props) => {
           />
 
           <div className="flex justify-end">
-            <Button type="submit" disabled={!isValid} className="text-xs">
+            <Button type="submit" 
+            // disabled={!isValid} 
+            className="text-xs">
               {funds?.id ? "Update" : "Submit"}
             </Button>
           </div>

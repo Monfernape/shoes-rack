@@ -183,7 +183,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
           <Button
             type="submit"
             className="w-full text-white rounded-md p-3 transition"
-            disabled={!form.formState.isValid}
+            // disabled={!form.formState.isValid}
           >
             {attendance?.memberId ? "Update" : "Submit"}
           </Button>
