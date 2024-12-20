@@ -20,7 +20,7 @@ import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon , ClipboardIcon } from "lucide-react";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
 interface LeaveRequest extends LeaveRequestsTypes {
@@ -30,7 +30,25 @@ interface LeavesRequestList {
   leaves: LeaveRequest[];
 }
 export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
+  const searchParams = useSearchParams()
+ 
+  const id = searchParams.get('id') 
   const route = useRouter();
+  const handleNavigate = () => {
+    route.push(Routes.AddLeaveRequest);
+  };
+
+  const StandardPageProps = {
+    hasContent: (!Number(id) && !!leaves?.length ) ? false :  true,
+    title: "Add Leave",
+    description: "This is where you can see leave requests",
+    buttonIcon: <PlusIcon />,
+   icon: <ClipboardIcon />,
+    actionButton: true,
+    onAction: handleNavigate,
+    labelForActionButton: "Add Leave",
+  };
+  
   const columns: ColumnDef<LeaveRequest>[] = useMemo(
     () => [
       {
@@ -84,21 +102,11 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const handleNavigate = () => {
-    route.push(Routes.AddLeaveRequest);
-  };
-
-  const StandardPageProps = {
-    hasContent: !!leaves?.length,
-    title: "Add Leave",
-    description: "This is where you can see leave requests",
-    buttonIcon: <PlusIcon />,
-   icon: <ClipboardIcon />,
-    actionButton: true,
-    onAction: handleNavigate,
-    labelForActionButton: "Add Leave",
-  };
-
+  if(Number(id) && !!leaves.length)  {
+    console.log("Length of the leaves ",leaves.length)
+   return  <div className="text-center text-sm font-medium">No Data Found</div>
+  }
+  
   return (
     <StandardPage {...StandardPageProps}>
       <Table>

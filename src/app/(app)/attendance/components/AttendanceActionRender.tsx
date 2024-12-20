@@ -128,12 +128,13 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
   );
 
   const shiftInchargeActionMenu = (function onShiftInchareMenu() {
+  
     if (attendance.memberId === loginUser?.id) {
       return attendance.status === AttendanceStatus.Pending
         ? [...viewInfo, ...baseActions]
         : [...viewInfo];
     } else {
-      return [...viewInfo, ...statusActions];
+      return [...viewInfo, ...baseActions ];
     }
   })();
 

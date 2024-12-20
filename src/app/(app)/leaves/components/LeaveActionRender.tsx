@@ -136,11 +136,22 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
   );
 
   const shiftInchargeActionMenu = (function onShiftInchareMenu() {
-    if (leaveRequestDetails.memberId === loginUser?.id) {
-      return leaveRequestDetails.status === LeavesRequestStatus.Pending
-        ? [...viewInfo, ...baseActions]
-        : [...viewInfo];
+    console.log("attendance MemberId", leaveRequestDetails);
+
+    if (leaveRequestDetails.status === LeavesRequestStatus.Pending) {
+      if (leaveRequestDetails.memberId === loginUser?.id) {
+        return [...viewInfo, ...baseActions];
+      }
+      return [...viewInfo, ...baseActions, ...statusActions];
+    } else if (leaveRequestDetails.status === LeavesRequestStatus.Approved) {
+      if (leaveRequestDetails.memberId === loginUser?.id) {
+        return [...viewInfo];
+      }
+      return [...viewInfo, ...statusActions];
     } else {
+      if (leaveRequestDetails.memberId === loginUser?.id) {
+        return [...viewInfo];
+      }
       return [...viewInfo, ...statusActions];
     }
   })();
@@ -154,8 +165,9 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
       case MemberRole.ShiftIncharge:
         return shiftInchargeActionMenu;
       case MemberRole.Incharge:
-        return [...viewInfo, ...statusActions];
-
+        return leaveRequestDetails.status === LeavesRequestStatus.Pending
+          ? [...viewInfo, ...baseActions, ...statusActions]
+          : [...viewInfo, ...statusActions];
       default:
         return [];
     }
