@@ -43,10 +43,16 @@ export function DatePicker<T extends FieldValues>({
   defaultDate,
 }: DatePickerProps<T>) {
 
-  const startYear = getYear(new Date(defaultDate)) - 60;
-  const endYear = getYear(new Date(defaultDate));
+  const defaultPickedDate = new Date(defaultDate);
+  defaultPickedDate.setUTCDate(defaultPickedDate.getUTCDate() + 1);
+  
+  const nextDay = defaultPickedDate.toISOString();
+  const nextDayDate = new Date(nextDay);
+  
+  const startYear = getYear(new Date()) - 60;
+  const endYear = getYear(new Date());
 
-  const [date, setDate] = React.useState<Date>(defaultDate);
+  const [date, setDate] = React.useState<Date>(nextDayDate);
   const months = [
     "January",
     "February",
@@ -87,8 +93,8 @@ export function DatePicker<T extends FieldValues>({
         const handleSelect = (selectedDate: Date | undefined) => {
 
           if (selectedDate) {
-            setDate(selectedDate);
             field.onChange(selectedDate);
+            setDate(selectedDate);
           }
         };
 
