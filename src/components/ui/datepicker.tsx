@@ -43,10 +43,10 @@ export function DatePicker<T extends FieldValues>({
   defaultDate,
 }: DatePickerProps<T>) {
 
-  const currentData = new Date(defaultDate);
-  currentData.setUTCDate(currentData.getUTCDate() + 1);
+  const defaultPickedDate = new Date(defaultDate);
+  defaultPickedDate.setUTCDate(defaultPickedDate.getUTCDate() + 1);
   
-  const nextDay = currentData.toISOString();
+  const nextDay = defaultPickedDate.toISOString();
   const nextDayDate = new Date(nextDay);
   
   const startYear = getYear(new Date()) - 60;
