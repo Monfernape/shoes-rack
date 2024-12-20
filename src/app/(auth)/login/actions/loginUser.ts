@@ -36,7 +36,7 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
     } else {
       // Add a check to prevent deactivated users from logging in
       if (loginUser.status === UserStatus.Deactivated) {
-        throw new Error("Your account is not active.");
+        throw new Error("User not exist");
       } else {
         // in success login case,update status and remove the invited link
         const { data: loginUser, error } = await supabase
