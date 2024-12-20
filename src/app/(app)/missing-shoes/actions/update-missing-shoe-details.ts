@@ -6,11 +6,13 @@ import { MissingShoeStatus } from "@/constant/constant";
 import { revalidatePath } from "next/cache";
 import { Routes } from "@/lib/routes";
 import { MissingSchemaType } from "../add/components/MissingShoesFormBuilder";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 export const updateMissingShoeReport = async (
   missingShoeReportId: number,
   values: MissingSchemaType
 ) => {
+  const user = await getLoggedInUser();
   const supabase = await getSupabaseClient();
   const { shoesToken, ownerName, ownerPhoneNumber, ownerAddress, ...rest } =
     values;
@@ -23,6 +25,7 @@ export const updateMissingShoeReport = async (
       owner_phone_number: ownerPhoneNumber,
       owner_address: ownerAddress,
       status: MissingShoeStatus.Missing,
+      reported_by: user.id,
     })
     .eq("id", missingShoeReportId);
 

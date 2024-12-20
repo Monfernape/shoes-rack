@@ -10,10 +10,16 @@ import {
 } from "lucide-react";
 import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
 import { MissingShoeReport } from "@/types";
+import { getUserById } from "../../members/actions/get-user-by-id";
 interface Props {
     missingShoe:MissingShoeReport
 }
 export const MissingShoesReportDetails = ({missingShoe}:Props) => {
+
+  const handleReportedBy = async( id : number)=>{
+    const userInfo = await getUserById(id?.toString());
+    return userInfo?.name
+  }
   return (
     <div className="flex justify-center m-8">
     <Card className="w-full max-w-xl">
@@ -116,6 +122,23 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
             </h3>
             <div className="pl-12 space-y-2">
               <p className="text-xs">{missingShoe.ownerAddress}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-gray-700">
+          <div className="space-y-1">
+            <h3 className="flex items-center gap-2 text-sm font-semibold">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
+                <UserIcon className="w-4 h-4" />
+              </div>
+              <span>Reported By</span>
+            </h3>
+            <div className="pl-12 space-y-2">
+              <p className="text-xs">
+
+                {handleReportedBy(missingShoe.reportedBy)}
+              </p>
             </div>
           </div>
         </div>
