@@ -23,12 +23,12 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
       <CardContent className="text-left space-y-6 mt-6">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3">
-            <UserAvatar userName={userInfo.name} />
+            <UserAvatar userName={userInfo.name}  />
             <h2 data-testid="user-name" className="text-base text-gray-800">
               {userInfo.name}
             </h2>
           </div>
-          <div className=" pl-14">
+          <div className=" ml-[54px]">
             <UserStatusBadge status={userInfo.status} />
           </div>
         </div>
