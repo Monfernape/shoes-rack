@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Routes } from "@/lib/routes";
 import Link from "next/link";
 import {
-  DashboardIcon,
+  // DashboardIcon,
   ExclamationTriangleIcon,
   Cross1Icon,
   ExitIcon,
@@ -13,9 +13,9 @@ import {
   GearIcon,
 } from "@radix-ui/react-icons";
 import {
-  BellIcon,
+  // BellIcon,
   CalendarIcon,
-  ChartNoAxesCombinedIcon,
+  // ChartNoAxesCombinedIcon,
   ClipboardIcon,
   HandCoinsIcon,
 } from "lucide-react";
@@ -41,21 +41,21 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const pathname = usePathname();
 
   const routes: Route[] = [
-    {
-      name: "Dashboard",
-      route: Routes.Dashboard,
-      icon: <DashboardIcon />,
-    },
+    // {
+    //   name: "Dashboard",
+    //   route: Routes.Dashboard,
+    //   icon: <DashboardIcon />,
+    // },
     {
       name: "Members",
       route: Routes.Members,
       icon: <PersonIcon />,
     },
-    {
-      name: "Notifications",
-      route: Routes.Notification,
-      icon: <BellIcon />,
-    },
+    // {
+    //   name: "Notifications",
+    //   route: Routes.Notification,
+    //   icon: <BellIcon />,
+    // },
     {
       name: "Attendance",
       route: Routes.Attendance,
@@ -73,11 +73,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     },
     ...(loginUser?.role !== MemberRole.Member
       ? [
-          {
-            name: "Attendance Report",
-            route: Routes.AttendanceReport,
-            icon: <ChartNoAxesCombinedIcon />,
-          },
+          // {
+          //   name: "Attendance Report",
+          //   route: Routes.AttendanceReport,
+          //   icon: <ChartNoAxesCombinedIcon />,
+          // },
           {
             name: "Funds",
             route: Routes.Fund,
