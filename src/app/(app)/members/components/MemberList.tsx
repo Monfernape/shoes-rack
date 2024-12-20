@@ -144,9 +144,7 @@ export const MemberList = ({
     labelForActionButton: "Add Member",
   };
 
-  if (filteredMember.length === 0) {
-    return <div className="text-center font-semibold">No Data Found</div>;
-  }
+
   return !isPending ? (
     <StandardPage {...StandardPageProps}>
       <Table>
