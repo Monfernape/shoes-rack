@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -20,34 +20,44 @@ import { Fund } from "@/types";
 import { Edit as EditIcon, HandCoins as HandCoinsIcon } from "lucide-react";
 import { formatRole } from "@/utils/formatRole";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
+export function FundsList({ funds }: { funds: Fund[] }) {
+  const searchParams = useSearchParams();
+  const searchQuery: string | null = searchParams.get("key");
+  const [filteredFunds, setFilteredFunds] = useState<Fund[]>([]);
 
+  useEffect(() => {
+    if (searchQuery) {
+      const updatedFunds = funds.filter((fund) =>
+        fund.name.toLowerCase().includes(searchQuery?.toLowerCase() || "")
+      );
+      setFilteredFunds(updatedFunds);
+    } else {
+      setFilteredFunds(funds);
+    }
+  }, [searchQuery]);
 
-
-export function FundsList({ funds, }: { funds: Fund[] }) {
-
-
-   const router = useRouter()
-   const handleEdit = (id:number) => {
-    
-    router.push(`${Routes.EditFund}/${id}`)
-};
-
+  const router = useRouter();
+  const handleEdit = (id: number) => {
+    router.push(`${Routes.EditFund}/${id}`);
+  };
 
   const columns: ColumnDef<Fund>[] = [
     {
       accessorKey: "name",
       header: "Name",
-      cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
     },
     {
       accessorKey: "role",
-      header: () => <h4 className="text-center">Role</h4>,
+      header: () => <h4>Role</h4>,
       cell: ({ row }) => {
         return (
-          <div className="text-center capitalize">
+          <div className="capitalize">
             {formatRole(row.getValue("role"))}
           </div>
         );
@@ -67,34 +77,35 @@ export function FundsList({ funds, }: { funds: Fund[] }) {
     {
       id: "actions",
       header: () => <h4 className="text-center">Action</h4>,
-      cell: ({row}) => (
+      cell: ({ row }) => (
         <div className="text-center">
-          <ActionsMenu  actions={[
-  {
-    id: 1,
-    title: "Edit Info",
-    icon: <EditIcon size={16} />,
-    onClick: ()=>handleEdit(row.original.id),
-  },
-]} />
+          <ActionsMenu
+            actions={[
+              {
+                id: 1,
+                title: "Edit Info",
+                icon: <EditIcon size={16} />,
+                onClick: () => handleEdit(row.original.id),
+              },
+            ]}
+          />
         </div>
       ),
     },
   ];
 
   const table = useReactTable({
-    data: funds,
+    data: filteredFunds,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const StandardPageProps = {
-    hasContent: !!funds ,
+    hasContent: !!filteredFunds,
     title: "Funds",
     description: "No Funds Collected yet",
     buttonIcon: <HandCoinsIcon />,
     actionButton: false,
-
   };
 
   return (
