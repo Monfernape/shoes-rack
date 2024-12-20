@@ -156,7 +156,7 @@ export const LoginPage = () => {
               data-testId="submitButton"
               disabled={!form.formState.isValid}
             >
-              Log in
+              Login
             </Button>
             <div className="flex items-center justify-center">
               <Link
