@@ -8,7 +8,7 @@ import { MemberRole } from "@/constant/constant";
 import { DataSpinner } from "../Loader/Loader";
 import { User } from "@/types";
 
-export const Filter = ({ loginUser }: { loginUser: User }) => {
+export const AttendanceFilter = ({ loginUser }: { loginUser: User }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [search, setSearch] = useState("");
@@ -22,17 +22,20 @@ export const Filter = ({ loginUser }: { loginUser: User }) => {
 
   useEffect(() => {
     if (loginUser?.role === MemberRole.ShiftIncharge && search === "") {
-      setSearch(loginUser.id?.toString() ?? "");
+      setSearch(loginUser.id?.toString());
     }
   }, [loginUser, search]);
 
   useEffect(() => {
-    const shouldRedirectToLeaveRequest =
-      debounceValue === "0" || debounceValue === "" && (loginUser?.role === MemberRole.Incharge || loginUser?.role === MemberRole.Member);
+    const shouldRedirectToAttendance =
+      debounceValue === "0" ||
+      (debounceValue === "" &&
+        (loginUser?.role === MemberRole.Incharge ||
+          loginUser?.role === MemberRole.Member));
 
-    const route = shouldRedirectToLeaveRequest
-      ? Routes.LeaveRequest
-      : `${Routes.LeaveRequest}?id=${debounceValue}`;
+    const route = shouldRedirectToAttendance
+      ? Routes.Attendance
+      : `${Routes.Attendance}?id=${debounceValue}`;
 
     router.push(route);
   }, [debounceValue, loginUser?.role, pathname, router]);
