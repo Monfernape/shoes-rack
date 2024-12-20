@@ -136,7 +136,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
   );
 
   const shiftInchargeActionMenu = (function onShiftInchareMenu() {
-    console.log("attendance MemberId", leaveRequestDetails);
+   
 
     if (leaveRequestDetails.status === LeavesRequestStatus.Pending) {
       if (leaveRequestDetails.memberId === loginUser?.id) {

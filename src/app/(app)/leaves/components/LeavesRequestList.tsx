@@ -103,7 +103,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
   });
 
   if(Number(id) && !!leaves.length)  {
-    console.log("Length of the leaves ",leaves.length)
+  
    return  <div className="text-center text-sm font-medium">No Data Found</div>
   }
   
