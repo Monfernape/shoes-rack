@@ -45,11 +45,11 @@ export const MemberHeader = ({ breadcrumbs, user }: Props) => {
               onFocus={() => setIsTitleHide(true)}
               onBlur={() => setIsTitleHide(false)}
               onChange={handleSearchQueryChange}
-              className={`pr-4 py-2 h-7 ${
+              className={`p-2 ${
                 isTitleHide ? "w-32 pl-10" : "w-2 pl-6"
               } md:w-60 md:pl-10 rounded text-xs`}
             />
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 " />
           </div>
           {user?.role !== MemberRole.Member && (
             <NavigationButton path={Routes.AddMember} buttonText="Add Member" />

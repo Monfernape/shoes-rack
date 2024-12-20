@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
-import { Info, Trash2, Edit, Send } from "lucide-react";
+import { Info, Trash2, Edit } from "lucide-react";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
@@ -44,10 +44,6 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     }
   };
 
-  const handleResendInvite = () => {
-    return;
-  };
-
   const baseActions = [
     {
       title: "Edit Info",
@@ -72,22 +68,12 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     },
   ];
 
-  const resendInvite =
-    status === UserStatus.Inactive
-      ? [
-          {
-            title: "Resend Invite",
-            id: 4,
-            onClick: handleResendInvite,
-            icon: <Send size={16} />,
-          },
-        ]
-      : [];
+
 
   const checkShiftMembers = (loginUserShift: string, shift: Shift) => {
     if (loginUserShift === shift) {
       if (status === UserStatus.Inactive) {
-        return [...baseActions, ...viewInfo, ...resendInvite];
+        return [...baseActions, ...viewInfo];
       }
       return [...baseActions, ...viewInfo];
     }
@@ -96,7 +82,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const actionMenu = React.useMemo(() => {
     switch (loginUser?.role) {
       case MemberRole.Incharge:
-        return [...baseActions, ...viewInfo, ...resendInvite];
+        return [...baseActions, ...viewInfo];
       case MemberRole.ShiftIncharge:
         return checkShiftMembers(loginUser?.shift, shift);
       case MemberRole.Member:
