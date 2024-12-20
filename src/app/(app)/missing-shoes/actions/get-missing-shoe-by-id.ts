@@ -24,5 +24,6 @@ export const getMissingShoeById = async (requestId: number) => {
     ownerAddress: missingShoe.owner_address,
     description: missingShoe.description,
     shoesToken: missingShoe.shoes_token,
+    reportedBy: missingShoe.reported_by,
   };
 };
