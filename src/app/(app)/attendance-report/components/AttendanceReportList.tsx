@@ -27,7 +27,7 @@ type AttendanceProps = {
   present: number;
   absent: number;
   leave: number;
-  createdAt: string;
+  createdAt?: string;
 };
 
 export const AttendanceReportList = ({ data }: { data: AttendanceProps[] }) => {

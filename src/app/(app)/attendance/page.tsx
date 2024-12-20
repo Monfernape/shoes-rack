@@ -9,7 +9,7 @@ import { AttendanceFilter } from "@/common/Filter/AttendanceFilter";
 
 const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
   const { id } = searchParams || {};
-  const attendance = await getAttendance(Number(id));
+  const attendance = await getAttendance(id);
   const loginUser = await getLoggedInUser();
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Attendance" },

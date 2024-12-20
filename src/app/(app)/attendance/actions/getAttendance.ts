@@ -7,7 +7,7 @@ import { MemberRole, UserStatus } from "@/constant/constant";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { Attendance } from "@/types";
 
-export const getAttendance = async (id: number) => {
+export const getAttendance = async (id: string ) => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
   const response = await getMembers("");

@@ -10,7 +10,7 @@ import { getAttendance } from "../../attendance/actions/getAttendance";
 import { getleaves } from "../../leaves/actions/get-leave-request-by-date";
 
 export const getAttendanceReport = async () => {
-  const attendanceData = await getAttendance();
+  const attendanceData = await getAttendance("");
   const leaveData = await getleaves();
 
   if (!attendanceData) return [];
