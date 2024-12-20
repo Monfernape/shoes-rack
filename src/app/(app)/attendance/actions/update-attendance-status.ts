@@ -13,27 +13,35 @@ type UpdateAttendanceStatusProps = {
   attendanceStatus: AttendanceStatus;
 };
 
-export const updateAttendanceStatus = async ({ attendanceId, attendanceStatus }: UpdateAttendanceStatusProps) => {
+export const updateAttendanceStatus = async ({
+  attendanceId,
+  attendanceStatus,
+}: UpdateAttendanceStatusProps) => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
   const attendance = await getAttendanceById(attendanceId);
 
-  const { role : loggedUserRole, id: loggedUserId } = loginUser;
+  const { role: loggedUserRole, id: loggedUserId } = loginUser;
   const { status, memberId } = attendance;
 
-  const isAccessToUser = getAccessToUser({loggedUserId, loggedUserRole,memberId, status })
+  const isAccessToUser = getAccessToUser({
+    loggedUserId,
+    loggedUserRole,
+    memberId,
+    status,
+  });
 
-  if(isAccessToUser){
+  if (isAccessToUser) {
     const { error } = await supabase
-    .from(Tables.Attendance)
-    .update({ attendanceStatus })     
-    .eq("id", attendanceId);
+      .from(Tables.Attendance)
+      .update({ status: attendanceStatus })
+      .eq("id", attendanceId);
 
-  if (error) {
-    throw error
-  }
+    if (error) {
+      throw error;
+    }
 
-  redirect(Routes.Attendance);
+    redirect(Routes.Attendance);
   }
-   return
+  return;
 };

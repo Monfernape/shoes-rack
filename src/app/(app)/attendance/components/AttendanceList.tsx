@@ -64,13 +64,12 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
         ),
       },
       {
-        id: "actions",
-        enableHiding: false,
+        accessorKey:"id",
         header: () => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <AttendanceActionRender attendance={row.original} />;
+          return <AttendanceActionRender key={row.getValue('id')} attendance={row.original} />;
         },
       },
     ],
