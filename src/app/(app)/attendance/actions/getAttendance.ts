@@ -25,8 +25,7 @@ export const getAttendance = async (id: string ) => {
     const activeMember = response.data.some(
       (member) =>
         member.status === UserStatus.Active &&
-        member.shift === loginUser.shift &&
-        member.id === id
+        member.shift === loginUser.shift
     );
 
     query = activeMember
