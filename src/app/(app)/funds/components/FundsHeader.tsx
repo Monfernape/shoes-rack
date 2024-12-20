@@ -13,7 +13,7 @@ interface Props {
   user: UserDetails;
 }
 
-export const FundsHeader = ({ breadcrumbs, user }: Props) => {
+export const FundsHeader = ({ breadcrumbs }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
   const [search, setSearch] = useState("");
