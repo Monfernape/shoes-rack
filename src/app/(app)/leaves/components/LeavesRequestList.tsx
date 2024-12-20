@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 import { LeaveRequestsTypes } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
-import { Plus as PlusIcon } from "lucide-react";
+import { Plus as PlusIcon , ClipboardIcon } from "lucide-react";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
 import { useRouter } from "next/navigation";
@@ -93,6 +93,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
     title: "Add Leave",
     description: "This is where you can see leave requests",
     buttonIcon: <PlusIcon />,
+   icon: <ClipboardIcon />,
     actionButton: true,
     onAction: handleNavigate,
     labelForActionButton: "Add Leave",
