@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 
 import { StandardPage } from "@/common/StandardPage/StandardPage";
-import { Plus } from "lucide-react";
+import { Plus, CalendarIcon } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
 import { Attendance } from "@/types";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
@@ -91,6 +91,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
     title: "Add attendance",
     description: "This is where you can see all attendance",
     buttonIcon: <Plus />,
+    icon: <CalendarIcon />,
     actionButton: true,
     onAction: addAttendance,
     labelForActionButton: "Add attendance",

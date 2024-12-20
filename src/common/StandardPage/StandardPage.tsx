@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { Bell as BellIcon } from "lucide-react";
 
 interface StandardPageProps {
   title: string;
@@ -9,6 +8,7 @@ interface StandardPageProps {
   onAction?: () => void;
   hasContent?: boolean;
   buttonIcon?: ReactNode;
+  icon?: ReactNode;
   labelForActionButton?: string;
   children?: ReactNode;
 }
@@ -22,6 +22,7 @@ export const StandardPage = ({
   labelForActionButton,
   children,
   buttonIcon,
+  icon,
 }: StandardPageProps) => {
   if (hasContent) return <>{children}</>;
 
@@ -32,10 +33,8 @@ export const StandardPage = ({
     >
       <div className="flex flex-col items-start justify-center h-full max-w-lg gap-2">
         <span className="bg-button-background p-2 rounded">
-          {/*  Here we will create a ticket to dynamically import this icons */}
-          {/* <ScrollTextIcon className="stroke-gray-500" size={20} />
-           */}
-          <BellIcon />
+
+           {icon}
         </span>
         <h1 className="text-sm font-semibold text-gray-800">{title || ""}</h1>
         <span className="flex text-gray-700 text-sm" data-testid="description">

@@ -9,15 +9,21 @@ import {
   Shield as ShieldIcon,
   User as UserIcon,
 } from "lucide-react";
-import { UserDetails } from "@/types";
+import { Member, UserDetails } from "@/types";
 import { MemberRole } from "@/constant/constant";
 import { getAge } from "@/utils/ageFormater";
 import { dateformatter } from "@/utils/dateFormatter";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { formatRole } from "@/utils/formatRole";
 
-export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
-    const dateFormat =    dateformatter(new Date(userInfo.ehad_duration))  
+export const MemberDetails = ({
+  userInfo,
+  user,
+}: {
+  userInfo: UserDetails;
+  user: Member;
+}) => {
+  const dateFormat = dateformatter(new Date(userInfo.ehad_duration));
   return (
     <Card>
       <CardContent className="text-left space-y-6 mt-6">
@@ -33,7 +39,8 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
           </div>
         </div>
 
-        {userInfo?.role === MemberRole.Incharge && (
+        {(user?.role === MemberRole.Incharge ||
+          user?.shift === userInfo.shift) && (
           <div className="flex items-center gap-3 text-gray-700">
             <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
               <ShieldIcon className="w-4 h-4 text-gray-700" />
@@ -64,7 +71,9 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
             </div>
             <div className="pl-12 space-y-2">
               <p className="text-xs">
-              <span className="font-medium text-muted-foreground">Shift:</span>{" "}
+                <span className="font-medium text-muted-foreground">
+                  Shift:
+                </span>{" "}
                 {userInfo.shift}
               </p>
             </div>
@@ -99,16 +108,13 @@ export const MemberDetails = ({ userInfo }: { userInfo: UserDetails }) => {
               <span>Ehad duration</span>
             </h3>
             <div className="pl-12 space-y-2">
-              <p className="text-xs">
-              
-               {dateFormat}
-              </p>
+              <p className="text-xs">{dateFormat}</p>
             </div>
-
           </div>
         </div>
 
-        {userInfo?.role === MemberRole.Incharge && (
+        {(user?.role === MemberRole.Incharge ||
+          user?.shift === userInfo.shift) && (
           <div className="text-gray-700">
             <div className="space-y-1">
               <h3 className="flex items-center gap-2 text-sm font-semibold">

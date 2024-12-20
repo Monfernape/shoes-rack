@@ -134,6 +134,7 @@ export type MissingShoeReport = {
   time: string;
   shoesToken: string;
   description: string;
+  reportedBy:number;
 };
 
 export type Fund = {

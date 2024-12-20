@@ -26,7 +26,7 @@ const Page = async ({ params }: Parameters) => {
     <div>
       <MemberHeader  breadcrumbs={breadcrumbs} user = {user} />
       <FormWrapper>
-        <MemberDetails userInfo={userInfo} />
+        <MemberDetails userInfo={userInfo} user = {user} />
       </FormWrapper>
     </div>
   );
