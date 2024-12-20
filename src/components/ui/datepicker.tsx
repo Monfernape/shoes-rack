@@ -93,7 +93,6 @@ export function DatePicker<T extends FieldValues>({
         const handleSelect =(selectedDate: Date | undefined) => {
           if (selectedDate) {
             field.onChange(selectedDate);
-            console.log({selectedDate});
             setDate(selectedDate);
           }
         };
