@@ -100,7 +100,7 @@ export const LeaveRequestFormBuilder = ({
   });
 
   const {
-    formState: { errors, isValid },
+    formState: { errors },
   } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {

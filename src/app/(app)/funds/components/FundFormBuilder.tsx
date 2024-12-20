@@ -53,8 +53,6 @@ export const FundFormBuilder = ({ funds , loginUser}: Props) => {
     mode: "all",
   });
 
-  const { isValid } = form.formState;
-
   const onSubmit = async(values: FundSchemaType) =>{
     try {
       if (!funds?.id) {

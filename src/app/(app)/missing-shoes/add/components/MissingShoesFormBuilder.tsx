@@ -74,7 +74,7 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
   });
 
   const {
-    formState: { errors, isValid },
+    formState: { errors },
   } = form;
 
   const onSubmit = async (values: z.infer<typeof MissingShoesSchema>) => {
