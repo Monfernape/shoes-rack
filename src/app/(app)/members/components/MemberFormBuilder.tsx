@@ -83,17 +83,9 @@ export const userBuilderSchema = z.object({
       },
     }
   ),
-  ehad_duration: z.date().refine(
-    (date) => {
-      const today = new Date();
-      const minDate = new Date();
-      minDate.setDate(today.getDate() - 30);
-      return date <= minDate;
-    },
-    {
-      message: "Ehad duration must be more than 30 days ago",
-    }
-  ),
+  ehad_duration: z.date({message:"Ehad Duration is required"})
+   
+ 
 });
 
 type MemberFormBuilder = {
@@ -174,7 +166,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
       <Form {...form}>
         <form
           action={form.handleSubmit(handleSubmission) as unknown as string}
-          className="space-y-4"
+          className="space-y-4 flex flex-col"
           data-testid="form"
         >
           <FormTitle title="Information" />
@@ -343,6 +335,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
             type="submit"
             data-testid="submit"
             disabled={!member && !form.formState.isValid}
+            className="self-end"
           >
             {params?.id ? "Update" : "Submit"}
           </Button>

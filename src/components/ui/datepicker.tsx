@@ -40,13 +40,13 @@ export function DatePicker<T extends FieldValues>({
   label,
   control,
   name,
-  defaultDate
+  defaultDate,
 }: DatePickerProps<T>) {
 
-  const datex = new Date(defaultDate);
-  datex.setUTCDate(datex.getUTCDate() + 1);
+  const currentData = new Date(defaultDate);
+  currentData.setUTCDate(currentData.getUTCDate() + 1);
   
-  const nextDay = datex.toISOString();
+  const nextDay = currentData.toISOString();
   const nextDayDate = new Date(nextDay);
   
   const startYear = getYear(new Date()) - 60;
@@ -90,7 +90,8 @@ export function DatePicker<T extends FieldValues>({
           field.onChange(newDate);
         };
 
-        const handleSelect =(selectedDate: Date | undefined) => {
+        const handleSelect = (selectedDate: Date | undefined) => {
+
           if (selectedDate) {
             field.onChange(selectedDate);
             setDate(selectedDate);
@@ -149,12 +150,14 @@ export function DatePicker<T extends FieldValues>({
                       </SelectContent>
                     </Select>
                   </div>
+
                   <Calendar
                     mode="single"
                     selected={date}
                     onSelect={handleSelect}
                     initialFocus
                     month={date}
+                    disabled={(date) => date > new Date()}
                     onMonthChange={(newMonth) =>
                       setDate(setMonth(date, getMonth(newMonth)))
                     }

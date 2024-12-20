@@ -33,7 +33,7 @@ export const HeaderWrapper = ({ breadcrumbs, children }: HeaderWrapperProps) => 
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       )}
       <header className="bg-white shadow-sm sticky top-0">
-        <div className="flex items-center justify-between px-4 py-4">
+        <div className="flex items-center justify-between px-8 py-4">
           <div className="flex items-center">
             {pathname !== Routes.Login && (
               <Button

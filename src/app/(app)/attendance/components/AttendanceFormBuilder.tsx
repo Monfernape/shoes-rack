@@ -25,7 +25,7 @@ import { User } from "@/types";
 
 interface AttendanceFormBuilderProps {
   attendance?: AttendanceFormValues;
-  loginUser:User
+  loginUser?:User
 }
 
 const attendanceSchema = z
@@ -57,7 +57,6 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
 }) => {
   const params = useParams();
   const attendanceId = params?.id;
-
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
