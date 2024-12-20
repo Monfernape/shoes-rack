@@ -10,7 +10,7 @@ import {
 import { AttendanceStatus, MemberRole } from "@/constant/constant";
 import { toast } from "@/hooks/use-toast";
 import { Routes } from "@/lib/routes";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
@@ -25,6 +25,8 @@ export type AttendanceActionRenderProps = {
 const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => {
   const router = useRouter();
   const loginUser = useUser();
+  const searchParams = useSearchParams();
+  const searchQuery: string | null = searchParams.get("id");
   const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
   const { id: requestId } = attendance;
@@ -57,7 +59,9 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
     status: AttendanceStatus
   ) => {
     try {
-      await updateAttendanceStatus({attendanceId, attendanceStatus: status });
+      await updateAttendanceStatus({attendanceId, attendanceStatus: status});
+      router.push(loginUser?.role == MemberRole.ShiftIncharge ? Routes.Attendance
+        : `${Routes.Attendance}?id=${searchQuery}`);
       toast({
         title: "Success",
         description: "Request updated successfully.",
