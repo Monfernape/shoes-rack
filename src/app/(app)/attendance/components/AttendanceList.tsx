@@ -23,7 +23,7 @@ import AttendanceActionRender from "./AttendanceActionRender";
 import { Attendance } from "@/types";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 
-interface AttendanceProps {
+export interface AttendanceProps {
   attendance: Attendance[];
 }
 
@@ -64,13 +64,12 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
         ),
       },
       {
-        id: "actions",
-        enableHiding: false,
+        accessorKey:"id",
         header: () => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <AttendanceActionRender attendance={row.original} />;
+          return <AttendanceActionRender key={row.getValue('id')} attendance={row.original} />;
         },
       },
     ],

@@ -6,13 +6,14 @@ import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 export const getAttendanceById = async (id: number) => {
   const supabase = await getSupabaseClient();
 
-  const { data } = await supabase
+  const { data: attendance, error } = await supabase
     .from(Tables.Attendance)
     .select("*")
     .eq("id", id)
     .single();
 
-  return {
-    data: data,
-  };
+  if (error) {
+    throw error;
+  }
+  return attendance;
 };

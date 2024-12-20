@@ -1,102 +1,167 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import {
+  Info as InfoIcon,
   Trash2 as TrashIcon,
   Edit as EditIcon,
-  XCircle as XCricleIcon,
-  CheckSquare as CheckSquareIcon,
+  CheckCircle as CheckCircleIcon,
+  AlertCircle as AlertCircleIcon,
 } from "lucide-react";
 import { AttendanceStatus, MemberRole } from "@/constant/constant";
-import { useRouter } from "next/navigation";
-import { Routes } from "@/lib/routes";
-import { deleteAttendance } from "../actions/deleteAttendance";
 import { toast } from "@/hooks/use-toast";
+import { Routes } from "@/lib/routes";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/useGetLoggedinUser";
+import { updateAttendanceStatus } from "../actions/update-attendance-status";
+import { deleteAttendance } from "../actions/deleteAttendance";
+import { AttendanceDetails } from "../modal/AttendanceDetails";
+import { Attendance } from "@/types";
 
-interface Attendance {
-  shift: string;
-  status: string;
-  id: number;
-}
 
-type Props = {
+export type AttendanceActionRenderProps = {
   attendance: Attendance;
 };
 
-const AttendanceActionRender = ({ attendance }: Props) => {
+const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => {
   const router = useRouter();
   const loginUser = useUser();
+  const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
-  const handleEditInfo = (id: number) => {
-    router.push(`${Routes.EditAttendance}/${id}`);
+  const { id: requestId } = attendance;
+  const handleViewDetails = () => {
+    setIsOpenViewModal(!isOpenViewModal);
   };
 
-  const handleDeleteMember = async (id: number) => {
-    deleteAttendance(id).then(() => {
+  const handleEditInfo = (requestId: number) => {
+    router.push(`${Routes.EditAttendance}/${requestId}`);
+  };
+
+  const handleDeleteRequest = async (requestId: number) => {
+    try {
+      await deleteAttendance(requestId);
       toast({
-        title: "Attendance Deleted ",
-        description: "Attendance deleted successfully",
+        title: "Success",
+        description: "Request deleted successfully.",
       });
-      router.refresh();
-    });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+        });
+      }
+    }
   };
 
-  const handleApproveRequest = () => {
-    return;
-  };
-  const handleRejectRequest = () => {
-    return;
+  const handleAttendanceStatus = async (
+    attendanceId: number,
+    status: AttendanceStatus
+  ) => {
+    try {
+      await updateAttendanceStatus({attendanceId, attendanceStatus: status });
+      toast({
+        title: "Success",
+        description: "Request updated successfully.",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+        });
+      }
+    }
   };
 
-  const baseActions = [
-    {
-      title: "Edit Info",
-      id: 2,
-      onClick: () => handleEditInfo(attendance.id),
-      icon: <EditIcon size={16} />,
-    },
-    {
-      title: "Delete Member",
-      id: 3,
-      onClick: () => handleDeleteMember(attendance.id),
-      icon: <TrashIcon size={16} className="text-red-500" />,
-      className: "text-red-500",
-    },
-  ];
-  const ApprovelRequest = [
-    {
-      title: "Approve",
-      id: 2,
-      onClick: handleApproveRequest,
-      icon: <CheckSquareIcon size={16} />,
-    },
-    {
-      title: "Reject",
-      id: 3,
-      onClick: handleRejectRequest,
-      icon: <XCricleIcon size={16} className="text-red-500" />,
-      className: "text-red-500",
-    },
-  ];
+  const baseActions = useMemo(
+    () => [
+      {
+        title: "Edit",
+        id: 2,
+        onClick: () => {
+          handleEditInfo(requestId);
+        },
+        icon: <EditIcon size={16} />,
+      },
+      {
+        title: "Delete",
+        id: 3,
+        onClick: () => {
+          handleDeleteRequest(requestId);
+        },
+        icon: <TrashIcon size={16} className="stroke-status-inactive" />,
+      },
+    ],
+    []
+  );
 
-  const actionMenu = React.useMemo(() => {
+  const viewInfo = useMemo(
+    () => [
+      {
+        title: "View Details",
+        id: 1,
+        onClick: handleViewDetails,
+        icon: <InfoIcon size={16} />,
+      },
+    ],
+    []
+  );
+
+  const statusActions = useMemo(
+    () => [
+      {
+        title: "Approve",
+        id: 4,
+        onClick: () => {
+          handleAttendanceStatus(requestId, AttendanceStatus.Approve);
+        },
+        icon: <CheckCircleIcon size={16} />,
+      },
+      {
+        title: "Reject",
+        id: 4,
+        onClick: () => {
+          handleAttendanceStatus(requestId, AttendanceStatus.Reject);
+        },
+        icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
+      },
+    ],
+    []
+  );
+
+  const shiftInchargeActionMenu = (function onShiftInchareMenu() {
+    if (attendance.memberId === loginUser?.id) {
+      return attendance.status === AttendanceStatus.Pending
+        ? [...viewInfo, ...baseActions]
+        : [...viewInfo];
+    } else {
+      return [...viewInfo, ...statusActions];
+    }
+  })();
+
+  const actionMenu = useMemo(() => {
     switch (loginUser?.role) {
       case MemberRole.Member:
         return attendance.status === AttendanceStatus.Pending
-          ? [...baseActions]
-          : [];
+          ? [...viewInfo, ...baseActions]
+          : [...viewInfo];
       case MemberRole.ShiftIncharge:
-        return attendance.shift === loginUser?.shift
-          ? [...ApprovelRequest]
-          : [];
+        return shiftInchargeActionMenu;
       case MemberRole.Incharge:
-        return [...ApprovelRequest];
+        return [...viewInfo, ...statusActions];
+
       default:
         return [];
     }
-  }, [loginUser?.role, attendance.status]);
-
-  return <ActionsMenu actions={actionMenu} />;
+  }, [attendance.status, loginUser]);
+  return (
+    <>
+      <ActionsMenu actions={actionMenu} />
+      <AttendanceDetails
+        isOpenViewModal={isOpenViewModal}
+        setIsOpenViewModal={setIsOpenViewModal}
+        attendanceDetails={attendance}
+      />
+    </>
+  );
 };
 
 export default AttendanceActionRender;
