@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import LogoImage from "../../../../../public/assets/imgs/logo.png"
 import {
   Form,
@@ -158,14 +157,14 @@ export const LoginPage = () => {
             >
               Login
             </Button>
-            <div className="flex items-center justify-center">
+            {/* <div className="flex items-center justify-center">
               <Link
                 href="/forgot-password"
                 className="text-sm text-gray-500 hover:text-gray-800 "
               >
                 Forgot password?
               </Link>
-            </div>
+            </div> */}
           </form>
         </Form>
       </div>

@@ -46,8 +46,9 @@ export const MemberList = ({
     if (searchQuery) {
       (async function fetchData() {
         try {
-          const response = await getMembers(searchQuery);
-          startTransition(() => {
+       
+          startTransition(async() => {
+            const response = await getMembers(searchQuery);
             setFilteredMember(response.data);
           });
         } catch (error: unknown) {
