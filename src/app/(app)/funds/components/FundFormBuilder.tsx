@@ -53,8 +53,6 @@ export const FundFormBuilder = ({ funds , loginUser}: Props) => {
     mode: "all",
   });
 
-  const { isValid } = form.formState;
-
   const onSubmit = async(values: FundSchemaType) =>{
     try {
       if (!funds?.id) {
@@ -119,7 +117,9 @@ export const FundFormBuilder = ({ funds , loginUser}: Props) => {
           />
 
           <div className="flex justify-end">
-            <Button type="submit" disabled={!isValid} className="text-xs">
+            <Button type="submit" 
+            // disabled={!isValid} 
+            className="text-xs">
               {funds?.id ? "Update" : "Submit"}
             </Button>
           </div>

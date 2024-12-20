@@ -41,4 +41,4 @@ export default async function updateSession(request: NextRequest) {
   });
 }
 
-export const config = { matcher: [`/,${Routes.Dashboard},${Routes.AttendanceReport},${Routes.Notification}`] };
+export const config = { matcher: ["/"] };

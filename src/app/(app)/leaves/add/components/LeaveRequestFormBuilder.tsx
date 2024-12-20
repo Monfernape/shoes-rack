@@ -100,7 +100,7 @@ export const LeaveRequestFormBuilder = ({
   });
 
   const {
-    formState: { errors, isValid },
+    formState: { errors },
   } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
@@ -223,7 +223,7 @@ export const LeaveRequestFormBuilder = ({
             <Button
               data-testid="submitButton"
               type="submit"
-              disabled={!isValid}
+              // disabled={!isValid}
               className="text-xs"
             >
               {leaveId ? "Update" : "Submit"}

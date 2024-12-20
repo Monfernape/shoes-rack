@@ -334,7 +334,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
           <Button
             type="submit"
             data-testid="submit"
-            disabled={!member && !form.formState.isValid}
+            // disabled={!member && !form.formState.isValid}
             className="self-end"
           >
             {params?.id ? "Update" : "Submit"}

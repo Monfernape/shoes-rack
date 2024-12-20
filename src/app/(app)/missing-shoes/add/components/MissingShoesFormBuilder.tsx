@@ -74,7 +74,7 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
   });
 
   const {
-    formState: { errors, isValid },
+    formState: { errors },
   } = form;
 
   const onSubmit = async (values: z.infer<typeof MissingShoesSchema>) => {
@@ -216,7 +216,7 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
             <Button
               data-testid="submitButton"
               type="submit"
-              disabled={!isValid}
+              // disabled={!isValid}
               className="text-xs"
             >
               {missingShoe?.id ? "Update" : " Submit"}
