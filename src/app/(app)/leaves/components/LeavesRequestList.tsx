@@ -20,7 +20,7 @@ import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon , ClipboardIcon } from "lucide-react";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
 interface LeaveRequest extends LeaveRequestsTypes {
@@ -30,16 +30,13 @@ interface LeavesRequestList {
   leaves: LeaveRequest[];
 }
 export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
-  const searchParams = useSearchParams()
- 
-  const id = searchParams.get('id') 
   const route = useRouter();
   const handleNavigate = () => {
     route.push(Routes.AddLeaveRequest);
   };
 
   const StandardPageProps = {
-    hasContent: (!Number(id) && !!leaves?.length ) ? false :  true,
+    hasContent: !!leaves?.length ,
     title: "Add Leave",
     description: "This is where you can see leave requests",
     buttonIcon: <PlusIcon />,
@@ -101,11 +98,6 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  if(Number(id) && !!leaves.length)  {
-  
-   return  <div className="text-center text-sm font-medium">No Data Found</div>
-  }
   
   return (
     <StandardPage {...StandardPageProps}>
@@ -139,13 +131,6 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
                 ))}
             </TableRow>
           ))}
-          {!leaves?.length && (
-            <TableRow>
-              <TableCell colSpan={6} className="text-center">
-                No Leave Request Found
-              </TableCell>
-            </TableRow>
-          )}
         </TableBody>
       </Table>
     </StandardPage>

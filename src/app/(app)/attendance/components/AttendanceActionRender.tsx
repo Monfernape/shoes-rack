@@ -128,13 +128,21 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
   );
 
   const shiftInchargeActionMenu = (function onShiftInchareMenu() {
-  
-    if (attendance.memberId === loginUser?.id) {
-      return attendance.status === AttendanceStatus.Pending
-        ? [...viewInfo, ...baseActions]
-        : [...viewInfo];
+    if (attendance.status === AttendanceStatus.Pending) {
+      if (attendance.memberId === loginUser?.id) {
+        return [...viewInfo, ...baseActions];
+      }
+      return [...viewInfo, ...baseActions, ...statusActions];
+    } else if (attendance.status === AttendanceStatus.Approve) {
+      if (attendance.memberId === loginUser?.id) {
+        return [...viewInfo];
+      }
+      return [...viewInfo, ...statusActions];
     } else {
-      return [...viewInfo, ...baseActions ];
+      if (attendance.memberId === loginUser?.id) {
+        return [...viewInfo];
+      }
+      return [...viewInfo, ...statusActions];
     }
   })();
 
@@ -147,7 +155,9 @@ const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => 
       case MemberRole.ShiftIncharge:
         return shiftInchargeActionMenu;
       case MemberRole.Incharge:
-        return [...viewInfo, ...statusActions];
+        return attendance.status === AttendanceStatus.Pending
+        ? [...viewInfo, ...baseActions, ...statusActions]
+        : [...viewInfo, ...statusActions];
 
       default:
         return [];
