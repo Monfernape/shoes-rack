@@ -42,7 +42,7 @@ export function DatePicker<T extends FieldValues>({
   name,
   defaultDate,
 }: DatePickerProps<T>) {
-  console.log("Default Date***", defaultDate);
+
   const startYear = getYear(new Date(defaultDate)) - 60;
   const endYear = getYear(new Date(defaultDate));
 
@@ -85,7 +85,7 @@ export function DatePicker<T extends FieldValues>({
         };
 
         const handleSelect = (selectedDate: Date | undefined) => {
-          console.log("selectedDate", selectedDate);
+
           if (selectedDate) {
             setDate(selectedDate);
             field.onChange(selectedDate);
