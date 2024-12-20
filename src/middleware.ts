@@ -6,21 +6,31 @@ import { getLoggedInUser } from "./utils/getLoggedInUser";
 import { MemberRole } from "./constant/constant";
 
 const restrictedPaths: Routes[] = [Routes.AttendanceReport , Routes.MarkAttendance];
-
+const restrictedPathForShiftIncharge: Routes[] = [Routes.AddFund , Routes.Fund , Routes.EditFund];
 export default async function updateSession(request: NextRequest) {
   const isTokenValid = await getSession();
   const requestedPath = request.nextUrl.pathname as Routes;
   const loginUser = await getLoggedInUser();
-
-  const isRestrictedPath = restrictedPaths.includes(requestedPath);
-
+    const isRestrictedPath = restrictedPaths.includes(requestedPath);
+  const isRestrictedPathForShiftIncharge = restrictedPathForShiftIncharge.includes(requestedPath);
   if (!isTokenValid && requestedPath !== Routes.Login) {
     return NextResponse.redirect(new URL(Routes.Login, request.url));
   }
+  if(requestedPath === Routes.Dashboard || requestedPath === Routes.AttendanceReport || requestedPath === Routes.Notification) {
+    return NextResponse.redirect(new URL(Routes.Members, request.url))
+   }
   if (
     isTokenValid &&
     loginUser.role === MemberRole.Member &&
     isRestrictedPath
+  ) {
+    return NextResponse.redirect(new URL(Routes.Members, request.url));
+  }
+
+  if (
+    isTokenValid &&
+    loginUser.role === MemberRole.ShiftIncharge &&
+    isRestrictedPathForShiftIncharge
   ) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
   }
@@ -31,4 +41,4 @@ export default async function updateSession(request: NextRequest) {
   });
 }
 
-export const config = { matcher: "/" };
+export const config = { matcher: [`/,${Routes.Dashboard},${Routes.AttendanceReport},${Routes.Notification}`] };
