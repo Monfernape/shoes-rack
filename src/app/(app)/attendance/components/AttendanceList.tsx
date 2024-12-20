@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -16,7 +16,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useToast } from "@/hooks/use-toast";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus, CalendarIcon } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
@@ -28,8 +27,6 @@ export interface AttendanceProps {
 }
 
 export const AttendanceList = ({ attendance }: AttendanceProps) => {
-  const { toast } = useToast();
-
   const columns: ColumnDef<Attendance>[] = useMemo(
     () => [
       {
@@ -62,12 +59,17 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
         cell: ({ row }) => <StatusBadge status={row.getValue("status")} />,
       },
       {
-        accessorKey:"id",
+        accessorKey: "id",
         header: () => {
           return <div>Action</div>;
         },
         cell: ({ row }) => {
-          return <AttendanceActionRender key={row.getValue('id')} attendance={row.original} />;
+          return (
+            <AttendanceActionRender
+              key={row.getValue("id")}
+              attendance={row.original}
+            />
+          );
         },
       },
     ],
@@ -79,20 +81,6 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  useEffect(() => {
-    if (!attendance) {
-      toast({
-        title: "No Attendance Found",
-        description: "There are no members available at this time.",
-      });
-    } else {
-      toast({
-        title: "Attendances loaded successfully",
-        description: "You can now see all attendance.",
-      });
-    }
-  }, [attendance, toast]);
 
   const addAttendance = () => {
     alert("Navigation function triggered");

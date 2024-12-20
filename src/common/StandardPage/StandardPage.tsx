@@ -32,7 +32,6 @@ export const StandardPage = ({
       data-testid="standardPage"
     >
       <div className="flex flex-col items-start justify-center h-full max-w-lg gap-2">
-       
         <span className="bg-button-background p-2 rounded">
 
            {icon}
@@ -42,11 +41,7 @@ export const StandardPage = ({
           {description || ""}
         </span>
         {actionButton && (
-          <Button
-            className="w-32 h-7 mt-3"
-            onClick={onAction}
-            data-testid="button"
-          >
+          <Button className=" h-7 " onClick={onAction} data-testid="button">
             {buttonIcon}
             {labelForActionButton}
           </Button>
