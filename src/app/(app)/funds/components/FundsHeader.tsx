@@ -46,9 +46,16 @@ export const FundsHeader = ({ breadcrumbs }: Props) => {
               onChange={handleSearchQueryChange}
               className={`pr-4 py-2 h-7 ${
                 isTitleHide ? "w-32 pl-10" : "w-2 pl-6"
-              } md:w-60 md:pl-10 rounded text-xs`}
+              } md:w-60 md:pl-10 rounded text-xs transition-all duration-500 ease-in-out`}
             />
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
+            <MagnifyingGlassIcon
+              onClick={() => setIsTitleHide(true)}
+              className={`absolute top-1/2 ${
+                isTitleHide ? "left-3" : "left-1/2"
+              } md:left-3 transform ${
+                isTitleHide ? "-translate-x-0" : "-translate-x-1/2"
+              } md:-translate-x-0 -translate-y-1/2 text-gray-600`}
+            />
           </div>
           <NavigationButton path={Routes.AddFund} buttonText="Add Fund" />
         </div>
