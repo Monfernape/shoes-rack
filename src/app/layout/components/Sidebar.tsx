@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import { logoutUser } from "@/app/(auth)/login/actions/logoutUser";
 import { Button } from "@/components/ui/button";
 import { Routes } from "@/lib/routes";
@@ -15,7 +15,7 @@ import {
 import {
   // BellIcon,
   CalendarIcon,
-  // ChartNoAxesCombinedIcon,
+  ChartNoAxesCombinedIcon,
   ClipboardIcon,
   HandCoinsIcon,
 } from "lucide-react";
@@ -40,7 +40,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const isSmallScreen = useMediaQuery("sm");
   const pathname = usePathname();
 
-  const routes: Route[] = [
+  const membersRoute: Route[] = [
     // {
     //   name: "Dashboard",
     //   route: Routes.Dashboard,
@@ -71,21 +71,25 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
       route: Routes.MissingShoes,
       icon: <ExclamationTriangleIcon />,
     },
-    ...(loginUser?.role === MemberRole.Incharge
-      ? [
-          // {
-          //   name: "Attendance Report",
-          //   route: Routes.AttendanceReport,
-          //   icon: <ChartNoAxesCombinedIcon />,
-          // },
-          {
-            name: "Funds",
-            route: Routes.Fund,
-            icon: <HandCoinsIcon />,
-          },
-        ]
-      : []),
   ];
+
+  const inchargeRoute: Route[] = [
+    ...membersRoute,
+    {
+      name: "Attendance Report",
+      route: Routes.AttendanceReport,
+      icon: <ChartNoAxesCombinedIcon />,
+    },
+    {
+      name: "Funds",
+      route: Routes.Fund,
+      icon: <HandCoinsIcon />,
+    },
+  ];
+
+  const routes = useMemo(() => {
+    return loginUser?.role === MemberRole.Member ? membersRoute : inchargeRoute;
+  }, [loginUser?.role]);
 
   const onLogoutUser = () => {
     logoutUser();
