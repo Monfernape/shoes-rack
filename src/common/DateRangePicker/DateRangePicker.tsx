@@ -54,7 +54,13 @@ export function DatePickerWithRange({ onChange, value }: Props) {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0" align="start">
+      <PopoverContent
+        className={cn(
+          "w-full p-0",
+          "top-1/2 left-0 transform -translate-y-1/2",
+        )}
+        align="start"
+      >
         <Calendar
           initialFocus
           mode="range"
