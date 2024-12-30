@@ -46,8 +46,7 @@ export const MemberList = ({
     if (searchQuery) {
       (async function fetchData() {
         try {
-       
-          startTransition(async() => {
+          startTransition(async () => {
             const response = await getMembers(searchQuery);
             setFilteredMember(response.data);
           });
@@ -75,7 +74,7 @@ export const MemberList = ({
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
+        <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("name")}</div>
       ),
     },
     {
@@ -145,10 +144,9 @@ export const MemberList = ({
     labelForActionButton: "Add Member",
   };
 
-
   return !isPending ? (
     <StandardPage {...StandardPageProps}>
-      <Table>
+      <Table  >
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -163,14 +161,14 @@ export const MemberList = ({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody className="table-fixed w-full">
           {groupedData.map((shiftGroup, index) => (
             <React.Fragment key={`${shiftGroup.shift}-${index}`}>
               {shiftGroup.members.length > 0 && (
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
+                    className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold "
                   >
                     Shift {shiftGroup.shift}
                   </TableCell>
@@ -183,11 +181,13 @@ export const MemberList = ({
                     .rows.find((r) => r.original === row)
                     ?.getVisibleCells()
                     .map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                      <TableCell key={cell.id} className=" max-w-28 overflow-hidden whitespace-nowrap text-ellipsis  ">
+                        <div  >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </div>
                       </TableCell>
                     ))}
                 </TableRow>

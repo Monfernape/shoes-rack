@@ -50,26 +50,26 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
     () => [
       {
         accessorKey: "requestedBy",
-        header: "Requested By",
+        header: "Requested by",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("requestedBy")}</div>
+          <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("requestedBy")}</div>
         ),
       },
       {
         accessorKey: "leaveType",
-        header: "Leave Type",
+        header: "Leave type",
         cell: ({ row }) => (
           <div className="capitalize">{row.getValue("leaveType")}</div>
         ),
       },
       {
         accessorKey: "startDate",
-        header: "Start Date",
+        header: "Start date",
         cell: ({ row }) => <div>{row.getValue("startDate")}</div>,
       },
       {
         accessorKey: "endDate",
-        header: "End Date",
+        header: "End date",
         cell: ({ row }) => <div>{row.getValue("endDate")}</div>,
       },
       {
@@ -125,7 +125,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
                 .rows.find((r) => r.original === row)
                 ?.getVisibleCells()
                 .map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis ">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
