@@ -10,14 +10,19 @@ import {
 import { Member, User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
 import { getMembers } from "@/app/(app)/members/actions/getMembers";
+import { DataSpinner } from "../Loader/Loader";
 
 interface SelectFieldProps {
   value: string;
   onValueChange: (value: string) => void;
-  loginUser ?: User
+  loginUser?: User;
 }
 
-const MemberSelector = ({ value, onValueChange , loginUser }: SelectFieldProps) => {
+const MemberSelector = ({
+  value,
+  onValueChange,
+  loginUser,
+}: SelectFieldProps) => {
   const [members, setMembers] = useState<Member[]>([]);
   useEffect(() => {
     const fetchMembers = async () => {
@@ -70,18 +75,25 @@ const MemberSelector = ({ value, onValueChange , loginUser }: SelectFieldProps) 
       <SelectTrigger
         data-testid="memberId"
         className={`border rounded-md p-2 border-gray-300`}
-      >
-        <SelectValue data-testId="select" placeholder="Select user" />
+      >{roleBaseMembers.length ? (
+        <SelectValue  placeholder="Select user" />
+        ):(
+          <DataSpinner isSmallScreen isMemberSelector/>
+        )}
       </SelectTrigger>
       <SelectContent>
         {loginUser?.role === MemberRole.Incharge && (
           <SelectItem value={"0"}>Select all user</SelectItem>
         )}
-        {roleBaseMembers?.map((option) => (
-          <SelectItem key={option.id.toString()} value={option.id.toString()}>
-            {option.name}
-          </SelectItem>
-        ))}
+        {roleBaseMembers.length ? (
+          roleBaseMembers?.map((option) => (
+            <SelectItem key={option.id.toString()} value={option.id.toString()}>
+              {option.name}
+            </SelectItem>
+          ))
+        ) : (
+          <DataSpinner isSmallScreen />
+        )}
       </SelectContent>
     </Select>
   );

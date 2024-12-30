@@ -8,9 +8,6 @@ describe("AttendanceFormBuilder", () => {
     render(<AttendanceFormBuilder />);
 
     expect(screen.getByText("Attendance Form")).toBeDefined();
-
-    const selectTrigger = screen.getByTestId("select");
-    fireEvent.click(selectTrigger);
   });
 
   it("ensures end time is greater than start time", async () => {
