@@ -133,7 +133,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
                 <FormLabel>User Name</FormLabel>
                 <FormControl>
                   <MemberSelector
-                    value={field.value}
+                    value={field.value?.toString()}
                     onValueChange={field.onChange}
                     loginUser={loginUser}
                   />
