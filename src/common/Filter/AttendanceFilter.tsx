@@ -1,11 +1,10 @@
 "use client";
 import useDebounce from "@/hooks/useDebounce";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState } from "react";
 import { MemberSelector } from "../MemberSelector/MemberSelector";
 import { usePathname, useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { MemberRole } from "@/constant/constant";
-import { DataSpinner } from "../Loader/Loader";
 import { User } from "@/types";
 
 export const AttendanceFilter = ({ loginUser }: { loginUser: User }) => {
