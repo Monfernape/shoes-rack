@@ -10,6 +10,7 @@ import { LeaveFilter } from "@/common/Filter/LeaveFilter";
 
 const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
   const { id } = searchParams || {};
+  
   const loginUser = await getLoggedInUser();
   const leaves = await getAllLeaveRequests(Number(id));
 
@@ -17,12 +18,13 @@ const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
     { href: Routes.LeaveRequest, label: "Leaves" },
     { href: Routes.AddLeaveRequest, label: "New leave request" },
   ];
+
   return (
     <>
       <LeavesHeader breadcrumbs={breadcrumbs} />
       <LeaveFilter loginUser={loginUser} />
       <PageLayout>
-        <LeavesRequestList leaves={leaves} />
+        <LeavesRequestList leaves={leaves} loginUser={loginUser} />
       </PageLayout>
     </>
   );

@@ -19,16 +19,17 @@ import {
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus, CalendarIcon } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
-import { Attendance } from "@/types";
+import { Attendance, UserDetails } from "@/types";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
 export interface AttendanceProps {
   attendance: Attendance[];
+  loginUser:UserDetails
 }
 
-export const AttendanceList = ({ attendance }: AttendanceProps) => {
+export const AttendanceList = ({ attendance,loginUser }: AttendanceProps) => {
   const router = useRouter();
   const columns: ColumnDef<Attendance>[] = useMemo(
     () => [
@@ -36,7 +37,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("name")}</div>
+          <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("name")}</div>
         ),
       },
       {
@@ -71,6 +72,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
             <AttendanceActionRender
               key={row.getValue("id")}
               attendance={row.original}
+              loginUser = {loginUser}
             />
           );
         },
@@ -121,7 +123,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
           {table.getRowModel().rows.map((row) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis ">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import {
   ColumnDef,
   flexRender,
@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { LeaveRequestsTypes } from "@/types";
+import { LeaveRequestsTypes, UserDetails } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon , ClipboardIcon } from "lucide-react";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
@@ -25,11 +25,14 @@ import { Routes } from "@/lib/routes";
 
 interface LeaveRequest extends LeaveRequestsTypes {
   requestedBy: string;
+
 }
 interface LeavesRequestList {
   leaves: LeaveRequest[];
+  loginUser:UserDetails
 }
-export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
+export const LeavesRequestList = ({ leaves,loginUser }: LeavesRequestList) => {
+ 
   const route = useRouter();
   const handleNavigate = () => {
     route.push(Routes.AddLeaveRequest);
@@ -46,30 +49,29 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
     labelForActionButton: "Add Leave",
   };
   
-  const columns: ColumnDef<LeaveRequest>[] = useMemo(
-    () => [
+  const columns: ColumnDef<LeaveRequest>[] = [
       {
         accessorKey: "requestedBy",
-        header: "Requested By",
+        header: "Requested by",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("requestedBy")}</div>
+          <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("requestedBy")}</div>
         ),
       },
       {
         accessorKey: "leaveType",
-        header: "Leave Type",
+        header: "Leave type",
         cell: ({ row }) => (
           <div className="capitalize">{row.getValue("leaveType")}</div>
         ),
       },
       {
         accessorKey: "startDate",
-        header: "Start Date",
+        header: "Start date",
         cell: ({ row }) => <div>{row.getValue("startDate")}</div>,
       },
       {
         accessorKey: "endDate",
-        header: "End Date",
+        header: "End date",
         cell: ({ row }) => <div>{row.getValue("endDate")}</div>,
       },
       {
@@ -86,12 +88,10 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
           return <span>Action</span>;
         },
         cell: ({ row }) => {
-          return <LeaveTableActionRender leaveRequestDetails={row.original} />;
+          return <LeaveTableActionRender leaveRequestDetails={row.original} loginUser={loginUser} />;
         },
       },
-    ],
-    []
-  );
+    ]
 
   const table = useReactTable({
     data: leaves,
@@ -125,7 +125,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
                 .rows.find((r) => r.original === row)
                 ?.getVisibleCells()
                 .map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis ">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

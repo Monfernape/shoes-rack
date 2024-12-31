@@ -38,33 +38,33 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     () => [
       {
         accessorKey: "ownerName",
-        header: "Owner Name",
+         header:  () => <div className="text-center">Owner name</div>,
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("ownerName")}</div>
+          <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("ownerName")}</div>
         ),
       },
       {
         accessorKey: "ownerPhoneNumber",
-        header: "Phone Number",
+         header:  () => <div className="text-center">Phone number</div>,
         cell: ({ row }) => (
           <div className="capitalize">{row.getValue("ownerPhoneNumber")}</div>
         ),
       },
       {
         accessorKey: "time",
-        header: "Time Lost",
-        cell: ({ row }) => <div>{row.getValue("time")}</div>,
+        header:  () => <div className="text-center">Time lost </div>,
+        cell: ({ row }) => <div className="capitalize overflow-hidden text-ellipsis" suppressHydrationWarning>{`${new Date(row.getValue("time")).toLocaleDateString()}`}</div>,
       },
       {
         accessorKey: "shoesToken",
-        header: "Shoes Token",
-        cell: ({ row }) => <div>{row.getValue("shoesToken")}</div>,
+        header:  () => <div className="text-center">Shoes token</div>,
+        cell: ({ row }) => <div className="text-center" >{row.getValue("shoesToken")}</div>,
       },
       {
         accessorKey: "status",
-        header: "Status",
+        header:  () => <div className="text-center">Status</div>,
         cell: ({ row }) => (
-          <div>
+          <div >
             {<MissingShoesStatusBadge status={row.getValue("status")} />}
           </div>
         ),
@@ -129,7 +129,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
           {table.getRowModel().rows.map((row) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} className="capitalize">
+                <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis ">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}

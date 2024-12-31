@@ -27,7 +27,7 @@ import { loginUser } from "@/app/(auth)/login/actions/loginUser";
 const userSchema = z.object({
   phoneNumber: z
     .string()
-    .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is invalid"),
+    .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is required"),
   password: z.string().min(1, { message: "password is required" }),
 });
 
