@@ -1,11 +1,10 @@
 "use client";
 import useDebounce from "@/hooks/useDebounce";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState } from "react";
 import { MemberSelector } from "../MemberSelector/MemberSelector";
 import { usePathname, useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { MemberRole } from "@/constant/constant";
-import { DataSpinner } from "../Loader/Loader";
 import { User } from "@/types";
 
 export const AttendanceFilter = ({ loginUser }: { loginUser: User }) => {
@@ -13,11 +12,8 @@ export const AttendanceFilter = ({ loginUser }: { loginUser: User }) => {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const debounceValue = useDebounce(search, 500);
-  const [isPending, startTransition] = useTransition();
   const handleSearchQueryChange = (value: string) => {
-    startTransition(() => {
       setSearch(value);
-    });
   };
 
   useEffect(() => {
@@ -39,10 +35,8 @@ export const AttendanceFilter = ({ loginUser }: { loginUser: User }) => {
 
     router.push(route);
   }, [debounceValue, loginUser?.role, pathname, router]);
-
   return (
     <div className="flex justify-end">
-      {isPending && <DataSpinner />}
       <div className="w-full sm:w-3/12 px-3  md:px-8 pt-4">
         <MemberSelector
           value={search}
