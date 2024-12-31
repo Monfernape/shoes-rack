@@ -19,16 +19,17 @@ import {
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus, CalendarIcon } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
-import { Attendance } from "@/types";
+import { Attendance, UserDetails } from "@/types";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
 
 export interface AttendanceProps {
   attendance: Attendance[];
+  loginUser:UserDetails
 }
 
-export const AttendanceList = ({ attendance }: AttendanceProps) => {
+export const AttendanceList = ({ attendance,loginUser }: AttendanceProps) => {
   const router = useRouter();
   const columns: ColumnDef<Attendance>[] = useMemo(
     () => [
@@ -71,6 +72,7 @@ export const AttendanceList = ({ attendance }: AttendanceProps) => {
             <AttendanceActionRender
               key={row.getValue("id")}
               attendance={row.original}
+              loginUser = {loginUser}
             />
           );
         },

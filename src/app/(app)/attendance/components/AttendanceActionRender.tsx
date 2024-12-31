@@ -15,16 +15,17 @@ import { useUser } from "@/hooks/useGetLoggedinUser";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
 import { AttendanceDetails } from "../modal/AttendanceDetails";
-import { Attendance } from "@/types";
+import { Attendance, UserDetails } from "@/types";
 
 
 export type AttendanceActionRenderProps = {
   attendance: Attendance;
+  loginUser:UserDetails
 };
 
-const AttendanceActionRender = ({ attendance }: AttendanceActionRenderProps) => {
+const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRenderProps) => {
   const router = useRouter();
-  const loginUser = useUser();
+
   const searchParams = useSearchParams();
   const searchQuery: string | null = searchParams.get("id");
   const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);

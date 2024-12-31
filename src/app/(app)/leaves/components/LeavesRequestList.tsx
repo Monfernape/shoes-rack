@@ -15,21 +15,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { LeaveRequestsTypes } from "@/types";
+import { LeaveRequestsTypes, UserDetails } from "@/types";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Plus as PlusIcon , ClipboardIcon } from "lucide-react";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
+import { loginUser } from "@/app/(auth)/login/actions/loginUser";
 
 interface LeaveRequest extends LeaveRequestsTypes {
   requestedBy: string;
+
 }
 interface LeavesRequestList {
   leaves: LeaveRequest[];
+  loginUser:UserDetails
 }
-export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
+export const LeavesRequestList = ({ leaves,loginUser }: LeavesRequestList) => {
+  console.log("leaves***",leaves);
   const route = useRouter();
   const handleNavigate = () => {
     route.push(Routes.AddLeaveRequest);
@@ -46,8 +50,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
     labelForActionButton: "Add Leave",
   };
   
-  const columns: ColumnDef<LeaveRequest>[] = useMemo(
-    () => [
+  const columns: ColumnDef<LeaveRequest>[] = [
       {
         accessorKey: "requestedBy",
         header: "Requested by",
@@ -86,12 +89,10 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
           return <span>Action</span>;
         },
         cell: ({ row }) => {
-          return <LeaveTableActionRender leaveRequestDetails={row.original} />;
+          return <LeaveTableActionRender leaveRequestDetails={row.original} loginUser={loginUser} />;
         },
       },
-    ],
-    []
-  );
+    ]
 
   const table = useReactTable({
     data: leaves,

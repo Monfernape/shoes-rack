@@ -9,6 +9,7 @@ import { DataSpinner } from "../Loader/Loader";
 import { User } from "@/types";
 
 export const LeaveFilter = ({ loginUser }: { loginUser: User }) => {
+  console.log("leaveFiler***")
   const pathname = usePathname();
   const router = useRouter();
   const [search, setSearch] = useState("");
@@ -20,11 +21,11 @@ export const LeaveFilter = ({ loginUser }: { loginUser: User }) => {
     });
   };
 
-  useEffect(() => {
-    if (loginUser?.role === MemberRole.ShiftIncharge && search === "") {
-      setSearch(loginUser.id?.toString());
-    }
-  }, [loginUser, search]);
+  // useEffect(() => {
+  //   if (loginUser?.role === MemberRole.ShiftIncharge && search === "") {
+  //     setSearch(loginUser.id?.toString());
+  //   }
+  // }, [loginUser, search]);
 
   useEffect(() => {
     const shouldRedirectToLeaveRequest =

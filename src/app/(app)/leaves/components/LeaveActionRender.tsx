@@ -9,7 +9,7 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { LeaveRequestsTypes, LeavesRequestStatus } from "@/types";
+import { LeaveRequestsTypes, LeavesRequestStatus, UserDetails } from "@/types";
 import { MemberRole } from "@/constant/constant";
 import { LeaveRequestDetails } from "../modal/LeaveRequestDetails";
 import { deleteLeaveRequest } from "../actions/delete-leave-request";
@@ -24,11 +24,11 @@ interface LeaveRequest extends LeaveRequestsTypes {
 }
 interface Props {
   leaveRequestDetails: LeaveRequest;
+  loginUser:UserDetails
 }
 
-const LeaveTableActionRender = ({ leaveRequestDetails }: Props) => {
+const LeaveTableActionRender = ({ leaveRequestDetails,loginUser }: Props) => {
   const router = useRouter();
-  const loginUser = useUser();
   const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
   const { id: requestId } = leaveRequestDetails;
