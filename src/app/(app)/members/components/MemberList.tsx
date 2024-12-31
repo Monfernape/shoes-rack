@@ -38,6 +38,7 @@ export const MemberList = ({
 }) => {
   const { toast } = useToast();
   const route = useRouter();
+
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
@@ -74,7 +75,9 @@ export const MemberList = ({
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => (
-        <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("name")}</div>
+        <div className="capitalize overflow-hidden text-ellipsis">
+          {row.getValue("name")}
+        </div>
       ),
     },
     {
@@ -130,11 +133,13 @@ export const MemberList = ({
       members: usersInShift,
     };
   });
+
+  const hasMembers = groupedData.some((group) => group.members.length > 0);
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };
   const StandardPageProps = {
-    hasContent: !!filteredMember.length,
+    hasContent: !!member.length,
     title: "Add Member",
     description: "This is where you can add members",
     buttonIcon: <PlusIcon />,
@@ -146,7 +151,7 @@ export const MemberList = ({
 
   return !isPending ? (
     <StandardPage {...StandardPageProps}>
-      <Table  >
+      <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -162,41 +167,45 @@ export const MemberList = ({
           ))}
         </TableHeader>
         <TableBody className="table-fixed w-full">
-          {groupedData.map((shiftGroup, index) => (
-            <React.Fragment key={`${shiftGroup.shift}-${index}`}>
-              {shiftGroup.members.length > 0 && (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold "
-                  >
-                    Shift {shiftGroup.shift}
-                  </TableCell>
-                </TableRow>
-              )}
-              {shiftGroup.members.map((row) => (
-                <TableRow key={row.id}>
-                  {table
-                    .getRowModel()
-                    .rows.find((r) => r.original === row)
-                    ?.getVisibleCells()
-                    .map((cell) => (
-                      <TableCell key={cell.id} className=" max-w-28 overflow-hidden whitespace-nowrap text-ellipsis  ">
-                        <div  >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </div>
-                      </TableCell>
-                    ))}
-                </TableRow>
-              ))}
-            </React.Fragment>
-          ))}
-          {!groupedData.length && (
+          {hasMembers ? (
+            groupedData.map((shiftGroup, index) => (
+              <React.Fragment key={`${shiftGroup.shift}-${index}`}>
+                {shiftGroup.members.length > 0 && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold "
+                    >
+                      Shift {shiftGroup.shift}
+                    </TableCell>
+                  </TableRow>
+                )}
+                {shiftGroup.members.map((row) => (
+                  <TableRow key={row.id}>
+                    {table
+                      .getRowModel()
+                      .rows.find((r) => r.original === row)
+                      ?.getVisibleCells()
+                      .map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          className=" max-w-28 overflow-hidden whitespace-nowrap text-ellipsis  "
+                        >
+                          <div>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </div>
+                        </TableCell>
+                      ))}
+                  </TableRow>
+                ))}
+              </React.Fragment>
+            ))
+          ) : (
             <TableRow>
-              <TableCell colSpan={6} className="text-center">
+              <TableCell colSpan={6} className="h-24 font-med text-center">
                 No Members Found
               </TableCell>
             </TableRow>
