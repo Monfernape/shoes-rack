@@ -11,7 +11,6 @@ import { AttendanceStatus, MemberRole } from "@/constant/constant";
 import { toast } from "@/hooks/use-toast";
 import { Routes } from "@/lib/routes";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
 import { AttendanceDetails } from "../modal/AttendanceDetails";

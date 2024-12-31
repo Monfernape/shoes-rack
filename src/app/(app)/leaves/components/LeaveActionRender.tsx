@@ -17,7 +17,6 @@ import { toast } from "@/hooks/use-toast";
 import { processLeaveRequest } from "../actions/process-leave-request";
 import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/hooks/useGetLoggedinUser";
 
 interface LeaveRequest extends LeaveRequestsTypes {
   requestedBy: string;
