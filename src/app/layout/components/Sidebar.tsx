@@ -40,7 +40,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const isSmallScreen = useMediaQuery("sm");
   const pathname = usePathname();
 
-  const membersRoute: Route[] = [
+  const membersRoutes: Route[] = [
     // {
     //   name: "Dashboard",
     //   route: Routes.Dashboard,
@@ -74,7 +74,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   ];
 
   const inchargeRoutes: Route[] = [
-    ...membersRoute,
+    ...membersRoutes,
     {
       name: "Attendance Report",
       route: Routes.AttendanceReport,
@@ -88,7 +88,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   ];
 
   const routes = useMemo(() => {
-    return loginUser?.role === MemberRole.Member ? membersRoute : inchargeRoutes;
+    return loginUser?.role === MemberRole.Member ? membersRoutes : inchargeRoutes;
   }, [loginUser?.role]);
 
   const onLogoutUser = () => {
