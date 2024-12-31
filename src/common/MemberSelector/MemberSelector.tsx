@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import {
   Select,
   SelectTrigger,
@@ -7,7 +7,8 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Member, User } from "@/types";
+import useSWR from 'swr'
+import { User } from "@/types";
 import { MemberRole, UserStatus } from "@/constant/constant";
 import { getMembers } from "@/app/(app)/members/actions/getMembers";
 import { DataSpinner } from "../Loader/Loader";
@@ -18,40 +19,25 @@ interface SelectFieldProps {
   loginUser?: User;
 }
 
-const MemberSelector = ({
-  value,
-  onValueChange,
-  loginUser,
-}: SelectFieldProps) => {
-  const [members, setMembers] = useState<Member[]>([]);
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const response = await getMembers("");
-        if (response.success) {
-          const activeMember = response.data.filter(
-            (member) => member.status === UserStatus.Active
-          );
-          setMembers(activeMember);
-        } else {
-          console.error("Error fetching members:", response.message);
-        }
-      } catch (err) {
-        console.error("Error fetching members:", err);
-      }
-    };
+const fetchMembers = async () => {
+  const response = await getMembers("");
+  if (!response.success) {
+    console.error("Error fetching members:", response.message);
+  }
+  return response.data.filter((member) => member.status === UserStatus.Active);
+};
 
-    fetchMembers();
-  }, [loginUser]);
+const MemberSelector = ({ value, onValueChange , loginUser }: SelectFieldProps) => {
+  const { data: members,isLoading } = useSWR("members", fetchMembers);
 
   const roleBaseMembers = useMemo(() => {
+    if(members){
     if (loginUser?.role === MemberRole.Incharge) {
       return members;
     } else if (loginUser?.role === MemberRole.Member) {
-      return members.filter((member) => loginUser?.id === member.id);
+      return members?.filter((member) => loginUser?.id === member.id);
     } else {
-      return members
-        .filter(
+      return members?.filter(
           (member) =>
             loginUser?.id === member.id ||
             (member?.role === MemberRole.Member &&
@@ -62,6 +48,7 @@ const MemberSelector = ({
           name,
         }));
     }
+  }
   }, [members]);
 
   return (
@@ -75,24 +62,24 @@ const MemberSelector = ({
       <SelectTrigger
         data-testid="memberId"
         className={`border rounded-md p-2 border-gray-300`}
-      >{roleBaseMembers.length ? (
+      >{!isLoading ? (
         <SelectValue  placeholder="Select user" />
         ):(
-          <DataSpinner isSmallScreen isMemberSelector/>
+          <DataSpinner isInputLoader size="xs" />
         )}
       </SelectTrigger>
       <SelectContent>
         {loginUser?.role === MemberRole.Incharge && (
-          <SelectItem value={"0"}>Select all user</SelectItem>
+          <SelectItem value={"0"}>{!isLoading ? 'Select all user' : ""}</SelectItem>
         )}
-        {roleBaseMembers.length ? (
+        {!isLoading ? (
           roleBaseMembers?.map((option) => (
             <SelectItem key={option.id.toString()} value={option.id.toString()}>
               {option.name}
             </SelectItem>
           ))
         ) : (
-          <DataSpinner isSmallScreen />
+          <DataSpinner size="xs" />
         )}
       </SelectContent>
     </Select>
