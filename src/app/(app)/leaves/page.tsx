@@ -21,7 +21,7 @@ const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
   return (
     <>
       <LeavesHeader breadcrumbs={breadcrumbs} />
-      <MemberFilter loginUser={loginUser} route = {Routes.LeaveRequest} />
+      <MemberFilter loginUser={loginUser} route={Routes.LeaveRequest} />
       <PageLayout>
         <LeavesRequestList leaves={leaves} loginUser={loginUser} />
       </PageLayout>
