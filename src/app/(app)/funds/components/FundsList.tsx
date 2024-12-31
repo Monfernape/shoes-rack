@@ -22,6 +22,7 @@ import { formatRole } from "@/utils/formatRole";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Routes } from "@/lib/routes";
+import { PageLayout } from "@/app/layout/PageLayout";
 
 export function FundsList({ funds }: { funds: Fund[] }) {
   const searchParams = useSearchParams();
@@ -49,15 +50,15 @@ export function FundsList({ funds }: { funds: Fund[] }) {
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
+        <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("name")}</div>
       ),
     },
     {
       accessorKey: "role",
-      header: () => <h4>Role</h4>,
+      header: () => <h4 className="text-center">Role</h4>,
       cell: ({ row }) => {
         return (
-          <div className="capitalize">
+          <div className="capitalize text-center">
             {formatRole(row.getValue("role"))}
           </div>
         );
@@ -111,8 +112,8 @@ export function FundsList({ funds }: { funds: Fund[] }) {
   return (
     <StandardPage {...StandardPageProps}>
       <div className="w-full">
-        <div className=" px-8 py-4 h-full">
-          <Table>
+        <PageLayout>
+          <Table className="overflow-hidden">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -131,12 +132,12 @@ export function FundsList({ funds }: { funds: Fund[] }) {
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody>
+            <TableBody >
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis ">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -149,7 +150,7 @@ export function FundsList({ funds }: { funds: Fund[] }) {
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-24 font-med text-center"
                   >
                     No results.
                   </TableCell>
@@ -157,7 +158,7 @@ export function FundsList({ funds }: { funds: Fund[] }) {
               )}
             </TableBody>
           </Table>
-        </div>
+        </PageLayout>
       </div>
     </StandardPage>
   );
