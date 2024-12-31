@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import {
   ColumnDef,
   flexRender,
@@ -22,7 +22,6 @@ import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import LeaveTableActionRender from "./LeaveActionRender";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
-import { loginUser } from "@/app/(auth)/login/actions/loginUser";
 
 interface LeaveRequest extends LeaveRequestsTypes {
   requestedBy: string;
@@ -33,7 +32,7 @@ interface LeavesRequestList {
   loginUser:UserDetails
 }
 export const LeavesRequestList = ({ leaves,loginUser }: LeavesRequestList) => {
-  console.log("leaves***",leaves);
+ 
   const route = useRouter();
   const handleNavigate = () => {
     route.push(Routes.AddLeaveRequest);

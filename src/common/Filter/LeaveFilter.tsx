@@ -9,7 +9,7 @@ import { DataSpinner } from "../Loader/Loader";
 import { User } from "@/types";
 
 export const LeaveFilter = ({ loginUser }: { loginUser: User }) => {
-  console.log("leaveFiler***")
+
   const pathname = usePathname();
   const router = useRouter();
   const [search, setSearch] = useState("");
