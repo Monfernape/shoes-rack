@@ -73,7 +73,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     },
   ];
 
-  const inchargeRoute: Route[] = [
+  const inchargeRoutes: Route[] = [
     ...membersRoute,
     {
       name: "Attendance Report",
@@ -88,7 +88,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   ];
 
   const routes = useMemo(() => {
-    return loginUser?.role === MemberRole.Member ? membersRoute : inchargeRoute;
+    return loginUser?.role === MemberRole.Member ? membersRoute : inchargeRoutes;
   }, [loginUser?.role]);
 
   const onLogoutUser = () => {
