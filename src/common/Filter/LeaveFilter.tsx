@@ -28,7 +28,10 @@ export const LeaveFilter = ({ loginUser }: { loginUser: User }) => {
 
   useEffect(() => {
     const shouldRedirectToLeaveRequest =
-      debounceValue === "0" || debounceValue === "" && (loginUser?.role === MemberRole.Incharge || loginUser?.role === MemberRole.Member);
+      debounceValue === "0" ||
+      (debounceValue === "" &&
+        (loginUser?.role === MemberRole.Incharge ||
+          loginUser?.role === MemberRole.Member));
 
     const route = shouldRedirectToLeaveRequest
       ? Routes.LeaveRequest
@@ -40,7 +43,7 @@ export const LeaveFilter = ({ loginUser }: { loginUser: User }) => {
   return (
     <div className="flex justify-end">
       {isPending && <DataSpinner />}
-      <div className="w-full sm:w-3/12 px-3 md:px-8 pt-4">
+      <div className="w-full sm:w-3/12 px-2 md:px-8 pt-4">
         <MemberSelector
           value={search}
           onValueChange={handleSearchQueryChange}

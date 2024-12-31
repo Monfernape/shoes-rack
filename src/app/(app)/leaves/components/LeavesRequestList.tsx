@@ -52,29 +52,29 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
         accessorKey: "requestedBy",
         header: "Requested by",
         cell: ({ row }) => (
-          <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("requestedBy")}</div>
+          <div className="capitalize overflow-hidden text-ellipsis ">{row.getValue("requestedBy")}</div>
         ),
       },
       {
         accessorKey: "leaveType",
         header: "Leave type",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("leaveType")}</div>
+          <div className="capitalize ml-2">{row.getValue("leaveType")}</div>
         ),
       },
       {
         accessorKey: "startDate",
-        header: "Start date",
+        header: ()=><h4 className=" ml-1">Start date</h4>,
         cell: ({ row }) => <div>{row.getValue("startDate")}</div>,
       },
       {
         accessorKey: "endDate",
-        header: "End date",
+        header: ()=><h4 className="ml-1">End date</h4>,
         cell: ({ row }) => <div>{row.getValue("endDate")}</div>,
       },
       {
         accessorKey: "status",
-        header: "Status",
+        header: ()=><h4 className="ml-4">Status</h4>,
         cell: ({ row }) => (
           <StatusBadge status={row.getValue("status")} />
         ),
@@ -106,7 +106,7 @@ export const LeavesRequestList = ({ leaves }: LeavesRequestList) => {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead key={header.id} >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()

@@ -38,21 +38,21 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     () => [
       {
         accessorKey: "ownerName",
-         header:  () => <div className="text-center">Owner name</div>,
+         header:  'Owner name',
         cell: ({ row }) => (
           <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("ownerName")}</div>
         ),
       },
       {
         accessorKey: "ownerPhoneNumber",
-         header:  () => <div className="text-center">Phone number</div>,
+         header:  'Phone number',
         cell: ({ row }) => (
           <div className="capitalize">{row.getValue("ownerPhoneNumber")}</div>
         ),
       },
       {
         accessorKey: "time",
-        header:  () => <div className="text-center">Time lost </div>,
+        header:  () => <div className="ml-1">Time lost</div>,
         cell: ({ row }) => <div className="capitalize overflow-hidden text-ellipsis" suppressHydrationWarning>{`${new Date(row.getValue("time")).toLocaleDateString()}`}</div>,
       },
       {
@@ -62,9 +62,9 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
       },
       {
         accessorKey: "status",
-        header:  () => <div className="text-center">Status</div>,
+        header:   () => <div className="ml-5 md:ml-4 ">Status</div>,
         cell: ({ row }) => (
-          <div >
+          <div className="" >
             {<MissingShoesStatusBadge status={row.getValue("status")} />}
           </div>
         ),
@@ -72,9 +72,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
       {
         accessorKey: "id",
         enableHiding: false,
-        header: () => {
-          return <div>Action</div>;
-        },
+        header: 'Action',
         cell: ({ row }) => (
           <div>
             {
@@ -115,7 +113,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead key={header.id} className="max-w-28 sm:w-auto">
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
@@ -129,7 +127,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
           {table.getRowModel().rows.map((row) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis ">
+                <TableCell key={cell.id} className="max-w-28 sm:w-auto overflow-hidden whitespace-nowrap text-ellipsis ">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
