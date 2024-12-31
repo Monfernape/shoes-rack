@@ -6,8 +6,8 @@ import { Routes } from "@/lib/routes";
 import { HeaderWrapper } from "@/common/HeaderWapper/HeaderWrapper";
 import { usePathname, useRouter } from "next/navigation";
 import useDebounce from "@/hooks/useDebounce";
-import { Input } from "@/components/ui/input";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import useMediaQuery from "@/hooks/use-media-query";
+import { Searchbox } from "@/common/SearchBox/SearchBox";
 interface Props {
   breadcrumbs: Breadcrumbs[];
   user: UserDetails;
@@ -18,9 +18,9 @@ export const FundsHeader = ({ breadcrumbs }: Props) => {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const debounceValue = useDebounce(search, 500);
-  const [isTitleHide, setIsTitleHide] = useState(false);
-
-  const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const [isShowIconOnly, setIsShowIconOnly] = useState(false);
+  const isMobileScreen = useMediaQuery("sm");
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
@@ -32,31 +32,24 @@ export const FundsHeader = ({ breadcrumbs }: Props) => {
     }
   }, [debounceValue, pathname, router]);
 
+  const onFocused = () => {
+    setIsShowIconOnly(true);
+  };
+  const onBlurred = () => {
+    setIsShowIconOnly(false);
+  };
+
   return (
-    <HeaderWrapper breadcrumbs={breadcrumbs}>
+    <HeaderWrapper isShowBreadCrumbs={!isMobileScreen || !isShowIconOnly} breadcrumbs={breadcrumbs}>
       {pathname === Routes.Fund && (
         <div className="flex items-center space-x-2">
-          <div className="relative">
-            <Input
-              type="search"
-              placeholder="Search..."
-              data-testid="searchInput"
-              onFocus={() => setIsTitleHide(true)}
-              onBlur={() => setIsTitleHide(false)}
-              onChange={handleSearchQueryChange}
-              className={`pr-4 py-2 h-7 ${
-                isTitleHide ? "w-32 pl-10" : "w-2 pl-6"
-              } md:w-60 md:pl-10 rounded text-xs transition-all duration-500 ease-in-out`}
-            />
-            <MagnifyingGlassIcon
-              onClick={() => setIsTitleHide(true)}
-              className={`absolute top-1/2 ${
-                isTitleHide ? "left-3" : "left-1/2"
-              } md:left-3 transform ${
-                isTitleHide ? "-translate-x-0" : "-translate-x-1/2"
-              } md:-translate-x-0 -translate-y-1/2 text-gray-600`}
-            />
-          </div>
+          <Searchbox
+            isShowIconOnly={isShowIconOnly}
+            fullWidthOnFocus={isMobileScreen}
+            onFocused={onFocused}
+            onBlurred={onBlurred}
+            onChange={onChange}
+          />
           <NavigationButton path={Routes.AddFund} buttonText="Add Fund" />
         </div>
       )}

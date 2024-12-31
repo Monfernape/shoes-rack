@@ -12,9 +12,14 @@ import { Routes } from "@/lib/routes";
 interface HeaderWrapperProps {
   breadcrumbs: Breadcrumbs[];
   children?: ReactNode;
+  isShowBreadCrumbs?: boolean;
 }
 
-export const HeaderWrapper = ({ breadcrumbs, children }: HeaderWrapperProps) => {
+export const HeaderWrapper = ({
+  isShowBreadCrumbs = true,
+  breadcrumbs,
+  children,
+}: HeaderWrapperProps) => {
   const pathname = usePathname();
   const loggedInUser = useUser();
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -40,14 +45,16 @@ export const HeaderWrapper = ({ breadcrumbs, children }: HeaderWrapperProps) => 
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="mr-2 lg:hidden"
+                className="md:mr-2 lg:hidden"
               >
                 <HamburgerMenuIcon className="h-6 w-6 text-black" />
               </Button>
             )}
-            <BasedBreadCrumb breadcrumbs={breadcrumbs} />
+            {isShowBreadCrumbs && <BasedBreadCrumb breadcrumbs={breadcrumbs} />}
           </div>
-          <div className="flex items-center space-x-2">{children}</div>
+          <div className="flex items-center space-x-2 justify-end flex-1">
+            {children}
+          </div>
         </div>
       </header>
     </div>
