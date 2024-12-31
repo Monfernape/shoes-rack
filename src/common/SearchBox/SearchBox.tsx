@@ -20,7 +20,7 @@ export const Searchbox = ({
   // Main container class names with conditional logic
   const containerClassNames = [
     "relative flex justify-end",
-    fullWidthOnFocus && isShowIconOnly ? "w-full" : "",
+    fullWidthOnFocus && isShowIconOnly ? "w-full transition-all duration-300 ease-in-out" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -28,9 +28,9 @@ export const Searchbox = ({
   // Calculate the base input width and padding
   const inputClassNames = [
     "p-2",
-    fullWidthOnFocus && isShowIconOnly ? "w-full pl-10" : "w-2 pl-6",
+    fullWidthOnFocus && isShowIconOnly ? "w-full transition-all duration-300 ease-in-out" : "w-2",
+    "pl-6",
     "md:w-60",
-    "md:pl-10",
     "rounded",
     "text-xs",
   ]
@@ -41,8 +41,8 @@ export const Searchbox = ({
   const iconClassNames = [
     "absolute top-1/2 transform -translate-y-1/2 text-gray-600",
     fullWidthOnFocus && isShowIconOnly
-      ? "left-2 -translate-x-0"
-      : "left-1/2 -translate-x-1/2",
+      ? "left-2 -translate-x-0 duration-300 ease-in-out"
+      : "left-1/2 -translate-x-1/2 duration-300 ease-in-out",
     "md:left-3",
   ]
     .filter(Boolean)
