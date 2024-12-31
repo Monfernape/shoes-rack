@@ -40,5 +40,11 @@ export default async function updateSession(request: NextRequest) {
     },
   });
 }
-
+// The matcher pattern determines which routes the middleware should apply to.
+// Pattern explanation:
+// - "/((?!.*\\.).*)" ensures the middleware applies to all routes 
+// - This excludes requests for static files like CSS, or images (e.g., "/styles.css" or "/logo.png").
+// - Examples of routes where the middleware will NOT apply:
+//   - "/styles/main.css"
+//   - "/images/logo.png"
 export const config = { matcher: "/((?!.*\\.).*)" };
