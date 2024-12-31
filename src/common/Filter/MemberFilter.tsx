@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { MemberSelector } from "../MemberSelector/MemberSelector";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Routes } from "@/lib/routes";
 import { MemberRole } from "@/constant/constant";
 import { User } from "@/types";
 import { DataSpinner } from "../Loader/Loader";
