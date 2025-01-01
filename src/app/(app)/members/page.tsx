@@ -11,14 +11,14 @@ const breadcrumbs: Breadcrumbs[] = [{ href: Routes.Members, label: "Members" }];
 
 const Page = async () => {
   const user = await getLoggedInUser();
-  const { data: member } = await getMembers("");
+  const { data: members } = await getMembers("");
 
   
   return (
     <>
       <MemberHeader breadcrumbs={breadcrumbs} user = {user} />
       <PageLayout>
-        <MemberList member={member} user={user} />
+        <MemberList members={members} user={user} />
       </PageLayout>
     </>
   );
