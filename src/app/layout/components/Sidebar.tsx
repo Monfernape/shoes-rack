@@ -15,7 +15,7 @@ import {
 import {
   // BellIcon,
   CalendarIcon,
-  ChartNoAxesCombinedIcon,
+  // ChartNoAxesCombinedIcon,
   ClipboardIcon,
   HandCoinsIcon,
 } from "lucide-react";
@@ -75,11 +75,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
 
   const inchargeRoutes: Route[] = [
     ...membersRoutes,
-    {
-      name: "Attendance Report",
-      route: Routes.AttendanceReport,
-      icon: <ChartNoAxesCombinedIcon />,
-    },
+    // {
+    //   name: "Attendance Report",
+    //   route: Routes.AttendanceReport,
+    //   icon: <ChartNoAxesCombinedIcon />,
+    // },
     {
       name: "Funds",
       route: Routes.Fund,
