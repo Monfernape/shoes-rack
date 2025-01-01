@@ -21,23 +21,29 @@ import { Plus, CalendarIcon } from "lucide-react";
 import AttendanceActionRender from "./AttendanceActionRender";
 import { Attendance, UserDetails } from "@/types";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Routes } from "@/lib/routes";
+import { NoDataFound } from "@/common/NoDataFound";
 
 export interface AttendanceProps {
   attendance: Attendance[];
-  loginUser:UserDetails
+  loginUser: UserDetails;
 }
 
-export const AttendanceList = ({ attendance,loginUser }: AttendanceProps) => {
+export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.toString();
+
   const columns: ColumnDef<Attendance>[] = useMemo(
     () => [
       {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => (
-          <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("name")}</div>
+          <div className="capitalize overflow-hidden text-ellipsis">
+            {row.getValue("name")}
+          </div>
         ),
       },
       {
@@ -50,16 +56,20 @@ export const AttendanceList = ({ attendance,loginUser }: AttendanceProps) => {
       {
         accessorKey: "startTime",
         header: "Start Time",
-        cell: ({ row }) => <div className="ml-2">{row.getValue("startTime")}</div>,
+        cell: ({ row }) => (
+          <div className="ml-2">{row.getValue("startTime")}</div>
+        ),
       },
       {
         accessorKey: "endTime",
         header: "End Time",
-        cell: ({ row }) => <div className="ml-2">{row.getValue("endTime")}</div>,
+        cell: ({ row }) => (
+          <div className="ml-2">{row.getValue("endTime")}</div>
+        ),
       },
       {
         accessorKey: "status",
-        header:()=><h4 className="ml-4">Status</h4>,
+        header: () => <h4 className="ml-4">Status</h4>,
         cell: ({ row }) => <StatusBadge status={row.getValue("status")} />,
       },
       {
@@ -72,7 +82,7 @@ export const AttendanceList = ({ attendance,loginUser }: AttendanceProps) => {
             <AttendanceActionRender
               key={row.getValue("id")}
               attendance={row.original}
-              loginUser = {loginUser}
+              loginUser={loginUser}
             />
           );
         },
@@ -102,6 +112,10 @@ export const AttendanceList = ({ attendance,loginUser }: AttendanceProps) => {
     labelForActionButton: "Add attendance",
   };
 
+  if (id && !attendance?.length) {
+    return <NoDataFound />;
+  }
+
   return (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -123,7 +137,10 @@ export const AttendanceList = ({ attendance,loginUser }: AttendanceProps) => {
           {table.getRowModel().rows.map((row) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis ">
+                <TableCell
+                  key={cell.id}
+                  className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis "
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
