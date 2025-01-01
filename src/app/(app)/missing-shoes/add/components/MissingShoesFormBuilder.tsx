@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
 import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ import { MissingShoeReport } from "@/types";
 import { updateMissingShoeReport } from "../../actions/update-missing-shoe-details";
 import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 export const MissingShoesSchema = z.object({
   shoesToken: z.string().min(1, {
@@ -55,6 +56,7 @@ interface Props {
 }
 export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const phoneNumberMask = useMask({
     mask: "___________",
     replacement: { _: /\d/ },
@@ -78,27 +80,29 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
   } = form;
 
   const onSubmit = async (values: z.infer<typeof MissingShoesSchema>) => {
-    try {
-      if (!missingShoe?.id) {
-        await reportMissingShoe(values);
-        toast({
-          title: "Report submitted successfully",
-        });
-      } else {
-        await updateMissingShoeReport(missingShoe.id, values);
-        toast({
-          title: "Report updated successfully",
-        });
+    startTransition(async () => {
+      try {
+        if (!missingShoe?.id) {
+          await reportMissingShoe(values);
+          toast({
+            title: "Report submitted successfully",
+          });
+        } else {
+          await updateMissingShoeReport(missingShoe.id, values);
+          toast({
+            title: "Report updated successfully",
+          });
+        }
+        router.push(Routes.MissingShoes);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: "Report is not submitted successfully",
+            description: error.message,
+          });
+        }
       }
-      router.push(Routes.MissingShoes);
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: "Report is not submitted successfully",
-          description: error.message,
-        });
-      }
-    }
+    });
   };
 
   return (
@@ -216,10 +220,18 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
             <Button
               data-testid="submitButton"
               type="submit"
-              // disabled={!isValid}
-              className="text-xs"
+              disabled={isPending}
+              className="text-xs w-24"
             >
-              {missingShoe?.id ? "Update" : " Submit"}
+              <div className="flex justify-center">
+                {isPending ? (
+                  <DataSpinner size="xs" isInputLoader />
+                ) : missingShoe?.id ? (
+                  "Update"
+                ) : (
+                  " Submit"
+                )}
+              </div>
             </Button>
           </div>
         </form>

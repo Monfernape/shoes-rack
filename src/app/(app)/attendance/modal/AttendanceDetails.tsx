@@ -27,10 +27,10 @@ export const AttendanceDetails = ({
 }: Props) => {
   return (
     <Dialog open={isOpenViewModal} onOpenChange={setIsOpenViewModal}>
-      <DialogContent>
+      <DialogContent className="w-80 md:w-full rounded">
         <DialogHeader>
-          <DialogTitle className="text-table-thead text-sm">
-            Attendance report
+          <DialogTitle className="text-table-thead text-left text-sm">
+            Attendance details
           </DialogTitle>
           <div className="flex justify-between items-center py-4">
             {attendanceDetails.status && (
