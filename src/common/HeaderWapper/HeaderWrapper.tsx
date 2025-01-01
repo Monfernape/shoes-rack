@@ -30,9 +30,9 @@ export const HeaderWrapper = ({
 
   return (
     <div
-      className={`sticky z-50 w-full ${
-        loggedInUser?.temporary_password ? "top-10" : "top-0"
-      }`}
+      className={`sticky z-50 w-full
+        // loggedInUser?.temporary_password ? "top-10" : "top-0"
+      `}
     >
       {isSidebarOpen && (
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
