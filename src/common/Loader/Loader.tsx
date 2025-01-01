@@ -16,7 +16,7 @@ export const DataSpinner = ({
     md: "w-8 h-8 border-4",
     lg: "w-16 h-16 border-4",
   };
-const style = isInputLoader ? "flex items-center w-full h-full relative" : "flex items-center w-full h-full bg-loader fixed z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center";
+const style = isInputLoader ? "flex  items-center w-full h-full relative" : "flex items-center w-full h-full bg-loader fixed z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center";
   return (
     <div className={style}>
       <div

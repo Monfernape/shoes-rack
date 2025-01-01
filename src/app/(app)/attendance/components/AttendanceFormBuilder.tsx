@@ -12,7 +12,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import React from "react";
+import React, { useTransition } from "react";
 import { createAttendance } from "../actions/create-attendance";
 import { toast } from "@/hooks/use-toast";
 import FormWrapper from "@/common/FormWrapper";
@@ -22,10 +22,11 @@ import { updateAttendance } from "../actions/update-attendance";
 import { useParams } from "next/navigation";
 import { isValidParam } from "@/utils/utils";
 import { User } from "@/types";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 interface AttendanceFormBuilderProps {
   attendance?: AttendanceFormValues;
-  loginUser?:User
+  loginUser?: User;
 }
 
 const attendanceSchema = z
@@ -56,6 +57,8 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   loginUser,
 }) => {
   const params = useParams();
+  const [isPending, startTransition] = useTransition();
+
   const attendanceId = params?.id;
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
@@ -71,54 +74,50 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
-   
     if (isValidParam(attendanceId)) {
       const updatedValue = {
         id: attendanceId,
         ...values,
       };
 
-      try {
-        if (attendance?.memberId) {
-          const error = await updateAttendance(updatedValue);
+      startTransition(async () => {
+        try {
+          if (attendance?.memberId) {
+            const error = await updateAttendance(updatedValue);
 
-          if (!error) {
+            if (!error) {
+              toast({
+                title: "Attendance updated successfully",
+                description: "The attendance record has been updated.",
+              });
+            }
+          } else {
+            const error = await createAttendance(values);
+
+            if (!error) {
+              toast({
+                title: "Attendance submitted successfully",
+                description: "You will receive a message shortly.",
+              });
+            }
+          }
+        } catch (error) {
+          if (error instanceof Error) {
             toast({
-              title: "Attendance updated successfully",
-              description: "The attendance record has been updated.",
+              title: "Attendance could not be marked",
             });
           }
-        } else {
-          const error = await createAttendance(values);
-
-          if (!error) {
-            toast({
-              title: "Attendance submitted successfully",
-              description: "You will receive a message shortly.",
-            });
-            
-          }
         }
-  
-      } catch (error) {
-        if (error instanceof Error) {
-          toast({
-            title: "Attendance could not be marked",
-          });
-        }
-
-  
-      }
-     
+      });
     }
-    return 
+    return;
   };
 
   return (
     <FormWrapper>
       <Form {...form}>
         <form
-          action={  form.handleSubmit(onSubmit) as unknown as string}
+          action={form.handleSubmit(onSubmit) as unknown as string}
           className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
         >
           <h1 className="text-2xl font-bold text-center mb-6">
@@ -182,10 +181,18 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
           />
           <Button
             type="submit"
-            className="w-full text-white rounded-md p-3 transition"
-            // disabled={!form.formState.isValid}
+            className=" text-white rounded-md p-3 transition w-24 "
+            disabled={isPending}
           >
-            {attendance?.memberId ? "Update" : "Submit"}
+            <div className="flex justify-center">
+              {isPending ? (
+                <DataSpinner size="xs" isInputLoader />
+              ) : attendance?.memberId ? (
+                "Update"
+              ) : (
+                "Submit"
+              )}
+            </div>
           </Button>
         </form>
       </Form>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
 import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -33,6 +33,7 @@ import { updateLeaveRequest } from "../../actions/updated-leave-request";
 import { startOfDay } from "date-fns";
 import { Routes } from "@/lib/routes";
 import { LeaveRequestsTypes, User } from "@/types";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 export const leaveRequestSchema = z.object({
   memberId: z.string().min(1, {
@@ -82,6 +83,7 @@ export const LeaveRequestFormBuilder = ({
 }: LeaveRequestFormBuilderProps) => {
   const { id: leaveId } = useParams<{ id: string }>();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<leaveRequestSchemaType>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
@@ -104,29 +106,31 @@ export const LeaveRequestFormBuilder = ({
   } = form;
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
-    try {
-      if (!leaveId) {
-        createLeaveRequest(values);
-        toast({
-          title: "Success",
-          description: "Leave request created successfully",
-        });
-      } else {
-        updateLeaveRequest(Number(leaveId), values);
-        toast({
-          title: "Success",
-          description: "Leave request updated successfully",
-        });
+    startTransition(async () => {
+      try {
+        if (!leaveId) {
+          createLeaveRequest(values);
+          toast({
+            title: "Success",
+            description: "Leave request created successfully",
+          });
+        } else {
+          updateLeaveRequest(Number(leaveId), values);
+          toast({
+            title: "Success",
+            description: "Leave request updated successfully",
+          });
+        }
+        router.push(Routes.LeaveRequest);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: "Error",
+            description: "Something went wrong! Please try again.",
+          });
+        }
       }
-      router.push(Routes.LeaveRequest);
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: "Error",
-          description: "Something went wrong! Please try again.",
-        });
-      }
-    }
+    });
   }
   return (
     <FormWrapper>
@@ -223,10 +227,18 @@ export const LeaveRequestFormBuilder = ({
             <Button
               data-testid="submitButton"
               type="submit"
-              // disabled={!isValid}
-              className="text-xs"
+              disabled={isPending}
+              className="text-xs w-24"
             >
-              {leaveId ? "Update" : "Submit"}
+              <div className="flex justify-center">
+                {isPending ? (
+                  <DataSpinner size="xs" isInputLoader />
+                ) : leaveId ? (
+                  "Update"
+                ) : (
+                  "Submit"
+                )}
+              </div>
             </Button>
           </div>
         </form>

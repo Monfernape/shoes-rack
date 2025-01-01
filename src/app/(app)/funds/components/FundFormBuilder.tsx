@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
 import FormWrapper from "@/common/FormWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -21,6 +21,7 @@ import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { addFunds } from "../actions/add-funds";
 import { updateFundDetails } from "../actions/update-fund-details";
 import { FundType, User } from "@/types";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 export const FundSchema = z.object({
   memberId: z.string().min(1, {
@@ -43,7 +44,8 @@ interface Props {
   loginUser: User;
 }
 
-export const FundFormBuilder = ({ funds , loginUser}: Props) => {
+export const FundFormBuilder = ({ funds, loginUser }: Props) => {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
@@ -53,30 +55,32 @@ export const FundFormBuilder = ({ funds , loginUser}: Props) => {
     mode: "all",
   });
 
-  const onSubmit = async(values: FundSchemaType) =>{
-    try {
-      if (!funds?.id) {
-        addFunds(values);
-        toast({
-          title: "Success",
-          description: "Fund added successfully",
-        });
-      } else {
-        updateFundDetails(funds?.id, values);
-        toast({
-          title: "Success",
-          description: "Fund updated successfully",
-        });
+  const onSubmit = async (values: FundSchemaType) => {
+    startTransition(() => {
+      try {
+        if (!funds?.id) {
+          addFunds(values);
+          toast({
+            title: "Success",
+            description: "Fund added successfully",
+          });
+        } else {
+          updateFundDetails(funds?.id, values);
+          toast({
+            title: "Success",
+            description: "Fund updated successfully",
+          });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: "Error",
+            description: error.message,
+          });
+        }
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: "Error",
-          description: error.message,
-        });
-      }
-    }
-  }
+    });
+  };
   return (
     <FormWrapper>
       <FormTitle title="Funds" />
@@ -117,10 +121,16 @@ export const FundFormBuilder = ({ funds , loginUser}: Props) => {
           />
 
           <div className="flex justify-end">
-            <Button type="submit" 
-            // disabled={!isValid} 
-            className="text-xs">
-              {funds?.id ? "Update" : "Submit"}
+            <Button type="submit" disabled={isPending} className="text-xs w-24">
+              <div className="flex justify-center">
+                {isPending ? (
+                  <DataSpinner size="xs" isInputLoader />
+                ) : funds?.id ? (
+                  "Update"
+                ) : (
+                  "Submit"
+                )}
+              </div>
             </Button>
           </div>
         </form>

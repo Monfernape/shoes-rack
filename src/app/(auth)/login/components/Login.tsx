@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import LogoImage from "../../../../../public/assets/imgs/logo.png"
+import LogoImage from "../../../../../public/assets/imgs/logo.png";
 import {
   Form,
   FormControl,
@@ -14,15 +14,13 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Eye as EyeIcon,
-  EyeOff as EyeOffIcon,
-} from "lucide-react";
+import { Eye as EyeIcon, EyeOff as EyeOffIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useMask } from "@react-input/mask";
 import { PHONENUMBER_VALIDATOR_REGEX } from "@/lib/regex";
 import Image from "next/image";
 import { loginUser } from "@/app/(auth)/login/actions/loginUser";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 const userSchema = z.object({
   phoneNumber: z
@@ -35,7 +33,7 @@ type FormValues = z.infer<typeof userSchema>;
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [isPending, startTransition] = useTransition();
   const form = useForm<FormValues>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -49,18 +47,20 @@ export const LoginPage = () => {
     mask: "____-_______",
     replacement: { _: /\d/ },
   });
-
+  
   const handleSubmit = async (values: FormValues) => {
-    try {
-      await loginUser(values);
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: error.message,
-          description: "Please try again",
-        });
+    startTransition(async () => {
+      try {
+        await loginUser(values);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: error.message,
+            description: "Please try again",
+          });
+        }
       }
-    }
+    });
   };
 
   const {
@@ -69,22 +69,22 @@ export const LoginPage = () => {
 
   return (
     <div className="h-full flex items-center justify-center p-4">
-    <div className="bg-white rounded-lg shadow-2xl overflow-hidden max-w-md w-full">
-      <div className="flex justify-center item-center pt-8 ">
-        <Image
-          src={LogoImage}
-          width="65"
-          height="65"
-          alt={"logo"}
-          className="border border-black rounded-full p-1"
-        />
-      </div>
-      <div className="p-8 pb-0 text-center flex gap-1 flex-col">
-        <h2 className="text-sm font-bold text-gray-700">Login Shoes Rack</h2>
-        <p className="text-sm text-gray-500">
-          Enter your credentials to access your account.
-        </p>
-      </div>
+      <div className="bg-white rounded-lg shadow-2xl overflow-hidden max-w-md w-full">
+        <div className="flex justify-center item-center pt-8 ">
+          <Image
+            src={LogoImage}
+            width="65"
+            height="65"
+            alt={"logo"}
+            className="border border-black rounded-full p-1"
+          />
+        </div>
+        <div className="p-8 pb-0 text-center flex gap-1 flex-col">
+          <h2 className="text-sm font-bold text-gray-700">Login Shoes Rack</h2>
+          <p className="text-sm text-gray-500">
+            Enter your credentials to access your account.
+          </p>
+        </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
@@ -151,11 +151,13 @@ export const LoginPage = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gray-800"
+              className="w-full bg-gray-800 "
               data-testId="submitButton"
-              // disabled={!form.formState.isValid}
+              disabled={isPending}
             >
-              Login
+              <div className="flex justify-center">
+                {isPending ? <DataSpinner size="xs" isInputLoader /> : "Login"}
+              </div>
             </Button>
             {/* <div className="flex items-center justify-center">
               <Link

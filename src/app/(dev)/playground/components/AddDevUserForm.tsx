@@ -10,7 +10,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import { Eye as EyeIcon, EyeOff as EyeOffIcon } from "lucide-react";
 import { addDevUser } from "../actions/add-dev-user";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { Card } from "@/components/ui/card";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 export const DevUserSchema = z.object({
   name: z.string().min(1, {
@@ -55,8 +56,10 @@ const AddDevUserForm = () => {
   } = form;
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmission = async (values: DevUserType) => {
+   startTransition(async()=>{
     try {
       // there is nothing in response in case of insert data
       const result = await addDevUser(values);
@@ -75,6 +78,7 @@ const AddDevUserForm = () => {
         });
       }
     }
+   })
   };
 
   return (
@@ -159,9 +163,15 @@ const AddDevUserForm = () => {
         <Button
           type="submit"
           data-testid="submit"
-          // disabled={!form.formState.isValid}
+          className="w-24"
+          disabled={isPending}
+   
         >
-          Submit
+           <div className="flex justify-center">
+                {isPending ? <DataSpinner size="xs" isInputLoader /> : " Submit"}
+              </div>
+
+         
         </Button>
       </form>
     </Form>
