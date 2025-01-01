@@ -30,10 +30,10 @@ import { formatRole } from "@/utils/formatRole";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
 export const MemberList = ({
-  member,
+  members: members,
   user,
 }: {
-  member: Member[];
+  members: Member[];
   user: Member;
 }) => {
   const { toast } = useToast();
@@ -42,7 +42,7 @@ export const MemberList = ({
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
-  const [filteredMember, setFilteredMember] = useState<Member[]>(member);
+  const [filteredMember, setFilteredMember] = useState<Member[]>(members);
   useEffect(() => {
     if (searchQuery) {
       (async function fetchData() {
@@ -66,9 +66,9 @@ export const MemberList = ({
         }
       })();
     } else {
-      setFilteredMember(member);
+      setFilteredMember(members);
     }
-  }, [searchQuery, member]);
+  }, [searchQuery, members]);
 
   const columns: ColumnDef<Member>[] = [
     {
@@ -139,7 +139,7 @@ export const MemberList = ({
     route.push(Routes.AddMember);
   };
   const StandardPageProps = {
-    hasContent: !!member.length,
+    hasContent: !!members.length,
     title: "Add Member",
     description: "This is where you can add members",
     buttonIcon: <PlusIcon />,

@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import {
   Table,
@@ -32,17 +32,13 @@ interface Props {
 export const MissingShoes = ({ missingShoesReports, error }: Props) => {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key") ?? ""; 
-  const [filteredReports, setFilteredReports] = useState<MissingShoeReport[]>(missingShoesReports);
 
-  useEffect(() => {
-    if (searchQuery) {
-      const filteredData = missingShoesReports.filter((report) =>
-        report.ownerName.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredReports(filteredData);
-    } else {
-      setFilteredReports(missingShoesReports);
-    }
+  const filteredShoesReports = useMemo(() => {
+    return searchQuery
+      ? missingShoesReports.filter((report) =>
+          report.ownerName.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : missingShoesReports;
   }, [searchQuery, missingShoesReports]);
 
   if (error) {
@@ -109,13 +105,13 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
   const addMissingShoes = () => {};
 
   const table = useReactTable({
-    data: filteredReports,
+    data: filteredShoesReports,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const StandardPageProps = {
-    hasContent: !!filteredReports.length,
+    hasContent: !!filteredShoesReports.length,
     title: "Add missing shoes",
     description: "This is where you can see all missing shoes.",
     buttonIcon: <PlusIcon />,
@@ -127,7 +123,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
 
   return (
     <>
-      {filteredReports.length === 0 && !searchQuery ? (
+      {filteredShoesReports.length === 0 && !searchQuery ? (
         <StandardPage {...StandardPageProps} />
       ) : (
         <Table>
@@ -146,7 +142,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
             ))}
           </TableHeader>
           <TableBody>
-            {filteredReports.length === 0 ? (
+            {filteredShoesReports.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 font-med text-center">
                   No Missing Shoes Found.
