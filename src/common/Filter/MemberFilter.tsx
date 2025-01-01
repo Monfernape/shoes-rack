@@ -42,7 +42,7 @@ export const MemberFilter = ({ loginUser,route }: { loginUser: User ,route : str
   return (
     <div className="flex justify-end">
       {isPending && <DataSpinner />}
-      <div className="w-full sm:w-3/12 px-3 md:px-8 pt-4">
+      <div className="w-full sm:w-3/12 px-2 md:px-8 pt-4">
         <MemberSelector
           value={searchparams.get("id")?.toString() || ""}
           onValueChange={handleSearchQueryChange}

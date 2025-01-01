@@ -44,22 +44,22 @@ export const AttendanceList = ({ attendance,loginUser }: AttendanceProps) => {
         accessorKey: "shift",
         header: "Shift",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("shift")}</div>
+          <div className="capitalize ml-2">{row.getValue("shift")}</div>
         ),
       },
       {
         accessorKey: "startTime",
         header: "Start Time",
-        cell: ({ row }) => <div>{row.getValue("startTime")}</div>,
+        cell: ({ row }) => <div className="ml-2">{row.getValue("startTime")}</div>,
       },
       {
         accessorKey: "endTime",
         header: "End Time",
-        cell: ({ row }) => <div>{row.getValue("endTime")}</div>,
+        cell: ({ row }) => <div className="ml-2">{row.getValue("endTime")}</div>,
       },
       {
         accessorKey: "status",
-        header: "Status",
+        header:()=><h4 className="ml-4">Status</h4>,
         cell: ({ row }) => <StatusBadge status={row.getValue("status")} />,
       },
       {
