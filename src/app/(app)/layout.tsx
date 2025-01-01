@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { cx } from "class-variance-authority";
 import { Routes } from "@/lib/routes";
 import { Sidebar } from "../layout/components/Sidebar";
-import { AlertBar } from "@/common/StatusBar";
 
 export default function RootLayout({
   children,
@@ -24,7 +23,7 @@ export default function RootLayout({
 
   return (
     <>
-      <AlertBar />
+      {/* <AlertBar /> */}
         <div className="flex">
           <Sidebar
             isSidebarOpen={isSidebarOpen}

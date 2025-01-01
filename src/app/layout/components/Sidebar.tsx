@@ -10,7 +10,7 @@ import {
   Cross1Icon,
   ExitIcon,
   PersonIcon,
-  GearIcon,
+  // GearIcon,
 } from "@radix-ui/react-icons";
 import {
   // BellIcon,
@@ -99,9 +99,10 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     <aside
       className={`
             ${isSidebarOpen || !isSmallScreen ? "block" : "hidden"}
-            ${isSidebarOpen ? "block" : "hidden"} ${
-        loginUser?.temporary_password ? "top-10" : ""
-      }
+            ${isSidebarOpen ? "block" : "hidden"}
+             
+        // loginUser?.temporary_password ? "top-10" : ""
+      
             fixed top-0 right-0 inset-y-0 left-0 z-30 w-48 bg-sidebar shadow-md transform transition-transform duration-300 ease-in-out
                 ${
                   isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -150,10 +151,10 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
             <ExitIcon className="w-3.5 h-3.5 mr-3" />
             <span className="text-xs">Logout</span>
           </button>
-          <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+          {/* <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
             <GearIcon className="w-3.5 h-3.5 mr-3" />
             <span className="text-xs">Settings</span>
-          </button>
+          </button> */}
         </div>
       </div>
     </aside>

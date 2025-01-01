@@ -6,7 +6,7 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { usePathname } from "next/navigation";
 import { BasedBreadCrumb } from "@/common/BasedBreadCrumb/BasedBreadCrumb";
 import { Breadcrumbs } from "@/types";
-import { useUser } from "@/hooks/useGetLoggedinUser";
+
 import { Routes } from "@/lib/routes";
 
 interface HeaderWrapperProps {
@@ -21,7 +21,6 @@ export const HeaderWrapper = ({
   children,
 }: HeaderWrapperProps) => {
   const pathname = usePathname();
-  const loggedInUser = useUser();
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const toggleSidebar = () => {
@@ -30,9 +29,9 @@ export const HeaderWrapper = ({
 
   return (
     <div
-      className={`sticky z-50 w-full ${
-        loggedInUser?.temporary_password ? "top-10" : "top-0"
-      }`}
+      className={`sticky z-50 w-full
+        // loggedInUser?.temporary_password ? "top-10" : "top-0"
+      `}
     >
       {isSidebarOpen && (
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
