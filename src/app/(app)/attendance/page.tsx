@@ -5,22 +5,23 @@ import { PageLayout } from "@/app/layout/PageLayout";
 import { AttendanceHeader } from "./components/AttendanceHeader";
 import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
-import { AttendanceFilter } from "@/common/Filter/AttendanceFilter";
+import { MemberFilter } from "@/common/Filter/MemberFilter";
+const breadcrumbs = [
+  { href: Routes.Attendance, label: "Attendance" },
+  { href: Routes.AddAttendance, label: "Review attendance" },
+];
 
 const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
   const { id } = searchParams || {};
   const attendance = await getAttendance(id);
   const loginUser = await getLoggedInUser();
-  const breadcrumbs = [
-    { href: Routes.Attendance, label: "Attendance" },
-    { href: Routes.AddAttendance, label: "Review attendance" },
-  ];
+
   return (
     <>
       <AttendanceHeader breadcrumbs={breadcrumbs} />
-      <AttendanceFilter loginUser={loginUser} />
+      <MemberFilter loginUser={loginUser}  route={Routes.Attendance}/>
       <PageLayout>
-        <AttendanceList attendance={attendance} />
+        <AttendanceList attendance={attendance} loginUser={loginUser} />
       </PageLayout>
     </>
   );

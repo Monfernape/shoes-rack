@@ -6,21 +6,22 @@ import NavigationButton from "@/common/NavigationButton";
 import { Breadcrumbs } from "@/types";
 import { HeaderWrapper } from "@/common/HeaderWapper/HeaderWrapper";
 import useDebounce from "@/hooks/useDebounce";
-import { Input } from "@/components/ui/input";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import useMediaQuery from "@/hooks/use-media-query";
+import { Searchbox } from "@/common/SearchBox/SearchBox";
 
 interface Props {
   breadcrumbs: Breadcrumbs[];
 }
 
-export const MissingShoesHeader = ({ breadcrumbs }: Props) => {
+export const MissingShoesHeader = ({ breadcrumbs  }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
   const [search, setSearch] = useState("");
   const debounceValue = useDebounce(search, 500);
-  const [isTitleHide, setIsTitleHide] = useState(false);
+  const [isShowIconOnly, setIsShowIconOnly] = useState(false);
+  const isMobileScreen = useMediaQuery("sm");
 
-  const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
@@ -31,24 +32,25 @@ export const MissingShoesHeader = ({ breadcrumbs }: Props) => {
       router.push(pathname);
     }
   }, [debounceValue, pathname, router]);
+
+  const onFocused = () => {
+    setIsShowIconOnly(true);
+  };
+  const onBlurred = () => {
+    setIsShowIconOnly(false);
+  };
+
   return (
-    <HeaderWrapper breadcrumbs={breadcrumbs}>
+    <HeaderWrapper isShowBreadCrumbs={!isMobileScreen || !isShowIconOnly} breadcrumbs={breadcrumbs}>
       {pathname === Routes.MissingShoes && (
         <div className="flex items-center space-x-2">
-          <div className="relative">
-            <Input
-              type="search"
-              placeholder="Search..."
-              data-testid="searchInput"
-              onFocus={() => setIsTitleHide(true)}
-              onBlur={() => setIsTitleHide(false)}
-              onChange={handleSearchQueryChange}
-              className={`pr-4 py-2 h-7 ${
-                isTitleHide ? "w-32 pl-10" : "w-2 pl-6"
-              } md:w-60 md:pl-10 rounded text-xs`}
-            />
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-4 h-4" />
-          </div>
+          <Searchbox
+            isShowIconOnly={isShowIconOnly}
+            fullWidthOnFocus={isMobileScreen}
+            onFocused={onFocused}
+            onBlurred={onBlurred}
+            onChange={onChange}
+          />
           <NavigationButton
             path={Routes.AddMissingShoes}
             buttonText="Add Shoes"
