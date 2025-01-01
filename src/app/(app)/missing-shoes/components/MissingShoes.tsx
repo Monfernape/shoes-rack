@@ -51,7 +51,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     () => [
       {
         accessorKey: "ownerName",
-        header: () => <div className="text-center">Owner name</div>,
+        header: 'Owner name',
         cell: ({ row }) => (
           <div className="capitalize overflow-hidden text-ellipsis">
             {row.getValue("ownerName")}
@@ -60,14 +60,14 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
       },
       {
         accessorKey: "ownerPhoneNumber",
-        header: () => <div className="text-center">Phone number</div>,
+        header: () => <div className="">Phone number</div>,
         cell: ({ row }) => (
           <div className="capitalize">{row.getValue("ownerPhoneNumber")}</div>
         ),
       },
       {
         accessorKey: "time",
-        header: () => <div className="text-center">Time lost</div>,
+        header: () => <div className=''>Time lost</div>,
         cell: ({ row }) => (
           <div className="capitalize overflow-hidden text-ellipsis" suppressHydrationWarning>
             {`${new Date(row.getValue("time")).toLocaleDateString()}`}
@@ -81,7 +81,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
       },
       {
         accessorKey: "status",
-        header: () => <div className="text-center">Status</div>,
+        header: () => <div className="ml-4">Status</div>,
         cell: ({ row }) => (
           <div>
             <MissingShoesStatusBadge status={row.getValue("status")} />

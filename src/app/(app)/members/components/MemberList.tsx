@@ -82,7 +82,7 @@ export const MemberList = ({
     },
     {
       accessorKey: "phoneNumber",
-      header: "Phone",
+      header:  ()=><h4 className="ml-1">Phone number</h4>,
       cell: ({ row }) => (
         <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>
       ),
@@ -91,19 +91,19 @@ export const MemberList = ({
       accessorKey: "shift",
       header: "Shift",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("shift")}</div>
+        <div className="capitalize ml-2">{row.getValue("shift")}</div>
       ),
     },
     {
       accessorKey: "role",
-      header: "Role",
+      header: ()=><h4 className="ml-2">Role</h4>,
       cell: ({ row }) => (
         <div className="capitalize">{formatRole(row.getValue("role"))}</div>
       ),
     },
     {
       accessorKey: "status",
-      header: "Status",
+      header: ()=><h4 className="ml-5">Status</h4>,
       cell: ({ row }) => <UserStatusBadge status={row.getValue("status")} />,
     },
     {
