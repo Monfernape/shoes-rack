@@ -146,6 +146,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
 
         {
           toast({
+            variant:"destructive",
             title: "User already exist",
             description: result?.error,
           });
