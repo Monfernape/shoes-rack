@@ -57,6 +57,7 @@ export const MissingShoesActions = ({
 
   const onHandleConfirm = () => {
     handleMissingShoesStatus(missingShoesId, MissingShoeStatus.Found);
+    setIsModalOpen(false)
   };
 
   const actionMenu = useMemo(
