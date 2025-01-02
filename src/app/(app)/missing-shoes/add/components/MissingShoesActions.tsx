@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import {
   Edit as EditIcon,
   CheckCircle as CheckCircleIcon,
-  AlertCircle as AlertCircleIcon,
   InfoIcon,
 } from "lucide-react";
 import { MissingShoeStatus } from "@/constant/constant";
@@ -13,13 +12,17 @@ import { processMissingShoeStatus } from "../../actions/process-missing-shoe-sta
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
+import { MissingShoeReport } from "@/types";
+import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 export const MissingShoesActions = ({
-  missingShoesId,
+  missingShoeReport,
 }: {
-  missingShoesId: number;
+  missingShoeReport: MissingShoeReport;
 }) => {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { id: missingShoesId, status: missingShoeStatus } = missingShoeReport;
   const handleEditInfo = (id: number) => {
     router.push(`${Routes.EditMissingShoes}/${id}`);
   };
@@ -52,33 +55,23 @@ export const MissingShoesActions = ({
     }
   };
 
+  const onHandleConfirm = () => {
+    handleMissingShoesStatus(missingShoesId, MissingShoeStatus.Found);
+  };
+
   const actionMenu = useMemo(
     () => [
       {
         title: "Found",
         id: 1,
         onClick: () => {
-          handleMissingShoesStatus(missingShoesId, MissingShoeStatus.Found);
+          setIsModalOpen(true);
         },
         icon: <CheckCircleIcon size={16} />,
       },
       {
-        title: "Missing",
-        id: 2,
-        onClick: () => {
-          handleMissingShoesStatus(missingShoesId, MissingShoeStatus.Missing);
-        },
-        icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
-      },
-      {
-        title: "View Details",
-        id: 3,
-        onClick: () => handleViewDetails(missingShoesId),
-        icon: <InfoIcon size={16} />,
-      },
-      {
         title: "Edit",
-        id: 4,
+        id: 3,
         onClick: () => {
           handleEditInfo(missingShoesId);
         },
@@ -88,5 +81,35 @@ export const MissingShoesActions = ({
     []
   );
 
-  return <ActionsMenu actions={actionMenu} />;
+  const viewMenu = useMemo(
+    () => [
+      {
+        title: "View Details",
+        id: 2,
+        onClick: () => handleViewDetails(missingShoesId),
+        icon: <InfoIcon size={16} />,
+      },
+    ],
+    []
+  );
+
+  return (
+    <>
+      <ActionsMenu
+        actions={
+          missingShoeStatus === MissingShoeStatus.Found
+            ? viewMenu
+            : [...viewMenu, ...actionMenu]
+        }
+      />
+      <ConfirmationModal
+        title={"Confirm Found Shoes"}
+        description={"Are you sure the missing shoes have been found?"}
+        buttonText={"Found"}
+        setIsModalOpen={setIsModalOpen}
+        isModalOpen={isModalOpen}
+        onHandleConfirm={onHandleConfirm}
+      />
+    </>
+  );
 };
