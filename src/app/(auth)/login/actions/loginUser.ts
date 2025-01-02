@@ -28,8 +28,6 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
       name: Cookies.Session,
       values: session,
     });
-
-    redirect(Routes.Members);
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
