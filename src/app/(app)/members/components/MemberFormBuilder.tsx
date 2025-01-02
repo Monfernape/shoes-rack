@@ -139,11 +139,17 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
 
   const handleSubmission = async (values: UserBuilder | UpdateUser) => {
     startTransition(async () => {
-    try {
-      
+      try {
         const result = member
           ? await updateUser({ ...values, id: member?.id })
           : await createUser(values);
+
+        {
+          toast({
+            title: "User already exist",
+            description: result?.error,
+          });
+        }
 
         if (!result) {
           toast({
@@ -152,19 +158,16 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
               : "User created successfully",
           });
         }
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: "User already exist",
+            description: "Something went wrong",
+          });
+        }
       }
-    
-    catch (error) {
-      if (error instanceof Error) {
-    
-        toast({
-          title: "User already exist",
-          description: error.message,
-        });
-      }
-    }
-  });
-  }
+    });
+  };
   return (
     <FormWrapper>
       <Form {...form}>
@@ -341,15 +344,15 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
             disabled={isPending}
             className={` self-end w-24  `}
           >
-           <div className="flex justify-center">
-           {isPending ? (
-              <DataSpinner size="xs" isInputLoader />
-            ) : params?.id ? (
-              "Update"
-            ) : (
-              "Submit"
-            )}
-           </div>
+            <div className="flex justify-center">
+              {isPending ? (
+                <DataSpinner size="xs" isInputLoader />
+              ) : params?.id ? (
+                "Update"
+              ) : (
+                "Submit"
+              )}
+            </div>
           </Button>
         </form>
       </Form>
