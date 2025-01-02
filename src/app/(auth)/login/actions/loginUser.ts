@@ -1,6 +1,5 @@
 "use server";
 import { Tables } from "@/lib/db";
-
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { Cookies, UserStatus } from "@/constant/constant";
@@ -14,60 +13,64 @@ type LoginUser = {
 };
 
 export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
-  const supabase = await getSupabaseClient();
-  const formattedPhoneNumber = intlNumberFormat(phoneNumber);
+  try {
+    const supabase = await getSupabaseClient();
+    const formattedPhoneNumber = intlNumberFormat(phoneNumber);
 
-  const { data: authUserData, error } = await supabase.auth.signInWithPassword({
-    phone: formattedPhoneNumber,
-    password: password,
-  });
-
-  if (error) {
-    throw error;
-  } else {
-    const { data: loginUser, error } = await supabase
-      .from(Tables.Members)
-      .select("status")
-      .eq("phoneNumber", formattedPhoneNumber)
-      .single();
+    const { data: authUserData, error } = await supabase.auth.signInWithPassword({
+      phone: formattedPhoneNumber,
+      password: password,
+    });
 
     if (error) {
       throw error;
     } else {
-      // Add a check to prevent deactivated users from logging in
-      if (loginUser.status === UserStatus.Deactivated) {
-        throw new Error("User not exist");
+      const { data: loginUser, error } = await supabase
+        .from(Tables.Members)
+        .select("status")
+        .eq("phoneNumber", formattedPhoneNumber)
+        .single();
+
+      if (error) {
+        throw error;
       } else {
-        // in success login case,update status and remove the invited link
-        const { data: loginUser, error } = await supabase
-          .from(Tables.Members)
-          .update({
-            status: UserStatus.Active,
-            invite_link: "",
-          })
-          .eq("phoneNumber", formattedPhoneNumber)
-          .select("*")
-          .single();
-        if (error) {
-          throw error;
+        // Add a check to prevent deactivated users from logging in
+        if (loginUser.status === UserStatus.Deactivated) {
+          throw new Error("User not exist");
         } else {
-          // getting session
-          const { session } = authUserData;
+          // in success login case, update status and remove the invited link
+          const { data: loginUser, error } = await supabase
+            .from(Tables.Members)
+            .update({
+              status: UserStatus.Active,
+              invite_link: "",
+            })
+            .eq("phoneNumber", formattedPhoneNumber)
+            .select("*")
+            .single();
+          if (error) {
+            throw error;
+          } else {
+            // getting session
+            const { session } = authUserData;
 
-          // addCookies function get name and values that will store against name
-          addCookies({
-            name: Cookies.LoginUser,
-            values: loginUser,
-          });
+            // addCookies function get name and values that will store against name
+            addCookies({
+              name: Cookies.LoginUser,
+              values: loginUser,
+            });
 
-          addCookies({
-            name: Cookies.Session,
-            values: session,
-          });
+            addCookies({
+              name: Cookies.Session,
+              values: session,
+            });
 
-          redirect(Routes.Members);
+            redirect(Routes.Members);
+          }
         }
       }
     }
+  } catch (error) {
+    throw error;
   }
 };
