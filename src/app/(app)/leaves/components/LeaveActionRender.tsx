@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import {
   Info as InfoIcon,
@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { LeaveRequestsTypes, LeavesRequestStatus, UserDetails } from "@/types";
 import { MemberRole } from "@/constant/constant";
-import { LeaveRequestDetails } from "../modal/LeaveRequestDetails";
 import { deleteLeaveRequest } from "../actions/delete-leave-request";
 import { toast } from "@/hooks/use-toast";
 import { processLeaveRequest } from "../actions/process-leave-request";
@@ -23,16 +22,15 @@ interface LeaveRequest extends LeaveRequestsTypes {
 }
 interface Props {
   leaveRequestDetails: LeaveRequest;
-  loginUser:UserDetails
+  loginUser: UserDetails;
 }
 
-const LeaveTableActionRender = ({ leaveRequestDetails,loginUser }: Props) => {
+const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
   const router = useRouter();
-  const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
 
   const { id: requestId } = leaveRequestDetails;
   const handleViewDetails = () => {
-    setIsOpenViewModal(!isOpenViewModal);
+    router.push(`${Routes.LeaveRequestDetails}/${requestId}`);
   };
 
   const handleEditInfo = (requestId: number) => {
@@ -135,8 +133,6 @@ const LeaveTableActionRender = ({ leaveRequestDetails,loginUser }: Props) => {
   );
 
   const shiftInchargeActionMenu = (function onShiftInchareMenu() {
-   
-
     if (leaveRequestDetails.status === LeavesRequestStatus.Pending) {
       if (leaveRequestDetails.memberId === loginUser?.id) {
         return [...viewInfo, ...baseActions];
@@ -175,11 +171,6 @@ const LeaveTableActionRender = ({ leaveRequestDetails,loginUser }: Props) => {
   return (
     <>
       <ActionsMenu actions={actionMenu} />
-      <LeaveRequestDetails
-        isOpenViewModal={isOpenViewModal}
-        setIsOpenViewModal={setIsOpenViewModal}
-        leaveRequestDetails={leaveRequestDetails}
-      />
     </>
   );
 };

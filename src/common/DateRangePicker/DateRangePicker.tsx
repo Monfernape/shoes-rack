@@ -15,7 +15,7 @@ import { DateRange } from "react-day-picker";
 
 type FieldValues = {
   from: Date | undefined;
-  to: Date | undefined;
+  to?: Date | undefined;
 };
 interface Props {
   onChange: (dates: DateRange | undefined) => void;

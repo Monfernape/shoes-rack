@@ -1,10 +1,4 @@
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import { LeaveRequestsTypes } from "@/types";
 import { Separator } from "@/components/ui/separator";
@@ -13,28 +7,23 @@ import {
   Calendar as CalendarIcon,
   User as UserIcon,
 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface LeaveRequest extends LeaveRequestsTypes {
   requestedBy: string;
 }
 interface Props {
-  isOpenViewModal: boolean;
-  setIsOpenViewModal: (state: boolean) => void;
   leaveRequestDetails: LeaveRequest;
+  leaveRequestedBy: string
 }
 
 export const LeaveRequestDetails = ({
-  isOpenViewModal,
-  setIsOpenViewModal,
   leaveRequestDetails,
+  leaveRequestedBy,
 }: Props) => {
   return (
-    <Dialog open={isOpenViewModal} onOpenChange={setIsOpenViewModal}>
-      <DialogContent className="w-80 md:w-full rounded">
-        <DialogHeader>
-          <DialogTitle className="text-table-thead text-left text-sm">
-            Leave Request Details
-          </DialogTitle>
+    <Card>
+      <CardContent className="text-left space-y-6 mt-6">
           <div className="flex justify-between items-center py-4">
             {leaveRequestDetails.status && (
               <StatusBadge status={leaveRequestDetails.status} />
@@ -49,7 +38,7 @@ export const LeaveRequestDetails = ({
             <div className="flex flex-col gap-2">
               <span className="text-sm text-table-thead text-left">Requested By</span>
               <span className="text-xs text-gray-700 text-left">
-                {leaveRequestDetails.requestedBy}
+                {leaveRequestedBy}
               </span>
             </div>
           </div>
@@ -75,8 +64,7 @@ export const LeaveRequestDetails = ({
               </span>
             </div>
           </div>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+      </CardContent>
+    </Card>
   );
 };
