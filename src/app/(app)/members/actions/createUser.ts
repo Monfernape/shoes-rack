@@ -34,7 +34,7 @@ export const createUser = async (values: UserBuilder) => {
   });
 
   if (error) {
-    console.log("errors***", error.details.includes("cnic"));
+
     if (error.details.includes("phoneNumber")) {
       throw  Error("This Phone Number is already in use ");
     }

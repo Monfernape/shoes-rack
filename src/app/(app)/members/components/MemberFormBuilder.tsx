@@ -156,7 +156,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
     
     catch (error) {
       if (error instanceof Error) {
-        console.log("Errors*m*",error)
+    
         toast({
           title: "User already exist",
           description: error.message,
