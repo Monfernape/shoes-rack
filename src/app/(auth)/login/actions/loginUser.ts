@@ -23,7 +23,7 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
   });
 
   if (error) {
-    throw error;
+   return {error : error.message}
   } else {
     const { data: loginUser, error } = await supabase
       .from(Tables.Members)
@@ -32,11 +32,11 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
       .single();
 
     if (error) {
-      return "Wrong credentials";
+      return {error : error.message}
     } else {
       // Add a check to prevent deactivated users from logging in
       if (loginUser.status === UserStatus.Deactivated) {
-        throw new Error("User not exist");
+        return {error : "User not exist"};
       } else {
         // in success login case,update status and remove the invited link
         const { data: loginUser, error } = await supabase
@@ -49,7 +49,7 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
           .select("*")
           .single();
         if (error) {
-          throw error;
+          return{error: error.message};
         } else {
           // getting session
           const { session } = authUserData;

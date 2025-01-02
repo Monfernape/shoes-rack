@@ -50,16 +50,11 @@ export const LoginPage = () => {
   
   const handleSubmit = async (values: FormValues) => {
     startTransition(async () => {
-      try {
-        await loginUser(values);
-      } catch (error) {
-        if (error instanceof Error) {
-          toast({
-            title: error.message,
-            description: "Please try again",
-          });
-        }
-      }
+        const {error} = await loginUser(values);
+        toast({
+          title: error,
+          description: "Please try again",
+        });
     });
   };
 
