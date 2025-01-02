@@ -13,10 +13,10 @@ type LoginUser = {
 };
 
 export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
-  try {
+
     const supabase = await getSupabaseClient();
     const formattedPhoneNumber = intlNumberFormat(phoneNumber);
-
+    try {
     const { data: authUserData, error } =
       await supabase.auth.signInWithPassword({
         phone: formattedPhoneNumber,
