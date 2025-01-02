@@ -100,7 +100,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
     replacement: { _: /\d/ },
   });
   const cnicMask = useMask({
-    mask: "3____-_______-_",
+    mask: "_____-_______-_",
     replacement: { _: /\d/ },
   });
   const showShiftTime = (user: Member) => {
@@ -156,9 +156,10 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
     
     catch (error) {
       if (error instanceof Error) {
+        console.log("Errors*m*",error)
         toast({
           title: "User already exist",
-          description: "Please use other phone number",
+          description: error.message,
         });
       }
     }
@@ -200,7 +201,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
                 <Label>Phone number</Label>
                 <FormControl>
                   <Input
-                    placeholder="0300-0000000"
+                    placeholder="03000000000"
                     {...field}
                     data-testid="phone"
                     ref={phoneNumberMask}

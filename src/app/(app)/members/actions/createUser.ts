@@ -34,7 +34,11 @@ export const createUser = async (values: UserBuilder) => {
   });
 
   if (error) {
-    throw error;
+    console.log("errors***", error.details.includes("cnic"));
+    if (error.details.includes("phoneNumber")) {
+      throw  Error("This Phone Number is already in use ");
+    }
+    throw  Error("This CNIC is already in use ");
   } else {
     const { error } = await supabase.auth.signUp({
       phone: formattedPhoneNumber,

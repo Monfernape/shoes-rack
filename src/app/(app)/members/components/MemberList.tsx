@@ -82,7 +82,7 @@ export const MemberList = ({
     },
     {
       accessorKey: "phoneNumber",
-      header:  ()=><h4 className="ml-1">Phone number</h4>,
+      header: () => <h4 className="ml-1">Phone number</h4>,
       cell: ({ row }) => (
         <div>{localNumberFormat(row.getValue("phoneNumber"))}</div>
       ),
@@ -96,14 +96,14 @@ export const MemberList = ({
     },
     {
       accessorKey: "role",
-      header: ()=><h4 className="ml-2">Role</h4>,
+      header: () => <h4 className="ml-2">Role</h4>,
       cell: ({ row }) => (
         <div className="capitalize">{formatRole(row.getValue("role"))}</div>
       ),
     },
     {
       accessorKey: "status",
-      header: ()=><h4 className="ml-5">Status</h4>,
+      header: () => <h4 className="ml-5">Status</h4>,
       cell: ({ row }) => <UserStatusBadge status={row.getValue("status")} />,
     },
     {
@@ -214,6 +214,10 @@ export const MemberList = ({
       </Table>
     </StandardPage>
   ) : (
-    <DataSpinner />
+    <div className="flex-1 h-full flex justify-center items-center">
+      <div>
+        <DataSpinner isInputLoader />
+      </div>
+    </div>
   );
 };
