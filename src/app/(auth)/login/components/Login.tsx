@@ -25,7 +25,10 @@ import { DataSpinner } from "@/common/Loader/Loader";
 const userSchema = z.object({
   phoneNumber: z
     .string()
-    .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is required"),
+    .min(1, { message: "Phone number is required" })
+    .regex(PHONENUMBER_VALIDATOR_REGEX, {
+      message: "Enter a valid phone number.",
+    }),
   password: z.string().min(1, { message: "password is required" }),
 });
 
@@ -50,16 +53,14 @@ export const LoginPage = () => {
   
   const handleSubmit = async (values: FormValues) => {
     startTransition(async () => {
-      try {
-        await loginUser(values);
-      } catch (error) {
-        if (error instanceof Error) {
-          toast({
-            title: error.message,
-            description: "Please try again",
-          });
-        }
+      const result = await loginUser(values);
+      if(result){
+        toast({
+          title: result.error,
+          description: "Please try again",
+        });
       }
+      
     });
   };
 
@@ -139,7 +140,7 @@ export const LoginPage = () => {
                           onClick={() => setShowPassword((prev) => !prev)}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                         >
-                          {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                          {showPassword ? <EyeOffIcon size="15"/> : <EyeIcon size="15"/>}
                         </button>
                       </div>
                     </FormControl>
