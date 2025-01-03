@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import {
   Info as InfoIcon,
@@ -13,7 +13,6 @@ import { Routes } from "@/lib/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
-import { AttendanceDetails } from "../modal/AttendanceDetails";
 import { Attendance, UserDetails } from "@/types";
 
 export type AttendanceActionRenderProps = {
@@ -25,15 +24,13 @@ const AttendanceActionRender = ({
   attendance,
   loginUser,
 }: AttendanceActionRenderProps) => {
+  const { id } = attendance;
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const searchQuery: string | null = searchParams.get("id");
-  const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
-
   const { id: requestId } = attendance;
   const handleViewDetails = () => {
-    setIsOpenViewModal(!isOpenViewModal);
+    router.push(`${Routes.AttendanceDetails}/${id}`);
   };
 
   const handleEditInfo = (requestId: number) => {
@@ -47,7 +44,7 @@ const AttendanceActionRender = ({
         title: "Success",
         description: "Request deleted successfully.",
       });
-      router.refresh(); // Trigger a page refresh or data fetch
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -175,11 +172,6 @@ const AttendanceActionRender = ({
   return (
     <>
       <ActionsMenu actions={actionMenu} />
-      <AttendanceDetails
-        isOpenViewModal={isOpenViewModal}
-        setIsOpenViewModal={setIsOpenViewModal}
-        attendanceDetails={attendance}
-      />
     </>
   );
 };
