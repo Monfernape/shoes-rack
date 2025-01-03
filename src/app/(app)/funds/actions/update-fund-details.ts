@@ -6,6 +6,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { Routes } from "@/lib/routes";
 import { FundSchema } from "../components/FundFormBuilder";
+import { redirect } from "next/navigation";
 
 export const updateFundDetails = async (
   fundId: number,
@@ -24,5 +25,5 @@ export const updateFundDetails = async (
     throw error.message;
   }
 
-  revalidatePath(Routes.Fund);
+  redirect(Routes.Fund);
 };

@@ -15,6 +15,7 @@ import {
 import {
   // BellIcon,
   CalendarIcon,
+  ChartNoAxesCombinedIcon,
   // ChartNoAxesCombinedIcon,
   ClipboardIcon,
   HandCoinsIcon,
@@ -73,13 +74,17 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     },
   ];
 
-  const inchargeRoutes: Route[] = [
+  const shiftInchargeRoutes: Route[] = [
     ...membersRoutes,
-    // {
-    //   name: "Attendance Report",
-    //   route: Routes.AttendanceReport,
-    //   icon: <ChartNoAxesCombinedIcon />,
-    // },
+    {
+      name: "Attendance Report",
+      route: Routes.AttendanceReport,
+      icon: <ChartNoAxesCombinedIcon />,
+    },
+  ];
+
+  const inchargeRoutes: Route[] = [
+    ...shiftInchargeRoutes,
     {
       name: "Funds",
       route: Routes.Fund,
@@ -88,7 +93,13 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   ];
 
   const routes = useMemo(() => {
-    return loginUser?.role === MemberRole.Member ? membersRoutes : inchargeRoutes;
+    if (loginUser?.role === MemberRole.Member) {
+      return membersRoutes;
+    } else if (loginUser?.role === MemberRole.ShiftIncharge) {
+      return shiftInchargeRoutes;
+    } else {
+      return inchargeRoutes;
+    }
   }, [loginUser?.role]);
 
   const onLogoutUser = () => {
