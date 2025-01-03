@@ -33,9 +33,10 @@ import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
-import { useParams } from "next/navigation";
+import { useParams} from "next/navigation";
 import { DatePicker } from "@/components/ui/datepicker";
 import { DataSpinner } from "@/common/Loader/Loader";
+
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
   id: number;
@@ -94,6 +95,7 @@ type MemberFormBuilder = {
 export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
   const { toast } = useToast();
   const params = useParams();
+  
   const [isPending, startTransition] = useTransition();
   const phoneNumberMask = useMask({
     mask: "___________",
@@ -144,25 +146,24 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
           ? await updateUser({ ...values, id: member?.id })
           : await createUser(values);
 
-        {
+        if (result) {
           toast({
             variant:"destructive",
-            title: "User already exist",
-            description: result?.error,
+            title: result?.message,
+            description: 'Try again' ,
           });
+          return 
         }
+        toast({
+          title: member?.id
+            ? "User updated successfully"
+            : "User created successfully",
+        });
 
-        if (!result) {
-          toast({
-            title: member?.id
-              ? "User updated successfully"
-              : "User created successfully",
-          });
-        }
       } catch (error) {
         if (error instanceof Error) {
           toast({
-            title: "User already exist",
+            title: error.message,
             description: "Something went wrong",
           });
         }

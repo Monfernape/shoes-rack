@@ -35,9 +35,9 @@ export const createUser = async (values: UserBuilder) => {
 
   if (error) {
     if (error.details.includes("phoneNumber")) {
-      return { error: "This Phone Number is already in use " };
+      return { message: "Phone number is already  exist" };
     }
-    return { error: "This CNIC is already in use " };
+    return { message: "CNIC is already exist" };
   } else {
    
     const { error } = await supabase.auth.signUp({
@@ -52,9 +52,10 @@ export const createUser = async (values: UserBuilder) => {
       },
     });
     if (error) {
-      return { error: 'something went wrong '}
+      return { message: 'something went wrong '}
       ;
     }
-    redirect(Routes.Members);
+   
   }
+  redirect(Routes.Members);
 };

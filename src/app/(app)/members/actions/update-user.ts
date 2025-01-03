@@ -11,9 +11,17 @@ export const updateUser = async (values: UpdateUser) => {
     .from(Tables.Members)
     .update({ ...values })
     .eq("id", values.id);
-  if (error) {
-    throw error;
-  }
-
+    if (error) {
+      if (error.details.includes("phoneNumber")) {
+        return { message: "Phone number is already  exist" };
+      }
+      else if (error.details.includes('cnic')) {
+        return { message: "CNIC is already exist" };
+      }
+      else {
+        return {message : error.message}
+      }
+     
+    }
   redirect(Routes.Members);
 };
