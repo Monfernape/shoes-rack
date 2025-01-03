@@ -50,7 +50,7 @@ const MemberSelector = ({ value, onValueChange , loginUser }: SelectFieldProps) 
     }
   }
   }, [members]);
-
+  console.log({ members })
   return (
     <Select
       value={value}
