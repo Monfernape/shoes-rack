@@ -16,7 +16,7 @@ export const updateUser = async (values: UpdateUser) => {
 
   const { hasEditPermission } = await getEditPermissions(values.id);
   
-  if (hasEditPermission || isLoggedInUserMember) {
+  if (hasEditPermission || !isLoggedInUserMember) {
     const { error } = await supabase
       .from(Tables.Members)
       .update({ ...values })
