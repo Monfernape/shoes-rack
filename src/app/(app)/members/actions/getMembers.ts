@@ -7,7 +7,7 @@ import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 export const getMembers = async (
   query: string | null,
-  status: UserStatus | undefined
+  status: UserStatus  = UserStatus.Active
 ) => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
@@ -21,7 +21,7 @@ export const getMembers = async (
       .from(Tables.Members)
       .select()
       .or(orConditions.join(","))
-      .eq("status", status || UserStatus.Active)
+      .eq("status", status )
       .eq("shift", loginUser.shift);
     if (error) {
       return {
@@ -40,7 +40,7 @@ export const getMembers = async (
     .from(Tables.Members)
     .select()
     .or(orConditions.join(","))
-    .eq("status", status || UserStatus.Active);
+    .eq("status", status );
 
   if (error) {
     return {
