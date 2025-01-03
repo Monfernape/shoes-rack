@@ -3,7 +3,6 @@
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
 import { Routes } from "@/lib/routes";
 import { FundSchema } from "../components/FundFormBuilder";
 import { redirect } from "next/navigation";
