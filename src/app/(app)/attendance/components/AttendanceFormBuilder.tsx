@@ -66,7 +66,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
       memberId:
         loginUser?.role === MemberRole.Member
           ? loginUser.id.toString()
-          : attendance?.memberId,
+          : attendance?.memberId.toString(),
 
       startTime: attendance?.startTime ?? "",
       endTime: attendance?.endTime || "",
@@ -132,7 +132,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
                 <FormLabel>User Name</FormLabel>
                 <FormControl>
                   <MemberSelector
-                    value={field.value?.toString()}
+                    value={field.value}
                     onValueChange={field.onChange}
                     loginUser={loginUser}
                   />

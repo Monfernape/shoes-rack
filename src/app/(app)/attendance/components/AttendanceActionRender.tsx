@@ -16,13 +16,15 @@ import { deleteAttendance } from "../actions/deleteAttendance";
 import { AttendanceDetails } from "../modal/AttendanceDetails";
 import { Attendance, UserDetails } from "@/types";
 
-
 export type AttendanceActionRenderProps = {
   attendance: Attendance;
-  loginUser:UserDetails
+  loginUser: UserDetails;
 };
 
-const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRenderProps) => {
+const AttendanceActionRender = ({
+  attendance,
+  loginUser,
+}: AttendanceActionRenderProps) => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -45,6 +47,7 @@ const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRender
         title: "Success",
         description: "Request deleted successfully.",
       });
+      router.refresh(); // Trigger a page refresh or data fetch
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -53,15 +56,17 @@ const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRender
       }
     }
   };
-
   const handleAttendanceStatus = async (
     attendanceId: number,
     status: AttendanceStatus
   ) => {
     try {
-      await updateAttendanceStatus({attendanceId, attendanceStatus: status});
-      router.push(loginUser?.role == MemberRole.ShiftIncharge ? Routes.Attendance
-        : `${Routes.Attendance}?id=${searchQuery}`);
+      await updateAttendanceStatus({ attendanceId, attendanceStatus: status });
+      router.push(
+        loginUser?.role == MemberRole.ShiftIncharge
+          ? Routes.Attendance
+          : `${Routes.Attendance}?id=${searchQuery}`
+      );
       toast({
         title: "Success",
         description: "Request updated successfully.",
@@ -160,8 +165,8 @@ const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRender
         return shiftInchargeActionMenu;
       case MemberRole.Incharge:
         return attendance.status === AttendanceStatus.Pending
-        ? [...viewInfo, ...baseActions, ...statusActions]
-        : [...viewInfo, ...statusActions];
+          ? [...viewInfo, ...baseActions, ...statusActions]
+          : [...viewInfo, ...statusActions];
 
       default:
         return [];

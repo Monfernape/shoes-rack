@@ -30,7 +30,6 @@ import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { updateLeaveRequest } from "../../actions/updated-leave-request";
-import { startOfDay } from "date-fns";
 import { Routes } from "@/lib/routes";
 import { LeaveRequestsTypes, User } from "@/types";
 import { DataSpinner } from "@/common/Loader/Loader";
@@ -44,21 +43,33 @@ export const leaveRequestSchema = z.object({
     LeaveTypes.Sick,
     LeaveTypes.Vacation,
   ]),
-  date: z.object({
-    from: z
-      .date({
-        message: "Date range must be selected.",
-      })
-      .refine((date) => date >= startOfDay(new Date()), {
-        message: "Start Date must be today or in the future.",
-      }),
-    to: z.date({
-      message: "End Date must be selected.",
+  date: z
+    .object({
+      from: z.date(),
+      to: z.date().optional(),
+    })
+    .refine(
+      (data) => {
+        if (data.to) {
+          return data.from <= data.to;
+        }
+        return true;
+      },
+      {
+        message: "The start date must be less than or equal to the end date.",
+      }
+    ),
+  reason: z
+    .string()
+    .min(1, {
+      message: "Please provide a reason for leave.",
+    })
+    .min(10, {
+      message: "Reason must be at least 10 characters long.",
+    })
+    .max(200,{
+      message: "Reason must be under 200 characters"
     }),
-  }),
-  reason: z.string().min(10, {
-    message: "Please provide a reason for leave.",
-  }),
 });
 
 export type leaveRequestSchemaType = z.infer<typeof leaveRequestSchema>;
@@ -93,8 +104,8 @@ export const LeaveRequestFormBuilder = ({
           : loginUser.id?.toString(),
       leaveType: leaves?.leaveType ?? LeaveTypes.Personal,
       date: {
-        from: leaves?.startDate ? new Date(leaves?.startDate) : undefined,
-        to: leaves?.endDate ? new Date(leaves?.endDate) : undefined,
+        from: leaves?.startDate ? new Date(leaves?.startDate) : new Date(),
+        to: leaves?.endDate ? new Date(leaves?.endDate) : new Date(),
       },
       reason: leaves?.reason ?? "",
     },
@@ -215,7 +226,7 @@ export const LeaveRequestFormBuilder = ({
                     placeholder="Please provide a brief description of your leave reason."
                     data-testid="leaveReason"
                     hasError={Boolean(errors.reason)}
-                    className={`resize-none focus-visible:ring-0`}
+                    className={`focus-visible:ring-0`}
                     {...field}
                   />
                 </FormControl>
