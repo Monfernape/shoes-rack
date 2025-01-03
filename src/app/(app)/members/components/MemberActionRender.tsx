@@ -6,8 +6,9 @@ import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { Member } from "@/types";
+import { Member, UserDetails } from "@/types";
 import { Routes } from "@/lib/routes";
+import { updateMemberStatus } from "../actions/update-status";
 
 type Props = {
   memberInfo: Member;
@@ -15,7 +16,8 @@ type Props = {
 };
 
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
-  const { status, id, shift } = memberInfo;
+  const { status, id, shift, role } = memberInfo;
+
 
   const router = useRouter();
   const { toast } = useToast();
@@ -28,6 +30,24 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     router.push(`${Routes.EditMember}/${id}`);
   };
 
+  const handleStatus = async () => {
+    try {
+    
+        await updateMemberStatus(id);
+
+        toast({
+          title: "Update Member status successfully",
+        });
+        router.refresh();
+     
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+        });
+      }
+    }
+  };
   const handleDeleteMember = async () => {
     try {
       await deleteMember(id);
@@ -68,12 +88,28 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     },
   ];
 
+  const updateStatus = [
+    {
+      title: "Update status",
+      id: 1,
+      onClick: handleStatus,
+      icon: <Edit size={16} />,
+    },
+  ];
 
-
-  const checkShiftMembers = (loginUserShift: string, shift: Shift) => {
-    if (loginUserShift === shift) {
+  const checkShiftMembers = (
+    loginUserShift: UserDetails,
+    shift: Shift,
+    role: MemberRole
+  ) => {
+    if (loginUserShift.shift === shift) {
+      if (role === MemberRole.ShiftIncharge && id !== loginUserShift.id) {
+        return [...viewInfo];
+      }
       if (status === UserStatus.Inactive) {
         return [...baseActions, ...viewInfo];
+      } else if (status === UserStatus.Deactivated) {
+        return [...updateStatus];
       }
       return [...baseActions, ...viewInfo];
     }
@@ -82,9 +118,13 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const actionMenu = React.useMemo(() => {
     switch (loginUser?.role) {
       case MemberRole.Incharge:
-        return [...baseActions, ...viewInfo];
+        return status === UserStatus.Deactivated
+          ? [...updateStatus]
+          : [...baseActions, ...viewInfo];
       case MemberRole.ShiftIncharge:
-        return checkShiftMembers(loginUser?.shift, shift);
+        return role === MemberRole.Incharge
+          ? [...viewInfo]
+          : checkShiftMembers(loginUser, shift, role);
       case MemberRole.Member:
         return [...viewInfo];
       default:

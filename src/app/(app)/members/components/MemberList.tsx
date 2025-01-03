@@ -23,11 +23,12 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
-import { MemberRole, Shift } from "@/constant/constant";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { getMembers } from "../actions/getMembers";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { formatRole } from "@/utils/formatRole";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
+import { MemberStatusSelector } from "./MemberStatusSelector";
 
 export const MemberList = ({
   members: members,
@@ -43,14 +44,16 @@ export const MemberList = ({
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
   const [filteredMember, setFilteredMember] = useState<Member[]>(members);
+  const [membersStatus, setMemberStatus] = useState<UserStatus >();
   useEffect(() => {
-    if (searchQuery) {
+    if (searchQuery || membersStatus) {
       (async function fetchData() {
         try {
           startTransition(async () => {
-            const response = await getMembers(searchQuery);
+            const response = await getMembers(searchQuery, membersStatus);
             setFilteredMember(response.data);
           });
+          setMemberStatus(membersStatus);
         } catch (error: unknown) {
           if (error instanceof Error) {
             toast({
@@ -68,7 +71,7 @@ export const MemberList = ({
     } else {
       setFilteredMember(members);
     }
-  }, [searchQuery, members]);
+  }, [searchQuery, members, membersStatus]);
 
   const columns: ColumnDef<Member>[] = [
     {
@@ -160,9 +163,16 @@ export const MemberList = ({
     onAction: handleNavigation,
     labelForActionButton: "Add Member",
   };
-
   return !isPending ? (
     <StandardPage {...StandardPageProps}>
+      {user.role !== MemberRole.Member && (
+        <div className=" flex justify-end">
+          <MemberStatusSelector
+            setMemberStatus={(value)=>setMemberStatus(value)}
+            membersStatus={membersStatus}
+          />
+        </div>
+      )}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

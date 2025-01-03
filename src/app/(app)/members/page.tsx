@@ -6,14 +6,13 @@ import { getMembers } from "./actions/getMembers";
 import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import { UserStatus } from "@/constant/constant";
 
 const breadcrumbs: Breadcrumbs[] = [{ href: Routes.Members, label: "Members" }];
 
 const Page = async () => {
   const user = await getLoggedInUser();
-  const { data: members } = await getMembers("");
-
-  
+  const { data: members } = await getMembers("", UserStatus.Active);
   return (
     <>
       <MemberHeader breadcrumbs={breadcrumbs} user = {user} />
