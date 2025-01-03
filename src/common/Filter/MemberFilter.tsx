@@ -6,22 +6,30 @@ import { MemberRole } from "@/constant/constant";
 import { User } from "@/types";
 import { DataSpinner } from "../Loader/Loader";
 
-export const MemberFilter = ({ loginUser,route }: { loginUser: User ,route : string}) => {
+export const MemberFilter = ({
+  loginUser,
+  route,
+}: {
+  loginUser: User;
+  route: string;
+}) => {
   const searchparams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
   const [isPending, startTransition] = useTransition();
   const [search, setSearch] = useState("");
   const handleSearchQueryChange = (value: string) => {
+    setSearch(value);
     startTransition(() => {
       const shouldRedirectToLeaveRequest =
-        value === "" &&
-        (loginUser?.role === MemberRole.Incharge ||
-          loginUser?.role === MemberRole.Member);
+        value === "" && loginUser?.role === MemberRole.Incharge;
       const params = new URLSearchParams(searchparams);
-      if (value) {
+
+      if (value === "0") {
+        params.delete("id");
+      } else if (value) {
         if (shouldRedirectToLeaveRequest) {
-       replace( route);
+          replace(route);
         } else {
           params.set("id", value);
         }
@@ -29,15 +37,18 @@ export const MemberFilter = ({ loginUser,route }: { loginUser: User ,route : str
         params.delete("id");
       }
       replace(`${pathname}?${params.toString()}`);
-      setSearch(value);
     });
   };
 
   useEffect(() => {
     if (loginUser?.role === MemberRole.ShiftIncharge && search === "") {
-      setSearch(loginUser.id?.toString());
+      handleSearchQueryChange(loginUser.id?.toString());
     }
   }, []);
+
+  if (loginUser?.role === MemberRole.Member) {
+    return null;
+  }
 
   return (
     <div className="flex justify-end">
