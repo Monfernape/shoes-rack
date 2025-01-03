@@ -33,27 +33,23 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
     <div>
       <Breadcrumb>
         <BreadcrumbList data-testid="breadCrumb">
-          {updatedBreadCrumbs.map((breadcrumb,index) => (
-              <div key={breadcrumb.href} className="flex items-center">
+          {updatedBreadCrumbs.map((breadcrumb, index) => (
+            <div key={breadcrumb.href} className="flex items-center">
+              {index !== 0 && <BreadcrumbSeparator />}
               <BreadcrumbItem>
                 <BreadcrumbLink
                   asChild
-                  className={`max-w-20 text-sm font-medium text-gray-800 whitespace-nowrap md:max-w-none ${
-                    pathname === breadcrumb.href
-                      ? "text-foreground"
-                      : "transition-colors"
-                  }`}
+                  className={`max-w-20 text-xs text-gray-800 font-normal whitespace-nowrap md:max-w-none
+                   ${
+                     index === updatedBreadCrumbs.length-1
+                       ?  "text-gray-800" : "text-gray-500"
+                   }`}
                 >
-                  <Link
-                    href={breadcrumb.href}
-                    data-testid="mytest"
-                    role="link"
-                  >
+                  <Link href={breadcrumb.href} data-testid="mytest" role="link">
                     {breadcrumb.label}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              {index + 1 !== updatedBreadCrumbs.length && <BreadcrumbSeparator />}
             </div>
           ))}
         </BreadcrumbList>
