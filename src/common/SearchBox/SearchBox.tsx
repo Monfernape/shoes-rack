@@ -27,18 +27,22 @@ export const Searchbox = ({
     }
   };
 
+  // Main container class names with conditional logic
   const containerClassNames = [
-    "relative flex justify-end transition-all duration-500 ease-out",
+    "relative flex justify-end transition-all duration-500 ease-in-out",
     fullWidthOnFocus && isShowIconOnly
-      ? "w-full transition-all duration-500 ease-out"
-      : "w-8",
+      ? "w-full transition-all duration-500 ease-in-out"
+      : "w-8 md:w-60",
   ]
     .filter(Boolean)
     .join(" ");
 
+  // Calculate the base input width and padding
   const inputClassNames = [
-    "p-2 transition-all duration-500 ease-out",
-    fullWidthOnFocus && isShowIconOnly ? "w-full" : "",
+    "p-2 transition-all duration-500 ease-in-out",
+    fullWidthOnFocus && isShowIconOnly
+      ? "w-full"
+      : "w-2",
     "pl-6",
     "md:w-60",
     "rounded",
@@ -47,16 +51,16 @@ export const Searchbox = ({
     .filter(Boolean)
     .join(" ");
 
+  // Calculate the icon position and transformation based on the props
   const iconClassNames = [
-    "absolute top-1/2 transform -translate-y-1/2 text-gray-600 transition-all duration-500 ease-out",
+    "absolute top-1/2 transform -translate-y-1/2 text-gray-600 transition-all duration-500 ease-in-out",
     fullWidthOnFocus && isShowIconOnly
-      ? "left-2 -translate-x-0" 
+      ? "left-2 -translate-x-0"
       : "left-1/2 -translate-x-1/2",
     "md:left-3",
   ]
     .filter(Boolean)
     .join(" ");
-
   return (
     <div className={containerClassNames}>
       <Input
