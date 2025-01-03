@@ -6,12 +6,13 @@ import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { getEditPermissions } from "@/common/Actions/getEditPermissions";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import { MemberRole } from "@/constant/constant";
 
 export const updateUser = async (values: UpdateUser) => {
   const supabase = await getSupabaseClient();
 
   const loggedInUser = await getLoggedInUser();
-  const isLoggedInUserMember = loggedInUser.member;
+  const isLoggedInUserMember = loggedInUser.role === MemberRole.Member;
 
   const { hasEditPermission } = await getEditPermissions(values.id);
   
