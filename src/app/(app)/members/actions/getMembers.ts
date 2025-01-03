@@ -1,23 +1,46 @@
 "use server";
 
 import { Tables } from "@/lib/db";
-import { UserStatus } from "@/constant/constant";
+import { MemberRole, UserStatus } from "@/constant/constant";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
-export const getMembers = async (query: string | null) => {
+export const getMembers = async (
+  query: string | null,
+  status: UserStatus | undefined
+) => {
   const supabase = await getSupabaseClient();
-
+  const loginUser = await getLoggedInUser();
   const columns = ["name"];
-
   const orConditions = columns.map((col) => {
     return `${col}.ilike.%${query ?? ""}%`;
   });
 
+  if (loginUser.role === MemberRole.ShiftIncharge &&  status === UserStatus.Deactivated) {
+    const { data, error } = await supabase
+      .from(Tables.Members)
+      .select()
+      .or(orConditions.join(","))
+      .eq("status", status || UserStatus.Active)
+      .eq("shift", loginUser.shift);
+    if (error) {
+      return {
+        success: false,
+        message: "There are no members available at this time.",
+        data: [],
+      };
+    }
+    return {
+      success: true,
+      message: "Members loaded successfully.",
+      data: data || [],
+    };
+  }
   const { data, error } = await supabase
     .from(Tables.Members)
     .select()
     .or(orConditions.join(","))
-    .neq("status", UserStatus.Deactivated);
+    .eq("status", status || UserStatus.Active);
 
   if (error) {
     return {
