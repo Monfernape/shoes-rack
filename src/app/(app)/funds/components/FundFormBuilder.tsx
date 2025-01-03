@@ -22,6 +22,8 @@ import { addFunds } from "../actions/add-funds";
 import { updateFundDetails } from "../actions/update-fund-details";
 import { FundType, User } from "@/types";
 import { DataSpinner } from "@/common/Loader/Loader";
+import { Routes } from "@/lib/routes";
+import { useRouter } from "next/navigation";
 
 export const FundSchema = z.object({
   memberId: z.string().min(1, {
@@ -55,28 +57,34 @@ export const FundFormBuilder = ({ funds, loginUser }: Props) => {
     mode: "all",
   });
 
+  const router = useRouter();
   const onSubmit = async (values: FundSchemaType) => {
-    startTransition(() => {
-      try {
-        if (!funds?.id) {
-          addFunds(values);
+    startTransition(async () => {
+      if (!funds?.id) {
+        const result = await addFunds(values);
+        if (result.error) {
+          toast({
+            title: result.error,
+            description: "Try again",
+          });
+        } else {
           toast({
             title: "Success",
             description: "Fund added successfully",
           });
+        }
+      } else {
+        const result = await updateFundDetails(funds?.id, values);
+        if (result?.error) {
+          toast({
+            title: result.error,
+          });
         } else {
-          updateFundDetails(funds?.id, values);
           toast({
             title: "Success",
             description: "Fund updated successfully",
           });
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          toast({
-            title: "Error",
-            description: error.message,
-          });
+          router.push(Routes.Fund);
         }
       }
     });

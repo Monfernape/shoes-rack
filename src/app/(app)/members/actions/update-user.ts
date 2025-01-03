@@ -4,16 +4,24 @@ import { UpdateUser } from "../components/MemberFormBuilder";
 import { Tables } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { Routes } from "@/lib/routes";
+import { getEditPermissions } from "@/common/Actions/getEditPermissions";
 
 export const updateUser = async (values: UpdateUser) => {
   const supabase = await getSupabaseClient();
-  const { error } = await supabase
-    .from(Tables.Members)
-    .update({ ...values })
-    .eq("id", values.id);
-  if (error) {
-    throw error;
-  }
 
-  redirect(Routes.Members);
+  const { hasEditPermission } = await getEditPermissions(values.id);
+  
+  if (hasEditPermission) {
+    const { error } = await supabase
+      .from(Tables.Members)
+      .update({ ...values })
+      .eq("id", values.id);
+    if (error) {
+      return {error: error.message};
+    }
+
+    redirect(Routes.Members);
+  } else {
+    return { error: "You have not permission" };
+  }
 };
