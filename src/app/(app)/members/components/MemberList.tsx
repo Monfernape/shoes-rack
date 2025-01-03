@@ -226,6 +226,10 @@ export const MemberList = ({
       </Table>
     </StandardPage>
   ) : (
-    <DataSpinner />
+    <div className="flex-1 h-full flex justify-center items-center">
+      <div>
+        <DataSpinner isInputLoader />
+      </div>
+    </div>
   );
 };

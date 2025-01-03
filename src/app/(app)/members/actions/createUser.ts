@@ -34,8 +34,12 @@ export const createUser = async (values: UserBuilder) => {
   });
 
   if (error) {
-    throw error;
+    if (error.details.includes("phoneNumber")) {
+      return { message: "Phone number is already  exist" };
+    }
+    return { message: "CNIC is already exist" };
   } else {
+   
     const { error } = await supabase.auth.signUp({
       phone: formattedPhoneNumber,
       password: temporaryPassword,
@@ -48,8 +52,10 @@ export const createUser = async (values: UserBuilder) => {
       },
     });
     if (error) {
-      throw error;
+      return { message: 'something went wrong '}
+      ;
     }
-    redirect(Routes.Members);
+   
   }
+  redirect(Routes.Members);
 };
