@@ -16,7 +16,7 @@ export const getMembers = async (
     return `${col}.ilike.%${query ?? ""}%`;
   });
 
-  let queryBuilder = supabase
+  const queryBuilder = supabase
     .from(Tables.Members)
     .select()
     .or(orConditions.join(","))
