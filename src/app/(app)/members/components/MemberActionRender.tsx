@@ -8,7 +8,6 @@ import {
   ArchiveRestore as ArchiveRestoreIcon,
 } from "lucide-react";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
-import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Member, UserDetails } from "@/types";
@@ -37,7 +36,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   
   const handleStatus = async () => {
     try {
-      const result = await updateMemberStatus(id);
+      const result = await updateMemberStatus(id,UserStatus.Active);
       if (result) {
         toast({
           variant: "destructive",
@@ -63,7 +62,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
 
   const handleDeleteMember = async () => {
     try {
-      await deleteMember(id);
+      await updateMemberStatus(id,UserStatus.Deactivated);
       toast({
         title: "Member deleted successfully",
       });
@@ -148,7 +147,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
         return [];
     }
   }, [status, loginUser?.role]);
-  console.log("status(****",status)
+
   return (
     <>
        <ConfirmationModal 

@@ -10,19 +10,19 @@ import {
 import { UserStatus } from "@/constant/constant";
 import React from "react";
 
-export const MemberStatusSelector = ({
+export const MemberStatusFilter = ({
     setMemberStatus,
     membersStatus
 } : {
     setMemberStatus : (value:UserStatus )=>void,
-    membersStatus:string 
+    membersStatus:{status:UserStatus} 
 }) => {
   return (
       <Select
         onValueChange={(e : UserStatus) => {
             setMemberStatus(e)
         }}
-        defaultValue={membersStatus?? UserStatus.Active}
+        defaultValue={membersStatus.status?? UserStatus.Active}
       >
         <SelectTrigger className="w-[180px]">
           <SelectValue    />

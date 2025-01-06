@@ -1,51 +1,36 @@
 "use server";
 
 import { Tables } from "@/lib/db";
-import { MemberRole, UserStatus } from "@/constant/constant";
+import { UserStatus } from "@/constant/constant";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 export const getMembers = async (
   query: string | null,
   status: UserStatus = UserStatus.Active
 ) => {
   const supabase = await getSupabaseClient();
-  const loginUser = await getLoggedInUser();
   const columns = ["name"];
-  const orConditions = columns.map((col) => {
+
+  let result;
+  const filterQuery = columns.map((col) => {
     return `${col}.ilike.%${query ?? ""}%`;
   });
 
   const queryBuilder = supabase
     .from(Tables.Members)
     .select()
-    .or(orConditions.join(","));
-  const handleMembers = async () => {
-    if (
-      loginUser.role === MemberRole.ShiftIncharge &&
-      status === UserStatus.Deactivated
-    ) {
-      return await queryBuilder
-        .eq("shift", loginUser.shift)
-        .eq("status", status);
-    }
+    .or(filterQuery.join(","));
 
-    if (
-      status === UserStatus.Deactivated &&
-      loginUser.role === MemberRole.Incharge
-    ) {
-      return queryBuilder.eq("status", status);
-    }
+  if (status === UserStatus.Deactivated) {
+    result = await queryBuilder.eq("status", status);
+  } else {
+    result = await queryBuilder.neq("status", UserStatus.Deactivated);
+  }
 
-    return queryBuilder.neq("status", UserStatus.Deactivated);
-  };
-
-  const members = await handleMembers();
-
-  if (members.error) {
+  if (result.error) {
     return {
       success: false,
-      message: members.error.message,
+      message: result.error.message,
       data: [],
     };
   }
@@ -53,6 +38,6 @@ export const getMembers = async (
   return {
     success: true,
     message: "Members loaded successfully.",
-    data: members.data || [],
+    data: result.data || [],
   };
 };
