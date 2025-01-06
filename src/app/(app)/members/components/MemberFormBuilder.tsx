@@ -98,7 +98,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
   
   const [isPending, startTransition] = useTransition();
   const phoneNumberMask = useMask({
-    mask: "___________",
+    mask: "____-_______",
     replacement: { _: /\d/ },
   });
   const cnicMask = useMask({
@@ -206,7 +206,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
                 <Label>Phone number</Label>
                 <FormControl>
                   <Input
-                    placeholder="03000000000"
+                    placeholder="0300-0000000"
                     {...field}
                     data-testid="phone"
                     ref={phoneNumberMask}
