@@ -19,36 +19,33 @@ export const getMembers = async (
   const queryBuilder = supabase
     .from(Tables.Members)
     .select()
-    .or(orConditions.join(","))
-    .eq("status", status);
-
-  if (
-    loginUser.role === MemberRole.ShiftIncharge &&
-    status === UserStatus.Deactivated
-  ) {
-    const { data: members, error } = await queryBuilder.eq(
-      "shift",
-      loginUser.shift
-    );
-    if (error) {
-      return {
-   
-        message: error.message,
-        data: [],
-      };
+    .or(orConditions.join(","));
+  const handleMembers = async () => {
+    if (
+      loginUser.role === MemberRole.ShiftIncharge &&
+      status === UserStatus.Deactivated
+    ) {
+      return await queryBuilder
+        .eq("shift", loginUser.shift)
+        .eq("status", status);
     }
-    return {
 
-      message: "Members loaded successfully.",
-      data: members || [],
-    };
-  }
+    if (
+      status === UserStatus.Deactivated &&
+      loginUser.role === MemberRole.Incharge
+    ) {
+      return queryBuilder.eq("status", status);
+    }
 
-  const { data: members, error } = await queryBuilder;
-  if (error) {
+    return queryBuilder.neq("status", UserStatus.Deactivated);
+  };
+
+  const members = await handleMembers();
+
+  if (members.error) {
     return {
       success: false,
-      message: "There are no members available at this time.",
+      message: members.error.message,
       data: [],
     };
   }
@@ -56,6 +53,6 @@ export const getMembers = async (
   return {
     success: true,
     message: "Members loaded successfully.",
-    data: members || [],
+    data: members.data || [],
   };
 };
