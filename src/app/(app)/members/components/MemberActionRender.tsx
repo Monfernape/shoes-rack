@@ -1,7 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
-import { Info as InfoIcon, Trash2 as Trash2Icon, Edit as EditIcon, ArchiveRestore as ArchiveRestoreIcon } from "lucide-react";
+import {
+  Info as InfoIcon,
+  Trash2 as Trash2Icon,
+  Edit as EditIcon,
+  ArchiveRestore as ArchiveRestoreIcon,
+} from "lucide-react";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
@@ -9,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { Member, UserDetails } from "@/types";
 import { Routes } from "@/lib/routes";
 import { updateMemberStatus } from "../actions/update-status";
+import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 type Props = {
   memberInfo: Member;
@@ -17,8 +23,7 @@ type Props = {
 
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const { status, id, shift, role } = memberInfo;
-
-
+  const [modalOpen,setIsModalOpen] = useState<boolean>(false)
   const router = useRouter();
   const { toast } = useToast();
 
@@ -29,25 +34,21 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const handleEditInfo = () => {
     router.push(`${Routes.EditMember}/${id}`);
   };
-
+  
   const handleStatus = async () => {
     try {
-    
-      const result =   await updateMemberStatus(id);
-        if(result) {
-          toast({
-            variant:"destructive",
-            title: result.message,
-            description:"Try again",
-          
-          });
-          return 
-        }
+      const result = await updateMemberStatus(id);
+      if (result) {
         toast({
-          title: "Update Member status successfully",
+          variant: "destructive",
+          title: result.message,
+          description: "Try again",
         });
-        router.refresh();
-     
+        return;
+      }
+      toast({
+        title: "Update Member status successfully",
+      });
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -56,6 +57,10 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       }
     }
   };
+  const handleModalOpen = ()=>{
+    setIsModalOpen(true)
+  }
+
   const handleDeleteMember = async () => {
     try {
       await deleteMember(id);
@@ -82,7 +87,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     {
       title: "Delete member",
       id: 3,
-      onClick: handleDeleteMember,
+      onClick: handleModalOpen,
       icon: <Trash2Icon size={16} />,
     },
   ];
@@ -100,7 +105,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     {
       title: "Update status",
       id: 1,
-      onClick: handleStatus,
+      onClick: handleModalOpen,
       icon: <ArchiveRestoreIcon size={16} />,
     },
   ];
@@ -111,7 +116,11 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     role: MemberRole
   ) => {
     if (shift === loginUserShift.shift) {
-      if (role === MemberRole.ShiftIncharge && id !== loginUserShift.id && status!== UserStatus.Deactivated) {
+      if (
+        role === MemberRole.ShiftIncharge &&
+        id !== loginUserShift.id &&
+        status !== UserStatus.Deactivated
+      ) {
         return [...viewInfo];
       }
       if (status === UserStatus.Inactive) {
@@ -139,8 +148,22 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
         return [];
     }
   }, [status, loginUser?.role]);
-
-  return <ActionsMenu actions={actionMenu} />;
+  console.log("status(****",status)
+  return (
+    <>
+       <ConfirmationModal 
+        title={status === UserStatus.Deactivated ? "Restore Member" : "Delete Member"}
+        description={status === UserStatus.Deactivated? "Are you sure you want to restore this member?" : "Are you sure you want to delete this member?"}
+        buttonText={status === UserStatus.Deactivated ? "Restore Member" : "Delete"}
+        setIsModalOpen={setIsModalOpen}
+        onHandleConfirm={status === UserStatus.Deactivated ? handleStatus :  handleDeleteMember}
+        isModalOpen = {modalOpen}
+       
+       />
+      <ActionsMenu actions={actionMenu} />
+      
+    </>
+  );
 };
 
 export default MemberTableActionRender;
