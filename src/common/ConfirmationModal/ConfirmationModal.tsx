@@ -16,7 +16,7 @@ interface ConfirmationModalProps {
   buttonText: string;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalOpen: boolean;
-  onHandleConfirm: () => void;
+  onHandleConfirm: (e: React.MouseEvent) => void;
 }
 export const ConfirmationModal = ({
   title,
@@ -43,7 +43,7 @@ export const ConfirmationModal = ({
           </Button>
           <Button
             className="text-xs py-1 px-2 font-normal h-7"
-            onClick={() => onHandleConfirm()}
+            onClick={onHandleConfirm}
           >
             {buttonText}
           </Button>

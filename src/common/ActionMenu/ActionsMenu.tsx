@@ -13,7 +13,7 @@ interface Action {
   title: string;
   id: number;
   icon: ReactNode;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
   className?: string;
 }
 

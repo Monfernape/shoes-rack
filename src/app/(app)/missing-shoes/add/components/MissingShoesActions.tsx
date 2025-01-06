@@ -23,11 +23,13 @@ export const MissingShoesActions = ({
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { id: missingShoesId, status: missingShoeStatus } = missingShoeReport;
-  const handleEditInfo = (id: number) => {
+  const handleEditInfo = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
     router.push(`${Routes.EditMissingShoes}/${id}`);
   };
 
-  const handleViewDetails = (id: number) => {
+  const handleViewDetails = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
     router.push(`${Routes.MissingShoesDetails}/${id}`);
   };
 
@@ -57,7 +59,7 @@ export const MissingShoesActions = ({
 
   const onHandleConfirm = () => {
     handleMissingShoesStatus(missingShoesId, MissingShoeStatus.Found);
-    setIsModalOpen(false)
+    setIsModalOpen(false);
   };
 
   const actionMenu = useMemo(
@@ -65,7 +67,8 @@ export const MissingShoesActions = ({
       {
         title: "Found",
         id: 1,
-        onClick: () => {
+        onClick: (e: React.MouseEvent) => {
+          e.stopPropagation();
           setIsModalOpen(true);
         },
         icon: <CheckCircleIcon size={16} />,
@@ -73,8 +76,8 @@ export const MissingShoesActions = ({
       {
         title: "Edit",
         id: 3,
-        onClick: () => {
-          handleEditInfo(missingShoesId);
+        onClick: (e: React.MouseEvent) => {
+          handleEditInfo(e, missingShoesId);
         },
         icon: <EditIcon size={16} />,
       },
@@ -87,7 +90,7 @@ export const MissingShoesActions = ({
       {
         title: "View Details",
         id: 2,
-        onClick: () => handleViewDetails(missingShoesId),
+        onClick: (e: React.MouseEvent) => handleViewDetails(e, missingShoesId),
         icon: <InfoIcon size={16} />,
       },
     ],

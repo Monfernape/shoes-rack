@@ -20,15 +20,18 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (e: React.MouseEvent) => {
+    e.stopPropagation();
     router.push(`${Routes.MemberDetails}/${id}`);
   };
 
-  const handleEditInfo = () => {
+  const handleEditInfo = (e: React.MouseEvent) => {
+    e.stopPropagation();
     router.push(`${Routes.EditMember}/${id}`);
   };
 
-  const handleDeleteMember = async () => {
+  const handleDeleteMember = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     try {
       await deleteMember(id);
       toast({

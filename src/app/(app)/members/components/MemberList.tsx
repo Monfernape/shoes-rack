@@ -193,7 +193,7 @@ export const MemberList = ({
                   </TableRow>
                 )}
                 {shiftGroup.members.map((row) => (
-                  <TableRow key={row.id}>
+                  <TableRow key={row.id} className="hover:bg-muted">
                     {table
                       .getRowModel()
                       .rows.find((r) => r.original === row)
@@ -201,7 +201,7 @@ export const MemberList = ({
                       .map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className=" max-w-28 overflow-hidden whitespace-nowrap text-ellipsis  "
+                          className=" max-w-28 overflow-hidden whitespace-nowrap text-ellipsis"
                         >
                           <div>
                             {flexRender(
