@@ -69,7 +69,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
     requestId: number,
     status: LeavesRequestStatus
   ) => {
-    // e.stopPropagation();
+    e.stopPropagation();
     try {
       await processLeaveRequest({ requestId, requestStatus: status });
       toast({
