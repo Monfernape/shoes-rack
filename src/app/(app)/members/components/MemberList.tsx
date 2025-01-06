@@ -161,6 +161,10 @@ export const MemberList = ({
     labelForActionButton: "Add Member",
   };
 
+  const handleViewDetails = (id:number) => {
+    route.push(`${Routes.MemberDetails}/${id}`);
+  };
+
   return !isPending ? (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -186,14 +190,14 @@ export const MemberList = ({
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
-                      className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold "
+                      className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
                     >
                       Shift {shiftGroup.shift}
                     </TableCell>
                   </TableRow>
                 )}
                 {shiftGroup.members.map((row) => (
-                  <TableRow key={row.id} className="hover:bg-muted">
+                  <TableRow key={row.id} onClick={()=>handleViewDetails(row.id)}>
                     {table
                       .getRowModel()
                       .rows.find((r) => r.original === row)
@@ -201,7 +205,7 @@ export const MemberList = ({
                       .map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className=" max-w-28 overflow-hidden whitespace-nowrap text-ellipsis"
+                          className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis"
                         >
                           <div>
                             {flexRender(

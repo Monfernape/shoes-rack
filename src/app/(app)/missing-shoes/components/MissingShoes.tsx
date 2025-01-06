@@ -62,14 +62,14 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
       },
       {
         accessorKey: "ownerPhoneNumber",
-        header: () => <div className="">Phone number</div>,
+        header: () => <div>Phone number</div>,
         cell: ({ row }) => (
           <div className="capitalize">{row.getValue("ownerPhoneNumber")}</div>
         ),
       },
       {
         accessorKey: "time",
-        header: () => <div className="">Time lost</div>,
+        header: () => <div>Time lost</div>,
         cell: ({ row }) => (
           <div
             className="capitalize overflow-hidden text-ellipsis"
