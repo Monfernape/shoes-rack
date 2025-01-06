@@ -1,8 +1,11 @@
 import React from 'react'
+import { DashbordView } from './components/DashbordView'
+import { getLoggedInUser } from '@/utils/getLoggedInUser'
 
-const page = () => {
+const page = async() => {
+  const loggedUser = await getLoggedInUser();
   return (
-    <div>dashboard page</div>
+    <div><DashbordView loggedUser={loggedUser}/></div>
   )
 }
 
