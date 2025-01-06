@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
-import { Info, Trash2, Edit } from "lucide-react";
+import { Info as InfoIcon, Trash2 as Trash2Icon, Edit as EditIcon, ArchiveRestore as ArchiveRestoreIcon } from "lucide-react";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
@@ -33,8 +33,16 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const handleStatus = async () => {
     try {
     
-        await updateMemberStatus(id);
-
+      const result =   await updateMemberStatus(id);
+        if(result) {
+          toast({
+            variant:"destructive",
+            title: result.message,
+            description:"Try again",
+          
+          });
+          return 
+        }
         toast({
           title: "Update Member status successfully",
         });
@@ -69,13 +77,13 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       title: "Edit info",
       id: 2,
       onClick: handleEditInfo,
-      icon: <Edit size={16} />,
+      icon: <EditIcon size={16} />,
     },
     {
       title: "Delete member",
       id: 3,
       onClick: handleDeleteMember,
-      icon: <Trash2 size={16} />,
+      icon: <Trash2Icon size={16} />,
     },
   ];
 
@@ -84,16 +92,16 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       title: "View details",
       id: 1,
       onClick: handleViewDetails,
-      icon: <Info size={16} />,
+      icon: <InfoIcon size={16} />,
     },
   ];
 
-  const updateStatus = [
+  const reactiveUserAction = [
     {
       title: "Update status",
       id: 1,
       onClick: handleStatus,
-      icon: <Edit size={16} />,
+      icon: <ArchiveRestoreIcon size={16} />,
     },
   ];
 
@@ -102,14 +110,14 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     shift: Shift,
     role: MemberRole
   ) => {
-    if (loginUserShift.shift === shift) {
-      if (role === MemberRole.ShiftIncharge && id !== loginUserShift.id) {
+    if (shift === loginUserShift.shift) {
+      if (role === MemberRole.ShiftIncharge && id !== loginUserShift.id && status!== UserStatus.Deactivated) {
         return [...viewInfo];
       }
       if (status === UserStatus.Inactive) {
         return [...baseActions, ...viewInfo];
       } else if (status === UserStatus.Deactivated) {
-        return [...updateStatus];
+        return [...reactiveUserAction];
       }
       return [...baseActions, ...viewInfo];
     }
@@ -119,7 +127,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     switch (loginUser?.role) {
       case MemberRole.Incharge:
         return status === UserStatus.Deactivated
-          ? [...updateStatus]
+          ? [...reactiveUserAction]
           : [...baseActions, ...viewInfo];
       case MemberRole.ShiftIncharge:
         return role === MemberRole.Incharge

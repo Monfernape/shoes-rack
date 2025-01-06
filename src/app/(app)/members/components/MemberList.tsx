@@ -44,16 +44,17 @@ export const MemberList = ({
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
   const [filteredMember, setFilteredMember] = useState<Member[]>(members);
-  const [membersStatus, setMemberStatus] = useState<UserStatus >();
+  const [membersStatus, setMemberStatus] = useState<UserStatus >(UserStatus.Active);
+
   useEffect(() => {
-    if (searchQuery || membersStatus) {
+    if (searchQuery || membersStatus === UserStatus.Deactivated) {
       (async function fetchData() {
         try {
           startTransition(async () => {
             const response = await getMembers(searchQuery, membersStatus);
             setFilteredMember(response.data);
           });
-          setMemberStatus(membersStatus);
+   
         } catch (error: unknown) {
           if (error instanceof Error) {
             toast({
@@ -168,7 +169,7 @@ export const MemberList = ({
       {user.role !== MemberRole.Member && (
         <div className=" flex justify-end">
           <MemberStatusSelector
-            setMemberStatus={(value)=>setMemberStatus(value)}
+            setMemberStatus={(value) => setMemberStatus(value)}
             membersStatus={membersStatus}
           />
         </div>

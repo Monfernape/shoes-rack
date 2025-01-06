@@ -11,7 +11,9 @@ export const updateMemberStatus = async (id: number) => {
   .eq('id', id)
 
   if (error) {
-    throw error;
+    return  {
+      message:error.message
+    };
   }
 
 return 

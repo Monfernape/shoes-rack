@@ -15,7 +15,7 @@ export const MemberStatusSelector = ({
     membersStatus
 } : {
     setMemberStatus : (value:UserStatus )=>void,
-    membersStatus:string | undefined
+    membersStatus:string 
 }) => {
   return (
       <Select
@@ -31,7 +31,7 @@ export const MemberStatusSelector = ({
           <SelectGroup>
             <SelectItem value={UserStatus.Active}>Active</SelectItem>
             <SelectItem value={UserStatus.Deactivated}>
-              Archieved
+              Archived
             </SelectItem>
           </SelectGroup>
         </SelectContent>
