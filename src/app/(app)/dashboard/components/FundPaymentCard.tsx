@@ -17,7 +17,7 @@ export default function FundPaymentCard() {
           <p className="text-status-active">Fund has been paid. Thank you!</p>
         ) : (
           <div>
-            <p className="mb-4 text-status-inactive">
+            <p className="mb-4 text-status-pending">
               Your fund payment is due.
             </p>
           </div>
