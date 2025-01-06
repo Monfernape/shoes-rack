@@ -10,7 +10,7 @@ import LeaveRequestCard from "./LeaveRequestCard";
 export const DashbordView = ({ loggedUser }: { loggedUser: User }) => {
   const currentDate = moment().format("dddd, MMMM DD, YYYY");
   const generateGreetings = () => {
-    var currentHour = moment().format("HH");
+    const currentHour = moment().format("HH");
 
     if (currentHour >= "3" && currentHour < "12") {
       return "Good morning";
