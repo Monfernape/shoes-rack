@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Routes } from "@/lib/routes";
 import Link from "next/link";
 import {
-  // DashboardIcon,
+  DashboardIcon,
   ExclamationTriangleIcon,
   Cross1Icon,
   ExitIcon,
@@ -42,11 +42,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const pathname = usePathname();
 
   const membersRoutes: Route[] = [
-    // {
-    //   name: "Dashboard",
-    //   route: Routes.Dashboard,
-    //   icon: <DashboardIcon />,
-    // },
+    {
+      name: "Dashboard",
+      route: Routes.Dashboard,
+      icon: <DashboardIcon />,
+    },
     {
       name: "Members",
       route: Routes.Members,
