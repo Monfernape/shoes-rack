@@ -4,31 +4,38 @@ import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { FundsHeader } from "./components/FundsHeader";
 import { getAllFunds } from "./actions/get-all-funds";
+import { UserStatus } from "@/constant/constant";
 
 const breadcrumbs = [
   { href: Routes.Fund, label: "Funds" },
   { href: Routes.AddFund, label: "Add Fund" },
 ];
 
-const page = async () => {
+const Page = async () => {
   const user = await getLoggedInUser();
   const funds = await getAllFunds();
 
-  const fundUpdated = funds.map((fund) => {
-    const memberName = fund.members.name;
-    const role = fund.members.role
-    return {
-      ...fund,
-      name: memberName,
-      role
-    };
-  });
+  const fundUpdated = funds
+    .map((fund) => {
+      const activeMember = fund.members.status !== UserStatus.Deactivated;
+
+      if (activeMember) {
+        const { name, role } = fund.members;
+        return {
+          ...fund,
+          name,
+          role,
+        };
+      }
+    })
+    .filter(Boolean);
+
   return (
     <>
       <FundsHeader breadcrumbs={breadcrumbs} user={user} />
-      <FundsList  funds={fundUpdated} />
+      <FundsList funds={fundUpdated} />
     </>
   );
 };
 
-export default page;
+export default Page;
