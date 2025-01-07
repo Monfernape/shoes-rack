@@ -76,25 +76,25 @@ const AttendanceActionRender = ({
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: "Error",
+          title: error.message,
           description:
-            "There was an issue updating the status. Please try again.",
+            "Please try again.",
         });
       }
     }
   };
 
-  const confirmApprove = () => {
+  const handleApproveAttendance = () => {
     attendanceConfirmation(requestId, AttendanceStatus.Approve);
     setIsModalOpen(false);
   };
 
-  const confirmReject = () => {
+  const handleRejectAttendance = () => {
     attendanceConfirmation(requestId, AttendanceStatus.Reject);
     setIsModalOpen(false);
   };
 
-  const confirmDelete = () => {
+  const handleDeleteAttendance = () => {
     handleDeleteRequest(requestId);
     setIsModalOpen(false);
   };
@@ -125,7 +125,7 @@ const AttendanceActionRender = ({
         title: "Delete",
         id: 3,
         onClick: () => {
-          openConfirmationModal(confirmDelete);
+          openConfirmationModal(handleDeleteAttendance);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
@@ -154,7 +154,7 @@ const AttendanceActionRender = ({
         title: "Approve",
         id: 4,
         onClick: () => {
-          openConfirmationModal(confirmApprove);
+          openConfirmationModal(handleApproveAttendance);
         },
         icon: <CheckCircleIcon size={16} />,
       });
@@ -167,7 +167,7 @@ const AttendanceActionRender = ({
         title: "Reject",
         id: 5,
         onClick: () => {
-          openConfirmationModal(confirmReject);
+          openConfirmationModal(handleRejectAttendance);
         },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
       });
