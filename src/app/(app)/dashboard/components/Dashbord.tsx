@@ -8,7 +8,7 @@ import FundPaymentCard from "./FundPaymentCard";
 import MissedAttendanceCard from "./MissedAttendanceCard";
 import LeaveRequestCard from "./LeaveRequestCard";
 
-export const Dashbord = ({ loggedUser  }: { loggedUser: User }) => {
+export const Dashboard = ({ loggedUser  }: { loggedUser: User }) => {
   const currentDate = moment().format("dddd, MMMM DD, YYYY");
   const generateGreetings = useMemo(() => {
     const currentHour = moment().format("HH");
