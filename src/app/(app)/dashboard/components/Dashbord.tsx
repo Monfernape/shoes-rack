@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";
 import { AttendanceDonutChart } from "./AttendanceDonutChart";
 import moment from "moment";
-import { FundType, User } from "@/types";
+import { User } from "@/types";
 import { PageLayout } from "@/app/layout/PageLayout";
 import FundPaymentCard from "./FundPaymentCard";
 import MissedAttendanceCard from "./MissedAttendanceCard";
