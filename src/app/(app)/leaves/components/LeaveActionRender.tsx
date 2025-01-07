@@ -9,8 +9,13 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { EventType, LeaveRequestsTypes, LeavesRequestStatus, UserDetails } from "@/types";
-import { MemberRole } from "@/constant/constant";
+import {
+  EventType,
+  LeaveRequestsTypes,
+  LeavesRequestStatus,
+  UserDetails,
+} from "@/types";
+import { LeaveRequestStatus, MemberRole } from "@/constant/constant";
 import { deleteLeaveRequest } from "../actions/delete-leave-request";
 import { toast } from "@/hooks/use-toast";
 import { processLeaveRequest } from "../actions/process-leave-request";
@@ -29,6 +34,7 @@ interface Props {
 const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
   const router = useRouter();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [menuAction, setMenuAction] = useState("");
 
   const { id: leaveRequestId, status: leaveStatus } = leaveRequestDetails;
 
@@ -47,6 +53,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
     requestId: number
   ) => {
     e.stopPropagation();
+
     try {
       await deleteLeaveRequest(requestId);
       toast({
@@ -62,10 +69,11 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
         });
       }
     }
+    setIsOpenModal(false);
   };
 
   const handleLeaveStatus = async (
-    e: EventType,
+    e : EventType,
     requestId: number,
     status: LeavesRequestStatus
   ) => {
@@ -88,9 +96,18 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
     setIsOpenModal(false);
   };
 
-  const handleOpenModal = (e: EventType) => {
+  const handleModalAction = (e: EventType) => {
     e.stopPropagation();
-    setIsOpenModal(true);
+    switch (menuAction) {
+      case "Approve":
+        return handleLeaveStatus( e,leaveRequestId, LeavesRequestStatus.Approved);
+      case "Reject":
+        return handleLeaveStatus(e ,leaveRequestId, LeavesRequestStatus.Reject);
+      case "Delete":
+        return handleDeleteRequest(e, leaveRequestId);
+      default:
+        return () => {};
+    }
   };
 
   const baseActions = useMemo(
@@ -107,7 +124,9 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
         title: "Delete",
         id: 3,
         onClick: (e: EventType) => {
-          handleDeleteRequest(e, leaveRequestId);
+          e.stopPropagation();
+          setMenuAction("Delete");
+          setIsOpenModal(true);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
@@ -132,7 +151,11 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
       {
         title: "Approve",
         id: 4,
-        onClick: handleOpenModal,
+        onClick: (e: EventType) => {
+          e.stopPropagation();
+          setMenuAction("Approve");
+          setIsOpenModal(true);
+        },
         icon: <CheckCircleIcon size={16} />,
       },
     ],
@@ -144,7 +167,11 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
       {
         title: "Reject",
         id: 4,
-        onClick: handleOpenModal,
+        onClick: (e: EventType) => {
+          e.stopPropagation();
+          setMenuAction("Reject");
+          setIsOpenModal(true);
+        },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
       },
     ],
@@ -203,20 +230,10 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
       <ConfirmationModal
         title={"Leave Status"}
         description={`Are you sure you want to perform this action?`}
-        buttonText={
-          leaveStatus === LeavesRequestStatus.Approved ? "Reject" : "Approve"
-        }
+        buttonText={menuAction}
         setIsModalOpen={setIsOpenModal}
         isModalOpen={isOpenModal}
-        onHandleConfirm={(e: EventType) =>
-          handleLeaveStatus(
-            e,
-            leaveRequestId,
-            leaveStatus === LeavesRequestStatus.Approved
-              ? LeavesRequestStatus.Reject
-              : LeavesRequestStatus.Approved
-          )
-        }
+        onHandleConfirm={handleModalAction}
       />
     </>
   );

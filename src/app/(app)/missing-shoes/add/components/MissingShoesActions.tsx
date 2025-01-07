@@ -57,7 +57,8 @@ export const MissingShoesActions = ({
     }
   };
 
-  const onHandleConfirm = () => {
+  const onHandleConfirm = (e:EventType) => {
+    e.stopPropagation();
     handleMissingShoesStatus(missingShoesId, MissingShoeStatus.Found);
     setIsModalOpen(false);
   };

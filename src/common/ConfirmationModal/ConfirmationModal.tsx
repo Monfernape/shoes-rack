@@ -27,11 +27,11 @@ export const ConfirmationModal = ({
   isModalOpen,
   onHandleConfirm,
 }: ConfirmationModalProps) => {
+  const handleCancelButton = (e: EventType) => {
+    e.stopPropagation();
+    setIsModalOpen(false);
+  };
 
-  const handleCancelButton = ()=>{
-    setIsModalOpen(false)
-  }
-  
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogContent className="rounded w-80 md:w-96">

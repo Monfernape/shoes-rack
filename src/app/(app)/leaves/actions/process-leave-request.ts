@@ -7,7 +7,7 @@ import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { getLeaveRequestById } from "./get-leave-request-by-id";
 import { getAccessToUser } from "@/utils/getAccessToUser";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 interface Props {
   requestId: number;
@@ -37,7 +37,7 @@ export const processLeaveRequest = async ({
       throw error.message;
     }
 
-    redirect(Routes.LeaveRequest);
+    revalidatePath(Routes.LeaveRequest);
   }
   return;
 };
