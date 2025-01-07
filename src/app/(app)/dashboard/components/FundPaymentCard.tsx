@@ -1,7 +1,23 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getFundDetailsByMemberId } from "../../funds/actions/get-funds-by-member-id";
+import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import useSWR from "swr";
 
-export default function FundPaymentCard() {
-  const isPaid = false;
+const fetchFunds = async () => {
+  const loggedUser = await getLoggedInUser();
+  const response = await getFundDetailsByMemberId(loggedUser.id);
+  if (response.error) {
+    console.error("Error fetching funds:", response.error.message);
+  }
+  return response.data;
+};
+export default async function FundPaymentCard() {
+  const { data: funds } = useSWR("funds", fetchFunds);
+  const loggedUserFunds = funds || [];
+  const isCurrentMonthFundAdded = loggedUserFunds.some(
+    (fund) => fund.amount !== "0"
+  );
 
   return (
     <Card>
@@ -11,7 +27,7 @@ export default function FundPaymentCard() {
         </CardTitle>
       </CardHeader>
       <CardContent className="text-xs">
-        {isPaid ? (
+        {isCurrentMonthFundAdded ? (
           <p className="text-status-active">Fund has been paid.</p>
         ) : (
           <div>

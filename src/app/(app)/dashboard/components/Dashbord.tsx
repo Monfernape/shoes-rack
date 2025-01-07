@@ -2,15 +2,14 @@
 import React, { useMemo } from "react";
 import { AttendanceDonutChart } from "./AttendanceDonutChart";
 import moment from "moment";
-import { User } from "@/types";
+import { FundType, User } from "@/types";
 import { PageLayout } from "@/app/layout/PageLayout";
 import FundPaymentCard from "./FundPaymentCard";
 import MissedAttendanceCard from "./MissedAttendanceCard";
 import LeaveRequestCard from "./LeaveRequestCard";
 
-export const Dashbord = ({ loggedUser }: { loggedUser: User }) => {
+export const Dashbord = ({ loggedUser  }: { loggedUser: User }) => {
   const currentDate = moment().format("dddd, MMMM DD, YYYY");
-
   const generateGreetings = useMemo(() => {
     const currentHour = moment().format("HH");
 
