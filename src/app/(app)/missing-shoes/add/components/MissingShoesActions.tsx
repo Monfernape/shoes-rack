@@ -12,7 +12,7 @@ import { processMissingShoeStatus } from "../../actions/process-missing-shoe-sta
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
-import { MissingShoeReport } from "@/types";
+import { EventType, MissingShoeReport } from "@/types";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 export const MissingShoesActions = ({
@@ -23,12 +23,12 @@ export const MissingShoesActions = ({
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { id: missingShoesId, status: missingShoeStatus } = missingShoeReport;
-  const handleEditInfo = (e: React.MouseEvent, id: number) => {
+  const handleEditInfo = (e: EventType, id: number) => {
     e.stopPropagation();
     router.push(`${Routes.EditMissingShoes}/${id}`);
   };
 
-  const handleViewDetails = (e: React.MouseEvent, id: number) => {
+  const handleViewDetails = (e: EventType, id: number) => {
     e.stopPropagation();
     router.push(`${Routes.MissingShoesDetails}/${id}`);
   };
@@ -67,7 +67,7 @@ export const MissingShoesActions = ({
       {
         title: "Found",
         id: 1,
-        onClick: (e: React.MouseEvent) => {
+        onClick: (e: EventType) => {
           e.stopPropagation();
           setIsModalOpen(true);
         },
@@ -76,7 +76,7 @@ export const MissingShoesActions = ({
       {
         title: "Edit",
         id: 3,
-        onClick: (e: React.MouseEvent) => {
+        onClick: (e: EventType) => {
           handleEditInfo(e, missingShoesId);
         },
         icon: <EditIcon size={16} />,
@@ -90,7 +90,7 @@ export const MissingShoesActions = ({
       {
         title: "View Details",
         id: 2,
-        onClick: (e: React.MouseEvent) => handleViewDetails(e, missingShoesId),
+        onClick: (e: EventType) => handleViewDetails(e, missingShoesId),
         icon: <InfoIcon size={16} />,
       },
     ],

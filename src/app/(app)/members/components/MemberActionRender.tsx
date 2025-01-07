@@ -6,7 +6,7 @@ import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { Member } from "@/types";
+import { EventType, Member } from "@/types";
 import { Routes } from "@/lib/routes";
 
 type Props = {
@@ -20,17 +20,17 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleViewDetails = (e: React.MouseEvent) => {
+  const handleViewDetails = (e: EventType) => {
     e.stopPropagation();
     router.push(`${Routes.MemberDetails}/${id}`);
   };
 
-  const handleEditInfo = (e: React.MouseEvent) => {
+  const handleEditInfo = (e: EventType) => {
     e.stopPropagation();
     router.push(`${Routes.EditMember}/${id}`);
   };
 
-  const handleDeleteMember = async (e: React.MouseEvent) => {
+  const handleDeleteMember = async (e: EventType) => {
     e.stopPropagation();
     try {
       await deleteMember(id);

@@ -9,7 +9,7 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { LeaveRequestsTypes, LeavesRequestStatus, UserDetails } from "@/types";
+import { EventType, LeaveRequestsTypes, LeavesRequestStatus, UserDetails } from "@/types";
 import { MemberRole } from "@/constant/constant";
 import { deleteLeaveRequest } from "../actions/delete-leave-request";
 import { toast } from "@/hooks/use-toast";
@@ -32,18 +32,18 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
 
   const { id: leaveRequestId, status: leaveStatus } = leaveRequestDetails;
 
-  const handleViewDetails = (e: React.MouseEvent) => {
+  const handleViewDetails = (e: EventType) => {
     e.stopPropagation();
     router.push(`${Routes.LeaveRequestDetails}/${leaveRequestId}`);
   };
 
-  const handleEditInfo = (e: React.MouseEvent, requestId: number) => {
+  const handleEditInfo = (e: EventType, requestId: number) => {
     e.stopPropagation();
     router.push(`${Routes.EditLeaveRequest}/${requestId}`);
   };
 
   const handleDeleteRequest = async (
-    e: React.MouseEvent,
+    e: EventType,
     requestId: number
   ) => {
     e.stopPropagation();
@@ -65,7 +65,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
   };
 
   const handleLeaveStatus = async (
-    e: React.MouseEvent,
+    e: EventType,
     requestId: number,
     status: LeavesRequestStatus
   ) => {
@@ -88,7 +88,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
     setIsOpenModal(false);
   };
 
-  const handleOpenModal = (e: React.MouseEvent) => {
+  const handleOpenModal = (e: EventType) => {
     e.stopPropagation();
     setIsOpenModal(true);
   };
@@ -98,7 +98,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
       {
         title: "Edit",
         id: 2,
-        onClick: (e: React.MouseEvent) => {
+        onClick: (e: EventType) => {
           handleEditInfo(e, leaveRequestId);
         },
         icon: <EditIcon size={16} />,
@@ -106,7 +106,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
       {
         title: "Delete",
         id: 3,
-        onClick: (e: React.MouseEvent) => {
+        onClick: (e: EventType) => {
           handleDeleteRequest(e, leaveRequestId);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
@@ -210,7 +210,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
         }
         setIsModalOpen={setIsOpenModal}
         isModalOpen={isOpenModal}
-        onHandleConfirm={(e: React.MouseEvent) =>
+        onHandleConfirm={(e: EventType) =>
           handleLeaveStatus(
             e,
             leaveRequestId,
