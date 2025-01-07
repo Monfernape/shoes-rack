@@ -151,6 +151,12 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
               ? "User updated successfully"
               : "User created successfully",
           });
+        }else{
+          if(result.error){
+          toast({
+            title:result.error
+          });
+        }
         }
       }
     

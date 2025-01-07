@@ -118,29 +118,33 @@ export const LeaveRequestFormBuilder = ({
 
   function onSubmit(values: z.infer<typeof leaveRequestSchema>) {
     startTransition(async () => {
-      try {
         if (!leaveId) {
-          createLeaveRequest(values);
-          toast({
-            title: "Success",
-            description: "Leave request created successfully",
-          });
+          const result = await createLeaveRequest(values);
+          if(result?.error){
+            toast({
+              title: result.error,
+              description: "Try again",
+            });
+          }else{
+            toast({
+              title: "Success",
+              description: "Leave request created successfully",
+            });
+          }
         } else {
-          updateLeaveRequest(Number(leaveId), values);
-          toast({
-            title: "Success",
-            description: "Leave request updated successfully",
-          });
+          const result = await updateLeaveRequest(Number(leaveId), values);
+          if(result?.error){
+            toast({
+              title: result.error,
+            });
+          }else{
+            toast({
+              title: "Success",
+              description: "Leave request updated successfully",
+            });
+            router.push(Routes.LeaveRequest);
+          }
         }
-        router.push(Routes.LeaveRequest);
-      } catch (error) {
-        if (error instanceof Error) {
-          toast({
-            title: "Error",
-            description: "Something went wrong! Please try again.",
-          });
-        }
-      }
     });
   }
   return (

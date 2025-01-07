@@ -81,14 +81,17 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
       };
 
       startTransition(async () => {
-        try {
           if (attendance?.memberId) {
-            const error = await updateAttendance(updatedValue);
+            const result = await updateAttendance(updatedValue);
 
-            if (!error) {
+            if (!result) {
               toast({
                 title: "Attendance updated successfully",
                 description: "The attendance record has been updated.",
+              });
+            }else{
+              toast({
+                title: result.error,
               });
             }
           } else {
@@ -101,13 +104,6 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               });
             }
           }
-        } catch (error) {
-          if (error instanceof Error) {
-            toast({
-              title: "Attendance could not be marked",
-            });
-          }
-        }
       });
     }
     return;
