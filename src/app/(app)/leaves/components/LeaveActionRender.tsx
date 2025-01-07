@@ -202,9 +202,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
       <ActionsMenu actions={actionMenu} />
       <ConfirmationModal
         title={"Leave Status"}
-        description={`Are you sure the leave has been ${
-          leaveStatus === LeavesRequestStatus.Approved ? "rejected" : "approved"
-        }?`}
+        description={`Are you sure you want to perform this action?`}
         buttonText={
           leaveStatus === LeavesRequestStatus.Approved ? "Reject" : "Approve"
         }
