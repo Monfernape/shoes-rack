@@ -30,7 +30,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
   const router = useRouter();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  const { id: requestId, status: leaveStatus } = leaveRequestDetails;
+  const { id: leaveRequestId, status: leaveStatus } = leaveRequestDetails;
 
   const handleViewDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
