@@ -80,7 +80,7 @@ export const Searchbox = ({
         className={inputClassNames}
       />
       <MagnifyingGlassIcon
-        onClick={handleSeachIcon}
+        onClick={handleSearchIcon}
         className={iconClassNames}
       />
     </div>
