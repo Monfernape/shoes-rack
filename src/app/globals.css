@@ -22,6 +22,15 @@
   }
 }
 
+.recharts-default-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  white-space: nowrap;
+  gap: 10px;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

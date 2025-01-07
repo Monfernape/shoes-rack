@@ -82,6 +82,12 @@ export enum AttendancePercentage {
   Average = 60,
 }
 
+export enum AttendanceModelActions {
+  Approve = "approv",
+  Reject = "reject",
+  Delete = "delete",
+}
+
 export enum MissingShoeStatus {
   Missing = "missing",
   Found = "found",
