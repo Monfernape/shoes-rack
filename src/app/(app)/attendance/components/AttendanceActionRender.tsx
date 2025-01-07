@@ -7,7 +7,7 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { AttendanceStatus, MemberRole } from "@/constant/constant";
+import { AttendanceModelActions, AttendanceStatus, MemberRole } from "@/constant/constant";
 import { toast } from "@/hooks/use-toast";
 import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
@@ -30,9 +30,7 @@ const AttendanceActionRender = ({
 
   const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [confirmAction, setConfirmAction] = useState<() => void>(
-    () => () => {}
-  );
+  const [modalAction, setModalAction] = useState<AttendanceModelActions>();
   const { id: requestId } = attendance;
 
   const handleViewDetails = () => {
@@ -99,10 +97,23 @@ const AttendanceActionRender = ({
     setIsModalOpen(false);
   };
 
-  const openConfirmationModal = (action: () => void) => {
-    setConfirmAction(() => action);
+  const openConfirmationModal = (action: AttendanceModelActions) => {
+    setModalAction(action);
     setIsModalOpen(true);
   };
+
+  const handlePostiveAction = useMemo(() => {
+    switch (modalAction) {
+      case AttendanceModelActions.Delete:
+        return handleDeleteAttendance;
+      case AttendanceModelActions.Approve:
+        return handleApproveAttendance;
+      case AttendanceModelActions.Reject:
+        return handleRejectAttendance;
+      default:
+        return () => {};
+    }
+  }, [modalAction]);
 
   const baseActions = useMemo(() => {
     if (
@@ -125,7 +136,7 @@ const AttendanceActionRender = ({
         title: "Delete",
         id: 3,
         onClick: () => {
-          openConfirmationModal(handleDeleteAttendance);
+          openConfirmationModal(AttendanceModelActions.Delete);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
@@ -154,7 +165,7 @@ const AttendanceActionRender = ({
         title: "Approve",
         id: 4,
         onClick: () => {
-          openConfirmationModal(handleApproveAttendance);
+          openConfirmationModal(AttendanceModelActions.Approve);
         },
         icon: <CheckCircleIcon size={16} />,
       });
@@ -167,7 +178,7 @@ const AttendanceActionRender = ({
         title: "Reject",
         id: 5,
         onClick: () => {
-          openConfirmationModal(handleRejectAttendance);
+          openConfirmationModal(AttendanceModelActions.Reject);
         },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
       });
@@ -211,7 +222,7 @@ const AttendanceActionRender = ({
         }
         setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
-        onHandleConfirm={confirmAction}
+        onHandleConfirm={handlePostiveAction}
       />
       <AttendanceDetails
         isOpenViewModal={isOpenViewModal}
