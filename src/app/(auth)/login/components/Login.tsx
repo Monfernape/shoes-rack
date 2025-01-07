@@ -90,7 +90,7 @@ export const LoginPage = () => {
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="p-8 space-y-6"
-            data-testId="form"
+            data-testid="form"
           >
             <div className="space-y-2">
               <FormField
@@ -107,7 +107,7 @@ export const LoginPage = () => {
                           placeholder="0300-0000000"
                           {...field}
                           value={field.value}
-                          data-testId="phoneNumber"
+                          data-testid="phoneNumber"
                           ref={phoneNumberMask}
                           hasError={!!errors.phoneNumber}
                         />
@@ -132,7 +132,7 @@ export const LoginPage = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
                           {...field}
-                          data-testId="password"
+                          data-testid="password"
                           hasError={!!errors.password}
                         />
                         <button
@@ -153,7 +153,7 @@ export const LoginPage = () => {
             <Button
               type="submit"
               className="w-full bg-gray-800 "
-              data-testId="submitButton"
+              data-testid="submitButton"
               disabled={isPending}
             >
               <div className="flex justify-center">
