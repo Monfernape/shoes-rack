@@ -28,7 +28,6 @@ export function FundsList({ funds }: { funds: Fund[] }) {
   const searchParams = useSearchParams();
   const searchQuery: string | null = searchParams.get("key");
   const [filteredFunds, setFilteredFunds] = useState<Fund[]>([]);
-
   useEffect(() => {
     if (searchQuery) {
       const updatedFunds = funds.filter((fund) =>
@@ -55,11 +54,22 @@ export function FundsList({ funds }: { funds: Fund[] }) {
     },
     {
       accessorKey: "role",
-      header: () => <h4 className="text-center">Role</h4>,
+      header: () => <h4>Role</h4>,
       cell: ({ row }) => {
         return (
-          <div className="capitalize text-center">
+          <div className="capitalize">
             {formatRole(row.getValue("role"))}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "amount",
+      header: () => <h4>Amount</h4>,
+      cell: ({ row }) => {
+        return (
+          <div>
+            {row.getValue("amount")}
           </div>
         );
       },

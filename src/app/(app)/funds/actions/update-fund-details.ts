@@ -3,11 +3,11 @@
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
 import { Routes } from "@/lib/routes";
 import { FundSchema } from "../components/FundFormBuilder";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { MemberRole } from "@/constant/constant";
+import { redirect } from "next/navigation";
 
 export const updateFundDetails = async (
   fundId: number,
@@ -31,10 +31,11 @@ export const updateFundDetails = async (
     if (error) {
       return { error: error.message };
     }else{
-      revalidatePath(Routes.Fund);
+      redirect(Routes.Fund);
     }
 
   } else {
     return { error: "You have not permission" };
   }
+
 };

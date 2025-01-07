@@ -34,9 +34,12 @@ export const FundSchema = z.object({
     .min(1, {
       message: "Amount is required.",
     })
-    .refine((value) => !isNaN(parseFloat(value)) && parseFloat(value) > 0, {
-      message: "Amount must be a valid positive number.",
-    }),
+    .refine((value) => !isNaN(Number(value)), {
+      message: "Please enter a number.",
+    })
+    .refine((value) => Number(value) > 0, {
+      message: "Amount must be a positive number.",
+    })
 });
 
 export type FundSchemaType = z.infer<typeof FundSchema>;
@@ -105,7 +108,7 @@ export const FundFormBuilder = ({ funds, loginUser }: Props) => {
                 <FormLabel>User Name</FormLabel>
                 <FormControl>
                   <MemberSelector
-                    value={field.value}
+                    value={field.value.toString()}
                     onValueChange={field.onChange}
                     loginUser={loginUser}
                   />

@@ -1,6 +1,7 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import React from "react";
+import React, { useRef } from "react";
 
 interface SearchboxProps {
   isShowIconOnly: boolean;
@@ -17,19 +18,32 @@ export const Searchbox = ({
   onChange,
   fullWidthOnFocus,
 }: SearchboxProps) => {
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  const handleSearchIcon = () => {
+    onFocused();
+    if (searchRef.current !== null) {
+      searchRef.current.focus();
+    }
+  };
+
   // Main container class names with conditional logic
   const containerClassNames = [
-    "relative flex justify-end ",
-    fullWidthOnFocus && isShowIconOnly ? "w-full transition-all duration-300 ease-in-out" : "",
+    "relative flex justify-end transition-all duration-500 ease-in-out",
+    fullWidthOnFocus && isShowIconOnly
+      ? "w-full transition-all duration-500 ease-in-out"
+      : "w-8 md:w-60",
   ]
     .filter(Boolean)
     .join(" ");
 
   // Calculate the base input width and padding
   const inputClassNames = [
-    "p-2 ",
-    fullWidthOnFocus && isShowIconOnly ? "w-full transition-all duration-300 ease-in-out" : "w-2",
-    "pl-7",
+    "p-2 transition-all duration-500 ease-in-out",
+    fullWidthOnFocus && isShowIconOnly
+      ? "w-full"
+      : "w-2",
+    "pl-6",
     "md:w-60",
     "rounded",
     "text-xs",
@@ -39,11 +53,11 @@ export const Searchbox = ({
 
   // Calculate the icon position and transformation based on the props
   const iconClassNames = [
-    "absolute top-1/2 transform -translate-y-1/2 text-gray-600",
+    "absolute top-1/2 transform -translate-y-1/2 text-gray-600 transition-all duration-500 ease-in-out",
     fullWidthOnFocus && isShowIconOnly
-      ? "left-2 -translate-x-0 duration-300 ease-in-out"
-      : "left-1/2 -translate-x-1/2 duration-300 ease-in-out",
-    "md:left-4",
+      ? "left-2 -translate-x-0"
+      : "left-1/2 -translate-x-1/2",
+    "md:left-3",
   ]
     .filter(Boolean)
     .join(" ");
@@ -53,6 +67,7 @@ export const Searchbox = ({
         type="search"
         placeholder="Search..."
         data-testid="searchInput"
+        ref={searchRef}
         onFocus={(e) => {
           e.target.placeholder = "Find in view...";
           if (onFocused) onFocused();
@@ -64,7 +79,10 @@ export const Searchbox = ({
         onChange={onChange}
         className={inputClassNames}
       />
-      <MagnifyingGlassIcon onClick={()=>{onFocused()}} className={iconClassNames} />
+      <MagnifyingGlassIcon
+        onClick={handleSearchIcon}
+        className={iconClassNames}
+      />
     </div>
   );
 };
