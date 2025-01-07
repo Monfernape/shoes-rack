@@ -1,12 +1,10 @@
 import React from 'react'
-import { DashbordView } from './components/DashbordView'
+import { Dashbord } from './components/Dashbord'
 import { getLoggedInUser } from '@/utils/getLoggedInUser'
 
 const page = async() => {
   const loggedUser = await getLoggedInUser();
-  return (
-    <div><DashbordView loggedUser={loggedUser}/></div>
-  )
+  return <Dashbord loggedUser={loggedUser}/>
 }
 
 export default page

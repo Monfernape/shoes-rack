@@ -1,4 +1,3 @@
-"use client";
 import { Pie, PieChart, ResponsiveContainer, Legend } from "recharts";
 
 import {
@@ -13,14 +12,22 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import useMediaQuery from "@/hooks/use-media-query";
 const chartData = [
-  { browser: "Present", visitors: 12, fill: "var(--color-present)" },
-  { browser: "Absent", visitors: 15, fill: "var(--color-absent)" },
-  { browser: "Leaves", visitors: 3, fill: "var(--color-leaves)" },
+  { attendance: "Present", count: 12, fill: "var(--color-present)" },
+  { attendance: "Absent", count: 15, fill: "var(--color-absent)" },
+  { attendance: "Leaves", count: 3, fill: "var(--color-leaves)" },
 ];
 
+const totalCount = chartData.reduce((total, entry) => total + entry.count, 0);
+
+const dataWithPercentage = chartData.map(item => ({
+  ...item,
+  percentage: ((item.count / totalCount) * 100).toFixed(2),
+}));
+
 const chartConfig = {
-  visitors: {
+  count: {
     label: "Visitors",
   },
   absent: {
@@ -38,6 +45,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function AttendanceDonutChart() {
+  const isSmallScreen = useMediaQuery("sm");
   return (
     <Card className="flex flex-col">
       <CardHeader>
@@ -58,11 +66,20 @@ export function AttendanceDonutChart() {
               />
               <Pie
                 data={chartData}
-                dataKey="visitors"
-                nameKey="browser"
-                innerRadius={100}
+                dataKey="count"
+                nameKey="attendance"
+                innerRadius={isSmallScreen ? 60 : 100}
               />
-              <Legend />
+              <Legend
+              className="pie-chart-legend" 
+                layout="horizontal"
+                align="center"
+                verticalAlign="bottom"
+                formatter={(value) => {
+                  const item = dataWithPercentage.find(d => d.attendance === value);
+                  return `${value} (${item ? item.percentage : 0}%)`;
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>

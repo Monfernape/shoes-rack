@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function FundPaymentCard() {
@@ -14,7 +12,7 @@ export default function FundPaymentCard() {
       </CardHeader>
       <CardContent className="text-xs">
         {isPaid ? (
-          <p className="text-status-active">Fund has been paid. Thank you!</p>
+          <p className="text-status-active">Fund has been paid.</p>
         ) : (
           <div>
             <p className="mb-4 text-status-pending">
