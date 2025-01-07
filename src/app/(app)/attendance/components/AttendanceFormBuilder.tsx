@@ -26,7 +26,7 @@ import { DataSpinner } from "@/common/Loader/Loader";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 interface AttendanceFormBuilderProps {
-  attendance?: AttendanceFormValues;
+  attendance?: AttendanceFormValues 
   loginUser?: User;
 }
 
