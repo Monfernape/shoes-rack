@@ -20,7 +20,7 @@ export const Searchbox = ({
 }: SearchboxProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const handleSeachIcon = () => {
+  const handleSearchIcon = () => {
     onFocused();
     if (searchRef.current !== null) {
       searchRef.current.focus();
