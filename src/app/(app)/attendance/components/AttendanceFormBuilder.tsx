@@ -25,7 +25,7 @@ import { User } from "@/types";
 import { DataSpinner } from "@/common/Loader/Loader";
 
 interface AttendanceFormBuilderProps {
-  attendance?: AttendanceFormValues | undefined;
+  attendance?: AttendanceFormValues 
   loginUser?: User;
 }
 
@@ -55,7 +55,7 @@ export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
 const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   attendance,
   loginUser,
-}: AttendanceFormBuilderProps) => {
+}) => {
   const params = useParams();
   const [isPending, startTransition] = useTransition();
 

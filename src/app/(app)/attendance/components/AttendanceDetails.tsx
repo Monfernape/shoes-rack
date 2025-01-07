@@ -15,9 +15,9 @@ export const AttendanceDetails = ({
       <CardContent className="text-left space-y-6 mt-6">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3">
-            <UserAvatar userName={attendance?.name} />
+            <UserAvatar userName={attendance.name} />
             <h2 data-testid="user-name" className="text-base text-gray-800">
-              {attendance?.name}
+              {attendance.name}
             </h2>
           </div>
           <div className=" ml-[54px]">
