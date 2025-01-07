@@ -7,7 +7,11 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { AttendanceModelActions, AttendanceStatus, MemberRole } from "@/constant/constant";
+import {
+  AttendanceModelActions,
+  AttendanceStatus,
+  MemberRole,
+} from "@/constant/constant";
 import { toast } from "@/hooks/use-toast";
 import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
@@ -15,7 +19,6 @@ import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
 import { Attendance, UserDetails } from "@/types";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
-import { AttendanceDetails } from "./AttendanceDetails";
 
 export type AttendanceActionRenderProps = {
   attendance: Attendance;
@@ -28,7 +31,7 @@ const AttendanceActionRender = ({
 }: AttendanceActionRenderProps) => {
   const { id } = attendance;
   const router = useRouter();
-  
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalAction, setModalAction] = useState<AttendanceModelActions>();
   const { id: requestId } = attendance;
@@ -75,8 +78,7 @@ const AttendanceActionRender = ({
       if (error instanceof Error) {
         toast({
           title: error.message,
-          description:
-            "Please try again.",
+          description: "Please try again.",
         });
       }
     }
@@ -223,9 +225,6 @@ const AttendanceActionRender = ({
         setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
         onHandleConfirm={handlePostiveAction}
-      />
-      <AttendanceDetails
-        attendance={attendance}
       />
     </>
   );
