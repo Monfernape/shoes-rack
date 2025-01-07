@@ -34,7 +34,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
 
   const handleViewDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
-    router.push(`${Routes.LeaveRequestDetails}/${requestId}`);
+    router.push(`${Routes.LeaveRequestDetails}/${leaveRequestId}`);
   };
 
   const handleEditInfo = (e: React.MouseEvent, requestId: number) => {
@@ -99,7 +99,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
         title: "Edit",
         id: 2,
         onClick: (e: React.MouseEvent) => {
-          handleEditInfo(e, requestId);
+          handleEditInfo(e, leaveRequestId);
         },
         icon: <EditIcon size={16} />,
       },
@@ -107,7 +107,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
         title: "Delete",
         id: 3,
         onClick: (e: React.MouseEvent) => {
-          handleDeleteRequest(e, requestId);
+          handleDeleteRequest(e, leaveRequestId);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
@@ -213,7 +213,7 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
         onHandleConfirm={(e: React.MouseEvent) =>
           handleLeaveStatus(
             e,
-            requestId,
+            leaveRequestId,
             leaveStatus === LeavesRequestStatus.Approved
               ? LeavesRequestStatus.Reject
               : LeavesRequestStatus.Approved
