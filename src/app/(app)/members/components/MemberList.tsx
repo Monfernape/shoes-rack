@@ -28,6 +28,7 @@ import { getMembers } from "../actions/getMembers";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { formatRole } from "@/utils/formatRole";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
+import { NoDataFound } from "@/common/NoDataFound";
 
 export const MemberList = ({
   members: members,
@@ -163,7 +164,7 @@ export const MemberList = ({
 
   return !isPending ? (
     <StandardPage {...StandardPageProps}>
-      <Table>
+    { hasMembers ? <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -178,9 +179,9 @@ export const MemberList = ({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="table-fixed w-full">
-          {hasMembers ? (
-            groupedData.map((shiftGroup, index) => (
+         
+          <TableBody className="table-fixed w-full">
+            {groupedData.map((shiftGroup, index) => (
               <React.Fragment key={`${shiftGroup.shift}-${index}`}>
                 {shiftGroup.members.length > 0 && (
                   <TableRow>
@@ -214,16 +215,11 @@ export const MemberList = ({
                   </TableRow>
                 ))}
               </React.Fragment>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={6} className="h-24 font-med text-center">
-                No Members Found
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableBody>
+        
+      </Table>   : <NoDataFound />}
+     
     </StandardPage>
   ) : (
     <DataSpinner />
