@@ -15,7 +15,7 @@ import {
   LeavesRequestStatus,
   UserDetails,
 } from "@/types";
-import { LeaveRequestStatus, MemberRole } from "@/constant/constant";
+import { MemberRole } from "@/constant/constant";
 import { deleteLeaveRequest } from "../actions/delete-leave-request";
 import { toast } from "@/hooks/use-toast";
 import { processLeaveRequest } from "../actions/process-leave-request";

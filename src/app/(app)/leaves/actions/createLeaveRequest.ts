@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { leaveRequestSchema } from "../add/components/LeaveRequestFormBuilder";
-import { redirect } from "next/navigation";
 import { LeaveRequestStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
 import { Routes } from "@/lib/routes";
