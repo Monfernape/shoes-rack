@@ -27,6 +27,11 @@ export const ConfirmationModal = ({
   isModalOpen,
   onHandleConfirm,
 }: ConfirmationModalProps) => {
+
+  const handleCancelButton = ()=>{
+    setIsModalOpen(false)
+  }
+  
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogContent className="rounded w-80 md:w-96">
@@ -38,7 +43,7 @@ export const ConfirmationModal = ({
           <Button
             className="text-xs py-1 px-2 font-normal h-7"
             variant="secondary"
-            onClick={() => setIsModalOpen(false)}
+            onClick={handleCancelButton}
           >
             Cancel
           </Button>
