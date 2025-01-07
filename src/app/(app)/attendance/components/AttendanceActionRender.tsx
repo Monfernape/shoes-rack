@@ -13,9 +13,9 @@ import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
+
 import { Attendance, UserDetails } from "@/types";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
-import { AttendanceDetails } from "./AttendanceDetails";
 
 export type AttendanceActionRenderProps = {
   attendance: Attendance;
@@ -26,15 +26,15 @@ const AttendanceActionRender = ({
   attendance,
   loginUser,
 }: AttendanceActionRenderProps) => {
-  const { id } = attendance;
   const router = useRouter();
-  
+
+  const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalAction, setModalAction] = useState<AttendanceModelActions>();
   const { id: requestId } = attendance;
 
   const handleViewDetails = () => {
-    router.push(`${Routes.AttendanceDetails}/${id}`);
+    setIsOpenViewModal(!isOpenViewModal);
   };
 
   const handleEditInfo = (requestId: number) => {
@@ -48,7 +48,7 @@ const AttendanceActionRender = ({
         title: "Success",
         description: "Request deleted successfully.",
       });
-      router.refresh();
+      router.refresh(); // Trigger a page refresh or data fetch
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -223,9 +223,6 @@ const AttendanceActionRender = ({
         setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
         onHandleConfirm={handlePostiveAction}
-      />
-      <AttendanceDetails
-        attendance={attendance}
       />
     </>
   );
