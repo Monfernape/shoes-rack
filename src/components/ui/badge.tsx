@@ -29,7 +29,7 @@ export interface BadgeProps
 
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
-    <div className={cn("cursor-default" ,badgeVariants({ variant }), className)} {...props} />
+    <div className={cn("cursor-default cursor-text" ,badgeVariants({ variant }), className)} {...props} />
   )
 }
 
