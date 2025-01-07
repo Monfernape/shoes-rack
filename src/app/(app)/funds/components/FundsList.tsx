@@ -115,7 +115,7 @@ export function FundsList({ funds }: { funds: Fund[] }) {
     buttonIcon: <HandCoinsIcon />,
     actionButton: false,
   };
-  console.log("filteredFunds****",filteredFunds)
+
   return (
     <StandardPage {...StandardPageProps}>
       {filteredFunds.length !== 0 ? <div className="w-full">
@@ -167,5 +167,5 @@ export function FundsList({ funds }: { funds: Fund[] }) {
           )
           }
     </StandardPage>
-  )};
+  )}
 
