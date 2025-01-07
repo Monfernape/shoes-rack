@@ -15,7 +15,7 @@ import {
 import {
   // BellIcon,
   CalendarIcon,
-  ChartNoAxesCombinedIcon,
+  // ChartNoAxesCombinedIcon,
   // ChartNoAxesCombinedIcon,
   ClipboardIcon,
   HandCoinsIcon,
@@ -76,11 +76,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
 
   const shiftInchargeRoutes: Route[] = [
     ...membersRoutes,
-    {
-      name: "Attendance Report",
-      route: Routes.AttendanceReport,
-      icon: <ChartNoAxesCombinedIcon />,
-    },
+    // {
+    //   name: "Attendance Report",
+    //   route: Routes.AttendanceReport,
+    //   icon: <ChartNoAxesCombinedIcon />,
+    // },
   ];
 
   const inchargeRoutes: Route[] = [
