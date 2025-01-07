@@ -23,6 +23,7 @@ import { useParams } from "next/navigation";
 import { isValidParam } from "@/utils/utils";
 import { User } from "@/types";
 import { DataSpinner } from "@/common/Loader/Loader";
+import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 interface AttendanceFormBuilderProps {
   attendance?: AttendanceFormValues;
@@ -111,14 +112,12 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
 
   return (
     <FormWrapper>
+      <FormTitle title="Attendance"/>
       <Form {...form}>
         <form
           action={form.handleSubmit(onSubmit) as unknown as string}
-          className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
+        className="space-y-4"
         >
-          <h1 className="text-2xl font-bold text-center mb-6">
-            Attendance Form
-          </h1>
 
           <FormField
             control={form.control}
@@ -175,12 +174,13 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               </FormItem>
             )}
           />
+            <div className="flex justify-end">
           <Button
             type="submit"
-            className=" text-white rounded-md p-3 transition w-24 "
+           className="text-xs w-24"
             disabled={isPending}
           >
-            <div className="flex justify-center">
+          
               {isPending ? (
                 <DataSpinner size="xs" isInputLoader />
               ) : attendance?.memberId ? (
@@ -188,8 +188,9 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               ) : (
                 "Submit"
               )}
-            </div>
+      
           </Button>
+          </div>
         </form>
       </Form>
     </FormWrapper>
