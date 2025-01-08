@@ -23,9 +23,10 @@ import { useParams } from "next/navigation";
 import { isValidParam } from "@/utils/utils";
 import { User } from "@/types";
 import { DataSpinner } from "@/common/Loader/Loader";
+import { FormTitle } from "@/common/FormTitle/FormTitle";
 
 interface AttendanceFormBuilderProps {
-  attendance?: AttendanceFormValues;
+  attendance?: AttendanceFormValues 
   loginUser?: User;
 }
 
@@ -66,7 +67,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
       memberId:
         loginUser?.role === MemberRole.Member
           ? loginUser.id.toString()
-          : attendance?.memberId,
+          : attendance?.memberId.toString(),
 
       startTime: attendance?.startTime ?? "",
       endTime: attendance?.endTime || "",
@@ -81,14 +82,17 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
       };
 
       startTransition(async () => {
-        try {
           if (attendance?.memberId) {
-            const error = await updateAttendance(updatedValue);
+            const result = await updateAttendance(updatedValue);
 
-            if (!error) {
+            if (!result) {
               toast({
                 title: "Attendance updated successfully",
                 description: "The attendance record has been updated.",
+              });
+            }else{
+              toast({
+                title: result.error,
               });
             }
           } else {
@@ -101,13 +105,6 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               });
             }
           }
-        } catch (error) {
-          if (error instanceof Error) {
-            toast({
-              title: "Attendance could not be marked",
-            });
-          }
-        }
       });
     }
     return;
@@ -115,14 +112,12 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
 
   return (
     <FormWrapper>
+      <FormTitle title="Attendance"/>
       <Form {...form}>
         <form
           action={form.handleSubmit(onSubmit) as unknown as string}
-          className="max-w-lg mx-auto p-8 mt-10 bg-white shadow-md rounded-md space-y-6"
+        className="space-y-4"
         >
-          <h1 className="text-2xl font-bold text-center mb-6">
-            Attendance Form
-          </h1>
 
           <FormField
             control={form.control}
@@ -132,7 +127,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
                 <FormLabel>User Name</FormLabel>
                 <FormControl>
                   <MemberSelector
-                    value={field.value?.toString()}
+                    value={field.value}
                     onValueChange={field.onChange}
                     loginUser={loginUser}
                   />
@@ -179,12 +174,13 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               </FormItem>
             )}
           />
+            <div className="flex justify-end">
           <Button
             type="submit"
-            className=" text-white rounded-md p-3 transition w-24 "
+           className="text-xs w-24"
             disabled={isPending}
           >
-            <div className="flex justify-center">
+          
               {isPending ? (
                 <DataSpinner size="xs" isInputLoader />
               ) : attendance?.memberId ? (
@@ -192,8 +188,9 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               ) : (
                 "Submit"
               )}
-            </div>
+      
           </Button>
+          </div>
         </form>
       </Form>
     </FormWrapper>

@@ -46,13 +46,13 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
 
   const baseActions = [
     {
-      title: "Edit Info",
+      title: "Edit info",
       id: 2,
       onClick: handleEditInfo,
       icon: <Edit size={16} />,
     },
     {
-      title: "Delete Member",
+      title: "Delete member",
       id: 3,
       onClick: handleDeleteMember,
       icon: <Trash2 size={16} />,
@@ -61,7 +61,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
 
   const viewInfo = [
     {
-      title: "View Details",
+      title: "View details",
       id: 1,
       onClick: handleViewDetails,
       icon: <Info size={16} />,

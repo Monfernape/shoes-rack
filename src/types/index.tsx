@@ -25,6 +25,17 @@ export type Notifications = {
     name: string;
   };
 };
+export type AttendanceResponse = {
+  id: number;
+  memberId: number;
+  startTime: string;
+  endTime: string;
+  status: AttendanceStatus;
+  member: {
+    name: string;
+    shift: Shift;
+  };
+};
 export type AttendanceReportStatus =
   | "excellent"
   | "good"
@@ -82,6 +93,15 @@ export type UserDetails = {
   invite_link: string;
   temporary_password: boolean;
 };
+export type MemberDetails={
+  id: number;
+  memberId: number;
+  startTime: string;
+  endTime: string;
+  status: AttendanceStatus;
+  name: string;
+  shift: Shift;
+}
 
 export interface MembersProps {
   data: Member[];

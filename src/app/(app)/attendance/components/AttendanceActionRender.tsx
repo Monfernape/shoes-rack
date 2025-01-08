@@ -7,31 +7,37 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { AttendanceStatus, MemberRole } from "@/constant/constant";
+import {
+  AttendanceModelActions,
+  AttendanceStatus,
+  MemberRole,
+} from "@/constant/constant";
 import { toast } from "@/hooks/use-toast";
 import { Routes } from "@/lib/routes";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
-import { AttendanceDetails } from "../modal/AttendanceDetails";
 import { Attendance, UserDetails } from "@/types";
-
+import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 export type AttendanceActionRenderProps = {
   attendance: Attendance;
-  loginUser:UserDetails
+  loginUser: UserDetails;
 };
 
-const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRenderProps) => {
+const AttendanceActionRender = ({
+  attendance,
+  loginUser,
+}: AttendanceActionRenderProps) => {
+  const { id } = attendance;
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-  const searchQuery: string | null = searchParams.get("id");
-  const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
-
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalAction, setModalAction] = useState<AttendanceModelActions>();
   const { id: requestId } = attendance;
+
   const handleViewDetails = () => {
-    setIsOpenViewModal(!isOpenViewModal);
+    router.push(`${Routes.AttendanceDetails}/${id}`);
   };
 
   const handleEditInfo = (requestId: number) => {
@@ -45,6 +51,7 @@ const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRender
         title: "Success",
         description: "Request deleted successfully.",
       });
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -54,29 +61,71 @@ const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRender
     }
   };
 
-  const handleAttendanceStatus = async (
-    attendanceId: number,
+  const attendanceConfirmation = async (
+    id: number,
     status: AttendanceStatus
   ) => {
     try {
-      await updateAttendanceStatus({attendanceId, attendanceStatus: status});
-      router.push(loginUser?.role == MemberRole.ShiftIncharge ? Routes.Attendance
-        : `${Routes.Attendance}?id=${searchQuery}`);
+      await updateAttendanceStatus({
+        attendanceId: id,
+        attendanceStatus: status,
+      });
       toast({
         title: "Success",
-        description: "Request updated successfully.",
+        description: "Status updated successfully.",
       });
     } catch (error) {
       if (error instanceof Error) {
         toast({
           title: error.message,
+          description: "Please try again.",
         });
       }
     }
   };
 
-  const baseActions = useMemo(
-    () => [
+  const handleApproveAttendance = () => {
+    attendanceConfirmation(requestId, AttendanceStatus.Approve);
+    setIsModalOpen(false);
+  };
+
+  const handleRejectAttendance = () => {
+    attendanceConfirmation(requestId, AttendanceStatus.Reject);
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteAttendance = () => {
+    handleDeleteRequest(requestId);
+    setIsModalOpen(false);
+  };
+
+  const openConfirmationModal = (action: AttendanceModelActions) => {
+    setModalAction(action);
+    setIsModalOpen(true);
+  };
+
+  const handlePostiveAction = useMemo(() => {
+    switch (modalAction) {
+      case AttendanceModelActions.Delete:
+        return handleDeleteAttendance;
+      case AttendanceModelActions.Approve:
+        return handleApproveAttendance;
+      case AttendanceModelActions.Reject:
+        return handleRejectAttendance;
+      default:
+        return () => {};
+    }
+  }, [modalAction]);
+
+  const baseActions = useMemo(() => {
+    if (
+      attendance.status === AttendanceStatus.Approve ||
+      attendance.status === AttendanceStatus.Reject
+    ) {
+      return [];
+    }
+
+    return [
       {
         title: "Edit",
         id: 2,
@@ -89,13 +138,12 @@ const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRender
         title: "Delete",
         id: 3,
         onClick: () => {
-          handleDeleteRequest(requestId);
+          openConfirmationModal(AttendanceModelActions.Delete);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
-    ],
-    []
-  );
+    ];
+  }, [attendance.status, requestId]);
 
   const viewInfo = useMemo(
     () => [
@@ -109,46 +157,43 @@ const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRender
     []
   );
 
-  const statusActions = useMemo(
-    () => [
-      {
+  const statusActions = useMemo(() => {
+    const actions = [];
+    if (
+      attendance.status === AttendanceStatus.Pending ||
+      attendance.status === AttendanceStatus.Reject
+    ) {
+      actions.push({
         title: "Approve",
         id: 4,
         onClick: () => {
-          handleAttendanceStatus(requestId, AttendanceStatus.Approve);
+          openConfirmationModal(AttendanceModelActions.Approve);
         },
         icon: <CheckCircleIcon size={16} />,
-      },
-      {
+      });
+    }
+    if (
+      attendance.status === AttendanceStatus.Pending ||
+      attendance.status === AttendanceStatus.Approve
+    ) {
+      actions.push({
         title: "Reject",
-        id: 4,
+        id: 5,
         onClick: () => {
-          handleAttendanceStatus(requestId, AttendanceStatus.Reject);
+          openConfirmationModal(AttendanceModelActions.Reject);
         },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
-      },
-    ],
-    []
-  );
-
-  const shiftInchargeActionMenu = (function onShiftInchareMenu() {
-    if (attendance.status === AttendanceStatus.Pending) {
-      if (attendance.memberId === loginUser?.id) {
-        return [...viewInfo, ...baseActions];
-      }
-      return [...viewInfo, ...baseActions, ...statusActions];
-    } else if (attendance.status === AttendanceStatus.Approve) {
-      if (attendance.memberId === loginUser?.id) {
-        return [...viewInfo];
-      }
-      return [...viewInfo, ...statusActions];
-    } else {
-      if (attendance.memberId === loginUser?.id) {
-        return [...viewInfo];
-      }
-      return [...viewInfo, ...statusActions];
+      });
     }
-  })();
+    return actions;
+  }, [attendance.status]);
+
+  const shiftInchargeActionMenu = useMemo(() => {
+    if (attendance.memberId === loginUser?.id) {
+      return [...viewInfo, ...baseActions];
+    }
+    return [...viewInfo, ...baseActions, ...statusActions];
+  }, [attendance.memberId, loginUser, viewInfo, baseActions, statusActions]);
 
   const actionMenu = useMemo(() => {
     switch (loginUser?.role) {
@@ -159,21 +204,27 @@ const AttendanceActionRender = ({ attendance,loginUser }: AttendanceActionRender
       case MemberRole.ShiftIncharge:
         return shiftInchargeActionMenu;
       case MemberRole.Incharge:
-        return attendance.status === AttendanceStatus.Pending
-        ? [...viewInfo, ...baseActions, ...statusActions]
-        : [...viewInfo, ...statusActions];
-
+        return [...viewInfo, ...baseActions, ...statusActions];
       default:
         return [];
     }
-  }, [attendance.status, loginUser]);
+  }, [attendance.status, loginUser, shiftInchargeActionMenu]);
+
   return (
     <>
       <ActionsMenu actions={actionMenu} />
-      <AttendanceDetails
-        isOpenViewModal={isOpenViewModal}
-        setIsOpenViewModal={setIsOpenViewModal}
-        attendanceDetails={attendance}
+
+      <ConfirmationModal
+        title="Confirm Action"
+        description={`Are you sure you want to ${
+          attendance.status === AttendanceStatus.Approve ? "reject" : "approve"
+        } this attendance request?`}
+        buttonText={
+          attendance.status === AttendanceStatus.Approve ? "Reject" : "Approve"
+        }
+        setIsModalOpen={setIsModalOpen}
+        isModalOpen={isModalOpen}
+        onHandleConfirm={handlePostiveAction}
       />
     </>
   );

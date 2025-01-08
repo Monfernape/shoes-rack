@@ -22,5 +22,7 @@ export enum Routes {
   AddLeaveRequest = "/leaves/add",
   Playground = "/playground",
   EditLeaveRequest = "/leaves/edit",
+  LeaveRequestDetails = "/leaves/details",
   AttendanceReport = "/attendance-report",
+  AttendanceDetails = "/attendance/details",
 }

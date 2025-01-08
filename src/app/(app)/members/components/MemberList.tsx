@@ -23,7 +23,7 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
-import { Shift } from "@/constant/constant";
+import { MemberRole, Shift } from "@/constant/constant";
 import { getMembers } from "../actions/getMembers";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { formatRole } from "@/utils/formatRole";
@@ -88,13 +88,6 @@ export const MemberList = ({
       ),
     },
     {
-      accessorKey: "shift",
-      header: "Shift",
-      cell: ({ row }) => (
-        <div className="capitalize ml-2">{row.getValue("shift")}</div>
-      ),
-    },
-    {
       accessorKey: "role",
       header: () => <h4 className="ml-2">Role</h4>,
       cell: ({ row }) => (
@@ -125,16 +118,35 @@ export const MemberList = ({
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const sortRole = (items: Member[]) => {
+    const sortedRoles = items.sort((a, b) => {
+      if (a.role === MemberRole.Incharge) {
+        return -1;
+      }
+      if (b.role === MemberRole.Incharge) {
+        return 1;
+      }
+      if (a.role.toLowerCase() > b.role.toLowerCase()) {
+        return -1;
+      }
+      return 0;
+    });
+    return sortedRoles;
+  };
+
   const allShifts = [Shift.ShiftA, Shift.ShiftB, Shift.ShiftC, Shift.ShiftD];
   const groupedData = allShifts.map((shift) => {
     const usersInShift = filteredMember.filter((user) => user.shift === shift);
+    const usershifts = sortRole(usersInShift);
     return {
       shift: shift,
-      members: usersInShift,
+      members: usershifts,
     };
   });
 
   const hasMembers = groupedData.some((group) => group.members.length > 0);
+
   const handleNavigation = () => {
     route.push(Routes.AddMember);
   };

@@ -166,6 +166,12 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
             title: error.message,
             description: "Something went wrong",
           });
+        }else{
+          if(result.error){
+          toast({
+            title:result.error
+          });
+        }
         }
       }
     });

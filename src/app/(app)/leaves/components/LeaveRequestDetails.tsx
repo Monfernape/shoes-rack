@@ -1,49 +1,44 @@
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
+import { LeaveRequestsTypes } from "@/types";
 import { Separator } from "@/components/ui/separator";
 import {
   FileText as FileTextIcon,
   Calendar as CalendarIcon,
   User as UserIcon,
 } from "lucide-react";
-import { Attendance } from "@/types";
+import { Card, CardContent } from "@/components/ui/card";
 
+interface LeaveRequest extends LeaveRequestsTypes {
+  requestedBy: string;
+}
 interface Props {
-  isOpenViewModal: boolean;
-  setIsOpenViewModal: (state: boolean) => void;
-  attendanceDetails: Attendance;
+  leaveRequestDetails: LeaveRequest;
+  leaveRequestedBy: string
 }
 
-export const AttendanceDetails = ({
-  isOpenViewModal,
-  setIsOpenViewModal,
-  attendanceDetails,
+export const LeaveRequestDetails = ({
+  leaveRequestDetails,
+  leaveRequestedBy,
 }: Props) => {
   return (
-    <Dialog open={isOpenViewModal} onOpenChange={setIsOpenViewModal}>
-      <DialogContent className="w-80 md:w-full rounded">
-        <DialogHeader>
-          <DialogTitle className="text-table-thead text-left text-sm">
-            Attendance details
-          </DialogTitle>
+    <Card>
+      <CardContent className="text-left space-y-6 mt-6">
           <div className="flex justify-between items-center py-4">
-            {attendanceDetails.status && (
-              <StatusBadge status={attendanceDetails.status} />
+            {leaveRequestDetails.status && (
+              <StatusBadge status={leaveRequestDetails.status} />
             )}
+            <span className="text-xs text-left text-gray-700">
+              {leaveRequestDetails.leaveType}
+            </span>
           </div>
           <Separator />
           <div className="flex justify-start items-center gap-4 py-4">
             <UserIcon className="self-start h-5 w-5 text-table-thead" />
             <div className="flex flex-col gap-2">
-              <span className="text-sm text-table-thead">Attendance By</span>
-              <span className="text-xs text-gray-700">
-                {attendanceDetails.name}
+              <span className="text-sm text-table-thead text-left">Requested By</span>
+              <span className="text-xs text-gray-700 text-left">
+                {leaveRequestedBy}
               </span>
             </div>
           </div>
@@ -51,11 +46,11 @@ export const AttendanceDetails = ({
           <div className="flex justify-start items-center gap-4 py-4">
             <CalendarIcon className="self-start h-5 w-5 text-table-thead" />
             <div className="flex flex-col gap-2">
-              <span className="text-sm text-table-thead">Attendance time</span>
+              <span className="text-sm text-table-thead text-left">Leave Period</span>
               <span className="text-xs text-gray-700">
-                {attendanceDetails.startTime}
+                {leaveRequestDetails.startDate}{" "}
                 <span className="mx-2 font-semibold">to</span>{" "}
-                {attendanceDetails.endTime}
+                {leaveRequestDetails.endDate}
               </span>
             </div>
           </div>
@@ -63,14 +58,13 @@ export const AttendanceDetails = ({
           <div className="flex justify-start items-center gap-4 py-4">
             <FileTextIcon className="self-start h-5 w-5 text-table-thead" />
             <div className="flex flex-col gap-2">
-              <span className="text-sm text-table-thead">Shift</span>
+              <span className="text-sm text-table-thead text-left">Reason</span>
               <span className="text-xs text-gray-700">
-                {attendanceDetails.shift}
+                {leaveRequestDetails.reason}
               </span>
             </div>
           </div>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+      </CardContent>
+    </Card>
   );
 };
