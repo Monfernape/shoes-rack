@@ -1,12 +1,13 @@
-"use client"
+"use client";
 import React, { useMemo } from "react";
 import { AttendanceDonutChart } from "./AttendanceDonutChart";
 import moment from "moment";
 import { User } from "@/types";
 import { PageLayout } from "@/app/layout/PageLayout";
 import FundPaymentCard from "./FundPaymentCard";
-import MissedAttendanceCard from "./MissedAttendanceCard";
 import LeaveRequestCard from "./LeaveRequestCard";
+import AddMemberCard from "./AddMemberCard";
+import { MemberRole } from "@/constant/constant";
 
 export const Dashboard = ({ loggedUser  }: { loggedUser: User }) => {
   const currentDate = moment().format("dddd, MMMM DD, YYYY");
@@ -24,7 +25,7 @@ export const Dashboard = ({ loggedUser  }: { loggedUser: User }) => {
     } else {
       return "Hello";
     }
-  },[]);
+  }, []);
   return (
     <PageLayout>
       <p className="text-xs py-4 text-foreground"> {currentDate} </p>
@@ -33,8 +34,9 @@ export const Dashboard = ({ loggedUser  }: { loggedUser: User }) => {
       } 👋`}</p>
       <AttendanceDonutChart />
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {loggedUser.role !== MemberRole.Member && <AddMemberCard />}
         <FundPaymentCard />
-        <MissedAttendanceCard />
+        {/* <MissedAttendanceCard /> */}
         <LeaveRequestCard />
       </div>
     </PageLayout>

@@ -17,7 +17,7 @@ const Page = async () => {
 
   const fundUpdated = funds
     .map((fund) => {
-      const activeMember = fund.members.status !== UserStatus.Deactivated;
+      const activeMember = fund.members.status === UserStatus.Active;
 
       if (activeMember) {
         const { name, role } = fund.members;
