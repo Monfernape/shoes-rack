@@ -22,11 +22,11 @@ export const updateUser = async (values: UpdateUser) => {
       .update({ ...values })
       .eq("id", values.id);
     if (error) {
-      return {error: error.message};
+      return {message: error.message};
     }
 
     redirect(Routes.Members);
   } else {
-    return { error: "You have not permission" };
+    return { message: "You have not permission" };
   }
 };

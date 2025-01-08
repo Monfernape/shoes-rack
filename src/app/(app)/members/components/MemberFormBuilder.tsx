@@ -160,22 +160,18 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
             : "User created successfully",
         });
 
-      } catch (error) {
+      } 
+      catch (error) {
         if (error instanceof Error) {
           toast({
             title: error.message,
             description: "Something went wrong",
           });
-        }else{
-          if(result.error){
-          toast({
-            title:result.error
-          });
         }
         }
-      }
-    });
-  };
+      })
+    };
+  
   return (
     <FormWrapper>
       <Form {...form}>
