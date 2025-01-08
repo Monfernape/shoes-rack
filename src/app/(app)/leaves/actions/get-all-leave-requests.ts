@@ -1,7 +1,7 @@
 "use server";
 
 import { LeaveTypes, MemberRole, UserStatus } from "@/constant/constant";
-import { LeavesRequestStatus, Member, User } from "@/types";
+import { LeavesRequestStatus } from "@/types";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { getMembers } from "../../members/actions/getMembers";
