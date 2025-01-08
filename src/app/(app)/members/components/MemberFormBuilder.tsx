@@ -149,7 +149,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
         if (result) {
           toast({
             variant:"destructive",
-            title: result?.message,
+            title: result?.error,
             description: 'Try again' ,
           });
           return 

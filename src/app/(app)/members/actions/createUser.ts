@@ -15,7 +15,7 @@ export const createUser = async (values: UserBuilder) => {
   const user = await getLoggedInUser();
 
   if (user.role === MemberRole.Member) {
-    return { message: "You have not permission" };
+    return { error: "You have not permission" };
   } else {
     const headersList = headers();
     const host = headersList.get("host");
@@ -41,9 +41,9 @@ export const createUser = async (values: UserBuilder) => {
 
     if (error) {
       if (error.details.includes("phoneNumber")) {
-        return { message: "Phone number is already  exist" };
+        return { error: "Phone number is already  exist" };
       }
-      return { message: "CNIC is already exist" };
+      return { error: "CNIC is already exist" };
     } else {
       const { error } = await supabase.auth.signUp({
         phone: formattedPhoneNumber,
@@ -57,7 +57,7 @@ export const createUser = async (values: UserBuilder) => {
         },
       });
       if (error) {
-        return { message: "something went wrong " };
+        return { error: "something went wrong " };
       }
     }
     redirect(Routes.Members);

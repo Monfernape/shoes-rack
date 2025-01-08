@@ -11,7 +11,7 @@ export const getEditPermissions = async (memberId: number) => {
     return { error: membersList.message };
   }
 
-  const members = membersList.data.filter((member) => member.status === UserStatus.Active);
+  const members = membersList.data.filter((member) => member.status !== UserStatus.Deactivated);
   const loginUser = await getLoggedInUser();
 
   let roleBaseMembers;
@@ -33,7 +33,6 @@ export const getEditPermissions = async (memberId: number) => {
         }));
     }
   }
-  
   // checking that logged edit-item id exists into members of loggedIn users
   // if user exist then we return true else return false
   const hasEditPermission = roleBaseMembers?.some((member) => member.id === memberId);
