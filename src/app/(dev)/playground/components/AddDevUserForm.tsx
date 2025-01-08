@@ -126,7 +126,7 @@ const AddDevUserForm = () => {
                   hasError={errors?.phoneNumber && true}
                 />
               </FormControl>
-              <FormMessage data-testId="phone_error" />
+              <FormMessage data-testid="phone_error" />
             </FormItem>
           )}
         />
@@ -143,7 +143,7 @@ const AddDevUserForm = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     {...field}
-                    data-testId="password"
+                    data-testid="password"
                     hasError={!!errors.password}
                   />
                   <button

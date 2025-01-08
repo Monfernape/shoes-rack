@@ -24,6 +24,7 @@ import { toast } from "@/hooks/use-toast";
 import { PostgrestError } from "@supabase/supabase-js";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Routes } from "@/lib/routes";
+import { NoDataFound } from "@/common/NoDataFound";
 
 interface Props {
   missingShoesReports: MissingShoeReport[];
@@ -139,6 +140,8 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     <>
       {filteredShoesReports.length === 0 && !searchQuery ? (
         <StandardPage {...StandardPageProps} />
+      ) : filteredShoesReports.length === 0 ? (
+        <NoDataFound />
       ) : (
         <Table>
           <TableHeader>

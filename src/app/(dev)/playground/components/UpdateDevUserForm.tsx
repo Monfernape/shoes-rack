@@ -112,7 +112,7 @@ const UpdateDevUserFrom = () => {
                   hasError={errors?.phoneNumber && true}
                 />
               </FormControl>
-              <FormMessage data-testId="phone_error" />
+              <FormMessage data-testid="phone_error" />
             </FormItem>
           )}
         />

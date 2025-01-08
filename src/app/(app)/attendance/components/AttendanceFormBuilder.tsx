@@ -148,7 +148,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
                     {...field}
                     onClick={(event) => event.currentTarget.showPicker()}
                     hasError={!!form.formState.errors.startTime}
-                    data-testId="startTime"
+                    data-testid="startTime"
                   />
                 </FormControl>
                 <FormMessage />
@@ -167,7 +167,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
                     {...field}
                     onClick={(event) => event.currentTarget.showPicker()}
                     hasError={!!form.formState.errors.endTime}
-                    data-testId="endTime"
+                    data-testid="endTime"
                   />
                 </FormControl>
                 <FormMessage />
