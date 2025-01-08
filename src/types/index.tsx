@@ -170,3 +170,5 @@ export interface FundType extends FundSchemaType {
   id: number;
   createdAt: string;
 }
+
+export type EventType = React.MouseEvent<HTMLElement>
