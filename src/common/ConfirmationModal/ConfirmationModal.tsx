@@ -34,7 +34,7 @@ export const ConfirmationModal = ({
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="rounded w-80 md:w-96">
+      <DialogContent  className="rounded w-80 md:w-96"  handleClose={() => setIsModalOpen(false)}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

@@ -27,7 +27,7 @@ export const AttendanceDetails = ({
 }: Props) => {
   return (
     <Dialog open={isOpenViewModal} onOpenChange={setIsOpenViewModal}>
-      <DialogContent className="w-80 md:w-full rounded">
+      <DialogContent className="w-80 md:w-full rounded" handleClose={() => setIsOpenViewModal(false)}>
         <DialogHeader>
           <DialogTitle className="text-table-thead text-left text-sm">
             Attendance details
