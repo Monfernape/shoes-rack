@@ -34,10 +34,6 @@ export async function GET() {
         amount: "0",
       }));
 
-      if (fundsList.length === 0) {
-        return;
-      }
-
       const { error: insertError } = await supabase
         .from(Tables.Funds)
         .insert(fundsList);
