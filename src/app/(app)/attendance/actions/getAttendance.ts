@@ -14,7 +14,7 @@ export const getAttendance = async (id: string ) => {
 
   let query = supabase
     .from(Tables.Attendance)
-    .select(`id, memberId, startTime, endTime, status`);
+    .select(`*`);
 
   // Role-based filtering:
   if (loginUser.role === MemberRole.Member) {
