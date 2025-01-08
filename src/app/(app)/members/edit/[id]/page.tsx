@@ -26,12 +26,11 @@ const Page = async ({ params }: Parameters) => {
   ];
 
   const member = await getUserById(id);
-  console.log(user.role, member.shift, user.shift);
+
   if (
     (user.role === MemberRole.ShiftIncharge && member.shift !== user.shift) ||
     (user.role === MemberRole.ShiftIncharge && member.role === user.role)
   ) {
-    console.log("role&&&", user.shift, member.shift);
     permanentRedirect(Routes.Members);
   }
   return (
