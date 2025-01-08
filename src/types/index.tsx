@@ -170,3 +170,9 @@ export interface FundType extends FundSchemaType {
   id: number;
   createdAt: string;
 }
+
+export type attendanceDetailsType = {
+  presentCount: number;
+  absentCount: number;
+  totalApprovedLeaveDays: number;
+};
