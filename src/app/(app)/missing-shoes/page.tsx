@@ -15,12 +15,12 @@ const Page = async({ searchParams }: { searchParams: { key: string } }) => {
     { href: Routes.EditMissingShoes, label: "Edit shoe" },
   ];
   return (
-    <div>
+    <>
       <MissingShoesHeader breadcrumbs={breadcrumbs} />
       <PageLayout>
         <MissingShoes missingShoesReports={missingShoesReports}  error={error}/>
       </PageLayout>
-    </div>
+    </>
   );
 };
 

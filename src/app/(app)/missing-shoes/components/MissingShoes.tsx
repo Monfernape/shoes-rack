@@ -23,6 +23,7 @@ import { MissingShoeReport } from "@/types";
 import { toast } from "@/hooks/use-toast";
 import { PostgrestError } from "@supabase/supabase-js";
 import { useSearchParams } from "next/navigation";
+import { NoDataFound } from "@/common/NoDataFound";
 
 interface Props {
   missingShoesReports: MissingShoeReport[];
@@ -31,7 +32,7 @@ interface Props {
 
 export const MissingShoes = ({ missingShoesReports, error }: Props) => {
   const searchParams = useSearchParams();
-  const searchQuery = searchParams.get("key") ?? ""; 
+  const searchQuery = searchParams.get("key") ?? "";
 
   const filteredShoesReports = useMemo(() => {
     return searchQuery
@@ -51,7 +52,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     () => [
       {
         accessorKey: "ownerName",
-        header: 'Owner name',
+        header: "Owner name",
         cell: ({ row }) => (
           <div className="capitalize overflow-hidden text-ellipsis">
             {row.getValue("ownerName")}
@@ -67,9 +68,12 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
       },
       {
         accessorKey: "time",
-        header: () => <div className=''>Time lost</div>,
+        header: () => <div className="">Time lost</div>,
         cell: ({ row }) => (
-          <div className="capitalize overflow-hidden text-ellipsis" suppressHydrationWarning>
+          <div
+            className="capitalize overflow-hidden text-ellipsis"
+            suppressHydrationWarning
+          >
             {`${new Date(row.getValue("time")).toLocaleDateString()}`}
           </div>
         ),
@@ -77,7 +81,9 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
       {
         accessorKey: "shoesToken",
         header: () => <div className="text-center">Shoes token</div>,
-        cell: ({ row }) => <div className="text-center">{row.getValue("shoesToken")}</div>,
+        cell: ({ row }) => (
+          <div className="text-center">{row.getValue("shoesToken")}</div>
+        ),
       },
       {
         accessorKey: "status",
@@ -94,7 +100,10 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
         header: () => <div>Action</div>,
         cell: ({ row }) => (
           <div>
-            <MissingShoesActions key={row.getValue("id")} missingShoeReport={row.original}  />
+            <MissingShoesActions
+              key={row.getValue("id")}
+              missingShoeReport={row.original}
+            />
           </div>
         ),
       },
@@ -125,6 +134,8 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     <>
       {filteredShoesReports.length === 0 && !searchQuery ? (
         <StandardPage {...StandardPageProps} />
+      ) : filteredShoesReports.length === 0 ? (
+        <NoDataFound />
       ) : (
         <Table>
           <TableHeader>
@@ -132,33 +143,28 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {filteredShoesReports.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 font-med text-center">
-                  No Missing Shoes Found.
-                </TableCell>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            ) : (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            )}
+            ))}
           </TableBody>
         </Table>
       )}
