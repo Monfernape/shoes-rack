@@ -7,7 +7,7 @@ const Page = async () => {
   const loginUser = await getLoggedInUser();
   return (
     <PageLayout>
-      <Settings loginUser={loginUser} />;
+      <Settings loginUser={loginUser} />
     </PageLayout>
   );
 };
