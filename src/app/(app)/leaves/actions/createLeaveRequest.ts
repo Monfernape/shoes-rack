@@ -16,13 +16,15 @@ export const createLeaveRequest = async (
     memberId: Number(values.memberId),
     leaveType: values.leaveType,
     startDate: values.date.from.toISOString(),
-    endDate: values.date.to ? values.date.to.toISOString() : values.date.from.toISOString(),
+    endDate: values.date.to
+      ? values.date.to.toISOString()
+      : values.date.from.toISOString(),
     reason: values.reason,
     status: LeaveRequestStatus.Pending,
   });
 
   if (error) {
-    return error;
+    return { error: error.message };
   }
 
   revalidatePath(Routes.LeaveRequest);

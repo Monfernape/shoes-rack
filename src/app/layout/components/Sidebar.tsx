@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Routes } from "@/lib/routes";
 import Link from "next/link";
 import {
-  // DashboardIcon,
+  DashboardIcon,
   ExclamationTriangleIcon,
   Cross1Icon,
   ExitIcon,
@@ -15,7 +15,7 @@ import {
 import {
   // BellIcon,
   CalendarIcon,
-  ChartNoAxesCombinedIcon,
+  // ChartNoAxesCombinedIcon,
   // ChartNoAxesCombinedIcon,
   ClipboardIcon,
   HandCoinsIcon,
@@ -42,11 +42,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   const pathname = usePathname();
 
   const membersRoutes: Route[] = [
-    // {
-    //   name: "Dashboard",
-    //   route: Routes.Dashboard,
-    //   icon: <DashboardIcon />,
-    // },
+    {
+      name: "Dashboard",
+      route: Routes.Dashboard,
+      icon: <DashboardIcon />,
+    },
     {
       name: "Members",
       route: Routes.Members,
@@ -76,11 +76,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
 
   const shiftInchargeRoutes: Route[] = [
     ...membersRoutes,
-    {
-      name: "Attendance Report",
-      route: Routes.AttendanceReport,
-      icon: <ChartNoAxesCombinedIcon />,
-    },
+    // {
+    //   name: "Attendance Report",
+    //   route: Routes.AttendanceReport,
+    //   icon: <ChartNoAxesCombinedIcon />,
+    // },
   ];
 
   const inchargeRoutes: Route[] = [

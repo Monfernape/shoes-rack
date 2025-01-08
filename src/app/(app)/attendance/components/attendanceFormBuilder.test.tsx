@@ -7,7 +7,7 @@ describe("AttendanceFormBuilder", () => {
   it("selection value", async () => {
     render(<AttendanceFormBuilder />);
 
-    expect(screen.getByText("Attendance Form")).toBeDefined();
+    expect(screen.getByText("Attendance")).toBeDefined();
   });
 
   it("ensures end time is greater than start time", async () => {

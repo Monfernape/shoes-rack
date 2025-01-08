@@ -7,13 +7,16 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { AttendanceModelActions, AttendanceStatus, MemberRole } from "@/constant/constant";
+import {
+  AttendanceModelActions,
+  AttendanceStatus,
+  MemberRole,
+} from "@/constant/constant";
 import { toast } from "@/hooks/use-toast";
 import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
-import { AttendanceDetails } from "../modal/AttendanceDetails";
 import { Attendance, UserDetails } from "@/types";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
@@ -26,15 +29,15 @@ const AttendanceActionRender = ({
   attendance,
   loginUser,
 }: AttendanceActionRenderProps) => {
+  const { id } = attendance;
   const router = useRouter();
 
-  const [isOpenViewModal, setIsOpenViewModal] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalAction, setModalAction] = useState<AttendanceModelActions>();
   const { id: requestId } = attendance;
 
   const handleViewDetails = () => {
-    setIsOpenViewModal(!isOpenViewModal);
+    router.push(`${Routes.AttendanceDetails}/${id}`);
   };
 
   const handleEditInfo = (requestId: number) => {
@@ -48,7 +51,7 @@ const AttendanceActionRender = ({
         title: "Success",
         description: "Request deleted successfully.",
       });
-      router.refresh(); // Trigger a page refresh or data fetch
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -75,8 +78,7 @@ const AttendanceActionRender = ({
       if (error instanceof Error) {
         toast({
           title: error.message,
-          description:
-            "Please try again.",
+          description: "Please try again.",
         });
       }
     }
@@ -223,11 +225,6 @@ const AttendanceActionRender = ({
         setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
         onHandleConfirm={handlePostiveAction}
-      />
-      <AttendanceDetails
-        isOpenViewModal={isOpenViewModal}
-        setIsOpenViewModal={setIsOpenViewModal}
-        attendanceDetails={attendance}
       />
     </>
   );
