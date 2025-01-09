@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { EventType } from "@/types";
 
 interface ConfirmationModalProps {
   title: string;
@@ -16,7 +17,7 @@ interface ConfirmationModalProps {
   buttonText: string;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalOpen: boolean;
-  onHandleConfirm: () => void;
+  onHandleConfirm: (e: EventType) => void;
 }
 export const ConfirmationModal = ({
   title,
@@ -26,14 +27,14 @@ export const ConfirmationModal = ({
   isModalOpen,
   onHandleConfirm,
 }: ConfirmationModalProps) => {
+  const handleCancelButton = (e: EventType) => {
+    e.stopPropagation();
+    setIsModalOpen(false);
+  };
 
-  const handleCancelButton = ()=>{
-    setIsModalOpen(false)
-  }
-  
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="rounded w-80 md:w-96">
+      <DialogContent  className="rounded w-80 md:w-96"  handleClose={() => setIsModalOpen(false)}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

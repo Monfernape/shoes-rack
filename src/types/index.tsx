@@ -176,3 +176,4 @@ export type attendanceDetailsType = {
   absentCount: number;
   totalApprovedLeaveDays: number;
 };
+export type EventType = React.MouseEvent<HTMLElement>

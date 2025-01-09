@@ -12,7 +12,7 @@ import { processMissingShoeStatus } from "../../actions/process-missing-shoe-sta
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/lib/routes";
-import { MissingShoeReport } from "@/types";
+import { EventType, MissingShoeReport } from "@/types";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 export const MissingShoesActions = ({
@@ -23,11 +23,13 @@ export const MissingShoesActions = ({
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { id: missingShoesId, status: missingShoeStatus } = missingShoeReport;
-  const handleEditInfo = (id: number) => {
+  const handleEditInfo = (e: EventType, id: number) => {
+    e.stopPropagation();
     router.push(`${Routes.EditMissingShoes}/${id}`);
   };
 
-  const handleViewDetails = (id: number) => {
+  const handleViewDetails = (e: EventType, id: number) => {
+    e.stopPropagation();
     router.push(`${Routes.MissingShoesDetails}/${id}`);
   };
 
@@ -55,9 +57,10 @@ export const MissingShoesActions = ({
     }
   };
 
-  const onHandleConfirm = () => {
+  const onHandleConfirm = (e:EventType) => {
+    e.stopPropagation();
     handleMissingShoesStatus(missingShoesId, MissingShoeStatus.Found);
-    setIsModalOpen(false)
+    setIsModalOpen(false);
   };
 
   const actionMenu = useMemo(
@@ -65,7 +68,8 @@ export const MissingShoesActions = ({
       {
         title: "Found",
         id: 1,
-        onClick: () => {
+        onClick: (e: EventType) => {
+          e.stopPropagation();
           setIsModalOpen(true);
         },
         icon: <CheckCircleIcon size={16} />,
@@ -73,8 +77,8 @@ export const MissingShoesActions = ({
       {
         title: "Edit",
         id: 3,
-        onClick: () => {
-          handleEditInfo(missingShoesId);
+        onClick: (e: EventType) => {
+          handleEditInfo(e, missingShoesId);
         },
         icon: <EditIcon size={16} />,
       },
@@ -87,7 +91,7 @@ export const MissingShoesActions = ({
       {
         title: "View Details",
         id: 2,
-        onClick: () => handleViewDetails(missingShoesId),
+        onClick: (e: EventType) => handleViewDetails(e, missingShoesId),
         icon: <InfoIcon size={16} />,
       },
     ],

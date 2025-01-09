@@ -22,7 +22,8 @@ import { MissingShoesActions } from "../add/components/MissingShoesActions";
 import { MissingShoeReport } from "@/types";
 import { toast } from "@/hooks/use-toast";
 import { PostgrestError } from "@supabase/supabase-js";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Routes } from "@/lib/routes";
 import { NoDataFound } from "@/common/NoDataFound";
 
 interface Props {
@@ -31,6 +32,7 @@ interface Props {
 }
 
 export const MissingShoes = ({ missingShoesReports, error }: Props) => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key") ?? "";
 
@@ -61,14 +63,14 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
       },
       {
         accessorKey: "ownerPhoneNumber",
-        header: () => <div className="">Phone number</div>,
+        header: () => <div>Phone number</div>,
         cell: ({ row }) => (
           <div className="capitalize">{row.getValue("ownerPhoneNumber")}</div>
         ),
       },
       {
         accessorKey: "time",
-        header: () => <div className="">Time lost</div>,
+        header: () => <div>Time lost</div>,
         cell: ({ row }) => (
           <div
             className="capitalize overflow-hidden text-ellipsis"
@@ -130,6 +132,10 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     labelForActionButton: "Add shoe",
   };
 
+  const handleViewDetails = (id: number) => {
+    router.push(`${Routes.MissingShoesDetails}/${id}`);
+  };
+
   return (
     <>
       {filteredShoesReports.length === 0 && !searchQuery ? (
@@ -153,18 +159,39 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+            {filteredShoesReports.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 font-med text-center"
+                >
+                  No Missing Shoes Found.
+                </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              filteredShoesReports.map((row: MissingShoeReport) => (
+                <TableRow
+                  key={row.id}
+                  onClick={() => handleViewDetails(Number(row.id))}
+                >
+                  {table
+                    .getRowModel()
+                    .rows.find((r) => r.original === row)
+                    ?.getVisibleCells()
+                    .map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis "
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       )}

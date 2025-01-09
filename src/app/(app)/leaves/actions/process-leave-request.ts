@@ -4,10 +4,10 @@ import { Tables } from "@/lib/db";
 import { Routes } from "@/lib/routes";
 import { LeavesRequestStatus } from "@/types";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { getLeaveRequestById } from "./get-leave-request-by-id";
 import { getAccessToUser } from "@/utils/getAccessToUser";
+import { revalidatePath } from "next/cache";
 
 interface Props {
   requestId: number;
