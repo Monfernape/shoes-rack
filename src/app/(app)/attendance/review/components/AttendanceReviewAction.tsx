@@ -13,19 +13,6 @@ export const AttendanceReviewAction = ({
   attendanceStatus,
   onMarkAttendance,
 }: AttendanceButtonGroupProps) => {
-  const buttonVariants = {
-    Present:
-      attendanceStatus === AttendanceReviewStatus.Approve
-        ? "default"
-        : "outline",
-    Absent:
-      attendanceStatus === AttendanceReviewStatus.Reject
-        ? "default"
-        : "outline",
-    Leave:
-      attendanceStatus === AttendanceReviewStatus.Leave ? "default" : "outline",
-  };
-
   return (
     <div className="inline-flex rounded-md shadow-sm" role="group">
       <Button

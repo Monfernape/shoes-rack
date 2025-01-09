@@ -168,6 +168,7 @@ export const AttendanceReview = ({ loginUser }: Props) => {
       absents,
       leaves
     };
+    return digestPayload
   };
 
   const table = useReactTable({
