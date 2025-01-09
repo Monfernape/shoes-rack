@@ -48,6 +48,7 @@ export const ConfirmationModal = ({
             Cancel
           </Button>
           <Button
+            variant={buttonText === "Delete" ? "destructive" : "default"}
             className="text-xs py-1 px-2 font-normal h-7"
             onClick={onHandleConfirm}
           >

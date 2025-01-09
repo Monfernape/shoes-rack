@@ -25,7 +25,7 @@ export const Dashboard = ({ loggedUser  }: { loggedUser: User }) => {
     } else {
       return "Hello";
     }
-  }, []);
+  },[]);
   return (
     <PageLayout>
       <p className="text-xs py-4 text-foreground"> {currentDate} </p>
