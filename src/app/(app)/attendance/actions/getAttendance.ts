@@ -8,7 +8,7 @@ import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { Attendance } from "@/types";
 
 interface AttendanceType extends Attendance {
-  members?: { name: string; status: UserStatus; shift: Shift };
+  members: { name: string; status: UserStatus; shift: Shift };
 }
 
 export const getAttendance = async (id: string) => {
