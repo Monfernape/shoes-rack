@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { MemberSelector } from "@/common/MemberSelector/MemberSelector";
 import { addFunds } from "../actions/add-funds";
 import { updateFundDetails } from "../actions/update-fund-details";
@@ -39,7 +39,7 @@ export const FundSchema = z.object({
     })
     .refine((value) => Number(value) > 0, {
       message: "Amount must be a positive number.",
-    })
+    }),
 });
 
 export type FundSchemaType = z.infer<typeof FundSchema>;
@@ -51,6 +51,7 @@ interface Props {
 
 export const FundFormBuilder = ({ funds, loginUser }: Props) => {
   const [isPending, startTransition] = useTransition();
+ 
   const form = useForm<FundSchemaType>({
     resolver: zodResolver(FundSchema),
     defaultValues: {
@@ -61,12 +62,14 @@ export const FundFormBuilder = ({ funds, loginUser }: Props) => {
   });
 
   const router = useRouter();
+  const { toast } = useToast();
   const onSubmit = async (values: FundSchemaType) => {
     startTransition(async () => {
       if (!funds?.id) {
         const result = await addFunds(values);
         if (result.error) {
           toast({
+            variant:'destructive',
             title: result.error,
             description: "Try again",
           });
