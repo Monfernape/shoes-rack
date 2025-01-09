@@ -17,6 +17,11 @@ export enum UserStatus {
   Deactivated = "deactivated",
 }
 
+export enum DigestStatus {
+  Pending = "pending",
+  Confirmed ="confirmed"
+}
+
 export const PAKISTAN_COUNTRY_CODE = "92";
 
 export enum LeaveTypes {
