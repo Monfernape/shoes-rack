@@ -22,7 +22,6 @@ export const NotificationContainer = ({
   const handleNotification = (notificationId: number) => {
     return notificationId;
   };
-
   return (
     <div className="flex flex-1 h-full flex-col">
       <div className="h-16 flex justify-between items-center border-b p-4 px-8  ">
@@ -50,10 +49,19 @@ export const NotificationContainer = ({
         <div className="flex  items-center ">
           <span className="text-sm"> Go to following link: &nbsp;</span>
           <Link
-            href={Routes.Attendance}
+            href={{
+              pathname: `${Routes.Digest}`,
+              query: {
+                date: new Date(
+                  String(notificationDetail?.created_at)
+                ).getTime(),
+              },
+            }}
             className="text-sm font-medium text-blue-500"
           >
-            `${Routes.Attendance}`
+            {`${Routes.Digest}/?date=${new Date(
+              String(notificationDetail?.created_at)
+            ).getTime()}`}
           </Link>
         </div>
       </div>
