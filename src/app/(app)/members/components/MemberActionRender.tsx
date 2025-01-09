@@ -59,7 +59,8 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       }
     }
   };
-  const handleModalOpen = ()=>{
+  const handleModalOpen = (e: EventType)=>{
+    e.stopPropagation();
     setIsModalOpen(true)
   }
 
@@ -90,7 +91,10 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     {
       title: "Delete member",
       id: 3,
-      onClick: handleModalOpen,
+      onClick:(e: EventType)=>{
+        e.stopPropagation();
+        handleModalOpen(e)
+      },
       icon: <Trash2Icon size={16} />,
     },
   ];
@@ -108,7 +112,10 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     {
       title: "Update status",
       id: 1,
-      onClick: handleModalOpen,
+      onClick:(e: EventType)=>{
+        e.stopPropagation();
+        handleModalOpen(e)
+      },
       icon: <ArchiveRestoreIcon size={16} />,
     },
   ];
