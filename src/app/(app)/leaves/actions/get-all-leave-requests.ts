@@ -27,7 +27,7 @@ export const getAllLeaveRequests = async (id: number) => {
     .from(Tables.Leaves)
     .select(
       `id, memberId, leaveType, startDate, endDate, status, reason, members(name , status)`
-    ).eq('members.status', 'active');
+    ).eq('members.status', UserStatus.Active);
 
   // Handle role-based filtering:
   if (loginUser.role === MemberRole.Member) {
