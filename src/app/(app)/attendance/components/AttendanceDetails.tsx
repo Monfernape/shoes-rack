@@ -13,7 +13,7 @@ export const AttendanceDetails = ({
   return (
     <Card>
       <CardContent className="text-left space-y-6 mt-6">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-3">
             <UserAvatar userName={attendance.name} />
             <h2 data-testid="user-name" className="text-base text-gray-800">

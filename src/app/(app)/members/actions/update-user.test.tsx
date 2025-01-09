@@ -37,7 +37,7 @@ const mockValues: UpdateUser = {
 };
 describe("Integration Testing", () => {
   it("Check inputs Values", () => {
-    render(<MemberFormBuilder member={member} />);
+    render(<MemberFormBuilder member={member} user={member} />);
     expect(screen.getByTestId("name")).toBeInTheDocument();
     expect(screen.getByTestId("form")).toBeInTheDocument();
     expect(screen.getByTestId("form")).toHaveFormValues({

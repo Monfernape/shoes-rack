@@ -115,7 +115,9 @@ export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
   if (id && !attendance?.length) {
     return <NoDataFound />;
   }
-
+  const handleViewDetails = (requestId: number) => {
+    router.push(`${Routes.AttendanceDetails}/${requestId}`);
+  };
   return (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -135,7 +137,10 @@ export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow
+              key={row.id}
+              onClick={() => handleViewDetails(row.original.id)}
+            >
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}

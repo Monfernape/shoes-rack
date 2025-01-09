@@ -173,6 +173,7 @@ export const MemberList = ({
     route.push(`${Routes.MemberDetails}/${id}`);
   };
 
+
   return !isPending ? (
     hasMembers ? (
       <StandardPage {...StandardPageProps}>
