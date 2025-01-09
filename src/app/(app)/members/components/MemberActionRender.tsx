@@ -37,7 +37,8 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     router.push(`${Routes.EditMember}/${id}`);
   };
   
-  const handleStatus = async () => {
+  const handleStatus = async (e: EventType) => {
+    e.stopPropagation();
     try {
       const result = await updateMemberStatus(id,UserStatus.Active);
       if (result) {
