@@ -7,13 +7,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { RequestActionTitles } from "@/types";
+import { EventType, RequestActionTitles } from "@/types";
 
 interface Action {
   title: string;
   id: number;
   icon: ReactNode;
-  onClick: () => void;
+  onClick: (e: EventType) => void;
   className?: string;
 }
 

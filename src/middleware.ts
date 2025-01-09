@@ -16,7 +16,7 @@ export default async function updateSession(request: NextRequest) {
   if (!isTokenValid && requestedPath !== Routes.Login) {
     return NextResponse.redirect(new URL(Routes.Login, request.url));
   }
-  if(requestedPath === Routes.Dashboard || requestedPath === Routes.AttendanceReport || requestedPath === Routes.Notification) {
+  if(requestedPath === Routes.AttendanceReport || requestedPath === Routes.Notification) {
     return NextResponse.redirect(new URL(Routes.Members, request.url))
    }
   if (

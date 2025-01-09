@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
 import {
   Info as InfoIcon,
@@ -9,13 +9,19 @@ import {
   CheckCircle as CheckCircleIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-import { LeaveRequestsTypes, LeavesRequestStatus, UserDetails } from "@/types";
+import {
+  EventType,
+  LeaveRequestsTypes,
+  LeavesRequestStatus,
+  UserDetails,
+} from "@/types";
 import { MemberRole } from "@/constant/constant";
 import { deleteLeaveRequest } from "../actions/delete-leave-request";
 import { toast } from "@/hooks/use-toast";
 import { processLeaveRequest } from "../actions/process-leave-request";
 import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
+import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 interface LeaveRequest extends LeaveRequestsTypes {
   requestedBy: string;
@@ -27,17 +33,27 @@ interface Props {
 
 const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
   const router = useRouter();
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [menuAction, setMenuAction] = useState("");
 
-  const { id: requestId } = leaveRequestDetails;
-  const handleViewDetails = () => {
-    router.push(`${Routes.LeaveRequestDetails}/${requestId}`);
+  const { id: leaveRequestId, status: leaveStatus } = leaveRequestDetails;
+
+  const handleViewDetails = (e: EventType) => {
+    e.stopPropagation();
+    router.push(`${Routes.LeaveRequestDetails}/${leaveRequestId}`);
   };
 
-  const handleEditInfo = (requestId: number) => {
+  const handleEditInfo = (e: EventType, requestId: number) => {
+    e.stopPropagation();
     router.push(`${Routes.EditLeaveRequest}/${requestId}`);
   };
 
-  const handleDeleteRequest = async (requestId: number) => {
+  const handleDeleteRequest = async (
+    e: EventType,
+    requestId: number
+  ) => {
+    e.stopPropagation();
+
     try {
       await deleteLeaveRequest(requestId);
       toast({
@@ -53,12 +69,15 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
         });
       }
     }
+    setIsOpenModal(false);
   };
 
-  const handleLeaveRequestStatus = async (
+  const handleLeaveStatus = async (
+    e : EventType,
     requestId: number,
     status: LeavesRequestStatus
   ) => {
+    e.stopPropagation();
     try {
       await processLeaveRequest({ requestId, requestStatus: status });
       toast({
@@ -74,6 +93,21 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
         });
       }
     }
+    setIsOpenModal(false);
+  };
+
+  const handleModalAction = (e: EventType) => {
+    e.stopPropagation();
+    switch (menuAction) {
+      case "Approve":
+        return handleLeaveStatus( e,leaveRequestId, LeavesRequestStatus.Approved);
+      case "Reject":
+        return handleLeaveStatus(e ,leaveRequestId, LeavesRequestStatus.Reject);
+      case "Delete":
+        return handleDeleteRequest(e, leaveRequestId);
+      default:
+        return () => {};
+    }
   };
 
   const baseActions = useMemo(
@@ -81,16 +115,18 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
       {
         title: "Edit",
         id: 2,
-        onClick: () => {
-          handleEditInfo(requestId);
+        onClick: (e: EventType) => {
+          handleEditInfo(e, leaveRequestId);
         },
         icon: <EditIcon size={16} />,
       },
       {
         title: "Delete",
         id: 3,
-        onClick: () => {
-          handleDeleteRequest(requestId);
+        onClick: (e: EventType) => {
+          e.stopPropagation();
+          setMenuAction("Delete");
+          setIsOpenModal(true);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
       },
@@ -110,27 +146,47 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
     []
   );
 
-  const statusActions = useMemo(
+  const approveAction = useMemo(
     () => [
       {
         title: "Approve",
         id: 4,
-        onClick: () => {
-          handleLeaveRequestStatus(requestId, LeavesRequestStatus.Approved);
+        onClick: (e: EventType) => {
+          e.stopPropagation();
+          setMenuAction("Approve");
+          setIsOpenModal(true);
         },
         icon: <CheckCircleIcon size={16} />,
       },
+    ],
+    []
+  );
+
+  const rejectAction = useMemo(
+    () => [
       {
         title: "Reject",
         id: 4,
-        onClick: () => {
-          handleLeaveRequestStatus(requestId, LeavesRequestStatus.Reject);
+        onClick: (e: EventType) => {
+          e.stopPropagation();
+          setMenuAction("Reject");
+          setIsOpenModal(true);
         },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,
       },
     ],
     []
   );
+
+  const statusActions = useMemo(() => {
+    if (leaveStatus === LeavesRequestStatus.Approved) {
+      return rejectAction;
+    } else if (leaveStatus === LeavesRequestStatus.Reject) {
+      return approveAction;
+    } else {
+      return [...approveAction, ...rejectAction];
+    }
+  }, []);
 
   const shiftInchargeActionMenu = (function onShiftInchareMenu() {
     if (leaveRequestDetails.status === LeavesRequestStatus.Pending) {
@@ -171,6 +227,14 @@ const LeaveTableActionRender = ({ leaveRequestDetails, loginUser }: Props) => {
   return (
     <>
       <ActionsMenu actions={actionMenu} />
+      <ConfirmationModal
+        title={"Leave Status"}
+        description={`Are you sure you want to perform this action?`}
+        buttonText={menuAction}
+        setIsModalOpen={setIsOpenModal}
+        isModalOpen={isOpenModal}
+        onHandleConfirm={handleModalAction}
+      />
     </>
   );
 };

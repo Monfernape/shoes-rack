@@ -29,6 +29,7 @@ import { DataSpinner } from "@/common/Loader/Loader";
 import { formatRole } from "@/utils/formatRole";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { MemberStatusFilter } from "./MemberStatusFilter";
+import { NoDataFound } from "@/common/NoDataFound";
 
 export const MemberList = ({
   members: members,
@@ -168,47 +169,56 @@ export const MemberList = ({
     onAction: handleNavigation,
     labelForActionButton: "Add Member",
   };
+  const handleViewDetails = (id: number) => {
+    route.push(`${Routes.MemberDetails}/${id}`);
+  };
+
   return !isPending ? (
-    <StandardPage {...StandardPageProps}>
-      {user.role !== MemberRole.Member && (
-        <div className=" flex justify-end">
-          <MemberStatusFilter
-            setMemberStatus={(value) => setMemberStatus({ status: value })}
-            membersStatus={membersStatus}
-          />
-        </div>
-      )}
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody className="table-fixed w-full">
-          {hasMembers ? (
-            groupedData.map((shiftGroup, index) => (
+    hasMembers ? (
+      <StandardPage {...StandardPageProps}>
+        {user.role !== MemberRole.Member && (
+          <div className=" flex justify-end">
+            <MemberStatusFilter
+              setMemberStatus={(value) => setMemberStatus({ status: value })}
+              membersStatus={membersStatus}
+            />
+          </div>
+        )}
+
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+
+          <TableBody className="table-fixed w-full">
+            {groupedData.map((shiftGroup, index) => (
               <React.Fragment key={`${shiftGroup.shift}-${index}`}>
                 {shiftGroup.members.length > 0 && (
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
-                      className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold "
+                      className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
                     >
                       Shift {shiftGroup.shift}
                     </TableCell>
                   </TableRow>
                 )}
                 {shiftGroup.members.map((row) => (
-                  <TableRow key={row.id}>
+                  <TableRow
+                    key={row.id}
+                    onClick={() => handleViewDetails(row.id)}
+                  >
                     {table
                       .getRowModel()
                       .rows.find((r) => r.original === row)
@@ -216,7 +226,7 @@ export const MemberList = ({
                       .map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className=" max-w-28 overflow-hidden whitespace-nowrap text-ellipsis  "
+                          className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis"
                         >
                           <div>
                             {flexRender(
@@ -229,18 +239,18 @@ export const MemberList = ({
                   </TableRow>
                 ))}
               </React.Fragment>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={6} className="h-24 font-med text-center">
-                No Members Found
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </StandardPage>
+            ))}
+          </TableBody>
+        </Table>
+      </StandardPage>
+    ) : (
+      <NoDataFound />
+    )
   ) : (
-    <DataSpinner />
+    <div className="flex-1 h-full flex justify-center items-center">
+      <div>
+        <DataSpinner isInputLoader />
+      </div>
+    </div>
   );
 };

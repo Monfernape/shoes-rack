@@ -11,6 +11,7 @@ import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Member, UserDetails } from "@/types";
+import { EventType,  } from "@/types";
 import { Routes } from "@/lib/routes";
 import { updateMemberStatus } from "../actions/update-status";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
@@ -26,11 +27,13 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (e: EventType) => {
+    e.stopPropagation();
     router.push(`${Routes.MemberDetails}/${id}`);
   };
 
-  const handleEditInfo = () => {
+  const handleEditInfo = (e: EventType) => {
+    e.stopPropagation();
     router.push(`${Routes.EditMember}/${id}`);
   };
   
@@ -60,7 +63,8 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     setIsModalOpen(true)
   }
 
-  const handleDeleteMember = async () => {
+  const handleDeleteMember = async (e: EventType) => {
+    e.stopPropagation();
     try {
       await updateMemberStatus(id,UserStatus.Deactivated);
       toast({

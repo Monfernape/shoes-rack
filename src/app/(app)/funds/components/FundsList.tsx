@@ -23,12 +23,12 @@ import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { PageLayout } from "@/app/layout/PageLayout";
+import { NoDataFound } from "@/common/NoDataFound";
 
 export function FundsList({ funds }: { funds: Fund[] }) {
   const searchParams = useSearchParams();
   const searchQuery: string | null = searchParams.get("key");
-  const [filteredFunds, setFilteredFunds] = useState<Fund[]>([]);
-
+  const [filteredFunds, setFilteredFunds] = useState<Fund[]>(funds);
   useEffect(() => {
     if (searchQuery) {
       const updatedFunds = funds.filter((fund) =>
@@ -50,18 +50,25 @@ export function FundsList({ funds }: { funds: Fund[] }) {
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => (
-        <div className="capitalize overflow-hidden text-ellipsis">{row.getValue("name")}</div>
+        <div className="capitalize overflow-hidden text-ellipsis">
+          {row.getValue("name")}
+        </div>
       ),
     },
     {
       accessorKey: "role",
-      header: () => <h4 className="text-center">Role</h4>,
+      header: () => <h4>Role</h4>,
       cell: ({ row }) => {
         return (
-          <div className="capitalize text-center">
-            {formatRole(row.getValue("role"))}
-          </div>
+          <div className="capitalize">{formatRole(row.getValue("role"))}</div>
         );
+      },
+    },
+    {
+      accessorKey: "amount",
+      header: () => <h4>Amount</h4>,
+      cell: ({ row }) => {
+        return <div>{row.getValue("amount")}</div>;
       },
     },
     {
@@ -111,55 +118,54 @@ export function FundsList({ funds }: { funds: Fund[] }) {
 
   return (
     <StandardPage {...StandardPageProps}>
-      <div className="w-full">
+      {filteredFunds.length !== 0 ? <div className="w-full">
         <PageLayout>
-          <Table className="overflow-hidden">
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody >
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis ">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
+          
+            <Table className="overflow-hidden">
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 font-med text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </PageLayout>
+                ))}
+              </TableHeader>
+              <TableBody>
+           
+                 { table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis "
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                 }
+              </TableBody>
+            </Table>
+            </PageLayout>
       </div>
+          : (
+            <NoDataFound />
+          )
+          }
     </StandardPage>
-  );
-}
+  )}
+

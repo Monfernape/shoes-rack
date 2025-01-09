@@ -33,9 +33,10 @@ import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
-import { useParams } from "next/navigation";
+import { useParams} from "next/navigation";
 import { DatePicker } from "@/components/ui/datepicker";
 import { DataSpinner } from "@/common/Loader/Loader";
+
 export type UserBuilder = z.infer<typeof userBuilderSchema>;
 export interface UpdateUser extends UserBuilder {
   id: number;
@@ -94,13 +95,14 @@ type MemberFormBuilder = {
 export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
   const { toast } = useToast();
   const params = useParams();
+  
   const [isPending, startTransition] = useTransition();
   const phoneNumberMask = useMask({
-    mask: "___________",
+    mask: "____-_______",
     replacement: { _: /\d/ },
   });
   const cnicMask = useMask({
-    mask: "3____-_______-_",
+    mask: "_____-_______-_",
     replacement: { _: /\d/ },
   });
   const showShiftTime = (user: Member) => {
@@ -139,31 +141,37 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
 
   const handleSubmission = async (values: UserBuilder | UpdateUser) => {
     startTransition(async () => {
-    try {
-      
+      try {
         const result = member
           ? await updateUser({ ...values, id: member?.id })
           : await createUser(values);
 
-        if (!result) {
+        if (result) {
           toast({
-            title: member?.id
-              ? "User updated successfully"
-              : "User created successfully",
+            variant:"destructive",
+            title: result?.error,
+            description: 'Try again' ,
+          });
+          return 
+        }
+        toast({
+          title: member?.id
+            ? "User updated successfully"
+            : "User created successfully",
+        });
+
+      } 
+      catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: error.message,
+            description: "Something went wrong",
           });
         }
-      }
-    
-    catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: "User already exist",
-          description: "Please use other phone number",
-        });
-      }
-    }
-  });
-  }
+        }
+      })
+    };
+  
   return (
     <FormWrapper>
       <Form {...form}>
@@ -340,15 +348,15 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
             disabled={isPending}
             className={` self-end w-24  `}
           >
-           <div className="flex justify-center">
-           {isPending ? (
-              <DataSpinner size="xs" isInputLoader />
-            ) : params?.id ? (
-              "Update"
-            ) : (
-              "Submit"
-            )}
-           </div>
+            <div className="flex justify-center">
+              {isPending ? (
+                <DataSpinner size="xs" isInputLoader />
+              ) : params?.id ? (
+                "Update"
+              ) : (
+                "Submit"
+              )}
+            </div>
           </Button>
         </form>
       </Form>

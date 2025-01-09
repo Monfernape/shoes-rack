@@ -8,7 +8,7 @@ const Page = async() => {
   const loginUser = await getLoggedInUser();
   const breadcrumbs = [
     { href: Routes.Fund, label: "Funds" },
-    { href: Routes.AddFund, label: "New Fund" },
+    { href: Routes.AddFund, label: "Add Fund" },
   ];
   return (
     <>

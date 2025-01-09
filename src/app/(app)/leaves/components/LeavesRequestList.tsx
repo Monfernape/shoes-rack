@@ -109,6 +109,11 @@ export const LeavesRequestList = ({ leaves, loginUser }: LeavesRequestList) => {
   if (id && !leaves?.length) {
     return <NoDataFound />;
   }
+
+  const handleViewDetails = (requestId: number) => {
+    route.push(`${Routes.LeaveRequestDetails}/${requestId}`);
+  };
+
   return (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -129,7 +134,7 @@ export const LeavesRequestList = ({ leaves, loginUser }: LeavesRequestList) => {
 
         <TableBody>
           {leaves?.map((row: LeaveRequest) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} onClick={() => handleViewDetails(row.id)}>
               {table
                 .getRowModel()
                 .rows.find((r) => r.original === row)
