@@ -152,7 +152,7 @@ export enum RequestActionTitles {
   ViewDetails = "view details",
 }
 
-export interface Attendance {
+export type Attendance = {
   member: string;
   id: number;
   startTime: string;
