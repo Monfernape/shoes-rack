@@ -83,7 +83,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
 
       startTransition(async () => {
           if (attendance?.memberId) {
-            const result = await updateAttendance(updatedValue);
+            const result = await updateAttendance(updatedValue,loginUser);
 
             if (!result) {
               toast({
@@ -92,6 +92,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               });
             }else{
               toast({
+                variant:"destructive",
                 title: result.error,
               });
             }
