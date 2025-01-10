@@ -190,4 +190,9 @@ export interface FundType extends FundSchemaType {
   createdAt: string;
 }
 
+export type attendanceDetailsType = {
+  presentCount: number;
+  absentCount: number;
+  totalApprovedLeaveDays: number;
+};
 export type EventType = React.MouseEvent<HTMLElement>
