@@ -33,42 +33,43 @@ const attendanceDigest = {
   id: 1,
   created_date: "09/01/2025",
   status: DigestStatus.Pending,
-  pending: [
-    {
-      id: 1,
-      name: "John Doe",
-      shift: Shift.ShiftA,
-      startTime: "08:00",
-      endTime: "16:00",
-      status: AttendanceReviewStatus.Pending,
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      shift: Shift.ShiftA,
-      startTime: "16:00",
-      endTime: "00:00",
-      status: AttendanceReviewStatus.Pending,
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      shift: Shift.ShiftA,
-      startTime: "",
-      endTime: "",
-      status: AttendanceReviewStatus.Pending,
-    },
-  ],
   presents: [],
   absents: [],
   leaves: [],
 };
 
+const AttendanceList =  [
+  {
+    id: 1,
+    name: "John Doe",
+    shift: Shift.ShiftA,
+    startTime: "08:00",
+    endTime: "16:00",
+    status: AttendanceReviewStatus.Pending,
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    shift: Shift.ShiftA,
+    startTime: "16:00",
+    endTime: "00:00",
+    status: AttendanceReviewStatus.Pending,
+  },
+  {
+    id: 3,
+    name: "Bob Johnson",
+    shift: Shift.ShiftA,
+    startTime: "",
+    endTime: "",
+    status: AttendanceReviewStatus.Pending,
+  },
+];
+
 type Props = {
   loginUser: User;
 };
 export const AttendanceReview = ({ loginUser }: Props) => {
-  const [attendances, setTodayAttendance] = useState(attendanceDigest.pending);
+  const [attendances, setTodayAttendance] = useState(AttendanceList);
 
   const onMarkAttendance = (
     attendanceId: number,
@@ -163,7 +164,6 @@ export const AttendanceReview = ({ loginUser }: Props) => {
       id,
       created_date,
       status: DigestStatus.Confirmed,
-      pending,
       presents,
       absents,
       leaves

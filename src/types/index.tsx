@@ -31,7 +31,6 @@ export type Digest = {
   id: number;
   created_date: string;
   status: DigestStatus;
-  pending: string[];
   presents: string[]; 
   absents: string[];  
   leaves: string[];   
