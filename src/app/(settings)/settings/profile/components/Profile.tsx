@@ -26,10 +26,10 @@ const Profile = ({ loginUser }: SettingsProps) => {
   return (
     <FormWrapper>
       <div className="space-y-4 pb-10">
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 pr-2 -ml-1">
           <ArrowLeft
             onClick={handleNavigation}
-            className="cursor-pointer text-gray-700"
+            className="cursor-pointer text-gray-700 "
           />
           <FormTitle title="Profile Settings" />
         </div>
