@@ -53,7 +53,8 @@ export const getAttendance = async (id: string) => {
   const filterAttendance = attendanceData.filter(
     (attendance) => attendance.members !== null
   );
-  return filterAttendance.map((attendance) => ({
+  
+  const attendances = filterAttendance.map((attendance) => ({
     member: attendance.memberId.toString(),
     id: attendance.id,
     startTime: attendance.startTime,
@@ -63,5 +64,7 @@ export const getAttendance = async (id: string) => {
     memberId: attendance.memberId,
     name: attendance.members?.name,
     shift: attendance.members?.shift,
-  }));
+  }))
+
+  return attendances;
 };
