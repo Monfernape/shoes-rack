@@ -24,36 +24,50 @@ export const getDigestById = async (id: number): Promise<Digest | Error> => {
     .single();
 
   if (digestError) {
-    throw new Error(digestError.message);
+    console.error("Error fetching digest:", digestError.message);
   }
 
-  const { data: attendances, error: attendancesError } = await supabase
-    .from(Tables.Attendance)
-    .select("*")
-    .neq("status", AttendanceStatus.Pending)
-    .in("memberId", digestData.absents);
+  const date = new Date(digestData.created_at);
 
-  if (attendancesError) {
-    throw new Error(attendancesError.message);
+  const digestCreatedAt = date.toISOString().split('T')[0];
+
+  const [absentsResults, presentsResult, leavesResult] = await Promise.all([
+    supabase
+      .from(Tables.Attendance)
+      .select("*")
+      .eq("status", AttendanceStatus.Reject)
+      .in("memberId", digestData.absents || []),
+
+    supabase
+      .from(Tables.Attendance)
+      .select("*")
+      .eq("status", AttendanceStatus.Approve)
+      .in("memberId", digestData.presents || []),
+
+    supabase
+      .from(Tables.Leaves)
+      .select("*")
+      .eq("status", LeavesRequestStatus.Approved)
+      .in("memberId", digestData.leaves || []),
+  ]);
+
+  if (absentsResults.error ?? presentsResult.error ?? leavesResult.error) {
+    console.warn(
+      "Error fetching leaves:",
+      absentsResults.error?.message ??
+        presentsResult.error?.message ??
+        leavesResult.error?.message
+    );
   }
 
-  const { data: leaves, error: leavesError } = await supabase
-    .from(Tables.Attendance)
-    .select("*")
-    .eq("status", LeavesRequestStatus.Approved)
-    .in("memberId", digestData.absents);
-
-  if (leavesError) {
-    throw new Error(leavesError.message);
+  if (leavesResult.error) {
+    console.warn("Error fetching leaves:", leavesResult.error.message);
   }
 
-  const absents = attendances?.filter(
-    (attendance) => attendance.status === AttendanceStatus.Reject
-  );
-  const presents = attendances?.filter(
-    (attendance) => attendance.status === AttendanceStatus.Approve
-  );
 
+  const absents = absentsResults.data?.filter((attendance)=>attendance.created_at.includes(digestCreatedAt));
+  const presents = presentsResult.data?.filter((attendance)=>attendance.created_at.includes(digestCreatedAt));
+  const leaves = leavesResult.data?.filter((attendance)=>attendance.created_at.includes(digestCreatedAt));
 
   return {
     id: digestData.id,
