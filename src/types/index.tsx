@@ -30,11 +30,18 @@ export type Notifications = {
 export type Digest = {
   id: number;
   created_date: string;
-  status: DigestStatus
+  status: DigestStatus;
   presents: string[]; 
   absents: string[];  
   leaves: string[];   
 };
+
+export enum AttendanceReviewStatus {
+  Pending = "pending",
+  Approve = "approve",
+  Reject = "reject",
+  Leave = "leave"
+}
 
 
 export type AttendanceResponse = {
