@@ -1,6 +1,6 @@
 import React from "react";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
-import Prfoile from "../components/Prfoile";
+import Prfoile from "./components/Profile";
 
 const Page = async () => {
   const loginUser = await getLoggedInUser();
