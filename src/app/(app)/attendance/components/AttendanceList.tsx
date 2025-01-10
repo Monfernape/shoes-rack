@@ -34,7 +34,6 @@ export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.toString();
-
   const columns: ColumnDef<Attendance>[] = useMemo(
     () => [
       {
@@ -65,6 +64,13 @@ export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
         header: "End Time",
         cell: ({ row }) => (
           <div className="ml-2">{row.getValue("endTime")}</div>
+        ),
+      },
+      {
+        accessorKey: "created_at",
+        header: () => <h4 className="ml-4">Date</h4>,
+        cell: ({ row }) => (
+          <div className="ml-2">{new Intl.DateTimeFormat().format(new Date(row.getValue("created_at")))}</div>
         ),
       },
       {
@@ -115,7 +121,9 @@ export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
   if (id && !attendance?.length) {
     return <NoDataFound />;
   }
-
+  const handleViewDetails = (requestId: number) => {
+    router.push(`${Routes.AttendanceDetails}/${requestId}`);
+  };
   return (
     <StandardPage {...StandardPageProps}>
       <Table>
@@ -135,7 +143,10 @@ export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow
+              key={row.id}
+              onClick={() => handleViewDetails(row.original.id)}
+            >
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}

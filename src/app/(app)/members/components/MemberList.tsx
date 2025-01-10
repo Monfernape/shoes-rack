@@ -23,11 +23,12 @@ import { Member } from "@/types";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import { Routes } from "@/lib/routes";
-import { MemberRole, Shift } from "@/constant/constant";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { getMembers } from "../actions/getMembers";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { formatRole } from "@/utils/formatRole";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
+import { MemberStatusFilter } from "./MemberStatusFilter";
 import { NoDataFound } from "@/common/NoDataFound";
 
 export const MemberList = ({
@@ -44,12 +45,19 @@ export const MemberList = ({
   const searchQuery = searchParams.get("key");
   const [isPending, startTransition] = useTransition();
   const [filteredMember, setFilteredMember] = useState<Member[]>(members);
+  const [membersStatus, setMemberStatus] = useState({
+    status: UserStatus.Active,
+  });
+
   useEffect(() => {
-    if (searchQuery) {
+    if (searchQuery || membersStatus.status === UserStatus.Deactivated) {
       (async function fetchData() {
         try {
           startTransition(async () => {
-            const response = await getMembers(searchQuery);
+            const response = await getMembers(
+              searchQuery,
+              membersStatus.status
+            );
             setFilteredMember(response.data);
           });
         } catch (error: unknown) {
@@ -69,7 +77,7 @@ export const MemberList = ({
     } else {
       setFilteredMember(members);
     }
-  }, [searchQuery, members]);
+  }, [searchQuery, members, membersStatus]);
 
   const columns: ColumnDef<Member>[] = [
     {
@@ -161,25 +169,39 @@ export const MemberList = ({
     onAction: handleNavigation,
     labelForActionButton: "Add Member",
   };
+  const handleViewDetails = (id: number) => {
+    route.push(`${Routes.MemberDetails}/${id}`);
+  };
+
 
   return !isPending ? (
-    <StandardPage {...StandardPageProps}>
-    { hasMembers ? <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-         
+    hasMembers ? (
+      <StandardPage {...StandardPageProps}>
+        {user.role !== MemberRole.Member && (
+          <div className=" flex justify-end">
+            <MemberStatusFilter
+              setMemberStatus={(value) => setMemberStatus({ status: value })}
+              membersStatus={membersStatus}
+            />
+          </div>
+        )}
+
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+
           <TableBody className="table-fixed w-full">
             {groupedData.map((shiftGroup, index) => (
               <React.Fragment key={`${shiftGroup.shift}-${index}`}>
@@ -187,14 +209,17 @@ export const MemberList = ({
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
-                      className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold "
+                      className="bg-gray-300 text-gray-700 text-left px-4 py-2 font-bold"
                     >
                       Shift {shiftGroup.shift}
                     </TableCell>
                   </TableRow>
                 )}
                 {shiftGroup.members.map((row) => (
-                  <TableRow key={row.id}>
+                  <TableRow
+                    key={row.id}
+                    onClick={() => handleViewDetails(row.id)}
+                  >
                     {table
                       .getRowModel()
                       .rows.find((r) => r.original === row)
@@ -202,7 +227,7 @@ export const MemberList = ({
                       .map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className=" max-w-28 overflow-hidden whitespace-nowrap text-ellipsis  "
+                          className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis"
                         >
                           <div>
                             {flexRender(
@@ -217,11 +242,16 @@ export const MemberList = ({
               </React.Fragment>
             ))}
           </TableBody>
-        
-      </Table>   : <NoDataFound />}
-     
-    </StandardPage>
+        </Table>
+      </StandardPage>
+    ) : (
+      <NoDataFound />
+    )
   ) : (
-    <DataSpinner />
+    <div className="flex-1 h-full flex justify-center items-center">
+      <div>
+        <DataSpinner isInputLoader />
+      </div>
+    </div>
   );
 };

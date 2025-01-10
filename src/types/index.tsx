@@ -7,6 +7,7 @@ import {
   MissingShoeStatus,
   Shift,
   UserStatus,
+  DigestStatus,
 } from "@/constant/constant";
 
 export type UserRole = "incharge" | "member" | "shift_incharge";
@@ -25,6 +26,17 @@ export type Notifications = {
     name: string;
   };
 };
+
+export type Digest = {
+  id: number;
+  created_date: string;
+  status: DigestStatus
+  presents: string[]; 
+  absents: string[];  
+  leaves: string[];   
+};
+
+
 export type AttendanceResponse = {
   id: number;
   memberId: number;
@@ -170,3 +182,5 @@ export interface FundType extends FundSchemaType {
   id: number;
   createdAt: string;
 }
+
+export type EventType = React.MouseEvent<HTMLElement>

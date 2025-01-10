@@ -4,14 +4,15 @@ import { getMembers } from "@/app/(app)/members/actions/getMembers";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
 export const getEditPermissions = async (memberId: number) => {
-
   const membersList = await getMembers("");
 
   if (!membersList.success) {
     return { error: membersList.message };
   }
 
-  const members = membersList.data.filter((member) => member.status === UserStatus.Active);
+  const members = membersList.data.filter(
+    (member) => member.status !== UserStatus.Deactivated
+  );
   const loginUser = await getLoggedInUser();
 
   let roleBaseMembers;
@@ -25,7 +26,8 @@ export const getEditPermissions = async (memberId: number) => {
         .filter(
           (member) =>
             loginUser?.id === member.id ||
-            (member?.role === MemberRole.Member && loginUser?.shift === member.shift)
+            (member?.role === MemberRole.Member &&
+              loginUser?.shift === member.shift)
         )
         .map(({ id, name }) => ({
           id,
@@ -33,9 +35,10 @@ export const getEditPermissions = async (memberId: number) => {
         }));
     }
   }
-  
   // checking that logged edit-item id exists into members of loggedIn users
   // if user exist then we return true else return false
-  const hasEditPermission = roleBaseMembers?.some((member) => member.id === memberId);
+  const hasEditPermission = roleBaseMembers?.some(
+    (member) => member.id === memberId
+  );
   return { hasEditPermission };
 };

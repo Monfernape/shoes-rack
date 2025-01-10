@@ -15,7 +15,7 @@ interface LeaveRequest {
   status: LeavesRequestStatus;
   reason: string;
   memberId: number;
-  members: { name: string };
+  members: { name: string; status: UserStatus };
 }
 
 export const getAllLeaveRequests = async (id: number) => {
@@ -26,16 +26,14 @@ export const getAllLeaveRequests = async (id: number) => {
   let query = supabase
     .from(Tables.Leaves)
     .select(
-      `id, memberId, leaveType, startDate, endDate, status, reason, members(name)`
-    );
+      `id, memberId, leaveType, startDate, endDate, status, reason, members(name , status)`
+    ).eq('members.status', UserStatus.Active);
 
   // Handle role-based filtering:
   if (loginUser.role === MemberRole.Member) {
-
     // If the logged-in user is a Member, only fetch their own leave requests
     query = query.eq("memberId", loginUser.id);
   } else if (loginUser.role === MemberRole.ShiftIncharge) {
-
     // If the logged-in user is a Shift Incharge, fetch leave requests for active members in the same shift
     const activeMember = response.data
       .filter(
@@ -50,7 +48,6 @@ export const getAllLeaveRequests = async (id: number) => {
       ? query.eq("memberId", id)
       : query.eq("memberId", loginUser.id);
   } else if (loginUser.role === MemberRole.Incharge && id) {
-
     // If the logged-in user is an Incharge and an ID is provided, fetch leave requests for that member
     query = query.eq("memberId", id);
   }
@@ -60,8 +57,8 @@ export const getAllLeaveRequests = async (id: number) => {
   if (error) {
     return [];
   }
-
-  return leaves.map((leave) => ({
+  const filterLeaves =  leaves.filter((leave) => leave.members !== null)
+  return filterLeaves.map((leave) => ({
     id: leave.id,
     leaveType: leave.leaveType,
     startDate: leave.startDate,

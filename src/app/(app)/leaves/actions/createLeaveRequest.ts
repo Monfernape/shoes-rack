@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 import { leaveRequestSchema } from "../add/components/LeaveRequestFormBuilder";
-import { redirect } from "next/navigation";
 import { LeaveRequestStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
 import { Routes } from "@/lib/routes";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { revalidatePath } from "next/cache";
 
 export const createLeaveRequest = async (
   values: z.infer<typeof leaveRequestSchema>
@@ -27,5 +27,5 @@ export const createLeaveRequest = async (
     return { error: error.message };
   }
 
-  redirect(Routes.LeaveRequest);
+  revalidatePath(Routes.LeaveRequest);
 };
