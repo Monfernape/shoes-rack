@@ -23,7 +23,7 @@ export default function RootLayout({
 
   return (
     <>
-      {/* <AlertBar /> */}
+
         <div className="flex">
           <Sidebar
             isSidebarOpen={isSidebarOpen}
