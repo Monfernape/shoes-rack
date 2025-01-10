@@ -17,7 +17,10 @@ export const updateLeaveRequest = async (
 ) => {
   const supabase = await getSupabaseClient();
 
-  if (loginUser?.role === MemberRole.Member && loginUser.id !== requestId) {
+  if (
+    loginUser?.role === MemberRole.Member &&
+    loginUser.id !== Number(values.memberId)
+  ) {
     return { error: "You have not permission" };
   }
   if (loginUser?.role === MemberRole.ShiftIncharge) {
