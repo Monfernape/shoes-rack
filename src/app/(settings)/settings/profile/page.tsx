@@ -1,14 +1,11 @@
 import React from "react";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
-import { Settings } from "./components/Settings";
-import { PageLayout } from "@/app/layout/PageLayout";
+import Prfoile from "../components/Prfoile";
 
 const Page = async () => {
   const loginUser = await getLoggedInUser();
   return (
-    <PageLayout>
-      <Settings loginUser={loginUser} />
-    </PageLayout>
+   <Prfoile loginUser={loginUser}/>
   );
 };
 

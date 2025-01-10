@@ -9,15 +9,30 @@ import { UserDetails } from "@/types";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { dateformatter } from "@/utils/dateFormatter";
 
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 interface SettingsProps {
   loginUser: UserDetails;
 }
 
 export const Settings = ({ loginUser }: SettingsProps) => {
+  const router = useRouter();
+  const handleNavigation = () => {
+    return router.back();
+  };
+
   return (
     <FormWrapper>
       <div className="space-y-4 pb-10">
-        <FormTitle title="Profile Settings" />
+        <div className="flex items-center space-x-2">
+          <ArrowLeft
+            onClick={handleNavigation}
+            className="cursor-pointer text-gray-700"
+          />
+          <FormTitle title="Profile Settings" />
+        </div>
+
         <UserAvatar userName={loginUser.name} size="large" />
 
         <div className="space-y-2">
