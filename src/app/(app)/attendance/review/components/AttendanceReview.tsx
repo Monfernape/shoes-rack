@@ -217,7 +217,7 @@ export const AttendanceReview = ({ loginUser }: Props) => {
             </TableBody>
           </Table>
           {attendanceDigest.status === DigestStatus.Pending && (
-            <div className="flex justify-end pt-6">
+            <div className="flex justify-end p-4">
               <Button
                 className="text-xs"
                 onClick={() => submitAttendaceReviewDigest()}
