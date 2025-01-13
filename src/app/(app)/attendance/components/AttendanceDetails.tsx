@@ -4,6 +4,7 @@ import { CalendarIcon } from "lucide-react";
 import { UserAvatar } from "@/common/Avatar/UserAvatar";
 import { StatusBadge } from "@/common/StatusBadge/StatusBadge";
 import { MemberDetails } from "@/types";
+import CardWrapper from "@/common/CardWrapper";
 
 export const AttendanceDetails = ({
   attendance,
@@ -11,7 +12,8 @@ export const AttendanceDetails = ({
   attendance: MemberDetails;
 }) => {
   return (
-    <Card>
+    <CardWrapper>
+   <Card className="w-full max-w-xl">
       <CardContent className="text-left space-y-6 mt-6">
         <div className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-3">
@@ -56,5 +58,6 @@ export const AttendanceDetails = ({
         </div>
       </CardContent>
     </Card>
+    </CardWrapper>
   );
 };

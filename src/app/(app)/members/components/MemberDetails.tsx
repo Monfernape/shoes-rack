@@ -15,6 +15,7 @@ import { getAge } from "@/utils/ageFormater";
 import { dateformatter } from "@/utils/dateFormatter";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { formatRole } from "@/utils/formatRole";
+import CardWrapper from "@/common/CardWrapper";
 
 export const MemberDetails = ({
   userInfo,
@@ -25,7 +26,8 @@ export const MemberDetails = ({
 }) => {
   const dateFormat = dateformatter(new Date(userInfo.ehad_duration));
   return (
-    <Card>
+    <CardWrapper>
+ <Card className="w-full max-w-xl">
       <CardContent className="text-left space-y-6 mt-6">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3">
@@ -131,5 +133,6 @@ export const MemberDetails = ({
         )}
       </CardContent>
     </Card>
+    </CardWrapper>
   );
 };
