@@ -30,11 +30,18 @@ export type Notifications = {
 export type Digest = {
   id: number;
   created_date: string;
-  status: DigestStatus
+  status: DigestStatus;
   presents: string[]; 
   absents: string[];  
   leaves: string[];   
 };
+
+export enum AttendanceReviewStatus {
+  Pending = "pending",
+  Approve = "approve",
+  Reject = "reject",
+  Leave = "leave"
+}
 
 
 export type AttendanceResponse = {
@@ -145,7 +152,7 @@ export enum RequestActionTitles {
   ViewDetails = "view details",
 }
 
-export interface Attendance {
+export type Attendance = {
   member: string;
   id: number;
   startTime: string;
@@ -183,4 +190,9 @@ export interface FundType extends FundSchemaType {
   createdAt: string;
 }
 
+export type attendanceDetailsType = {
+  presentCount: number;
+  absentCount: number;
+  totalApprovedLeaveDays: number;
+};
 export type EventType = React.MouseEvent<HTMLElement>

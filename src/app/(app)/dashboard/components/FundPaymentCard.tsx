@@ -14,9 +14,9 @@ const fetchFunds = async () => {
 };
 export default function FundPaymentCard() {
   const { data: funds } = useSWR("funds", fetchFunds);
-  const loggedUserFunds = funds || [];
-  const isCurrentMonthFundAdded = loggedUserFunds.some(
-    (fund) => fund.amount !== "0"
+  const loggedUserFunds = Array.isArray(funds) ? funds : [];
+  const isCurrentMonthFundAdded = loggedUserFunds?.some(
+    (fund) => fund?.amount !== "0"
   );
 
   return (
