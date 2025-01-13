@@ -6,7 +6,7 @@ import { LeaveRequestStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
 import { Routes } from "@/lib/routes";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const createLeaveRequest = async (
   values: z.infer<typeof leaveRequestSchema>
@@ -27,5 +27,5 @@ export const createLeaveRequest = async (
     return { error: error.message };
   }
 
-  revalidatePath(Routes.LeaveRequest);
+  redirect(Routes.LeaveRequest);
 };

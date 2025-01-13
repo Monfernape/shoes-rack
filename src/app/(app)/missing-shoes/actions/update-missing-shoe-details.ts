@@ -25,7 +25,7 @@ export const updateMissingShoeReport = async (
       owner_phone_number: ownerPhoneNumber,
       owner_address: ownerAddress,
       status: MissingShoeStatus.Missing,
-      reported_by: user.id,
+      reported_by: user.name,
     })
     .eq("id", missingShoeReportId);
 

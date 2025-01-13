@@ -6,7 +6,6 @@ import { Routes } from "@/lib/routes";
 import Link from "next/link";
 import {
   DashboardIcon,
-  ExclamationTriangleIcon,
   Cross1Icon,
   ExitIcon,
   PersonIcon,
@@ -18,6 +17,7 @@ import {
   // ChartNoAxesCombinedIcon,
   // ChartNoAxesCombinedIcon,
   ClipboardIcon,
+  Footprints,
   HandCoinsIcon,
 } from "lucide-react";
 import { useUser } from "@/hooks/useGetLoggedinUser";
@@ -70,7 +70,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     {
       name: "Missing Shoes",
       route: Routes.MissingShoes,
-      icon: <ExclamationTriangleIcon />,
+      icon: <Footprints />,
     },
   ];
 

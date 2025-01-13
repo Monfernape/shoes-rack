@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState, useTransition } from "react";
 import { StandardPage } from "@/common/StandardPage/StandardPage";
 import {
   Table,
@@ -25,6 +25,7 @@ import { PostgrestError } from "@supabase/supabase-js";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { NoDataFound } from "@/common/NoDataFound";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 interface Props {
   missingShoesReports: MissingShoeReport[];
@@ -35,14 +36,21 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("key") ?? "";
+  const [isPending, startTransition] = useTransition();
 
-  const filteredShoesReports = useMemo(() => {
-    return searchQuery
-      ? missingShoesReports.filter((report) =>
-          report.ownerName.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : missingShoesReports;
-  }, [searchQuery, missingShoesReports]);
+  const [filteredShoesReports, setFilteredShoesReports] =
+    useState<MissingShoeReport[]>(missingShoesReports);
+
+  useEffect(() => {
+    startTransition(() => {
+      const filtered = searchQuery
+        ? missingShoesReports.filter((report) =>
+            report.ownerName.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+        : missingShoesReports;
+      setFilteredShoesReports(filtered);
+    });
+  }, [searchQuery, missingShoesReports, startTransition]);
 
   if (error) {
     toast({
@@ -136,10 +144,12 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     router.push(`${Routes.MissingShoesDetails}/${id}`);
   };
 
-  return (
+  return !isPending ? (
     <>
       {filteredShoesReports.length === 0 && !searchQuery ? (
-        <StandardPage {...StandardPageProps} />
+        <StandardPage {...StandardPageProps} >
+          
+        </StandardPage>
       ) : filteredShoesReports.length === 0 ? (
         <NoDataFound />
       ) : (
@@ -196,5 +206,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
         </Table>
       )}
     </>
+  ) : (
+    <DataSpinner />
   );
 };
