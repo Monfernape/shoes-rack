@@ -173,6 +173,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
                 <TableRow
                   key={row.id}
                   onClick={() => handleViewDetails(Number(row.id))}
+                   className="cursor-pointer"
                 >
                   {table
                     .getRowModel()

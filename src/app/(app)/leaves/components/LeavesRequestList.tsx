@@ -134,7 +134,7 @@ export const LeavesRequestList = ({ leaves, loginUser }: LeavesRequestList) => {
 
         <TableBody>
           {leaves?.map((row: LeaveRequest) => (
-            <TableRow key={row.id} onClick={() => handleViewDetails(row.id)}>
+            <TableRow key={row.id} onClick={() => handleViewDetails(row.id)}  className="cursor-pointer">
               {table
                 .getRowModel()
                 .rows.find((r) => r.original === row)

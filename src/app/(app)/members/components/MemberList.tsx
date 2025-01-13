@@ -173,7 +173,6 @@ export const MemberList = ({
     route.push(`${Routes.MemberDetails}/${id}`);
   };
 
-
   return !isPending ? (
     hasMembers ? (
       <StandardPage {...StandardPageProps}>
@@ -219,6 +218,7 @@ export const MemberList = ({
                   <TableRow
                     key={row.id}
                     onClick={() => handleViewDetails(row.id)}
+                    className="cursor-pointer"
                   >
                     {table
                       .getRowModel()
