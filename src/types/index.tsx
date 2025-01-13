@@ -29,11 +29,11 @@ export type Notifications = {
 
 export type Digest = {
   id: number;
-  created_date: string;
+  created_at: string;
   status: DigestStatus;
-  presents: string[]; 
-  absents: string[];  
-  leaves: string[];   
+  presents: number[]; 
+  absents: number[];  
+  leaves: number[];   
 };
 
 export enum AttendanceReviewStatus {

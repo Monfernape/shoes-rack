@@ -17,8 +17,11 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useTransition } from "react";
 import { AttendanceReviewAction } from "./AttendanceReviewAction";
+import { updateAttendanceDigest } from "../../actions/update-attendance-digest";
+import { toast } from "@/hooks/use-toast";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 type Attendances = Omit<
   Attendance,
@@ -30,15 +33,15 @@ interface AttendanceReviewType extends Attendances {
 }
 
 const attendanceDigest = {
-  id: 1,
-  created_date: "09/01/2025",
+  id: 4,
+  created_at: "09/01/2025",
   status: DigestStatus.Pending,
   presents: [],
   absents: [],
   leaves: [],
 };
 
-const AttendanceList =  [
+const AttendanceList = [
   {
     id: 1,
     name: "John Doe",
@@ -70,6 +73,7 @@ type Props = {
 };
 export const AttendanceReview = ({ loginUser }: Props) => {
   const [attendances, setTodayAttendance] = useState(AttendanceList);
+  const [isPending, startTransition] = useTransition();
 
   const onMarkAttendance = (
     attendanceId: number,
@@ -132,43 +136,62 @@ export const AttendanceReview = ({ loginUser }: Props) => {
     [attendances, loginUser]
   );
 
+  const submitAttendaceReviewDigest = (): void => {
+    const presents: number[] = [];
+    const absents: number[] = [];
+    const leaves: number[] = [];
 
-  const submitAttendaceReviewDigest = () => {
-    const pending: string[] = [];
-    const presents: string[] = [];
-    const absents: string[] = [];
-    const leaves: string[] = [];
-  
-    attendances.forEach((attendance) => {
-      const attendanceId = attendance.id.toString();
-      
-      switch (attendance.status) {
-        case AttendanceReviewStatus.Approve:
-          presents.push(attendanceId);
-          break;
-        case AttendanceReviewStatus.Reject:
-          absents.push(attendanceId);
-          break;
-        case AttendanceReviewStatus.Leave:
-          leaves.push(attendanceId);
-          break;
-        default:
-          pending.push(attendanceId);
-          break;
-      }
+    if (Array.isArray(attendances)) {
+      attendances.forEach((attendance) => {
+        const attendanceId = attendance.id;
+        switch (attendance.status) {
+          case AttendanceReviewStatus.Approve:
+            presents.push(attendanceId);
+            break;
+          case AttendanceReviewStatus.Reject:
+            absents.push(attendanceId);
+            break;
+          case AttendanceReviewStatus.Leave:
+            leaves.push(attendanceId);
+            break;
+          default:
+            break;
+        }
+      });
+    }
+    startTransition(async () => {
+      try {
+        const { id, created_at } = attendanceDigest;
+        const digest: Digest = {
+          id,
+          created_at,
+          status: DigestStatus.Confirmed,
+          presents,
+          absents,
+          leaves,
+        };
+        if (attendanceDigest.status === DigestStatus.Pending) {
+          const response = await updateAttendanceDigest({ digest });
+          if ("error" in response) {
+            toast({
+              title: "Error updating digest",
+              description: response.error,
+            });
+          } else {
+            toast({
+              title: "The attendance digest was updated successfully.",
+              description: "The attendance digest record has been updated.",
+            });
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error){
+        toast({
+          title: "Error",
+          description: error.message,
+        });
+        }}
     });
-  
-    const { id, created_date } = attendanceDigest;
-    
-    const digestPayload: Digest = {
-      id,
-      created_date,
-      status: DigestStatus.Confirmed,
-      presents,
-      absents,
-      leaves
-    };
-    return digestPayload
   };
 
   const table = useReactTable({
@@ -220,9 +243,10 @@ export const AttendanceReview = ({ loginUser }: Props) => {
             <div className="flex justify-end p-4">
               <Button
                 className="text-xs"
+                disabled={isPending}
                 onClick={() => submitAttendaceReviewDigest()}
               >
-                Submit
+              Submit {isPending && <DataSpinner />}
               </Button>
             </div>
           )}
