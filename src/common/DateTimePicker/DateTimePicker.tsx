@@ -51,6 +51,11 @@ export function DateTimePicker({ time, onChangeTime }: SelectFieldProps) {
     }
   };
 
+  const isDisabled = (date: Date) => {
+    const today = new Date();
+    return date >= today;
+  };
+
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
@@ -76,6 +81,7 @@ export function DateTimePicker({ time, onChangeTime }: SelectFieldProps) {
             selected={time}
             onSelect={handleDateSelect}
             initialFocus
+            disabled={isDisabled}
           />
           <div className="flex flex-col sm:flex-row sm:h-[300px] divide-y sm:divide-y-0 sm:divide-x">
             <ScrollArea className="w-64 sm:w-auto">
