@@ -143,7 +143,7 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
     startTransition(async () => {
       try {
         const result = member
-          ? await updateUser({ ...values, id: member?.id })
+          ? await updateUser({ ...values, id: member?.id },user)
           : await createUser(values);
 
         if (result) {

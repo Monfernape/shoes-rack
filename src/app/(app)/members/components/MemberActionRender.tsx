@@ -1,13 +1,20 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import ActionsMenu from "@/common/ActionMenu/ActionsMenu";
-import { Info, Trash2, Edit } from "lucide-react";
+import {
+  Info as InfoIcon,
+  Trash2 as Trash2Icon,
+  Edit as EditIcon,
+  ArchiveRestore as ArchiveRestoreIcon,
+} from "lucide-react";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
-import { deleteMember } from "../actions/delete-member";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { EventType, Member } from "@/types";
+import { Member, UserDetails } from "@/types";
+import { EventType,  } from "@/types";
 import { Routes } from "@/lib/routes";
+import { updateMemberStatus } from "../actions/update-status";
+import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 type Props = {
   memberInfo: Member;
@@ -15,8 +22,8 @@ type Props = {
 };
 
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
-  const { status, id, shift } = memberInfo;
-
+  const { status, id, shift, role } = memberInfo;
+  const [modalOpen,setIsModalOpen] = useState<boolean>(false)
   const router = useRouter();
   const { toast } = useToast();
 
@@ -29,11 +36,39 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     e.stopPropagation();
     router.push(`${Routes.EditMember}/${id}`);
   };
+  
+  const handleStatus = async (e: EventType) => {
+    e.stopPropagation();
+    try {
+      const result = await updateMemberStatus(id,UserStatus.Active);
+      if (result) {
+        toast({
+          variant: "destructive",
+          title: result.message,
+          description: "Try again",
+        });
+        return;
+      }
+      toast({
+        title: "Update Member status successfully",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+        });
+      }
+    }
+  };
+  const handleModalOpen = (e: EventType)=>{
+    e.stopPropagation();
+    setIsModalOpen(true)
+  }
 
   const handleDeleteMember = async (e: EventType) => {
     e.stopPropagation();
     try {
-      await deleteMember(id);
+      await updateMemberStatus(id,UserStatus.Deactivated);
       toast({
         title: "Member deleted successfully",
       });
@@ -52,13 +87,16 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       title: "Edit info",
       id: 2,
       onClick: handleEditInfo,
-      icon: <Edit size={16} />,
+      icon: <EditIcon size={16} />,
     },
     {
       title: "Delete member",
       id: 3,
-      onClick: handleDeleteMember,
-      icon: <Trash2 size={16} />,
+      onClick:(e: EventType)=>{
+        e.stopPropagation();
+        handleModalOpen(e)
+      },
+      icon: <Trash2Icon size={16} />,
     },
   ];
 
@@ -67,16 +105,39 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       title: "View details",
       id: 1,
       onClick: handleViewDetails,
-      icon: <Info size={16} />,
+      icon: <InfoIcon size={16} />,
     },
   ];
 
+  const reactiveUserAction = [
+    {
+      title: "Update status",
+      id: 1,
+      onClick:(e: EventType)=>{
+        e.stopPropagation();
+        handleModalOpen(e)
+      },
+      icon: <ArchiveRestoreIcon size={16} />,
+    },
+  ];
 
-
-  const checkShiftMembers = (loginUserShift: string, shift: Shift) => {
-    if (loginUserShift === shift) {
+  const checkShiftMembers = (
+    loginUserShift: UserDetails,
+    shift: Shift,
+    role: MemberRole
+  ) => {
+    if (shift === loginUserShift.shift) {
+      if (
+        role === MemberRole.ShiftIncharge &&
+        id !== loginUserShift.id &&
+        status !== UserStatus.Deactivated
+      ) {
+        return [...viewInfo];
+      }
       if (status === UserStatus.Inactive) {
         return [...baseActions, ...viewInfo];
+      } else if (status === UserStatus.Deactivated) {
+        return [...reactiveUserAction];
       }
       return [...baseActions, ...viewInfo];
     }
@@ -85,9 +146,13 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const actionMenu = React.useMemo(() => {
     switch (loginUser?.role) {
       case MemberRole.Incharge:
-        return [...baseActions, ...viewInfo];
+        return status === UserStatus.Deactivated
+          ? [...reactiveUserAction]
+          : [...baseActions, ...viewInfo];
       case MemberRole.ShiftIncharge:
-        return checkShiftMembers(loginUser?.shift, shift);
+        return role === MemberRole.Incharge
+          ? [...viewInfo]
+          : checkShiftMembers(loginUser, shift, role);
       case MemberRole.Member:
         return [...viewInfo];
       default:
@@ -95,7 +160,21 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     }
   }, [status, loginUser?.role]);
 
-  return <ActionsMenu actions={actionMenu} />;
+  return (
+    <>
+       <ConfirmationModal 
+        title={status === UserStatus.Deactivated ? "Restore Member" : "Delete Member"}
+        description={status === UserStatus.Deactivated? "Are you sure you want to restore this member?" : "Are you sure you want to delete this member?"}
+        buttonText={status === UserStatus.Deactivated ? "Restore Member" : "Delete"}
+        setIsModalOpen={setIsModalOpen}
+        onHandleConfirm={status === UserStatus.Deactivated ? handleStatus :  handleDeleteMember}
+        isModalOpen = {modalOpen}
+       
+       />
+      <ActionsMenu actions={actionMenu} />
+      
+    </>
+  );
 };
 
 export default MemberTableActionRender;

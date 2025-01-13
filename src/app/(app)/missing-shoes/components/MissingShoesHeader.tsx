@@ -13,7 +13,7 @@ interface Props {
   breadcrumbs: Breadcrumbs[];
 }
 
-export const MissingShoesHeader = ({ breadcrumbs  }: Props) => {
+export const MissingShoesHeader = ({ breadcrumbs }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
   const [search, setSearch] = useState("");
@@ -41,9 +41,12 @@ export const MissingShoesHeader = ({ breadcrumbs  }: Props) => {
   };
 
   return (
-    <HeaderWrapper isShowBreadCrumbs={!isMobileScreen || !isShowIconOnly} breadcrumbs={breadcrumbs}>
+    <HeaderWrapper
+      isShowBreadCrumbs={!isMobileScreen || !isShowIconOnly}
+      breadcrumbs={breadcrumbs}
+    >
       {pathname === Routes.MissingShoes && (
-        <div className="flex items-center space-x-2">
+        <>
           <Searchbox
             isShowIconOnly={isShowIconOnly}
             fullWidthOnFocus={isMobileScreen}
@@ -55,7 +58,7 @@ export const MissingShoesHeader = ({ breadcrumbs  }: Props) => {
             path={Routes.AddMissingShoes}
             buttonText="Add Shoes"
           />
-        </div>
+        </>
       )}
     </HeaderWrapper>
   );

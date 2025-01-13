@@ -10,7 +10,7 @@ import {
   Cross1Icon,
   ExitIcon,
   PersonIcon,
-  // GearIcon,
+  GearIcon,
 } from "@radix-ui/react-icons";
 import {
   // BellIcon,
@@ -107,8 +107,15 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   };
 
   return (
-    <aside
-      className={`
+    <>
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-gray-800 bg-opacity-50 z-20 lg:hidden"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+      <aside
+        className={`
             ${isSidebarOpen || !isSmallScreen ? "block" : "hidden"}
             ${isSidebarOpen ? "block" : "hidden"}
              
@@ -162,12 +169,13 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
             <ExitIcon className="w-3.5 h-3.5 mr-3" />
             <span className="text-xs">Logout</span>
           </button>
-          {/* <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+          <Link  href={Routes.Profile} className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
             <GearIcon className="w-3.5 h-3.5 mr-3" />
             <span className="text-xs">Settings</span>
-          </button> */}
+          </Link>
         </div>
-      </div>
-    </aside>
+        </div>
+      </aside>
+    </>
   );
 };

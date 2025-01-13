@@ -27,14 +27,23 @@ import { updateMissingShoeReport } from "../../actions/update-missing-shoe-detai
 import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
 import { DataSpinner } from "@/common/Loader/Loader";
+import { MissingShoeStatus } from "@/constant/constant";
 
 export const MissingShoesSchema = z.object({
   shoesToken: z.string().min(1, {
     message: "Shoes Token must be required.",
   }),
-  description: z.string().min(1, {
-    message: "Shoes description must be required.",
-  }),
+  description: z
+    .string()
+    .min(1, {
+      message: "Shoes description must be required.",
+    })
+    .min(10, {
+      message: "Shoes description must be at least 10 characters long.",
+    })
+    .max(200, {
+      message: "Shoes description must be under 200 characters",
+    }),
   time: z.date().refine((val) => val.getTime() <= new Date().getTime(), {
     message: "The time cannot be in the future.",
   }),
@@ -44,15 +53,23 @@ export const MissingShoesSchema = z.object({
   ownerPhoneNumber: z
     .string({ message: "Phone number is required" })
     .regex(PHONENUMBER_VALIDATOR_REGEX, "Phone number is not valid"),
-  ownerAddress: z.string().min(1, {
-    message: "The owner address  must be required.",
-  }),
+  ownerAddress: z
+    .string()
+    .min(1, {
+      message: "The owner address  must be required.",
+    })
+    .min(10, {
+      message: "The owner address must be at least 10 characters long.",
+    })
+    .max(200, {
+      message: "The owner address must be under 200 characters",
+    }),
 });
 
 export type MissingSchemaType = z.infer<typeof MissingShoesSchema>;
 
 interface Props {
-  missingShoe?: MissingShoeReport;
+  missingShoe?: MissingShoeReport  | null;
 }
 export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
   const router = useRouter();
@@ -61,6 +78,13 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
     mask: "___________",
     replacement: { _: /\d/ },
   });
+
+  if(missingShoe === null){
+    router.back();
+    toast({
+      title: "Missing Shoe Report not exist",
+    });
+  }
 
   const form = useForm<MissingSchemaType>({
     resolver: zodResolver(MissingShoesSchema),
@@ -88,10 +112,16 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
             title: "Report submitted successfully",
           });
         } else {
-          await updateMissingShoeReport(missingShoe.id, values);
-          toast({
-            title: "Report updated successfully",
-          });
+          if (missingShoe?.status === MissingShoeStatus.Missing) {
+            await updateMissingShoeReport(missingShoe.id, values);
+            toast({
+              title: "Report updated successfully",
+            });
+          } else {
+            toast({
+              title: "Missing Shoe Report cannot be updated!",
+            });
+          }
         }
         router.push(Routes.MissingShoes);
       } catch (error) {

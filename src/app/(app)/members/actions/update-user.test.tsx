@@ -18,7 +18,7 @@ const member: Member = {
   cnic: "33333-3333333-3",
   address: "Multan\nmultan",
   ehad_duration: "2025-01-30",
-  role: MemberRole.Member,
+  role: MemberRole.ShiftIncharge,
   status: UserStatus.Inactive,
   shift: Shift.ShiftB,
   invite_link: "http://localhost:3000?token=aypvudbc",
@@ -37,7 +37,7 @@ const mockValues: UpdateUser = {
 };
 describe("Integration Testing", () => {
   it("Check inputs Values", () => {
-    render(<MemberFormBuilder member={member} />);
+    render(<MemberFormBuilder member={member} user = {member} />);
     expect(screen.getByTestId("name")).toBeInTheDocument();
     expect(screen.getByTestId("form")).toBeInTheDocument();
     expect(screen.getByTestId("form")).toHaveFormValues({

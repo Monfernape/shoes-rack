@@ -3,18 +3,25 @@
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { getMembers } from "../../members/actions/getMembers";
-import { MemberRole, UserStatus } from "@/constant/constant";
+import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { Attendance } from "@/types";
 
-export const getAttendance = async (id: string ) => {
+interface AttendanceType extends Attendance {
+  members: { name: string; status: UserStatus; shift: Shift };
+}
+
+export const getAttendance = async (id: string) => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
   const response = await getMembers("");
 
   let query = supabase
     .from(Tables.Attendance)
-    .select(`id, memberId, startTime, endTime, status`);
+    .select(
+      `id, memberId, startTime, endTime, status , created_at,  ${Tables.Members}(name,status,shift))`
+    )
+    .eq("members.status", "active");
 
   // Role-based filtering:
   if (loginUser.role === MemberRole.Member) {
@@ -24,8 +31,7 @@ export const getAttendance = async (id: string ) => {
     // Shift Incharge filters attendance for members in the same active shift
     const activeMember = response.data.some(
       (member) =>
-        member.status === UserStatus.Active &&
-        member.shift === loginUser.shift
+        member.status === UserStatus.Active && member.shift === loginUser.shift
     );
 
     query = activeMember
@@ -36,22 +42,29 @@ export const getAttendance = async (id: string ) => {
     query = query.eq("memberId", id);
   }
 
-  const { data: attendanceData, error } = await query.returns<Attendance[]>();
+  const { data: attendanceData, error } = await query.returns<
+    AttendanceType[]
+  >();
 
   if (error || !attendanceData) {
     return [];
   }
 
+  const filterAttendance = attendanceData.filter(
+    (attendance) => attendance.members !== null
+  );
+  
+  const attendances = filterAttendance.map((attendance) => ({
+    member: attendance.memberId.toString(),
+    id: attendance.id,
+    startTime: attendance.startTime,
+    endTime: attendance.endTime,
+    status: attendance.status,
+    created_at: attendance.created_at,
+    memberId: attendance.memberId,
+    name: attendance.members?.name,
+    shift: attendance.members?.shift,
+  }))
 
-  const members = response.data || [];
-  const updatedAttendance = attendanceData.map((attendance) => {
-    const member = members.find((member) => member.id === attendance.memberId);
-    return {
-      ...attendance,
-      name: member?.name,
-      shift: member?.shift,
-    };
-  });
-
-  return updatedAttendance;
+  return attendances;
 };
