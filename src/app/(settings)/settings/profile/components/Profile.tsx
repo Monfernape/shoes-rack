@@ -16,7 +16,7 @@ interface SettingsProps {
   loginUser: UserDetails;
 }
 
-const Profile = ({ loginUser }: SettingsProps) => {
+export const Profile = ({ loginUser }: SettingsProps) => {
   const router = useRouter();
   const handleNavigation = () => {
     return router.back();
@@ -58,14 +58,11 @@ const Profile = ({ loginUser }: SettingsProps) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="address">Address</Label>
-          <textarea
-            id="address"
-            className="border rounded-md p-2 bg-gray-50 text-xs w-full"
-            value={loginUser.address}
-            readOnly
-          />
-        </div>
+  <Label>Address</Label>
+  <address className="border rounded-md p-2 bg-gray-50 text-xs not-italic">
+    {loginUser.address}
+  </address>
+</div>
 
         <div className="space-y-2">
           <Label>Role</Label>
@@ -92,4 +89,3 @@ const Profile = ({ loginUser }: SettingsProps) => {
   );
 };
 
-export default Profile;
