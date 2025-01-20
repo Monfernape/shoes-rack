@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserAvatar } from "@/common/Avatar/UserAvatar";
 import { UserStatusBadge } from "@/common/StatusBadge/UserStatusBadge";
@@ -15,6 +15,7 @@ import { getAge } from "@/utils/ageFormater";
 import { dateformatter } from "@/utils/dateFormatter";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { formatRole } from "@/utils/formatRole";
+import { NoDataFound } from "@/common/NoDataFound";
 
 export const MemberDetails = ({
   userInfo,
@@ -23,14 +24,32 @@ export const MemberDetails = ({
   userInfo: UserDetails;
   user: Member;
 }) => {
+  const showPersonalInfo = useMemo(() => {
+    if (userInfo.id) {
+      if (user.role === MemberRole.Member && user.id === userInfo.id) {
+        return true;
+      } else if (
+        user.role === MemberRole.ShiftIncharge &&
+        user.shift === userInfo.shift &&
+        (userInfo.role === MemberRole.Member || userInfo.id === user.id)
+      ) {
+        return true;
+      } else if (user.role === MemberRole.Incharge) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, []);
   const dateFormat = dateformatter(new Date(userInfo.ehad_duration));
-  return (
+
+  return userInfo.id ? (
     <Card>
       <CardContent className="text-left space-y-6 mt-6">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3">
-            <UserAvatar userName={userInfo.name}  />
-            <h2 data-testid="user-name" className="text-base text-gray-800">
+            <UserAvatar userName={userInfo.name} />
+            <h2 data-testid="user-name" className="text-base text-gray-800 ">
               {userInfo.name}
             </h2>
           </div>
@@ -39,8 +58,7 @@ export const MemberDetails = ({
           </div>
         </div>
 
-        {(user?.role === MemberRole.Incharge ||
-          user?.shift === userInfo.shift) && (
+        {showPersonalInfo && (
           <div className="flex items-center gap-3 text-gray-700">
             <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
               <ShieldIcon className="w-4 h-4 text-gray-700" />
@@ -73,7 +91,7 @@ export const MemberDetails = ({
               <p className="text-xs">
                 <span className="font-medium text-muted-foreground">
                   Shift:
-                </span>{" "}
+                </span>
                 {userInfo.shift}
               </p>
             </div>
@@ -113,8 +131,7 @@ export const MemberDetails = ({
           </div>
         </div>
 
-        {(user?.role === MemberRole.Incharge ||
-          user?.shift === userInfo.shift) && (
+        {showPersonalInfo && (
           <div className="text-gray-700">
             <div className="space-y-1">
               <h3 className="flex items-center gap-2 text-sm font-semibold">
@@ -131,5 +148,7 @@ export const MemberDetails = ({
         )}
       </CardContent>
     </Card>
+  ) : (
+    <NoDataFound />
   );
 };
