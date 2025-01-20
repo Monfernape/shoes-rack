@@ -129,7 +129,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const StandardPageProps = {
+  const standardPageProps = {
     hasContent: !!filteredShoesReports.length,
     title: "Add missing shoes",
     description: "This is where you can see all missing shoes.",
@@ -147,9 +147,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
   return !isPending ? (
     <>
       {filteredShoesReports.length === 0 && !searchQuery ? (
-        <StandardPage {...StandardPageProps} >
-          
-        </StandardPage>
+        <StandardPage {...standardPageProps} />
       ) : filteredShoesReports.length === 0 ? (
         <NoDataFound />
       ) : (
