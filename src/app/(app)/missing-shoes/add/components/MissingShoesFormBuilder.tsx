@@ -69,7 +69,7 @@ export const MissingShoesSchema = z.object({
 export type MissingSchemaType = z.infer<typeof MissingShoesSchema>;
 
 interface Props {
-  missingShoe?: MissingShoeReport  | null;
+  missingShoe?: MissingShoeReport | null;
 }
 export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
   const router = useRouter();
@@ -79,11 +79,8 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
     replacement: { _: /\d/ },
   });
 
-  if(missingShoe === null){
+  if (missingShoe === null) {
     router.back();
-    toast({
-      title: "Missing Shoe Report not exist",
-    });
   }
 
   const form = useForm<MissingSchemaType>({
@@ -250,7 +247,9 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
             <Button
               data-testid="submitButton"
               type="submit"
-              disabled={isPending}
+              disabled={
+                isPending || missingShoe?.status === MissingShoeStatus.Found
+              }
               className="text-xs w-24"
             >
               <div className="flex justify-center">

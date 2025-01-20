@@ -8,11 +8,11 @@ export const getMissingShoeById = async (requestId: number) => {
   const { data: missingShoe, error } = await supabase
     .from(Tables.MissingShoes)
     .select()
-    .eq("id", requestId)
+    .match({ id: requestId })
     .single();
 
-  if (error) {
-    throw error.message;
+  if (error || !missingShoe) {
+    return null
   }
 
   return {
