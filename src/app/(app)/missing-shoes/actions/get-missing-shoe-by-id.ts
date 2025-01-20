@@ -7,7 +7,7 @@ export const getMissingShoeById = async (requestId: number) => {
   const supabase = await getSupabaseClient();
   const { data: missingShoe, error } = await supabase
     .from(Tables.MissingShoes)
-    .select()
+    .select(`* , members(name)`)
     .match({ id: requestId })
     .single();
 
@@ -24,6 +24,6 @@ export const getMissingShoeById = async (requestId: number) => {
     ownerAddress: missingShoe.owner_address,
     description: missingShoe.description,
     shoesToken: missingShoe.shoes_token,
-    reportedBy: missingShoe.reported_by,
+    reportedBy: missingShoe.members.name,
   };
 };

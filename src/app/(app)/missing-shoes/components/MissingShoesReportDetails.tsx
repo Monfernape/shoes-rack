@@ -22,13 +22,6 @@ export const MissingShoesReportDetails = ({ missingShoe }: Props) => {
     redirect(Routes.MissingShoes);
   }
 
-  const handleReportedBy = async (id?: number) => {
-    if (id) {
-      const userInfo = await getUserById(id?.toString());
-      return userInfo?.name;
-    }
-    return;
-  };
 
   return (
     <div className="flex justify-center sm:m-8">
@@ -139,7 +132,7 @@ export const MissingShoesReportDetails = ({ missingShoe }: Props) => {
               </h3>
               <div className="pl-12 space-y-2">
                 <p className="text-xs">
-                  {handleReportedBy(missingShoe?.reportedBy)}
+                 { missingShoe?.reportedBy }
                 </p>
               </div>
             </div>
