@@ -40,11 +40,10 @@ export const MemberDetails = ({
         return false;
       }
     }
-  }, []);
+  }, [userInfo]);
   const dateFormat = dateformatter(new Date(userInfo.ehad_duration));
-
-  return userInfo.id ? (
-    <Card>
+  if (userInfo.id) {
+   return  <Card>
       <CardContent className="text-left space-y-6 mt-6">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3">
@@ -147,8 +146,8 @@ export const MemberDetails = ({
           </div>
         )}
       </CardContent>
-    </Card>
-  ) : (
-    <NoDataFound />
-  );
+    </Card>;
+  }
+
+  return <NoDataFound />;
 };

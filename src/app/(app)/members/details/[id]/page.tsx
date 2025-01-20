@@ -23,6 +23,7 @@ const Page = async ({ params }: Parameters) => {
     user.role === MemberRole.Member &&
     userInfo.status === UserStatus.Deactivated
   ) {
+    // here when a member  try to see details of deactive member then he will redirect to member list
     return permanentRedirect(Routes.Members);
   }
   const breadcrumbs: Breadcrumbs[] = [
