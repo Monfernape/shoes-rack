@@ -65,7 +65,7 @@ export const loginUser = async ({ phoneNumber, password }: LoginUser) => {
             values: session,
           });
 
-          redirect(Routes.Members);
+          redirect(Routes.Dashboard);
         }
       }
     }

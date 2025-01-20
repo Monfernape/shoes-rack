@@ -112,8 +112,15 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
   };
 
   return (
-    <aside
-      className={`
+    <>
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-gray-800 bg-opacity-50 z-20 lg:hidden"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+      <aside
+        className={`
             ${isSidebarOpen || !isSmallScreen ? "block" : "hidden"}
             ${isSidebarOpen ? "block" : "hidden"}
              
@@ -175,7 +182,8 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
             <span className="text-xs">Settings</span>
           </Link>
         </div>
-      </div>
-    </aside>
+        </div>
+      </aside>
+    </>
   );
 };
