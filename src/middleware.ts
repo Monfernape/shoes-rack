@@ -6,7 +6,7 @@ import { getLoggedInUser } from "./utils/getLoggedInUser";
 import { MemberRole } from "./constant/constant";
 
 const restrictedPaths: Routes[] = [Routes.AttendanceReport , Routes.MarkAttendance,Routes.AddMember];
-const restrictedPathForShiftIncharge: Routes[] = [Routes.AddFund , Routes.Fund , Routes.EditFund];
+const restrictedPathForShiftIncharge: Routes[] = [Routes.AddFund , Routes.EditFund];
 export default async function updateSession(request: NextRequest) {
   const isTokenValid = await getSession();
   const requestedPath = request.nextUrl.pathname as Routes;

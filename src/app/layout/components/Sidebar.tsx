@@ -81,6 +81,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
     //   route: Routes.AttendanceReport,
     //   icon: <ChartNoAxesCombinedIcon />,
     // },
+    {
+      name: "Funds",
+      route: Routes.Fund,
+      icon: <HandCoinsIcon />,
+    },
   ];
 
   const inchargeRoutes: Route[] = [
@@ -162,7 +167,10 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
             <ExitIcon className="w-3.5 h-3.5 mr-3" />
             <span className="text-xs">Logout</span>
           </button>
-          <Link  href={Routes.Profile} className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+          <Link
+            href={Routes.Profile}
+            className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+          >
             <GearIcon className="w-3.5 h-3.5 mr-3" />
             <span className="text-xs">Settings</span>
           </Link>
