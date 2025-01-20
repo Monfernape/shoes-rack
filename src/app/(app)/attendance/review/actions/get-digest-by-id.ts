@@ -1,8 +1,9 @@
-"use server";
-
-import { AttendanceStatus } from "@/constant/constant";
+import {
+  AttendanceStatus,
+  DigestStatus,
+  LeaveRequestStatus,
+} from "@/constant/constant";
 import { Tables } from "@/lib/db";
-import { LeavesRequestStatus } from "@/types";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
 export type Digest = {
@@ -14,9 +15,10 @@ export type Digest = {
   leaves: number[];
 };
 
-export const getDigestById = async (id: number): Promise<Digest | Error> => {
+export const getDigestById = async (id: number) => {
   const supabase = await getSupabaseClient();
 
+  // Fetch the digest data
   const { data: digestData, error: digestError } = await supabase
     .from(Tables.Digest)
     .select("*")
@@ -24,57 +26,134 @@ export const getDigestById = async (id: number): Promise<Digest | Error> => {
     .single();
 
   if (digestError) {
-    console.error("Error fetching digest:", digestError.message);
+    console.error("Error fetching digest:", digestError?.message);
+    return null;
   }
 
-  const date = new Date(digestData.created_at);
+  const fetchTableData = async ({
+    status,
+    table,
+    membersId,
+  }: {
+    status: AttendanceStatus | LeaveRequestStatus;
+    table: Tables;
+    membersId?: number[];
+  }) => {
+    try {
 
-  const digestCreatedAt = date.toISOString().split('T')[0];
+      const createdAt = new Date(digestData.created_at);
 
-  const [absentsResults, presentsResult, leavesResult] = await Promise.all([
-    supabase
-      .from(Tables.Attendance)
-      .select("*")
-      .eq("status", AttendanceStatus.Reject)
-      .in("memberId", digestData.absents || []),
+      // Calculate the date range for the previous day beacuse
+      const fromDate = new Date(createdAt);
+      fromDate.setDate(createdAt.getDate() - 1);
+      fromDate.setHours(0, 0, 0, 0); // Start of previous day
 
-    supabase
-      .from(Tables.Attendance)
-      .select("*")
-      .eq("status", AttendanceStatus.Approve)
-      .in("memberId", digestData.presents || []),
+      const toDate = new Date(fromDate);
+      toDate.setHours(23, 59, 59, 999); // End of previous day
 
-    supabase
-      .from(Tables.Leaves)
-      .select("*")
-      .eq("status", LeavesRequestStatus.Approved)
-      .in("memberId", digestData.leaves || []),
-  ]);
+      // Fetch data from Supabase table
+      let query = supabase
+        .from(table)
+        .select("*")
+        .eq("status", status)
+        .gte("created_at", fromDate.toISOString())
+        .lte("created_at", toDate.toISOString());
 
-  if (absentsResults.error ?? presentsResult.error ?? leavesResult.error) {
-    console.warn(
-      "Error fetching leaves:",
-      absentsResults.error?.message ??
-        presentsResult.error?.message ??
-        leavesResult.error?.message
-    );
-  }
+      // If membersId is provided, filter the data by memberId
+      if (membersId && membersId.length > 0) {
+        query = query.in("memberId", membersId);
+      }
 
-  if (leavesResult.error) {
-    console.warn("Error fetching leaves:", leavesResult.error.message);
-  }
+      const { data, error } = await query;
 
+      // If there's an error in the query
+      if (error) {
+        console.error("Error fetching data:", error.message);
+        return [];
+      }
 
-  const absents = absentsResults.data?.filter((attendance)=>attendance.created_at.includes(digestCreatedAt));
-  const presents = presentsResult.data?.filter((attendance)=>attendance.created_at.includes(digestCreatedAt));
-  const leaves = leavesResult.data?.filter((attendance)=>attendance.created_at.includes(digestCreatedAt));
-
-  return {
-    id: digestData.id,
-    created_date: digestData.created_date,
-    status: digestData.status,
-    absents: absents || [],
-    presents: presents || [],
-    leaves: leaves || [],
+      // Return the fetched data
+      return data;
+    } catch (error) {
+      console.error("Error processing data:", error);
+      return [];
+    }
   };
+
+  try {
+    if (digestData.status === DigestStatus.Confirmed) {
+      console.log("asdfasdf",digestData.status)
+      const fetchBy = [
+        {
+          table: Tables.Attendance,
+          status: AttendanceStatus.Reject,
+          memberIds: digestData.absents,
+        },
+        {
+          table: Tables.Attendance,
+          status: AttendanceStatus.Approve,
+          memberIds: digestData.presents,
+        },
+        {
+          table: Tables.Leaves,
+          status: AttendanceStatus.Approve,
+          memberIds: digestData.leaves,
+        },
+      ];
+
+      const results = await Promise.all(
+        fetchBy.map((item) =>
+          fetchTableData({
+            table: item.table,
+            status: item.status,
+            membersId: item.memberIds,
+          })
+        )
+      );
+
+      const [absents, presents, leaves] = results;
+
+      return {
+        id: digestData.id,
+        created_date: digestData.created_date,
+        status: digestData.status,
+        absents: absents,
+        presents: presents,
+        leaves: leaves,
+      };
+    } else {
+      const fetchBy = [
+        {
+          table: Tables.Attendance,
+          status: AttendanceStatus.Pending,
+        },
+        {
+          table: Tables.Leaves,
+          status: AttendanceStatus.Pending,
+        },
+      ];
+
+      const results = await Promise.all(
+        fetchBy.map((item) =>
+          fetchTableData({
+            table: item.table,
+            status: item.status,
+          })
+        )
+      );
+
+      const [attendances, leaves] = results;
+      const pendingDailyDigest = [...attendances, ...leaves];
+
+      return {
+        id: digestData.id,
+        created_date: digestData.created_date,
+        status: digestData.status,
+        pending: pendingDailyDigest || [],
+      };
+    }
+  } catch (error) {
+    console.error("Error processing digest data:", error);
+    return null;
+  }
 };
