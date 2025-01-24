@@ -12,7 +12,7 @@ export default function AddMemberCard() {
         </CardTitle>
       </CardHeader>
       <CardContent className="text-xs text-muted-foreground">
-        <p className="mb-4">Add a new member by clicking the button below.</p>
+      <p className="mb-4 h-10 overflow-hidden text-xs text-muted-foreground">Add a new member by clicking the button below.</p>
         <Button asChild className="h-7 text-xs">
           <Link href={Routes.AddMember}>Add Member</Link>
         </Button>

@@ -32,14 +32,14 @@ export const Searchbox = ({
     "relative flex justify-end transition-all duration-500 ease-in-out",
     fullWidthOnFocus && isShowIconOnly
       ? "w-full transition-all duration-500 ease-in-out"
-      : "w-8 md:w-60",
+      : "w-7 md:w-60",
   ]
     .filter(Boolean)
     .join(" ");
 
   // Calculate the base input width and padding
   const inputClassNames = [
-    "p-2 transition-all duration-500 ease-in-out",
+    "p-1 transition-all duration-500 ease-in-out",
     fullWidthOnFocus && isShowIconOnly
       ? "w-full"
       : "w-2",
