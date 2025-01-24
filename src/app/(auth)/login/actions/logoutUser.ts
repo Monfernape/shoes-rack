@@ -1,11 +1,14 @@
-
-"use server"
+"use server";
 import { Routes } from "@/lib/routes";
-import { clearCookies } from "@/utils/cookiesManager";
 import { redirect } from "next/navigation";
-import { Cookies } from "@/constant/constant";
+import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
 export const logoutUser = async () => {
-  clearCookies([Cookies.LoginUser, Cookies.Session]);
+  const supabse = await getSupabaseClient();
+
+  const { error } = await supabse.auth.signOut();
+  if (error) {
+    return error.message;
+  }
   redirect(Routes.Login);
 };
