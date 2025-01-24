@@ -5,5 +5,5 @@ export enum Tables {
   Notification = 'notifications',
   MissingShoes="missing_shoes",
   Funds="funds",
-  Digest="digest",
+  Digest= "digest",
 }

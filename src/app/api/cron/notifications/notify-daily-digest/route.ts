@@ -1,7 +1,7 @@
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { NextResponse } from "next/server";
-import { MemberRole, UserStatus } from "@/constant/constant";
+import { DigestStatus, MemberRole, UserStatus } from "@/constant/constant";
 import * as cron from "node-cron";
 // every day at midnight
 const EVERY_DAY_AT_MIDNIGHT = "* * * * *";
@@ -32,7 +32,15 @@ export async function GET() {
         .from(Tables.Notification)
         .insert([...allNotification]);
       if (insertionError) {
-        throw insertionError;
+        return { error: insertionError.message };
+      }
+      const { error: digestInsertionError } = await supabase
+        .from(Tables.Digest)
+        .insert({
+          status: DigestStatus.Pending,
+        });
+      if (digestInsertionError) {
+        return { error: digestInsertionError.message };
       }
     });
     return NextResponse.json({ data: "Success", status: 200 });

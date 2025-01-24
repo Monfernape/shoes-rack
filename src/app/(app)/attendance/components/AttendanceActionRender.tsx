@@ -17,7 +17,7 @@ import { Routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
 import { updateAttendanceStatus } from "../actions/update-attendance-status";
 import { deleteAttendance } from "../actions/deleteAttendance";
-import { Attendance, UserDetails } from "@/types";
+import { Attendance, EventType, UserDetails } from "@/types";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 export type AttendanceActionRenderProps = {
@@ -40,7 +40,8 @@ const AttendanceActionRender = ({
     router.push(`${Routes.AttendanceDetails}/${id}`);
   };
 
-  const handleEditInfo = (requestId: number) => {
+  const handleEditInfo = (requestId: number, e: EventType) => {
+    e.stopPropagation();
     router.push(`${Routes.EditAttendance}/${requestId}`);
   };
 
@@ -129,15 +130,16 @@ const AttendanceActionRender = ({
       {
         title: "Edit",
         id: 2,
-        onClick: () => {
-          handleEditInfo(requestId);
+        onClick: (e: EventType) => {
+          handleEditInfo(requestId, e);
         },
         icon: <EditIcon size={16} />,
       },
       {
         title: "Delete",
         id: 3,
-        onClick: () => {
+        onClick: (e: EventType) => {
+          e.stopPropagation();
           openConfirmationModal(AttendanceModelActions.Delete);
         },
         icon: <TrashIcon size={16} className="stroke-status-inactive" />,
@@ -166,7 +168,8 @@ const AttendanceActionRender = ({
       actions.push({
         title: "Approve",
         id: 4,
-        onClick: () => {
+        onClick: (e: EventType) => {
+          e.stopPropagation();
           openConfirmationModal(AttendanceModelActions.Approve);
         },
         icon: <CheckCircleIcon size={16} />,
@@ -179,7 +182,8 @@ const AttendanceActionRender = ({
       actions.push({
         title: "Reject",
         id: 5,
-        onClick: () => {
+        onClick: (e: EventType) => {
+          e.stopPropagation();
           openConfirmationModal(AttendanceModelActions.Reject);
         },
         icon: <AlertCircleIcon size={16} className="stroke-status-inactive" />,

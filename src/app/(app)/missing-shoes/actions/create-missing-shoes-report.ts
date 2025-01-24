@@ -20,7 +20,7 @@ export const reportMissingShoe = async (values: MissingSchemaType) => {
     owner_phone_number: ownerPhoneNumber,
     owner_address: ownerAddress,
     status: MissingShoeStatus.Missing,
-    reported_by: user.id,
+    reported_by: user.name,
   });
 
   if (error) {
