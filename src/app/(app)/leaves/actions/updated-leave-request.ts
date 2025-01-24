@@ -5,10 +5,10 @@ import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { leaveRequestSchema } from "../add/components/LeaveRequestFormBuilder";
 import { z } from "zod";
 import { LeaveRequestStatus, MemberRole } from "@/constant/constant";
-import { revalidatePath } from "next/cache";
 import { Routes } from "@/lib/routes";
 import { getUserById } from "../../members/actions/get-user-by-id";
 import { User } from "@/types";
+import { redirect } from "next/navigation";
 
 export const updateLeaveRequest = async (
   requestId: number,
@@ -51,6 +51,6 @@ export const updateLeaveRequest = async (
   if (error) {
     return { error: error.message };
   } else {
-    revalidatePath(Routes.LeaveRequest);
+    redirect(Routes.LeaveRequest);
   }
 };
