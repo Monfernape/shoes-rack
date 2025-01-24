@@ -8,6 +8,7 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import CardWrapper from "@/common/CardWrapper";
 
 interface LeaveRequest extends LeaveRequestsTypes {
   requestedBy: string;
@@ -22,7 +23,8 @@ export const LeaveRequestDetails = ({
   leaveRequestedBy,
 }: Props) => {
   return (
-    <Card>
+    <CardWrapper>
+   <Card className="w-full max-w-xl">
       <CardContent className="text-left space-y-6 mt-6">
           <div className="flex justify-between items-center py-4">
             {leaveRequestDetails.status && (
@@ -66,5 +68,7 @@ export const LeaveRequestDetails = ({
           </div>
       </CardContent>
     </Card>
+    </CardWrapper>
+   
   );
 };

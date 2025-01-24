@@ -3,7 +3,7 @@ import { PageLayout } from "@/app/layout/PageLayout";
 
 import React from "react";
 
-import Prfoile from "./profile/components/Profile";
+import {Profile} from "./profile/components/Profile";
 
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 
@@ -15,7 +15,7 @@ const Settings = async () => {
   return (
     <PageLayout>
       <div className="flex justify-around items-center">
-        <Prfoile loginUser={loginUser} />
+        <Profile loginUser={loginUser} />
       </div>
     </PageLayout>
   );
