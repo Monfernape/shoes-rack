@@ -174,17 +174,17 @@ export const MemberList = ({
   };
 
   return !isPending ? (
-    hasMembers ? (
-      <StandardPage {...StandardPageProps}>
-        {user.role !== MemberRole.Member && (
-          <div className=" flex justify-end">
-            <MemberStatusFilter
-              setMemberStatus={(value) => setMemberStatus({ status: value })}
-              membersStatus={membersStatus}
-            />
-          </div>
-        )}
+    <StandardPage {...StandardPageProps}>
+      {user.role !== MemberRole.Member && (
+        <div className=" w-full flex justify-end">
+          <MemberStatusFilter
+            setMemberStatus={(value) => setMemberStatus({ status: value })}
+            membersStatus={membersStatus}
+          />
+        </div>
+      )}
 
+      {hasMembers ? (
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -243,10 +243,10 @@ export const MemberList = ({
             ))}
           </TableBody>
         </Table>
-      </StandardPage>
-    ) : (
-      <NoDataFound />
-    )
+      ) : (
+        <NoDataFound />
+      )}
+    </StandardPage>
   ) : (
     <div className="flex-1 h-full flex justify-center items-center">
       <div>

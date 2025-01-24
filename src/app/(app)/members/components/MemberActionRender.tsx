@@ -5,13 +5,13 @@ import {
   Info as InfoIcon,
   Trash2 as Trash2Icon,
   Edit as EditIcon,
-  ArchiveRestore as ArchiveRestoreIcon,
+  UserPlus as UserPlusIcon,
 } from "lucide-react";
 import { MemberRole, Shift, UserStatus } from "@/constant/constant";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Member, UserDetails } from "@/types";
-import { EventType,  } from "@/types";
+import { EventType } from "@/types";
 import { Routes } from "@/lib/routes";
 import { updateMemberStatus } from "../actions/update-status";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
@@ -23,7 +23,7 @@ type Props = {
 
 const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
   const { status, id, shift, role } = memberInfo;
-  const [modalOpen,setIsModalOpen] = useState<boolean>(false)
+  const [modalOpen, setIsModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -36,11 +36,11 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     e.stopPropagation();
     router.push(`${Routes.EditMember}/${id}`);
   };
-  
+
   const handleStatus = async (e: EventType) => {
     e.stopPropagation();
     try {
-      const result = await updateMemberStatus(id,UserStatus.Active);
+      const result = await updateMemberStatus(id, UserStatus.Active);
       if (result) {
         toast({
           variant: "destructive",
@@ -60,15 +60,15 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
       }
     }
   };
-  const handleModalOpen = (e: EventType)=>{
+  const handleModalOpen = (e: EventType) => {
     e.stopPropagation();
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
 
   const handleDeleteMember = async (e: EventType) => {
     e.stopPropagation();
     try {
-      await updateMemberStatus(id,UserStatus.Deactivated);
+      await updateMemberStatus(id, UserStatus.Deactivated);
       toast({
         title: "Member deleted successfully",
       });
@@ -92,9 +92,9 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
     {
       title: "Delete member",
       id: 3,
-      onClick:(e: EventType)=>{
+      onClick: (e: EventType) => {
         e.stopPropagation();
-        handleModalOpen(e)
+        handleModalOpen(e);
       },
       icon: <Trash2Icon size={16} />,
     },
@@ -111,13 +111,13 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
 
   const reactiveUserAction = [
     {
-      title: "Update status",
+      title: "Restore member",
       id: 1,
-      onClick:(e: EventType)=>{
+      onClick: (e: EventType) => {
         e.stopPropagation();
-        handleModalOpen(e)
+        handleModalOpen(e);
       },
-      icon: <ArchiveRestoreIcon size={16} />,
+      icon: <UserPlusIcon size={16} />,
     },
   ];
 
@@ -162,17 +162,25 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
 
   return (
     <>
-       <ConfirmationModal 
-        title={status === UserStatus.Deactivated ? "Restore Member" : "Delete Member"}
-        description={status === UserStatus.Deactivated? "Are you sure you want to restore this member?" : "Are you sure you want to delete this member?"}
-        buttonText={status === UserStatus.Deactivated ? "Restore Member" : "Delete"}
+      <ConfirmationModal
+        title={
+          status === UserStatus.Deactivated ? "Restore Member" : "Delete Member"
+        }
+        description={
+          status === UserStatus.Deactivated
+            ? "Are you sure you want to restore this member?"
+            : "Are you sure you want to delete this member?"
+        }
+        buttonText={
+          status === UserStatus.Deactivated ? "Restore Member" : "Delete"
+        }
         setIsModalOpen={setIsModalOpen}
-        onHandleConfirm={status === UserStatus.Deactivated ? handleStatus :  handleDeleteMember}
-        isModalOpen = {modalOpen}
-       
-       />
+        onHandleConfirm={
+          status === UserStatus.Deactivated ? handleStatus : handleDeleteMember
+        }
+        isModalOpen={modalOpen}
+      />
       <ActionsMenu actions={actionMenu} />
-      
     </>
   );
 };
