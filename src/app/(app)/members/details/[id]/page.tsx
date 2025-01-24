@@ -6,6 +6,8 @@ import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
 import { MemberHeader } from "../../components/MemberHeader";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import { MemberRole, UserStatus } from "@/constant/constant";
+import { permanentRedirect } from "next/navigation";
 
 type Parameters = {
   params: {
@@ -15,18 +17,24 @@ type Parameters = {
 
 const Page = async ({ params }: Parameters) => {
   const { id } = params;
-  const user = await getLoggedInUser()
+  const user = await getLoggedInUser();
   const userInfo = await getUserById(id);
-
+  if (
+    user.role === MemberRole.Member &&
+    userInfo.status === UserStatus.Deactivated
+  ) {
+    // here when a member  try to see details of deactive member then he will redirect to member list
+    return permanentRedirect(Routes.Members);
+  }
   const breadcrumbs: Breadcrumbs[] = [
     { href: Routes.Members, label: "Members" },
     { href: `${Routes.MemberDetails}/${id}`, label: userInfo.name },
   ];
   return (
     <div>
-      <MemberHeader  breadcrumbs={breadcrumbs} user = {user} />
+      <MemberHeader breadcrumbs={breadcrumbs} user={user} />
       <FormWrapper>
-        <MemberDetails userInfo={userInfo} user = {user} />
+        <MemberDetails userInfo={userInfo} user={user} />
       </FormWrapper>
     </div>
   );

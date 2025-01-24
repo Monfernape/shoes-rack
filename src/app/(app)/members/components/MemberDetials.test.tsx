@@ -3,7 +3,7 @@ import { it, describe, expect } from "vitest";
 import "@testing-library/jest-dom";
 import { MemberDetails } from './MemberDetails';
 import { UserDetails } from '@/types';
-import { MemberRole, UserStatus } from '@/constant/constant';
+import { MemberRole, Shift, UserStatus } from '@/constant/constant';
 
 const mockUserDetails: UserDetails = {
   name: "Alice Johnson",
@@ -11,7 +11,7 @@ const mockUserDetails: UserDetails = {
   date_of_birth: "",
   cnic: "12345-6789012-3",
   ehad_duration: "2 years",
-  shift: "day",
+  shift: Shift.ShiftA,
   role: MemberRole.Member,
   address: "123 Main St, Springfield, IL",
   status: UserStatus.Active,
@@ -23,7 +23,7 @@ const mockUserDetails: UserDetails = {
 
 describe("member details", () => {
   it("should render the member details", async () => {
-    render(<MemberDetails userInfo={mockUserDetails} />);
+    render(<MemberDetails userInfo={mockUserDetails} user = {mockUserDetails} />);
     expect(screen.getByTestId("user-name")).toHaveTextContent("Alice Johnson");
   });
 });

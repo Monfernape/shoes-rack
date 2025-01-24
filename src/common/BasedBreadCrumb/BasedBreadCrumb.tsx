@@ -39,7 +39,7 @@ export const BasedBreadCrumb = ({ breadcrumbs }: Props) => {
               <BreadcrumbItem>
                 <BreadcrumbLink
                   asChild
-                  className={`max-w-20 text-xs text-gray-800 font-normal whitespace-nowrap md:max-w-none
+                  className={`max-w-56 text-xs text-gray-800 font-normal whitespace-nowrap md:max-w-none
                    ${
                      index === updatedBreadCrumbs.length-1
                        ?  "text-gray-800" : "text-gray-500"

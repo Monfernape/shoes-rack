@@ -10,6 +10,7 @@ export const UserAvatar = ({
 }) => {
   const firstLetter = userName
     .split(" ")
+    .slice(0,2)
     .map((n) => n[0])
     .join("");
   const avatarSize =

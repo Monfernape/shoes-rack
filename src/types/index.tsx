@@ -103,7 +103,7 @@ export type UserDetails = {
   phoneNumber: string;
   cnic: string;
   ehad_duration: string;
-  shift: string;
+  shift: Shift;
   role: MemberRole;
   address: string;
   status: UserStatus;
