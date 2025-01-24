@@ -64,7 +64,7 @@ export const getAttendanceReport = async () => {
     const memberInfo = attendanceData.find(({ memberId: id }) => id === memberId);
 
     return {
-      name: memberInfo?.name ,
+      name: memberInfo?.name || "" ,
       attendancePercentage: `${attendancePercentage}%`,
       status,
       present: presentDays.size,
@@ -74,6 +74,8 @@ export const getAttendanceReport = async () => {
     };
   });
 
-  return monthlyAttendanceReport;
+  const monthlyReport = Array.isArray(monthlyAttendanceReport)
+    ? monthlyAttendanceReport
+    : [];
+  return monthlyReport;
 };
-

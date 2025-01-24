@@ -42,7 +42,7 @@ export const FundsHeader = ({ breadcrumbs }: Props) => {
   return (
     <HeaderWrapper isShowBreadCrumbs={!isMobileScreen || !isShowIconOnly} breadcrumbs={breadcrumbs}>
       {pathname === Routes.Fund && (
-        <div className="flex items-center space-x-2">
+        <>
           <Searchbox
             isShowIconOnly={isShowIconOnly}
             fullWidthOnFocus={isMobileScreen}
@@ -51,7 +51,7 @@ export const FundsHeader = ({ breadcrumbs }: Props) => {
             onChange={onChange}
           />
           <NavigationButton path={Routes.AddFund} buttonText="Add Fund" />
-        </div>
+        </>
       )}
     </HeaderWrapper>
   );

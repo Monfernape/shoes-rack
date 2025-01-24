@@ -25,5 +25,7 @@ export enum Routes {
   LeaveRequestDetails = "/leaves/details",
   AttendanceReport = "/attendance-report",
   AttendanceDetails = "/attendance/details",
-  Digest = '/digest'
+  Digest = "/digest",
+  Profile = "/settings/profile",
+  Settings = "/settings",
 }

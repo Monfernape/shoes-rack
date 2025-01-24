@@ -132,9 +132,10 @@ export const LeaveRequestFormBuilder = ({
             });
           }
         } else {
-          const result = await updateLeaveRequest(Number(leaveId), values);
+          const result = await updateLeaveRequest(Number(leaveId), values,loginUser);
           if(result?.error){
             toast({
+              variant:'destructive',
               title: result.error,
             });
           }else{
