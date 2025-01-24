@@ -75,6 +75,18 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
+
+    const startTime = new Date(`1970-01-01T${values.startTime}:00`);
+    const endTime = new Date(`1970-01-01T${values.endTime}:00`);
+
+    if (startTime.getTime() === endTime.getTime()) {
+      form.setError("endTime", {
+        type: "manual",
+        message: "Start time and end time cannot be the same.",
+      });
+      return;
+    }
+    
     if (isValidParam(attendanceId)) {
       const updatedValue = {
         id: attendanceId,
