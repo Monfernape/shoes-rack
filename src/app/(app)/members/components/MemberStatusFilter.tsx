@@ -24,7 +24,7 @@ export const MemberStatusFilter = ({
         }}
         defaultValue={membersStatus.status?? UserStatus.Active}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full md:w-[180px]">
           <SelectValue    />
         </SelectTrigger>
         <SelectContent>
