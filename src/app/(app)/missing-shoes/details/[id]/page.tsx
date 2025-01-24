@@ -13,7 +13,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     { href: Routes.MissingShoes, label: "Missing shoes" },
     {
       href: `${Routes.MissingShoesDetails}/${id}`,
-      label: id,
+      label: `Token no. ${id}`,
     },
   ];
 

@@ -10,17 +10,12 @@ import {
 } from "lucide-react";
 import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
 import { MissingShoeReport } from "@/types";
-import { getUserById } from "../../members/actions/get-user-by-id";
 import CardWrapper from "@/common/CardWrapper";
 interface Props {
     missingShoe:MissingShoeReport
 }
 export const MissingShoesReportDetails = ({missingShoe}:Props) => {
 
-  const handleReportedBy = async( id : number)=>{
-    const userInfo = await getUserById(id?.toString());
-    return userInfo?.name
-  }
   return (
     <CardWrapper>
     <Card className="w-full max-w-xl">
@@ -138,7 +133,7 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
             <div className="pl-12 space-y-2">
               <p className="text-xs">
 
-                {handleReportedBy(missingShoe.reportedBy)}
+                {missingShoe.reportedBy}
               </p>
             </div>
           </div>
