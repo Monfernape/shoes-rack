@@ -11,6 +11,7 @@ import {
 import { MissingShoesStatusBadge } from "@/common/StatusBadge/MissingShoesStatusBadge";
 import { MissingShoeReport } from "@/types";
 import { getUserById } from "../../members/actions/get-user-by-id";
+import CardWrapper from "@/common/CardWrapper";
 interface Props {
     missingShoe:MissingShoeReport
 }
@@ -21,7 +22,7 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
     return userInfo?.name
   }
   return (
-    <div className="flex justify-center sm:m-8">
+    <CardWrapper>
     <Card className="w-full max-w-xl">
       <CardContent className="text-left space-y-6 mt-6">
         <div className="flex justify-between">
@@ -144,6 +145,6 @@ export const MissingShoesReportDetails = ({missingShoe}:Props) => {
         </div>
       </CardContent>
     </Card>
-    </div>
+   </CardWrapper>
   );
 };

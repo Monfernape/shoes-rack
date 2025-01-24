@@ -146,6 +146,7 @@ export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
             <TableRow
               key={row.id}
               onClick={() => handleViewDetails(row.original.id)}
+               className="cursor-pointer"
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell

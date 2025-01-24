@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
@@ -17,7 +16,7 @@ interface SettingsProps {
   loginUser: UserDetails;
 }
 
-const Profile = ({ loginUser }: SettingsProps) => {
+export const Profile = ({ loginUser }: SettingsProps) => {
   const router = useRouter();
   const handleNavigation = () => {
     return router.back();
@@ -26,7 +25,7 @@ const Profile = ({ loginUser }: SettingsProps) => {
   return (
     <FormWrapper>
       <div className="space-y-4 pb-10">
-      <div className="flex items-center space-x-2 pr-2 -ml-1">
+        <div className="flex items-center space-x-2 pr-2 -ml-1">
           <ArrowLeft
             onClick={handleNavigation}
             className="cursor-pointer text-gray-700 "
@@ -59,11 +58,11 @@ const Profile = ({ loginUser }: SettingsProps) => {
         </div>
 
         <div className="space-y-2">
-          <Label>Address</Label>
-          <div className="border rounded-md p-2 bg-gray-50 text-xs">
-            {loginUser.address}
-          </div>
-        </div>
+  <Label>Address</Label>
+  <address className="border rounded-md p-2 bg-gray-50 text-xs not-italic">
+    {loginUser.address}
+  </address>
+</div>
 
         <div className="space-y-2">
           <Label>Role</Label>
@@ -90,4 +89,3 @@ const Profile = ({ loginUser }: SettingsProps) => {
   );
 };
 
-export default Profile;
