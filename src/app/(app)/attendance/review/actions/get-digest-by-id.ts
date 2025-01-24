@@ -82,7 +82,6 @@ export const getDigestById = async (id: number) => {
 
   try {
     if (digestData.status === DigestStatus.Confirmed) {
-      console.log("asdfasdf",digestData.status)
       const fetchBy = [
         {
           table: Tables.Attendance,
