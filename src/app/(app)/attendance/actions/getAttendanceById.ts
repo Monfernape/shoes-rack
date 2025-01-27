@@ -32,7 +32,7 @@ export const getAttendanceById = async (id: number): Promise<MemberDetails> => {
     throw error;
   }
 
-  if (attendance.status === AttendanceStatus.Approve || AttendanceStatus.Reject) {
+  if (attendance.status === AttendanceStatus.Approve || attendance.status === AttendanceStatus.Reject) {
     permanentRedirect(Routes.Attendance);
   }
 
