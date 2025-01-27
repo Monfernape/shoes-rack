@@ -11,7 +11,7 @@ interface AttendanceType extends Attendance {
   members: { name: string; status: UserStatus; shift: Shift };
 }
 
-export const getAttendance = async (id: string) => {
+export const getAttendance = async (id: number) => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
   const response = await getMembers("");
@@ -21,7 +21,7 @@ export const getAttendance = async (id: string) => {
     .select(
       `id, memberId, startTime, endTime, status , created_at,  ${Tables.Members}(name,status,shift))`
     )
-    .eq("members.status", "active");
+    .eq("members.status", UserStatus.Active);
 
   // Role-based filtering:
   if (loginUser.role === MemberRole.Member) {
@@ -31,9 +31,10 @@ export const getAttendance = async (id: string) => {
     // Shift Incharge filters attendance for members in the same active shift
     const activeMember = response.data.some(
       (member) =>
-        member.status === UserStatus.Active && member.shift === loginUser.shift
+        member.status === UserStatus.Active &&
+        member.shift === loginUser.shift &&
+        member.role === loginUser.Member
     );
-
     query = activeMember
       ? query.eq("memberId", id)
       : query.eq("memberId", loginUser.id);
@@ -41,20 +42,18 @@ export const getAttendance = async (id: string) => {
     // Incharge can see attendance of a specific member
     query = query.eq("memberId", id);
   }
-
   const { data: attendanceData, error } = await query.returns<
     AttendanceType[]
   >();
-
-  if (error || !attendanceData) {
+  if (error) {
     return [];
   }
 
   const filterAttendance = attendanceData.filter(
     (attendance) => attendance.members !== null
   );
-  
-  const attendances = filterAttendance.map((attendance) => ({
+
+  return filterAttendance.map((attendance) => ({
     member: attendance.memberId.toString(),
     id: attendance.id,
     startTime: attendance.startTime,
@@ -64,7 +63,5 @@ export const getAttendance = async (id: string) => {
     memberId: attendance.memberId,
     name: attendance.members?.name,
     shift: attendance.members?.shift,
-  }))
-
-  return attendances;
+  }));
 };

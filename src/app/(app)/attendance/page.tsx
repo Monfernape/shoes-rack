@@ -13,9 +13,8 @@ const breadcrumbs = [
 
 const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
   const { id } = searchParams || {};
-  const attendance = await getAttendance(id);
+  const attendance = await getAttendance(Number(id));
   const loginUser = await getLoggedInUser();
-
   return (
     <>
       <AttendanceHeader breadcrumbs={breadcrumbs} />

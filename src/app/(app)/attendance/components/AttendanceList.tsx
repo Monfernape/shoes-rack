@@ -70,7 +70,7 @@ export const AttendanceList = ({ attendance, loginUser }: AttendanceProps) => {
         accessorKey: "created_at",
         header: () => <h4 className="ml-4">Date</h4>,
         cell: ({ row }) => (
-          <div className="ml-2">{new Intl.DateTimeFormat().format(new Date(row.getValue("created_at")))}</div>
+          <div className="ml-2" suppressHydrationWarning>{new Intl.DateTimeFormat().format(new Date(row.getValue("created_at")))}</div>
         ),
       },
       {
