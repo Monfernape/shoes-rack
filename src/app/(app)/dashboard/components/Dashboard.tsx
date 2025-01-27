@@ -40,7 +40,7 @@ export const Dashboard = ({ loggedUser, attendanceDetails }: Props) => {
         <p className="text-xs py-4 text-foreground"> {currentDate} </p>
         <p className="text-sm font-medium pb-4">{`${generateGreetings}, ${loggedUser.name} 👋`}</p>
         <AttendanceDonutChart attendanceDetails={attendanceDetails} />
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="pt-4 pb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {loggedUser.role !== MemberRole.Member && <AddMemberCard />}
           <FundPaymentCard />
           {/* <MissedAttendanceCard /> */}
