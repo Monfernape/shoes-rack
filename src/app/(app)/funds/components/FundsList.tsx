@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -24,17 +24,21 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Routes } from "@/lib/routes";
 import { PageLayout } from "@/app/layout/PageLayout";
 import { NoDataFound } from "@/common/NoDataFound";
+import { DataSpinner } from "@/common/Loader/Loader";
 
 export function FundsList({ funds }: { funds: Fund[] }) {
   const searchParams = useSearchParams();
   const searchQuery: string | null = searchParams.get("key");
   const [filteredFunds, setFilteredFunds] = useState<Fund[]>(funds);
+  const [isPending, startTransition] = useTransition();
   useEffect(() => {
     if (searchQuery) {
-      const updatedFunds = funds.filter((fund) =>
-        fund.name.toLowerCase().includes(searchQuery?.toLowerCase() || "")
-      );
-      setFilteredFunds(updatedFunds);
+      startTransition(() => {
+        const updatedFunds = funds.filter((fund) =>
+          fund.name.toLowerCase().includes(searchQuery?.toLowerCase() || "")
+        );
+        setFilteredFunds(updatedFunds);
+      });
     } else {
       setFilteredFunds(funds);
     }
@@ -66,9 +70,9 @@ export function FundsList({ funds }: { funds: Fund[] }) {
     },
     {
       accessorKey: "amount",
-      header: () => <h4>Amount</h4>,
+      header: () => <h4 className="text-center">Amount</h4>,
       cell: ({ row }) => {
-        return <div>{row.getValue("amount")}</div>;
+        return <div className="text-center">{row.getValue("amount")}</div>;
       },
     },
     {
@@ -116,11 +120,17 @@ export function FundsList({ funds }: { funds: Fund[] }) {
     actionButton: false,
   };
 
-  return (
+  return isPending ? (
+    <div className="flex-1 h-full flex justify-center items-center">
+      <div>
+        <DataSpinner isInputLoader />
+      </div>
+    </div>
+  ) : (
     <StandardPage {...StandardPageProps}>
-      {filteredFunds.length !== 0 ? <div className="w-full">
-        <PageLayout>
-          
+      {filteredFunds.length !== 0 ? (
+        <div className="w-full">
+          <PageLayout>
             <Table className="overflow-hidden">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -141,31 +151,28 @@ export function FundsList({ funds }: { funds: Fund[] }) {
                 ))}
               </TableHeader>
               <TableBody>
-           
-                 { table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell
-                          key={cell.id}
-                          className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis "
-                        >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                 }
+                {table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className="max-w-28 overflow-hidden whitespace-nowrap text-ellipsis "
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
-            </PageLayout>
-      </div>
-          : (
-            <NoDataFound />
-          )
-          }
+          </PageLayout>
+        </div>
+      ) : (
+        <NoDataFound />
+      )}
     </StandardPage>
-  )}
-
+  );
+}
