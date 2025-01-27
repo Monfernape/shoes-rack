@@ -17,7 +17,7 @@ export const getLeaveRequestById = async (requestId: number) => {
   if (error) {
     throw error.message;
   }
-  if (data.status === AttendanceStatus.Approve ) {
+  if (data.status === AttendanceStatus.Approve || AttendanceStatus.Reject ) {
     permanentRedirect(Routes.LeaveRequest); 
   }
   return data;
