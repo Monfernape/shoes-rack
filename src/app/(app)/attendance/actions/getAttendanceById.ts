@@ -1,8 +1,11 @@
 "use server";
 
+import { AttendanceStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
+import { Routes } from "@/lib/routes";
 import { AttendanceResponse, MemberDetails } from "@/types";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { permanentRedirect } from "next/navigation";
 
 export const getAttendanceById = async (id: number): Promise<MemberDetails> => {
   const supabase = await getSupabaseClient();
@@ -29,6 +32,10 @@ export const getAttendanceById = async (id: number): Promise<MemberDetails> => {
     throw error;
   }
 
+  if (attendance.status === AttendanceStatus.Approve || attendance.status === AttendanceStatus.Reject) {
+    permanentRedirect(Routes.Attendance);
+  }
+
   const attendanceDetails = {
     id: attendance.id,
     memberId: attendance.memberId,
@@ -41,5 +48,3 @@ export const getAttendanceById = async (id: number): Promise<MemberDetails> => {
 
   return attendanceDetails;
 };
-
-

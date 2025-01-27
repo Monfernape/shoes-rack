@@ -38,7 +38,7 @@ export const FundSchema = z.object({
       message: "Please enter a number.",
     })
     .refine((value) => Number(value) > 0, {
-      message: "Amount must be a positive number.",
+      message: "Amount must be greater than the zero",
     }),
 });
 

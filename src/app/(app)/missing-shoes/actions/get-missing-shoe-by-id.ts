@@ -1,7 +1,10 @@
 "use server";
 
+import { MissingShoeStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
+import { Routes } from "@/lib/routes";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { permanentRedirect } from "next/navigation";
 
 export const getMissingShoeById = async (requestId: number) => {
   const supabase = await getSupabaseClient();
@@ -15,6 +18,9 @@ export const getMissingShoeById = async (requestId: number) => {
     return null
   }
 
+  if (missingShoe.status === MissingShoeStatus.Found) {
+    permanentRedirect(Routes.MissingShoes); 
+  }
   return {
     id: missingShoe.id,
     status: missingShoe.status,

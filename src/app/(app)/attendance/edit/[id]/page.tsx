@@ -9,13 +9,11 @@ import { getLoggedInUser } from "@/utils/getLoggedInUser";
 const AttendanceForm = async ({ params }: { params: { id?: string } }) => {
   const { id: attendanceId } = params;
 
-  const attendanceData = attendanceId
-    ? await getAttendanceById(Number(attendanceId)).then((response) => ({
-        memberId: response.memberId.toString(),
-        startTime: response.startTime,
-        endTime: response.endTime,
-      }))
-    : undefined;
+  const attendanceData = await getAttendanceById(Number(attendanceId)).then((response) => ({
+    memberId: response.memberId.toString(),
+    startTime: response.startTime,
+    endTime: response.endTime,
+  }));
 
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Attendance" },
