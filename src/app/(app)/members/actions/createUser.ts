@@ -9,6 +9,7 @@ import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { Routes } from "@/lib/routes";
 import { intlNumberFormat } from "@/utils/formattedPhoneNumber";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
+import { ERROR_MESSAGE } from "@/constant/error";
 
 export const createUser = async (values: UserBuilder) => {
   const supabase = await getSupabaseClient();
@@ -41,9 +42,11 @@ export const createUser = async (values: UserBuilder) => {
 
     if (error) {
       if (error.details.includes("phoneNumber")) {
-        return { error: "Phone number is already  exist" };
+        return { error: ERROR_MESSAGE.MEMBERS.DUPLICATE_PHONENUMBER };
+      } else if (error.details.includes("cnic")) {
+        return { error: ERROR_MESSAGE.MEMBERS.DUPLICATE_CNIC };
       }
-      return { error: "CNIC is already exist" };
+      return { error: ERROR_MESSAGE.GENERAL.SOMETHING_WENT_WRONG };
     } else {
       const { error } = await supabase.auth.signUp({
         phone: formattedPhoneNumber,
@@ -57,7 +60,7 @@ export const createUser = async (values: UserBuilder) => {
         },
       });
       if (error) {
-        return { error: "something went wrong " };
+        return { error: ERROR_MESSAGE.GENERAL.SOMETHING_WENT_WRONG };
       }
     }
     redirect(Routes.Members);

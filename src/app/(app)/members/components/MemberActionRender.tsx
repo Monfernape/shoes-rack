@@ -150,7 +150,7 @@ const MemberTableActionRender = ({ memberInfo, loginUser }: Props) => {
           ? [...reactiveUserAction]
           : [...baseActions, ...viewInfo];
       case MemberRole.ShiftIncharge:
-        return role === MemberRole.Incharge
+        return (role ===  MemberRole.ShiftIncharge) || (role ===MemberRole.Incharge )
           ? [...viewInfo]
           : checkShiftMembers(loginUser, shift, role);
       case MemberRole.Member:
