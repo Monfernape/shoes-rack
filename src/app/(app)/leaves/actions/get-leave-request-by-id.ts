@@ -11,8 +11,8 @@ export const getLeaveRequestById = async (requestId: number) => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
 
-  try {
-    const { data: leaveDetails, error } = await supabase
+
+    const { data: leaveDetails, } = await supabase
       .from(Tables.Leaves)
       .select(
         `*,
@@ -44,7 +44,5 @@ export const getLeaveRequestById = async (requestId: number) => {
     }
 
     return leaveDetails;
-  } catch (error) {
-    throw error;
-  }
+  
 };
