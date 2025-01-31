@@ -11,7 +11,7 @@ interface AttendanceType extends Attendance {
   members: { name: string; status: UserStatus; shift: Shift };
 }
 
-export const getAttendance = async (id: number) => {
+export const getAttendance = async (id: string) => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
   const response = await getMembers("");
@@ -36,11 +36,11 @@ export const getAttendance = async (id: number) => {
         member.role === loginUser.Member
     );
     query = activeMember
-      ? query.eq("memberId", id)
-      : query.eq("memberId", loginUser.id);
+      ? query.eq("memberId", Number(id))
+      : query.eq("memberId", Number(loginUser.id));
   } else if (loginUser.role === MemberRole.Incharge && id) {
     // Incharge can see attendance of a specific member
-    query = query.eq("memberId", id);
+    query = query.eq("memberId", Number(id));
   }
   const { data: attendanceData, error } = await query.returns<
     AttendanceType[]
