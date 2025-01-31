@@ -50,7 +50,7 @@ export default async function middleware(request: NextRequest) {
 
   if (
     session &&
-    loginUser.role === MemberRole.Member &&
+    loginUser?.role === MemberRole.Member &&
     isRestrictedPath
   ) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
@@ -58,7 +58,7 @@ export default async function middleware(request: NextRequest) {
 
   if (
     session &&
-    loginUser.role === MemberRole.ShiftIncharge &&
+    loginUser?.role === MemberRole.ShiftIncharge &&
     isRestrictedPathForShiftIncharge
   ) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));

@@ -39,29 +39,39 @@ export const getDigestById = async (id: number) => {
         .from(Tables.Attendance)
         .select("*, members(name, shift)")
         .eq("status", AttendanceStatus.Approve)
-        .in("memberId", digestData.presents),
+        .in("memberId", digestData.presents)
+        .filter(
+          "created_at",
+          "gte",
+          new Date(Date.now() - 864e5).toUTCString()
+        ),
       supabase
         .from(Tables.Attendance)
         .select("*, members(name, shift)")
         .eq("status", AttendanceStatus.Reject)
-        .in("memberId", digestData.absents),
+        .in("memberId", digestData.absents)
+        .filter(
+          "created_at",
+          "gte",
+          new Date(Date.now() - 864e5).toUTCString()
+        ),
       supabase
         .from(Tables.Leaves)
         .select("*, members(name, shift)")
-        .in("memberId", digestData.leaves),
+        .in("memberId", digestData.leaves)
+        .filter(
+          "created_at",
+          "gte",
+          new Date(Date.now() - 864e5).toUTCString()
+        ),
     ]);
 
     if (
       attendanceResponsePresents.error ||
-      attendanceResponseAbsents.error ||
+      attendanceResponseAbsents?.error ||
       leavesResponse.error
     ) {
-      console.error(
-        "Error fetching attendance or leaves:",
-        attendanceResponsePresents.error?.message ||
-          attendanceResponseAbsents.error?.message ||
-          leavesResponse.error?.message
-      );
+     throw new Error()
     }
 
     const attendanceListPresents = attendanceResponsePresents.data || [];

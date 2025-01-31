@@ -38,8 +38,22 @@ export async function GET() {
 
       // Fetch attendance and leaves for the current date
       const [attendancesResponse, leavesResponse] = await Promise.all([
-        supabase.from(Tables.Attendance).select("*"),
-        supabase.from(Tables.Leaves).select("*"),
+        supabase
+          .from(Tables.Attendance)
+          .select("*")
+          .filter(
+            "created_at",
+            "gte",
+            new Date(Date.now() - 864e5).toUTCString()
+          ),
+        supabase
+          .from(Tables.Leaves)
+          .select("*")
+          .filter(
+            "created_at",
+            "gte",
+            new Date(Date.now() - 864e5).toUTCString()
+          ),
       ]);
 
       if (attendancesResponse.error) {
@@ -71,22 +85,17 @@ export async function GET() {
       // Insert rejected attendance for these members
       const newAttendances = membersWithNoRecords.map((member) => ({
         memberId: member.id,
-        status: "rejected",
-        startTime: "00:00",
-        endTime: "00:00",
-        created_at: "2025-01-30 12:00:33.260233+00",
+        status: AttendanceStatus.Reject,
+        startTime: "12:00",
+        endTime: "02:00",
+        created_at: `${new Date(Date.now() - 864e5).toUTCString()}`,
       }));
-
       if (newAttendances.length > 0) {
         const { error: insertError } = await supabase
           .from(Tables.Attendance)
           .insert(newAttendances);
-
         if (insertError) {
-          console.error(
-            "Error inserting new attendances:",
-            insertError.message
-          );
+          throw insertError;
         }
       }
 
@@ -132,7 +141,6 @@ export async function GET() {
       const presents = Array.from(presentsMembersIds);
       const leaves = Array.from(leavesMembersIds);
 
-
       const { error: digestInsertionError } = await supabase
         .from(Tables.Digest)
         .insert({
@@ -142,7 +150,7 @@ export async function GET() {
           leaves,
         });
       if (digestInsertionError) {
-        return { error: digestInsertionError.message };
+        throw digestInsertionError;
       }
 
       const allNotification = users.map((user) => ({
