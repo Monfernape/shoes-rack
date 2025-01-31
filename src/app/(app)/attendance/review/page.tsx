@@ -4,9 +4,12 @@ import { AttendanceReview } from "./components/AttendanceReview";
 import { AttendanceHeader } from "../components/AttendanceHeader";
 import { Routes } from "@/lib/routes";
 import { PageLayout } from "@/app/layout/PageLayout";
+import { getDigestById } from "./actions/get-digest-by-id";
 
 const Page = async () => {
   const loginUser = await getLoggedInUser();
+  const digestData = await getDigestById(26);
+  console.warn(JSON.stringify(digestData));
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Attendance" },
     { href: Routes.MarkAttendance, label: "Review Attendance" },

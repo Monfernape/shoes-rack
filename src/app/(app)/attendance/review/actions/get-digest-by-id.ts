@@ -1,14 +1,10 @@
-import {
-  AttendanceStatus,
-  DigestStatus,
-  LeaveRequestStatus,
-} from "@/constant/constant";
+import { AttendanceStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
 export type Digest = {
   id: number;
-  created_date: string;
+  created_at: string;
   status: string;
   presents: number[];
   absents: number[];
@@ -18,141 +14,74 @@ export type Digest = {
 export const getDigestById = async (id: number) => {
   const supabase = await getSupabaseClient();
 
-  // Fetch the digest data
-  const { data: digestData, error: digestError } = await supabase
-    .from(Tables.Digest)
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (digestError) {
-    console.error("Error fetching digest:", digestError?.message);
-    return null;
-  }
-
-  const fetchTableData = async ({
-    status,
-    table,
-    membersId,
-  }: {
-    status: AttendanceStatus | LeaveRequestStatus;
-    table: Tables;
-    membersId?: number[];
-  }) => {
-    try {
-
-      const createdAt = new Date(digestData.created_at);
-
-      // Calculate the date range for the previous day beacuse
-      const fromDate = new Date(createdAt);
-      fromDate.setDate(createdAt.getDate() - 1);
-      fromDate.setHours(0, 0, 0, 0); // Start of previous day
-
-      const toDate = new Date(fromDate);
-      toDate.setHours(23, 59, 59, 999); // End of previous day
-
-      // Fetch data from Supabase table
-      let query = supabase
-        .from(table)
-        .select("*")
-        .eq("status", status)
-        .gte("created_at", fromDate.toISOString())
-        .lte("created_at", toDate.toISOString());
-
-      // If membersId is provided, filter the data by memberId
-      if (membersId && membersId.length > 0) {
-        query = query.in("memberId", membersId);
-      }
-
-      const { data, error } = await query;
-
-      // If there's an error in the query
-      if (error) {
-        console.error("Error fetching data:", error.message);
-        return [];
-      }
-
-      // Return the fetched data
-      return data;
-    } catch (error) {
-      console.error("Error processing data:", error);
-      return [];
-    }
-  };
-
   try {
-    if (digestData.status === DigestStatus.Confirmed) {
-      const fetchBy = [
-        {
-          table: Tables.Attendance,
-          status: AttendanceStatus.Reject,
-          memberIds: digestData.absents,
-        },
-        {
-          table: Tables.Attendance,
-          status: AttendanceStatus.Approve,
-          memberIds: digestData.presents,
-        },
-        {
-          table: Tables.Leaves,
-          status: AttendanceStatus.Approve,
-          memberIds: digestData.leaves,
-        },
-      ];
+    // Fetch the digest data
+    const { data: digestData, error: digestError } = await supabase
+      .from(Tables.Digest)
+      .select("*")
+      .eq("id", id) // Use the dynamic id passed to the function
+      .single();
 
-      const results = await Promise.all(
-        fetchBy.map((item) =>
-          fetchTableData({
-            table: item.table,
-            status: item.status,
-            membersId: item.memberIds,
-          })
-        )
+    if (digestError || !digestData) {
+      console.error(
+        "Error fetching digest:",
+        digestError?.message || "No digest data found"
       );
-
-      const [absents, presents, leaves] = results;
-
-      return {
-        id: digestData.id,
-        created_date: digestData.created_date,
-        status: digestData.status,
-        absents: absents,
-        presents: presents,
-        leaves: leaves,
-      };
-    } else {
-      const fetchBy = [
-        {
-          table: Tables.Attendance,
-          status: AttendanceStatus.Pending,
-        },
-        {
-          table: Tables.Leaves,
-          status: AttendanceStatus.Pending,
-        },
-      ];
-
-      const results = await Promise.all(
-        fetchBy.map((item) =>
-          fetchTableData({
-            table: item.table,
-            status: item.status,
-          })
-        )
-      );
-
-      const [attendances, leaves] = results;
-      const pendingDailyDigest = [...attendances, ...leaves];
-
-      return {
-        id: digestData.id,
-        created_date: digestData.created_date,
-        status: digestData.status,
-        pending: pendingDailyDigest || [],
-      };
     }
+
+    // Fetch the attendance and leaves data concurrently
+    const [
+      attendanceResponsePresents,
+      attendanceResponseAbsents,
+      leavesResponse,
+    ] = await Promise.all([
+      supabase
+        .from(Tables.Attendance)
+        .select("*, members(name, shift)")
+        .eq("status", AttendanceStatus.Approve)
+        .in("memberId", digestData.presents),
+      supabase
+        .from(Tables.Attendance)
+        .select("*, members(name, shift)")
+        .eq("status", AttendanceStatus.Reject)
+        .in("memberId", digestData.absents),
+      supabase
+        .from(Tables.Leaves)
+        .select("*, members(name, shift)")
+        .in("memberId", digestData.leaves),
+    ]);
+
+    if (
+      attendanceResponsePresents.error ||
+      attendanceResponseAbsents.error ||
+      leavesResponse.error
+    ) {
+      console.error(
+        "Error fetching attendance or leaves:",
+        attendanceResponsePresents.error?.message ||
+          attendanceResponseAbsents.error?.message ||
+          leavesResponse.error?.message
+      );
+    }
+
+    const attendanceListPresents = attendanceResponsePresents.data || [];
+    const attendanceListAbsents = attendanceResponseAbsents.data || [];
+    const leavesList = leavesResponse.data || [];
+
+    // Process absents and presents based on the attendance status
+    const absents = attendanceListAbsents;
+    const presents = attendanceListPresents;
+    // Assuming leaves are represented by the `leavesList`
+    const leaves = leavesList;
+    return {
+      id: digestData.id,
+      created_at: digestData.created_at,
+      status: digestData.status,
+      absents,
+      presents,
+      leaves,
+    };
   } catch (error) {
     console.error("Error processing digest data:", error);
-    return null;
   }
 };
