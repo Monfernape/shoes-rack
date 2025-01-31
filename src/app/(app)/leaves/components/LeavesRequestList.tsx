@@ -71,12 +71,14 @@ export const LeavesRequestList = ({ leaves, loginUser }: LeavesRequestList) => {
     {
       accessorKey: "startDate",
       header: () => <h4 className=" ml-1">Start date</h4>,
-      cell: ({ row }) => <div>{row.getValue("startDate")}</div>,
+      cell: ({ row }) =>  <div className="ml-2">{new Intl.DateTimeFormat().format(new Date(row.getValue("startDate")))}</div>
+     
+
     },
     {
       accessorKey: "endDate",
       header: () => <h4 className="ml-1">End date</h4>,
-      cell: ({ row }) => <div>{row.getValue("endDate")}</div>,
+      cell: ({ row }) =>  <div className="ml-2">{new Intl.DateTimeFormat().format(new Date(row.getValue("endDate")))}</div>,
     },
     {
       accessorKey: "status",
