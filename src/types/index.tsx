@@ -38,8 +38,8 @@ export type Digest = {
 
 export enum AttendanceReviewStatus {
   Pending = "pending",
-  Approve = "approve",
-  Reject = "reject",
+  Approve = "approved",
+  Reject = "rejected",
   Leave = "leave"
 }
 
@@ -153,6 +153,7 @@ export enum RequestActionTitles {
 }
 
 export type Attendance = {
+  members: any;
   member: string;
   id: number;
   startTime: string;

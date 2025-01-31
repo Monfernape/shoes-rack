@@ -8,7 +8,7 @@ interface AttendanceButtonGroupProps {
   onMarkAttendance: (memberId: number, status: AttendanceReviewStatus) => void;
 }
 
-export const AttendanceReviewAction = ({
+export const DigestActions = ({
   attendnaceId,
   attendanceStatus,
   onMarkAttendance,

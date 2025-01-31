@@ -7,13 +7,16 @@ import { PageLayout } from "@/app/layout/PageLayout";
 import { getDigestById } from "./actions/get-digest-by-id";
 
 const Page = async () => {
+
   const loginUser = await getLoggedInUser();
-  const digestData = await getDigestById(26);
-  console.warn(JSON.stringify(digestData));
+  const digestData = await getDigestById(64);
+  
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Attendance" },
     { href: Routes.MarkAttendance, label: "Review Attendance" },
   ];
+
+  if(!digestData) return null;
   return (
     <>
       <AttendanceHeader breadcrumbs={breadcrumbs} />
@@ -21,7 +24,7 @@ const Page = async () => {
       <div>
         <h4 className="text-xs text-gray-700 mb-6">Attendance digest for <b>Shift A</b> dated <b>09/01/2025</b></h4>
       </div>
-      <AttendanceReview loginUser={loginUser} />
+      <AttendanceReview loginUser={loginUser} digest={digestData}/>
     </PageLayout>
     </>
   );

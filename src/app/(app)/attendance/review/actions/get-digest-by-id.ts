@@ -87,8 +87,8 @@ export const getDigestById = async (id: number) => {
       id: digestData.id,
       created_at: digestData.created_at,
       status: digestData.status,
-      absents,
       presents,
+      absents,
       leaves,
     };
   } catch (error) {

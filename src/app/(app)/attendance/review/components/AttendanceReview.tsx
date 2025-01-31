@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DigestStatus, MemberRole, Shift } from "@/constant/constant";
+import { DigestStatus, MemberRole } from "@/constant/constant";
 import { Attendance, AttendanceReviewStatus, Digest, User } from "@/types";
 import {
   ColumnDef,
@@ -18,10 +18,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useMemo, useState, useTransition } from "react";
-import { AttendanceReviewAction } from "./AttendanceReviewAction";
 import { updateAttendanceDigest } from "../../actions/update-attendance-digest";
 import { toast } from "@/hooks/use-toast";
 import { DataSpinner } from "@/common/Loader/Loader";
+import { DigestActions } from "./DigestActions";
 
 type Attendances = Omit<
   Attendance,
@@ -32,47 +32,40 @@ interface AttendanceReviewType extends Attendances {
   status: AttendanceReviewStatus;
 }
 
-const attendanceDigest = {
-  id: 4,
-  created_at: "09/01/2025",
-  status: DigestStatus.Pending,
-  presents: [],
-  absents: [],
-  leaves: [],
-};
 
-const AttendanceList = [
-  {
-    id: 1,
-    name: "John Doe",
-    shift: Shift.ShiftA,
-    startTime: "08:00",
-    endTime: "16:00",
-    status: AttendanceReviewStatus.Pending,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    shift: Shift.ShiftA,
-    startTime: "16:00",
-    endTime: "00:00",
-    status: AttendanceReviewStatus.Pending,
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    shift: Shift.ShiftA,
-    startTime: "",
-    endTime: "",
-    status: AttendanceReviewStatus.Pending,
-  },
-];
-
+interface DigestData {
+  id: number;
+  created_at: string;
+  status: DigestStatus;
+  presents: Attendance[]; 
+  absents: Attendance[];  
+  leaves: Attendance[];
+  members:{
+    name: string;
+    status: AttendanceReviewStatus;
+  }   
+}
 type Props = {
   loginUser: User;
+  digest: DigestData;
 };
-export const AttendanceReview = ({ loginUser }: Props) => {
-  const [attendances, setTodayAttendance] = useState(AttendanceList);
+
+export const AttendanceReview = ({ loginUser, digest }: Props) => {
+  const {id,absents, presents, leaves, created_at, status } = digest;
+  const disgetList = [...absents, ...presents, ...leaves];
+  const digestListItems = disgetList.map((item)=>{
+    return{
+      id:item.id,
+      memberId:item.memberId,
+      name: item.members.name,
+      shift: item.members.shift,
+      startTime:item.startTime,
+      endTime:item.endTime,
+      status:item.startTime ? item.status : "leave",
+    }
+   })
+  
+  const [attendances, setTodayAttendance] = useState(digestListItems);
   const [isPending, startTransition] = useTransition();
 
   const onMarkAttendance = (
@@ -86,7 +79,7 @@ export const AttendanceReview = ({ loginUser }: Props) => {
     );
   };
 
-  const columns: ColumnDef<AttendanceReviewType>[] = useMemo(
+  const columns: ColumnDef<AttendanceReviewType | any>[] = useMemo(
     () => [
       {
         accessorKey: "name",
@@ -123,7 +116,7 @@ export const AttendanceReview = ({ loginUser }: Props) => {
         cell: ({ row }) => {
           return (
             <div className="flex justify-end items-center">
-              <AttendanceReviewAction
+              <DigestActions
                 attendnaceId={row.original.id}
                 attendanceStatus={row.original.status}
                 onMarkAttendance={onMarkAttendance}
@@ -143,7 +136,7 @@ export const AttendanceReview = ({ loginUser }: Props) => {
 
     if (Array.isArray(attendances)) {
       attendances.forEach((attendance) => {
-        const attendanceId = attendance.id;
+        const attendanceId = attendance.memberId;
         switch (attendance.status) {
           case AttendanceReviewStatus.Approve:
             presents.push(attendanceId);
@@ -161,8 +154,7 @@ export const AttendanceReview = ({ loginUser }: Props) => {
     }
     startTransition(async () => {
       try {
-        const { id, created_at } = attendanceDigest;
-        const digest: Digest = {
+        const digestPayload: Digest = {
           id,
           created_at,
           status: DigestStatus.Confirmed,
@@ -170,18 +162,19 @@ export const AttendanceReview = ({ loginUser }: Props) => {
           absents,
           leaves,
         };
-        if (attendanceDigest.status === DigestStatus.Pending) {
-          const response = await updateAttendanceDigest({ digest });
-          if ("error" in response) {
+        if (status === DigestStatus.Pending) {
+          try {
+            await updateAttendanceDigest({ digestPayload });
             toast({
-              title: "Error updating digest",
-              description: response.error,
+              title: "Verification successfully",
             });
-          } else {
-            toast({
-              title: "The attendance digest was updated successfully.",
-              description: "The attendance digest record has been updated.",
-            });
+          } catch (error) {
+            if (error instanceof Error) {
+              toast({
+                title: error.message,
+                description: "Please try again.",
+              });
+            }
           }
         }
       } catch (error) {
@@ -239,7 +232,7 @@ export const AttendanceReview = ({ loginUser }: Props) => {
               ))}
             </TableBody>
           </Table>
-          {attendanceDigest.status === DigestStatus.Pending && (
+          {digest.status === DigestStatus.Pending && (
             <div className="flex justify-end p-4">
               <Button
                 className="text-xs"
