@@ -9,8 +9,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DigestStatus, MemberRole } from "@/constant/constant";
-import { Attendance, AttendanceReviewStatus, Digest, User } from "@/types";
+import {
+  AttendanceStatus,
+  DigestStatus,
+  MemberRole,
+  Shift,
+} from "@/constant/constant";
+import {
+  AttendanceReviewStatus,
+  Digest,
+  LeavesDigest,
+  LeavesRequestStatus,
+  User,
+  AttendnaceDigest,
+} from "@/types";
 import {
   ColumnDef,
   flexRender,
@@ -24,37 +36,34 @@ import { DataSpinner } from "@/common/Loader/Loader";
 import { DigestActions } from "./DigestActions";
 import AttendanceReviewFilter from "./AttendanceReviewFilter";
 
-type Attendances = Omit<
-  Attendance,
-  "memberId" | "created_at" | "member" | "status"
->;
-
-interface AttendanceReviewType extends Attendances {
-  status: AttendanceReviewStatus;
-}
-
-
 interface DigestData {
   id: number;
   created_at: string;
   status: DigestStatus;
-  presents: Attendance[];
-  absents: Attendance[];
-  leaves: Attendance[];
-  members: {
-    name: string;
-    status: AttendanceReviewStatus;
-  };
+  presents: AttendnaceDigest[];
+  absents: AttendnaceDigest[];
+  leaves: LeavesDigest[];
 }
 type Props = {
   loginUser: User;
   digest: DigestData;
 };
 
+export type DigestListItems = {
+  id: number;
+  memberId: number;
+  name: string;
+  shift: Shift;
+  startTime: string;
+  endTime: string;
+  status: AttendanceReviewStatus | LeavesRequestStatus | AttendanceStatus;
+};
+
 export const AttendanceReview = ({ loginUser, digest }: Props) => {
   const { id, absents, presents, leaves, created_at, status } = digest;
   const disgetList = [...absents, ...presents, ...leaves];
-  const digestListItems = disgetList.map((item) => {
+
+  const digestListItems: DigestListItems[] = disgetList.map((item) => {
     return {
       id: item.id,
       memberId: item.memberId,
@@ -62,7 +71,7 @@ export const AttendanceReview = ({ loginUser, digest }: Props) => {
       shift: item.members.shift,
       startTime: item.startTime,
       endTime: item.endTime,
-      status: item.startTime ? item.status : "leave",
+      status: item.startTime ? item.status : AttendanceReviewStatus.Leave,
     };
   });
 
@@ -80,7 +89,7 @@ export const AttendanceReview = ({ loginUser, digest }: Props) => {
     );
   };
 
-  const columns: ColumnDef<AttendanceReviewType | any>[] = useMemo(
+  const columns: ColumnDef<DigestListItems>[] = useMemo(
     () => [
       {
         accessorKey: "name",
