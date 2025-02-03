@@ -7,7 +7,6 @@ import {
 import { Tables } from "@/lib/db";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { revalidatePath } from "next/cache";
 
 export type Digest = {
   id: number;
@@ -18,30 +17,32 @@ export type Digest = {
   leaves: number[];
 };
 
-export const getDigestById = async (id: number , dateQuery: Date) => {
+export const getDigestById = async (id: number, dateQuery: Date) => {
   const supabase = await getSupabaseClient();
   const loggedInUser = await getLoggedInUser();
-  
-  const startDate = `${dateQuery.toISOString().slice(0, 10)} 00:00:00.000005+00`;
-  const endDate =  `${dateQuery.toISOString().slice(0, 10)} 23:59:59.000005+00`
+
+  const startDate = `${dateQuery
+    .toISOString()
+    .slice(0, 10)} 00:00:00.000005+00`;
+  const endDate = `${dateQuery.toISOString().slice(0, 10)} 23:59:59.000005+00`;
 
   const shift =
-    loggedInUser.role === MemberRole.ShiftIncharge ? loggedInUser.shift : null;     
-    let digestData, digestError;
+    loggedInUser.role === MemberRole.ShiftIncharge ? loggedInUser.shift : null;
+  let digestData, digestError;
 
-    try {
-      const query = supabase.from(Tables.Digest).select("*")
-      .lte('created_at' , endDate)
-      .gte('created_at' , startDate)
-      if (shift) {
-        query.eq('shift', shift);
-      }
-
+  try {
+    const query = supabase
+      .from(Tables.Digest)
+      .select("*")
+      .lte("created_at", endDate)
+      .gte("created_at", startDate);
     if (shift) {
-      query.eq("shift", shift).single();
+      query.eq("shift", shift);
     }
 
-    const { data, error } = await query;
+    const { data, error } = await query
+      .lte("created_at", endDate)
+      .gte("created_at", startDate);
 
     if (error || !data) {
       throw new Error(error?.message || "No digest data found");
@@ -145,18 +146,22 @@ export const getDigestById = async (id: number , dateQuery: Date) => {
 
         // Fetch attendance and leaves for the current date
         const [attendancesResponse, leavesResponse] = await Promise.all([
-          supabase.from(Tables.Attendance).select("*, members(name, shift)"),
-          // .filter(
-          //   "created_at",
-          //   "gte",
-          //   new Date(Date.now() - 864e5).toUTCString()
-          // ),
-          supabase.from(Tables.Leaves).select("*, members(name, shift)"),
-          // .filter(
-          //   "created_at",
-          //   "gte",
-          //   new Date(Date.now() - 864e5).toUTCString()
-          // ),
+          supabase
+            .from(Tables.Attendance)
+            .select("*, members(name, shift)")
+            .filter(
+              "created_at",
+              "gte",
+              new Date(Date.now() - 864e5).toUTCString()
+            ),
+          supabase
+            .from(Tables.Leaves)
+            .select("*, members(name, shift)")
+            .filter(
+              "created_at",
+              "gte",
+              new Date(Date.now() - 864e5).toUTCString()
+            ),
         ]);
 
         if (attendancesResponse.error) {
@@ -215,7 +220,7 @@ export const getDigestById = async (id: number , dateQuery: Date) => {
 
         // Insert rejected attendance for these members
         const absentsMembersList = membersWithNoRecords.map((member) => ({
-          id:member.id,
+          id: member.id,
           memberId: member.id,
           status: AttendanceStatus.Reject,
           startTime: "00:00",
@@ -228,7 +233,6 @@ export const getDigestById = async (id: number , dateQuery: Date) => {
         }));
 
         const allAbsentsMembers = [...absentsMembers, ...absentsMembersList];
-
 
         const absentsItems = new Set(
           allAbsentsMembers
@@ -247,7 +251,10 @@ export const getDigestById = async (id: number , dateQuery: Date) => {
                 a.status === AttendanceStatus.Approve ||
                 a.status === AttendanceStatus.Pending
               ) {
-                return a;
+                return {
+                  ...a,
+                  status: AttendanceStatus.Approve,
+                };
               }
             })
             .filter(Boolean)
