@@ -12,8 +12,8 @@ const Page = async ({ searchParams }: { searchParams: { date: string }}) => {
   const digestData = await getDigest((new Date(searchParams.date))); 
   
   const breadcrumbs = [
-    { href: Routes.Attendance, label: "Attendance" },
-    { href: Routes.MarkAttendance, label: "Review Attendance" },
+    { href: Routes.Attendance, label: "Digest" },
+    { href: Routes.MarkAttendance, label: "Digest Reviews" },
   ];
 
   if(!digestData) return null;

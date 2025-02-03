@@ -35,6 +35,7 @@ import { toast } from "@/hooks/use-toast";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { DigestActions } from "./DigestActions";
 import DigestReviewsFilter from "./DigestReviewsFilter";
+import { useParams, useSearchParams } from "next/navigation";
 
 interface DigestData {
   id: number;
@@ -78,6 +79,8 @@ export const DigestReviews = ({ loginUser, digest }: Props) => {
   const [attendances, setTodayAttendance] = useState(digestListItems);
   const [isPending, startTransition] = useTransition();
 
+  const params = useSearchParams().get('date');
+  const date = params?.split(" ")[0];
   const onMarkAttendance = (
     attendanceId: number,
     status: AttendanceReviewStatus
@@ -213,7 +216,7 @@ export const DigestReviews = ({ loginUser, digest }: Props) => {
     <div>
       <div className="flex justify-between items-center mb-6 ">
         <h4 className="text-xs text-gray-700">
-          Attendance digest for <b>Shift A</b> dated <b>09/01/2025</b>
+          Digest for <b>Date :</b> {date} <b>{}</b>
         </h4>
         <DigestReviewsFilter />
       </div>
