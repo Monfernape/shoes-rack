@@ -6,10 +6,10 @@ import { Routes } from "@/lib/routes";
 import { PageLayout } from "@/app/layout/PageLayout";
 import { getDigestById } from "./actions/get-digest-by-id";
 
-const Page = async () => {
+const Page = async ({ searchParams }: { searchParams: { date: string }}) => {
 
   const loginUser = await getLoggedInUser();
-  const digestData = await getDigestById(64);
+  const digestData = await getDigestById(230, (new Date(searchParams.date))); 
   
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Attendance" },
@@ -21,9 +21,6 @@ const Page = async () => {
     <>
       <AttendanceHeader breadcrumbs={breadcrumbs} />
       <PageLayout>
-      <div>
-        <h4 className="text-xs text-gray-700 mb-6">Attendance digest for <b>Shift A</b> dated <b>09/01/2025</b></h4>
-      </div>
       <AttendanceReview loginUser={loginUser} digest={digestData}/>
     </PageLayout>
     </>

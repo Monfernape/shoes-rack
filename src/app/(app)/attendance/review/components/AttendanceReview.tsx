@@ -22,6 +22,7 @@ import { updateAttendanceDigest } from "../../actions/update-attendance-digest";
 import { toast } from "@/hooks/use-toast";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { DigestActions } from "./DigestActions";
+import AttendanceReviewFilter from "./AttendanceReviewFilter";
 
 type Attendances = Omit<
   Attendance,
@@ -37,13 +38,13 @@ interface DigestData {
   id: number;
   created_at: string;
   status: DigestStatus;
-  presents: Attendance[]; 
-  absents: Attendance[];  
+  presents: Attendance[];
+  absents: Attendance[];
   leaves: Attendance[];
-  members:{
+  members: {
     name: string;
     status: AttendanceReviewStatus;
-  }   
+  };
 }
 type Props = {
   loginUser: User;
@@ -51,20 +52,20 @@ type Props = {
 };
 
 export const AttendanceReview = ({ loginUser, digest }: Props) => {
-  const {id,absents, presents, leaves, created_at, status } = digest;
+  const { id, absents, presents, leaves, created_at, status } = digest;
   const disgetList = [...absents, ...presents, ...leaves];
-  const digestListItems = disgetList.map((item)=>{
-    return{
-      id:item.id,
-      memberId:item.memberId,
+  const digestListItems = disgetList.map((item) => {
+    return {
+      id: item.id,
+      memberId: item.memberId,
       name: item.members.name,
       shift: item.members.shift,
-      startTime:item.startTime,
-      endTime:item.endTime,
-      status:item.startTime ? item.status : "leave",
-    }
-   })
-  
+      startTime: item.startTime,
+      endTime: item.endTime,
+      status: item.startTime ? item.status : "leave",
+    };
+  });
+
   const [attendances, setTodayAttendance] = useState(digestListItems);
   const [isPending, startTransition] = useTransition();
 
@@ -178,12 +179,13 @@ export const AttendanceReview = ({ loginUser, digest }: Props) => {
           }
         }
       } catch (error) {
-        if (error instanceof Error){
-        toast({
-          title: "Error",
-          description: error.message,
-        });
-        }}
+        if (error instanceof Error) {
+          toast({
+            title: "Error",
+            description: error.message,
+          });
+        }
+      }
     });
   };
 
@@ -200,6 +202,12 @@ export const AttendanceReview = ({ loginUser, digest }: Props) => {
 
   return (
     <div>
+      <div className="flex justify-between items-center mb-6 ">
+        <h4 className="text-xs text-gray-700">
+          Attendance digest for <b>Shift A</b> dated <b>09/01/2025</b>
+        </h4>
+        <AttendanceReviewFilter />
+      </div>
       <Card>
         <CardContent className="pt-6">
           <Table className="">
@@ -239,7 +247,7 @@ export const AttendanceReview = ({ loginUser, digest }: Props) => {
                 disabled={isPending}
                 onClick={() => submitAttendaceReviewDigest()}
               >
-              Submit {isPending && <DataSpinner />}
+                Submit {isPending && <DataSpinner />}
               </Button>
             </div>
           )}

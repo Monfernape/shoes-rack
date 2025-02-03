@@ -7,6 +7,7 @@ import {
 import { Tables } from "@/lib/db";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { revalidatePath } from "next/cache";
 
 export type Digest = {
   id: number;
@@ -17,16 +18,24 @@ export type Digest = {
   leaves: number[];
 };
 
-export const getDigestById = async () => {
+export const getDigestById = async (id: number , dateQuery: Date) => {
   const supabase = await getSupabaseClient();
   const loggedInUser = await getLoggedInUser();
+  
+  const startDate = `${dateQuery.toISOString().slice(0, 10)} 00:00:00.000005+00`;
+  const endDate =  `${dateQuery.toISOString().slice(0, 10)} 23:59:59.000005+00`
+
   const shift =
-    loggedInUser.role === MemberRole.ShiftIncharge ? loggedInUser.shift : null;
+    loggedInUser.role === MemberRole.ShiftIncharge ? loggedInUser.shift : null;     
+    let digestData, digestError;
 
-  let digestData, digestError;
-
-  try {
-    const query = supabase.from(Tables.Digest).select("*");
+    try {
+      const query = supabase.from(Tables.Digest).select("*")
+      .lte('created_at' , endDate)
+      .gte('created_at' , startDate)
+      if (shift) {
+        query.eq('shift', shift);
+      }
 
     if (shift) {
       query.eq("shift", shift).single();
@@ -54,8 +63,6 @@ export const getDigestById = async () => {
         digestError || "No digest data found"
       );
     }
-
-    console.log({ digestData });
 
     if (digestData && !Array.isArray(digestData)) {
       // Fetch the attendance and leaves data concurrently
