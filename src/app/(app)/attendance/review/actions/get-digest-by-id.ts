@@ -116,7 +116,6 @@ export const getDigestById = async () => {
         const absents = attendanceResponseAbsents.data || [];
         const leaves = leavesResponse.data || [];
 
-        console.log({ presents, absents, leaves });
         return {
           id: digestData.id,
           created_at: digestData.created_at,
@@ -208,7 +207,8 @@ export const getDigestById = async () => {
           .filter(Boolean);
 
         // Insert rejected attendance for these members
-        const absentsMembersLis = membersWithNoRecords.map((member) => ({
+        const absentsMembersList = membersWithNoRecords.map((member) => ({
+          id:member.id,
           memberId: member.id,
           status: AttendanceStatus.Reject,
           startTime: "00:00",
@@ -220,7 +220,8 @@ export const getDigestById = async () => {
           },
         }));
 
-        const allAbsentsMembers = [...absentsMembers, ...absentsMembersLis];
+        const allAbsentsMembers = [...absentsMembers, ...absentsMembersList];
+
 
         const absentsItems = new Set(
           allAbsentsMembers
@@ -253,8 +254,8 @@ export const getDigestById = async () => {
             .filter(Boolean)
         );
 
-        const absents = Array.from(absentsItems);
         const presents = Array.from(presentsItems);
+        const absents = Array.from(absentsItems);
         const leaves = Array.from(leavesItems);
 
         return {
