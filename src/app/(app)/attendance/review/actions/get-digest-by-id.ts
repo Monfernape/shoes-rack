@@ -43,7 +43,7 @@ export const getDigestById = async (id: number) => {
         .filter(
           "created_at",
           "gte",
-          new Date(Date.now() - 864e5).toUTCString()
+          new Date(Number(new Date(digestData.created_at)) - 864e5).toUTCString()
         ),
       supabase
         .from(Tables.Attendance)
@@ -53,7 +53,7 @@ export const getDigestById = async (id: number) => {
         .filter(
           "created_at",
           "gte",
-          new Date(Date.now() - 864e5).toUTCString()
+          new Date(Number(new Date(digestData.created_at)) - 864e5).toUTCString()
         ),
       supabase
         .from(Tables.Leaves)
@@ -62,7 +62,7 @@ export const getDigestById = async (id: number) => {
         .filter(
           "created_at",
           "gte",
-          new Date(Date.now() - 864e5).toUTCString()
+          new Date(Number(new Date(digestData.created_at)) - 864e5).toUTCString()
         ),
     ]);
 
