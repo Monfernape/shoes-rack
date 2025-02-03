@@ -34,7 +34,7 @@ import { updateAttendanceDigest } from "../../actions/update-attendance-digest";
 import { toast } from "@/hooks/use-toast";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { DigestActions } from "./DigestActions";
-import AttendanceReviewFilter from "./AttendanceReviewFilter";
+import DigestReviewsFilter from "./DigestReviewsFilter";
 
 interface DigestData {
   id: number;
@@ -59,7 +59,7 @@ export type DigestListItems = {
   status: AttendanceReviewStatus | LeavesRequestStatus | AttendanceStatus;
 };
 
-export const AttendanceReview = ({ loginUser, digest }: Props) => {
+export const DigestReviews = ({ loginUser, digest }: Props) => {
   const { id, absents, presents, leaves, created_at, status } = digest;
   const disgetList = [...absents, ...presents, ...leaves];
 
@@ -215,7 +215,7 @@ export const AttendanceReview = ({ loginUser, digest }: Props) => {
         <h4 className="text-xs text-gray-700">
           Attendance digest for <b>Shift A</b> dated <b>09/01/2025</b>
         </h4>
-        <AttendanceReviewFilter />
+        <DigestReviewsFilter />
       </div>
       <Card>
         <CardContent className="pt-6">

@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import moment from "moment";
 import { addDays } from "date-fns";
 
-export default function AttendanceReviewFilter() {
+export default function DigestReviewsFilter() {
   const router = useRouter();
   const pathname = usePathname();
   const [date, setDate] = useState<Date>(new Date());

@@ -1,15 +1,15 @@
 import React from "react";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
-import { AttendanceReview } from "./components/AttendanceReview";
+import { DigestReviews } from "./components/DigestReviews";
 import { AttendanceHeader } from "../components/AttendanceHeader";
 import { Routes } from "@/lib/routes";
 import { PageLayout } from "@/app/layout/PageLayout";
-import { getDigestById } from "./actions/get-digest-by-id";
+import { getDigest } from "./actions/get-digest";
 
 const Page = async ({ searchParams }: { searchParams: { date: string }}) => {
 
   const loginUser = await getLoggedInUser();
-  const digestData = await getDigestById(230, (new Date(searchParams.date))); 
+  const digestData = await getDigest((new Date(searchParams.date))); 
   
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Attendance" },
@@ -21,7 +21,7 @@ const Page = async ({ searchParams }: { searchParams: { date: string }}) => {
     <>
       <AttendanceHeader breadcrumbs={breadcrumbs} />
       <PageLayout>
-      <AttendanceReview loginUser={loginUser} digest={digestData}/>
+      <DigestReviews loginUser={loginUser} digest={digestData}/>
     </PageLayout>
     </>
   );

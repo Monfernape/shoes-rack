@@ -17,7 +17,7 @@ export type Digest = {
   leaves: number[];
 };
 
-export const getDigestById = async (id: number, dateQuery: Date) => {
+export const getDigest = async (dateQuery: Date) => {
   const supabase = await getSupabaseClient();
   const loggedInUser = await getLoggedInUser();
 
