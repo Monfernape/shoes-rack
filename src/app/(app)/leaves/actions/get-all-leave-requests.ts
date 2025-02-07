@@ -27,10 +27,11 @@ export const getAllLeaveRequests = async (id: number) => {
     .from(Tables.Leaves)
     .select(
       `id, memberId, leaveType, startDate, endDate, status, reason, members(name , status)`
-    ).eq('members.status', UserStatus.Active);
+    )
+    .eq("members.status", UserStatus.Active);
 
   // Handle role-based filtering:
-  if (loginUser.role === MemberRole.Member) {
+  if (loginUser?.role === MemberRole.Member) {
     // If the logged-in user is a Member, only fetch their own leave requests
     query = query.eq("memberId", loginUser.id);
   } else if (loginUser.role === MemberRole.ShiftIncharge) {
@@ -57,7 +58,7 @@ export const getAllLeaveRequests = async (id: number) => {
   if (error) {
     return [];
   }
-  const filterLeaves =  leaves.filter((leave) => leave.members !== null)
+  const filterLeaves = leaves.filter((leave) => leave.members !== null);
   return filterLeaves.map((leave) => ({
     id: leave.id,
     leaveType: leave.leaveType,

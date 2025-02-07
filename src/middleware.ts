@@ -20,18 +20,17 @@ const restrictedPathForShiftIncharge: Routes[] = [
 ];
 
 export default async function middleware(request: NextRequest) {
-
   const supabase = await getSupabaseClient();
   const requestedPath = request.nextUrl.pathname as Routes;
 
   //  Fetch the session
-  const { data:session, error: sessionError } = await supabase.auth.getSession();
+  const { data: session, error: sessionError } =
+    await supabase.auth.getSession();
 
   if (sessionError) {
     console.error("Error fetching session:", sessionError);
   }
 
-  
   const loginUser = await getLoggedInUser();
   const isRestrictedPath = restrictedPaths.includes(requestedPath);
   const isRestrictedPathForShiftIncharge =
@@ -41,18 +40,15 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(Routes.Login, request.url));
   }
 
-  if (
-    requestedPath === Routes.AttendanceReport ||
-    requestedPath === Routes.Notification
-  ) {
+  if (requestedPath === Routes.Notification) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
   }
 
-  if (
-    session &&
-    loginUser?.role === MemberRole.Member &&
-    isRestrictedPath
-  ) {
+  if (session && loginUser?.role === MemberRole.Member && isRestrictedPath) {
+    return NextResponse.redirect(new URL(Routes.Members, request.url));
+  }
+
+  if (session && loginUser?.role === MemberRole.Member && isRestrictedPath) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
   }
 

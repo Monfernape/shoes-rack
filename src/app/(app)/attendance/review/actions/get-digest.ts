@@ -31,11 +31,7 @@ export const getDigest = async (dateQuery: Date) => {
   let digestData, digestError;
 
   try {
-    const query = supabase
-      .from(Tables.Digest)
-      .select("*")
-      .lte("created_at", endDate)
-      .gte("created_at", startDate);
+    const query = supabase.from(Tables.Digest).select("*");
     if (shift) {
       query.eq("shift", shift);
     }
@@ -46,6 +42,10 @@ export const getDigest = async (dateQuery: Date) => {
 
     if (error || !data) {
       throw new Error(error?.message || "No digest data found");
+    }
+
+    if (!data.length) {
+      return null;
     }
 
     // Process the data

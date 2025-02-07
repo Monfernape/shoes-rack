@@ -29,15 +29,13 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React, { useMemo, useState, useTransition } from "react";
+import React, { useEffect, useMemo, useState, useTransition } from "react";
 import { updateAttendanceDigest } from "../../actions/update-attendance-digest";
 import { toast } from "@/hooks/use-toast";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { DigestActions } from "./DigestActions";
-import DigestReviewsFilter from "./DigestReviewsFilter";
-import { useSearchParams } from "next/navigation";
 
-interface DigestData {
+export interface DigestData {
   id: number;
   created_at: string;
   status: DigestStatus;
@@ -48,6 +46,7 @@ interface DigestData {
 type Props = {
   loginUser: User;
   digest: DigestData;
+  shift: string;
 };
 
 export type DigestListItems = {
@@ -60,10 +59,9 @@ export type DigestListItems = {
   status: AttendanceReviewStatus | LeavesRequestStatus | AttendanceStatus;
 };
 
-export const DigestReviews = ({ loginUser, digest }: Props) => {
+export const DigestReviews = ({ loginUser, digest, shift }: Props) => {
   const { id, absents, presents, leaves, created_at, status } = digest;
   const disgetList = [...absents, ...presents, ...leaves];
-
   const digestListItems: DigestListItems[] = disgetList.map((item) => {
     return {
       id: item.id,
@@ -78,9 +76,6 @@ export const DigestReviews = ({ loginUser, digest }: Props) => {
 
   const [attendances, setTodayAttendance] = useState(digestListItems);
   const [isPending, startTransition] = useTransition();
-
-  const params = useSearchParams().get('date');
-  const date = params?.split(" ")[0];
   const onMarkAttendance = (
     attendanceId: number,
     status: AttendanceReviewStatus
@@ -91,6 +86,16 @@ export const DigestReviews = ({ loginUser, digest }: Props) => {
       )
     );
   };
+
+  useEffect(() => {
+    if (shift) {
+      setTodayAttendance(
+        digestListItems.filter((item) => item.shift === shift)
+      );
+    } else {
+      setTodayAttendance(digestListItems);
+    }
+  }, [shift, digest]);
 
   const columns: ColumnDef<DigestListItems>[] = useMemo(
     () => [
@@ -214,12 +219,6 @@ export const DigestReviews = ({ loginUser, digest }: Props) => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6 ">
-        <h4 className="text-xs text-gray-700">
-          Digest for <b>Date :</b> {date} <b>{}</b>
-        </h4>
-        <DigestReviewsFilter />
-      </div>
       <Card>
         <CardContent className="pt-6">
           <Table className="">
@@ -238,18 +237,26 @@ export const DigestReviews = ({ loginUser, digest }: Props) => {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="p-4">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+              {table.getRowModel().rows.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="p-4">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell className="p-4 text-center" colSpan={4}>
+                    No digest found
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
           {digest.status === DigestStatus.Pending && (
