@@ -35,7 +35,7 @@ import { toast } from "@/hooks/use-toast";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { DigestActions } from "./DigestActions";
 import DigestReviewsFilter from "./DigestReviewsFilter";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 interface DigestData {
   id: number;
