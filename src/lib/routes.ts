@@ -1,11 +1,11 @@
 export enum Routes {
+  Root = "/",
   Login = "/login",
   Dashboard = "/dashboard",
   Notification = "/notification",
   Attendance = "/attendance",
   AddAttendance = "/attendance/add",
   EditAttendance = "/attendance/edit",
-  MarkAttendance = "/attendance/review",
   Fund = "/funds",
   AddFund = "/funds/add",
   EditFund = "/funds/edit",

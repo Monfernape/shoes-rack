@@ -1,8 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/cron/attendance",
-      "schedule": "0 0 * * *"
+      "path": "/api/cron/notifications/notify-daily-digest",
+      "schedule": "0 5 * * *"
     },
     {
       "path": "/api/cron/notifications/monthly-attendance-report",

@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { AttendanceReviewStatus } from "@/types";
+import { AttendanceStatus } from "@/constant/constant";
+import { AttendanceReviewStatus, LeavesRequestStatus } from "@/types";
 import React from "react";
 
 interface AttendanceButtonGroupProps {
   attendnaceId: number;
-  attendanceStatus: AttendanceReviewStatus;
+  attendanceStatus: AttendanceReviewStatus | LeavesRequestStatus | AttendanceStatus;
   onMarkAttendance: (memberId: number, status: AttendanceReviewStatus) => void;
 }
 
-export const AttendanceReviewAction = ({
+export const DigestActions = ({
   attendnaceId,
   attendanceStatus,
   onMarkAttendance,

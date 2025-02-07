@@ -19,7 +19,7 @@ export enum UserStatus {
 
 export enum DigestStatus {
   Pending = "pending",
-  Confirmed ="confirmed"
+  Confirmed = "confirmed",
 }
 
 export const PAKISTAN_COUNTRY_CODE = "92";
@@ -79,6 +79,7 @@ export enum NotificationType {
   MissingShoes = "missing_shoes",
   MonthlyReport = "monthly_report",
   Funds = "funds",
+  Digest = "digest",
 }
 export enum AttendancePercentage {
   Excellent = 90,
