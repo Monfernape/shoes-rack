@@ -56,8 +56,8 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
   }
   if (
-    requestedPath === Routes.AttendanceReport ||
-    requestedPath === Routes.Notification
+    (requestedPath === Routes.AttendanceReport ||
+    requestedPath === Routes.Notification ) && loginUser.role  === MemberRole.Member
   ) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
   }

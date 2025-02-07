@@ -5,8 +5,9 @@ import { HeaderWrapper } from "@/common/HeaderWapper/HeaderWrapper";
 import { Breadcrumbs } from "@/types";
 import { Routes } from "@/lib/routes";
 
-const breadcrumbs: Breadcrumbs[] = [{ href: Routes.Notification, label: "Notification" }];
-
+const breadcrumbs: Breadcrumbs[] = [
+  { href: Routes.Notification, label: "Notification" },
+];
 
 const Page = async () => {
   const standarPageProps = {
@@ -16,10 +17,13 @@ const Page = async () => {
     buttonIcon: <BellIcon />,
     hasContent: false,
   };
-  return <>
-   <HeaderWrapper breadcrumbs={breadcrumbs}/>
-  <StandardPage {...standarPageProps} />
-  </>
-
+  return (
+    <div className="hidden lg:flex h-full  flex-col ">
+      <HeaderWrapper breadcrumbs={breadcrumbs} />
+      <div className="h-full flex-1">
+        <StandardPage {...standarPageProps} />
+      </div>
+    </div>
+  );
 };
 export default Page;

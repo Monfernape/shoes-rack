@@ -46,7 +46,7 @@ export const NotificationContainer = ({
         <p className="text-sm text-justify">
           {notificationDetail?.description}
         </p>
-        <div className="flex  items-center ">
+        <div className="flex  items-center flex-col gap-2 ">
           <span className="text-sm"> Go to following link: &nbsp;</span>
           <Link
             href={{
