@@ -24,11 +24,22 @@ export default async function middleware(request: NextRequest) {
   const supabase = await getSupabaseClient();
   const requestedPath = request.nextUrl.pathname as Routes;
 
-  //  Fetch the session
-  const { data:session, error: sessionError } = await supabase.auth.getSession();
+  // Fetch the session
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
 
   if (sessionError) {
     console.error("Error fetching session:", sessionError);
+
+    /**
+     * we experience a 400 status code when the session is invalid or expired and Refresh Token is not available. The page keeps loading infinitely. To avoid this, we sign out the user and redirect them to the login page.
+     */
+    if (sessionError.status === 400) {
+      await supabase.auth.signOut();
+      return NextResponse.redirect(new URL(Routes.Login, request.url));
+    }
   }
 
   
@@ -41,6 +52,9 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(Routes.Login, request.url));
   }
 
+  if (session && requestedPath === Routes.Login || session && requestedPath === Routes.Root) {
+    return NextResponse.redirect(new URL(Routes.Members, request.url));
+  }
   if (
     requestedPath === Routes.AttendanceReport ||
     requestedPath === Routes.Notification
@@ -73,7 +87,11 @@ export default async function middleware(request: NextRequest) {
   });
 }
 
-// Apply middleware to all routes except `/login`
-export const config = {
-  matcher: "/((?!login).*)",
-};
+// The matcher pattern determines which routes the middleware should apply to.
+// Pattern explanation:
+// - "/((?!.*\\.).*)" ensures the middleware applies to all routes 
+// - This excludes requests for static files like CSS, or images (e.g., "/styles.css" or "/logo.png").
+// - Examples of routes where the middleware will NOT apply:
+//   - "/styles/main.css"
+//   - "/images/logo.png"
+export const config = { matcher: "/((?!.*\\.).*)" };
