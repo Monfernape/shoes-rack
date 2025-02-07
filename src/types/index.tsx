@@ -38,9 +38,18 @@ export type Digest = {
 
 export enum AttendanceReviewStatus {
   Pending = "pending",
-  Approve = "approve",
-  Reject = "reject",
+  Approve = "approved",
+  Reject = "rejected",
   Leave = "leave"
+}
+
+type Attendances = Omit<
+  Attendance,
+  "memberId" | "created_at" | "member" | "status"
+>;
+
+export interface AttendanceReviewType extends Attendances {
+  status: AttendanceReviewStatus;
 }
 
 
@@ -144,6 +153,11 @@ export type LeaveRequestsTypes = {
   reason: string;
 };
 
+export interface LeavesDigest extends LeaveRequestsTypes {
+  members:MemberDetails;
+  startTime: string;
+  endTime: string;
+}
 export enum RequestActionTitles {
   Edit = "edit",
   Delete = "delete",
@@ -163,7 +177,10 @@ export type Attendance = {
   name: string;
   shift: Shift;
 }
+export interface AttendnaceDigest extends Attendance {
+ members : MemberDetails
 
+}
 export type MissingShoeReport = {
   id: number;
   status: MissingShoeStatus;

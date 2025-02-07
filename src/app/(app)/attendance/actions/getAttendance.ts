@@ -24,7 +24,7 @@ export const getAttendance = async (id: string) => {
     .eq("members.status", "active");
 
   // Role-based filtering:
-  if (loginUser.role === MemberRole.Member) {
+  if (loginUser?.role === MemberRole.Member) {
     // Members can only see their own attendance
     query = query.eq("memberId", loginUser.id);
   } else if (loginUser.role === MemberRole.ShiftIncharge) {
@@ -53,7 +53,7 @@ export const getAttendance = async (id: string) => {
   const filterAttendance = attendanceData.filter(
     (attendance) => attendance.members !== null
   );
-  
+
   const attendances = filterAttendance.map((attendance) => ({
     member: attendance.memberId.toString(),
     id: attendance.id,
@@ -64,7 +64,7 @@ export const getAttendance = async (id: string) => {
     memberId: attendance.memberId,
     name: attendance.members?.name,
     shift: attendance.members?.shift,
-  }))
+  }));
 
   return attendances;
 };

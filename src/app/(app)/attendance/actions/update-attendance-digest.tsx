@@ -5,12 +5,13 @@ import { Tables } from "@/lib/db";
 import { Digest } from "@/types";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { revalidatePath } from "next/cache";
 
 type Props = {
-  digest: Digest;
+  digestPayload: Digest;
 };
 
-export const updateAttendanceDigest = async ({ digest }: Props) => {
+export const updateAttendanceDigest = async ({ digestPayload }: Props) => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
 
@@ -18,17 +19,18 @@ export const updateAttendanceDigest = async ({ digest }: Props) => {
     loginUser?.role === MemberRole.Incharge ||
     loginUser?.role === MemberRole.ShiftIncharge
   ) {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from(Tables.Digest)
-      .upsert(digest)
+      .update(digestPayload)
+      .eq("id", digestPayload.id)
       .select()
       .returns<Digest[]>();
 
     if (error) {
-      return { error: error.message };
+      throw error;
     }
-    return data;
+    revalidatePath('/review')
   } else {
-    return { error: "You have not permission" };
+    throw "You have not permission";
   }
 };
