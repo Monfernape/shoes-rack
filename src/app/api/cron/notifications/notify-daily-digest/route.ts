@@ -27,7 +27,7 @@ export async function POST() {
     ]);
 
     if (digestError) {
-      return digestError;
+      throw digestError;
     }
     // Get All Active Shift Incharges
     const { data: shiftIncharges, error: memberError } = await supabase
@@ -37,7 +37,7 @@ export async function POST() {
       .eq("role", MemberRole.ShiftIncharge);
 
     if (memberError) {
-      return memberError;
+      throw memberError;
     }
 
     const attendanceNotifcations = {
