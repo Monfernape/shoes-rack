@@ -1,6 +1,6 @@
 import React from "react";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
-import { AttendanceHeader } from "../components/AttendanceHeader";
+import { AttendanceHeader } from "../attendance/components/AttendanceHeader";
 import { Routes } from "@/lib/routes";
 import { PageLayout } from "@/app/layout/PageLayout";
 import { getDigest } from "./actions/get-digest";
@@ -12,7 +12,7 @@ const Page = async ({ searchParams }: { searchParams: { date: string } }) => {
 
   const breadcrumbs = [
     { href: Routes.Attendance, label: "Digest" },
-    { href: Routes.MarkAttendance, label: "Digest Reviews" },
+    { href: Routes.Digest, label: "Digest Reviews" },
   ];
 
   return (

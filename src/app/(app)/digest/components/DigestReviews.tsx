@@ -30,7 +30,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useEffect, useMemo, useState, useTransition } from "react";
-import { updateAttendanceDigest } from "../../actions/update-attendance-digest";
+import { updateAttendanceDigest } from "../../attendance/actions/update-attendance-digest";
 import { toast } from "@/hooks/use-toast";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { DigestActions } from "./DigestActions";

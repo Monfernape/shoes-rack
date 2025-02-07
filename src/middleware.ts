@@ -8,7 +8,7 @@ import { getSupabaseClient } from "./utils/supabase/supabaseClient";
 
 const restrictedPaths: Routes[] = [
   Routes.AttendanceReport,
-  Routes.MarkAttendance,
+  Routes.Digest,
   Routes.AddMember,
   Routes.AddFund,
   Routes.EditFund,
