@@ -15,7 +15,6 @@ const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
   const { id } = searchParams || {};
   const attendance = await getAttendance(id);
   const loginUser = await getLoggedInUser();
-
   return (
     <>
       <AttendanceHeader breadcrumbs={breadcrumbs} />

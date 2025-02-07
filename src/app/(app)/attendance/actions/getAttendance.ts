@@ -21,7 +21,7 @@ export const getAttendance = async (id: string) => {
     .select(
       `id, memberId, startTime, endTime, status , created_at,  ${Tables.Members}(name,status,shift))`
     )
-    .eq("members.status", "active");
+    .eq("members.status", UserStatus.Active);
 
   // Role-based filtering:
   if (loginUser?.role === MemberRole.Member) {
@@ -31,22 +31,21 @@ export const getAttendance = async (id: string) => {
     // Shift Incharge filters attendance for members in the same active shift
     const activeMember = response.data.some(
       (member) =>
-        member.status === UserStatus.Active && member.shift === loginUser.shift
+        member.status === UserStatus.Active &&
+        member.shift === loginUser.shift &&
+        member.role === loginUser.Member
     );
-
     query = activeMember
-      ? query.eq("memberId", id)
-      : query.eq("memberId", loginUser.id);
+      ? query.eq("memberId", Number(id))
+      : query.eq("memberId", Number(loginUser.id));
   } else if (loginUser.role === MemberRole.Incharge && id) {
     // Incharge can see attendance of a specific member
-    query = query.eq("memberId", id);
+    query = query.eq("memberId", Number(id));
   }
-
   const { data: attendanceData, error } = await query.returns<
     AttendanceType[]
   >();
-
-  if (error || !attendanceData) {
+  if (error) {
     return [];
   }
 
