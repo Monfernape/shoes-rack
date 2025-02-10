@@ -5,23 +5,18 @@ import { getLeaveRequestById } from "../../actions/get-leave-request-by-id";
 import { LeavesHeader } from "../../components/LeavesHeader";
 import { Routes } from "@/lib/routes";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
-
+import { MemberRole } from "@/constant/constant";
 const Page = async ({ params }: { params: { id: string } }) => {
   const id = params.id;
-
   const loginUser = await getLoggedInUser();
-
   const leaves = await getLeaveRequestById(Number(id));
-
-  if ( leaves.memberId !== loginUser.id) {
+  if ( leaves.memberId !== loginUser.id && loginUser.role === MemberRole.Member) {
     permanentRedirect(Routes.LeaveRequest);
   }
-
   const breadcrumbs = [
     { href: Routes.LeaveRequest, label: "Leaves" },
     { href: `${Routes.EditLeaveRequest}/${id}`, label: "Edit Leave Request" },
   ];
-
   return (
     <>
       <LeavesHeader breadcrumbs={breadcrumbs} />
@@ -29,5 +24,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
     </>
   );
 };
-
 export default Page;
+
+
+
+
+
+
