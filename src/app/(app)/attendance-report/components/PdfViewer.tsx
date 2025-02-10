@@ -1,12 +1,12 @@
 "use client";
 
+import React from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useState } from "react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
 // This sets up the workerSrc for pdf.js
-
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -16,7 +16,7 @@ interface PdfViewerProps {
   fileUrl: string;
 }
 
-const PdfViewer: React.FC<PdfViewerProps> = ({ fileUrl }) => {
+const PdfViewer = ({ fileUrl }: PdfViewerProps) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -37,29 +37,31 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ fileUrl }) => {
   };
 
   return (
-    <div
-      style={{
-        height: "750px",
-        maxWidth: "900px",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
+    <div className="w-full max-w-3xl mx-auto p-4">
       <Document
         file={fileUrl}
         onLoadSuccess={onLoadSuccess}
         loading="Loading PDF..."
       >
-        <Page pageNumber={pageNumber} />
+        <Page pageNumber={pageNumber} className="w-full mx-auto" />
       </Document>
-      <div>
-        <button onClick={goToPrevPage} disabled={pageNumber <= 1}>
-          Previous
+
+      <div className="flex justify-center items-center mt-4 space-x-4">
+        <button
+          onClick={goToPrevPage}
+          disabled={pageNumber <= 1}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+        >
+          Prev
         </button>
-        <span>
+        <span className="text-lg">
           Page {pageNumber} of {numPages}
         </span>
-        <button onClick={goToNextPage} disabled={pageNumber >= (numPages || 1)}>
+        <button
+          onClick={goToNextPage}
+          disabled={pageNumber >= (numPages || 1)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+        >
           Next
         </button>
       </div>
