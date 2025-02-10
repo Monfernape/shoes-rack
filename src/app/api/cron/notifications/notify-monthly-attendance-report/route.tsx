@@ -9,10 +9,11 @@ import { Tables } from "@/lib/db";
 import { UserStatus } from "@/constant/constant";
 import { error } from "console";
 
-const EVERY_MONTH_FIRST_DAY_AT_6AM = "0 6 1 * *";
+const EVERY_MONTH_FIRST_DAY_AT_6AM = "* * * * *";
 
 export async function GET() {
   try {
+    console.log("cron job running......");
     cron.schedule(EVERY_MONTH_FIRST_DAY_AT_6AM, async () => {
       const bucketName = "attendance";
 
@@ -23,7 +24,7 @@ export async function GET() {
       const month = date.toLocaleString("default", { month: "long" });
       const year = date.getFullYear();
       const fileName = `attendance_report_${month}_${year}.pdf`;
-
+      console.log({ fileName });
       const streamToBuffer = async (
         stream: NodeJS.ReadableStream
       ): Promise<Buffer> => {
@@ -43,7 +44,7 @@ export async function GET() {
       );
 
       const pdfBuffer = await streamToBuffer(stream);
-
+      console.log({ pdfBuffer });
       await supabase.storage
         .from(bucketName)
         .upload(fileName, pdfBuffer, { upsert: true });
