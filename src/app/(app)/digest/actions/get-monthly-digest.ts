@@ -2,12 +2,21 @@ import { getMembers } from "@/app/(app)/members/actions/getMembers";
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { AttendancePercentage, AttendanceProgress } from "@/constant/constant";
+import { endOfMonth, format, startOfMonth, subMonths } from "date-fns";
 
 export const getMonthlyDigest = async () => {
   const supabase = await getSupabaseClient();
   const members = await getMembers("");
-  const startDate = "2025-02-01 00:00:00.000005+00";
-  const endDate = "2025-02-06 23:59:59.000005+00";
+  const currentDate = new Date();
+  const lastMonth = subMonths(currentDate, 1);
+
+  // Get the start and end of the last month
+  const startDate = startOfMonth(lastMonth);
+  const endDate = endOfMonth(lastMonth);
+
+  // Format the dates to match the required format
+  const formattedStartDate = format(startDate, "yyyy-MM-dd HH:mm:ss.SSSSSS+00");
+  const formattedEndDate = format(endDate, "yyyy-MM-dd HH:mm:ss.SSSSSS+00");
 
   // Extract all the member ids from the fetched members
   const targetIds = members.data.map((member) => member.id);
@@ -15,8 +24,8 @@ export const getMonthlyDigest = async () => {
   const { data, error } = await supabase
     .from(Tables.Digest)
     .select("*")
-    .lte("created_at", endDate)
-    .gte("created_at", startDate);
+    .lte("created_at", formattedEndDate)
+    .gte("created_at", formattedStartDate);
 
   if (error) {
     console.error("Error fetching data: ", error);

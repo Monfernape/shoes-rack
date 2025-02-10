@@ -8,23 +8,20 @@ import { Tables } from "@/lib/db";
 import { UserStatus } from "@/constant/constant";
 import { error } from "console";
 import { getMonthlyDigest } from "@/app/(app)/digest/actions/get-monthly-digest";
+import { format, startOfMonth, subMonths } from "date-fns";
 
 const EVERY_MONTH_FIRST_DAY_AT_6AM = "0 6 1 * *";
 
 export async function GET() {
   try {
-    console.log("cron job running......");
     cron.schedule(EVERY_MONTH_FIRST_DAY_AT_6AM, async () => {
       const bucketName = "attendance";
-
+      const currentDate = startOfMonth(new Date());
+      const lastMonth = format(subMonths(currentDate, 1), "MMMM-yyyy");
       const supabase = await getSupabaseClient();
 
       const attendanceReport = await getMonthlyDigest();
-      const date = new Date();
-      const month = date.toLocaleString("default", { month: "long" });
-      const year = date.getFullYear();
-      const fileName = `attendance-report-${month}-${year}.pdf`;
-      console.log({ fileName });
+      const fileName = `attendance-report-${lastMonth}.pdf`;
       const streamToBuffer = async (
         stream: NodeJS.ReadableStream
       ): Promise<Buffer> => {
@@ -44,7 +41,6 @@ export async function GET() {
       );
 
       const pdfBuffer = await streamToBuffer(stream);
-      console.log({ pdfBuffer });
       await supabase.storage
         .from(bucketName)
         .upload(fileName, pdfBuffer, { upsert: true });

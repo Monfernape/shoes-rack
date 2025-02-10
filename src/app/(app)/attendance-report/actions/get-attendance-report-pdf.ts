@@ -1,13 +1,13 @@
 "use server";
 
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
+import { format } from "date-fns";
 
-export const getAttendanceReportPdf = async () => {
+export const getAttendanceReportPdf = async (query: string) => {
   const supabase = await getSupabaseClient();
-
-  const data = supabase.storage
-    .from("attendance")
-    .getPublicUrl("attendance_report_December_2024.pdf");
+  const formattedQuery = format(query, "MMMM-yyyy");
+  const fileName = `attendance-report-${formattedQuery}.pdf`;
+  const data = supabase.storage.from("attendance").getPublicUrl(fileName);
 
   return data;
 };

@@ -37,7 +37,7 @@ const PdfViewer = ({ fileUrl }: PdfViewerProps) => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4">
+    <div className="w-full max-w-3xl flex sm:justify-start md:justify-center">
       <Document
         file={fileUrl}
         onLoadSuccess={onLoadSuccess}
@@ -45,26 +45,27 @@ const PdfViewer = ({ fileUrl }: PdfViewerProps) => {
       >
         <Page pageNumber={pageNumber} className="w-full mx-auto" />
       </Document>
-
-      <div className="flex justify-center items-center mt-4 space-x-4">
-        <button
-          onClick={goToPrevPage}
-          disabled={pageNumber <= 1}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
-        >
-          Prev
-        </button>
-        <span className="text-lg">
-          Page {pageNumber} of {numPages}
-        </span>
-        <button
-          onClick={goToNextPage}
-          disabled={pageNumber >= (numPages || 1)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
-        >
-          Next
-        </button>
-      </div>
+      {pageNumber > 1 && (
+        <div className="flex justify-center items-center mt-4 space-x-4">
+          <button
+            onClick={goToPrevPage}
+            disabled={pageNumber <= 1}
+            className="px-4 py-1 bg-blue-600 text-white text-xs rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+          >
+            Prev
+          </button>
+          <span className="text-xs">
+            Page {pageNumber} of {numPages}
+          </span>
+          <button
+            onClick={goToNextPage}
+            disabled={pageNumber >= (numPages || 1)}
+            className="px-4 py-1 bg-blue-600 text-white text-xs rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
