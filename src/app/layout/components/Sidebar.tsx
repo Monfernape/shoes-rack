@@ -12,7 +12,7 @@ import {
   GearIcon,
 } from "@radix-ui/react-icons";
 import {
-  // BellIcon,
+  BellIcon,
   CalendarIcon,
   // ChartNoAxesCombinedIcon,
   // ChartNoAxesCombinedIcon,
@@ -52,11 +52,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
       route: Routes.Members,
       icon: <PersonIcon />,
     },
-    // {
-    //   name: "Notifications",
-    //   route: Routes.Notification,
-    //   icon: <BellIcon />,
-    // },
+    {
+      name: "Notifications",
+      route: Routes.Notification,
+      icon: <BellIcon />,
+    },
     {
       name: "Attendance",
       route: Routes.Attendance,

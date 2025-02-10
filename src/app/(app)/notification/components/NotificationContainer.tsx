@@ -6,6 +6,7 @@ import { Routes } from "@/lib/routes";
 import { Notifications, UserDetails } from "@/types";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
+import moment from "moment";
 
 // Later we will get it from api
 export const NotificationContainer = ({
@@ -18,6 +19,10 @@ export const NotificationContainer = ({
   notificationId: string | null;
 }) => {
   const pathname = usePathname();
+  const formattedDate =
+    moment(notificationDetail?.created_at).utc().format("YYYY-MM-DD") +
+    " 00:00:00.000000+00";
+  const encodedDate = encodeURIComponent(formattedDate);
 
   const handleNotification = (notificationId: number) => {
     return notificationId;
@@ -46,18 +51,11 @@ export const NotificationContainer = ({
         <p className="text-sm text-justify">
           {notificationDetail?.description}
         </p>
-        <div className="flex  items-center ">
+        <div className="flex  items-center flex-col gap-2 ">
           <span className="text-sm"> Go to following link: &nbsp;</span>
           <Link
-            href={{
-              pathname: `${Routes.Digest}`,
-              query: {
-                date: new Date(
-                  String(notificationDetail?.created_at)
-                ).getTime(),
-              },
-            }}
-            className="text-sm font-medium text-blue-500"
+          href={`${Routes.Digest}?date=${encodedDate}`}
+          className="text-sm font-medium text-blue-500"
           >
             {`${Routes.Digest}/?date=${new Date(
               String(notificationDetail?.created_at)

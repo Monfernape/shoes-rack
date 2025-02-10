@@ -15,6 +15,7 @@ export default function NotificationLayout({
   allnotification,
 }: NotificationLayoutProps) {
   const pathname = usePathname();
+
   const notificationId = pathname.split("/")[2];
   const handleNotificationStatus = () => {
     return;
@@ -22,7 +23,11 @@ export default function NotificationLayout({
 
   return (
     <div className="flex  h-full ">
-      <div className="w-96  border-r h-full ">
+      <div
+        className={`w-full  lg:w-96  border-r h-full ${
+          notificationId && "hidden lg:block"
+        } `}
+      >
         <div className="flex   items-center h-16 py-4 px-5 border-b">
           <h4 className="font-medium text-sm text-center flex items-center">
             Notifications
