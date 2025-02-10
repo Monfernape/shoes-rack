@@ -4,12 +4,12 @@ import ReactPDF from "@react-pdf/renderer";
 import { NextResponse } from "next/server";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { MonthlyAttendancePdf } from "./MonthlyReportPdf";
-import { getAttendanceReport } from "@/app/(app)/attendance-report/actions/attendance-report";
 import { Tables } from "@/lib/db";
 import { UserStatus } from "@/constant/constant";
 import { error } from "console";
+import { getMonthlyDigest } from "@/app/(app)/digest/actions/get-monthly-digest";
 
-const EVERY_MONTH_FIRST_DAY_AT_6AM = "* * * * *";
+const EVERY_MONTH_FIRST_DAY_AT_6AM = "0 6 1 * *";
 
 export async function GET() {
   try {
@@ -19,11 +19,11 @@ export async function GET() {
 
       const supabase = await getSupabaseClient();
 
-      const attendanceReport = await getAttendanceReport();
+      const attendanceReport = await getMonthlyDigest();
       const date = new Date();
       const month = date.toLocaleString("default", { month: "long" });
       const year = date.getFullYear();
-      const fileName = `attendance_report_${month}_${year}.pdf`;
+      const fileName = `attendance-report-${month}-${year}.pdf`;
       console.log({ fileName });
       const streamToBuffer = async (
         stream: NodeJS.ReadableStream

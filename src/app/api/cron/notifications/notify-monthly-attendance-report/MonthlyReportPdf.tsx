@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
   },
 });
 
-type AttendanceReportItem = {
+export type AttendanceReportItem = {
   name: string;
   attendancePercentage: string;
   status: string;
-  present: number;
-  absent: number;
-  leave: number;
+  presents: number;
+  absents: number;
+  leaves: number;
 };
 
 export const MonthlyAttendancePdf = ({ attendanceReport }: { attendanceReport: AttendanceReportItem[] }) => (
@@ -73,9 +73,9 @@ export const MonthlyAttendancePdf = ({ attendanceReport }: { attendanceReport: A
           <Text style={styles.cell}>{item.name}</Text>
           <Text style={styles.cell}>{item.attendancePercentage}</Text>
           <Text style={styles.cell}>{item.status}</Text>
-          <Text style={styles.cell}>{item.present}</Text>
-          <Text style={styles.cell}>{item.absent}</Text>
-          <Text style={styles.cell}>{item.leave}</Text>
+          <Text style={styles.cell}>{item.presents}</Text>
+          <Text style={styles.cell}>{item.absents}</Text>
+          <Text style={styles.cell}>{item.leaves}</Text>
         </View>
       ))}
     </Page>

@@ -20,7 +20,7 @@ export const getMonthlyDigest = async () => {
 
   if (error) {
     console.error("Error fetching data: ", error);
-    return;
+    return [];
   }
 
   // Initialize counters for each target ID and category
@@ -91,5 +91,5 @@ export const getMonthlyDigest = async () => {
     };
   });
 
-  return transformedData;
+  return transformedData || [];
 };
