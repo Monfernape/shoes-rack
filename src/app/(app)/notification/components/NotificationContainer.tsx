@@ -7,6 +7,7 @@ import { Notifications, UserDetails } from "@/types";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import moment from "moment";
+import { deleteNotification } from "../actions/delete-notification";
 
 // Later we will get it from api
 export const NotificationContainer = ({
@@ -25,7 +26,7 @@ export const NotificationContainer = ({
   const encodedDate = encodeURIComponent(formattedDate);
 
   const handleDeleteNotification = (notificationId: number) => {
-    return notificationId;
+    return deleteNotification(notificationId);
   };
   return (
     <div className="flex flex-1 h-full flex-col">
