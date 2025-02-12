@@ -7,7 +7,6 @@ import { updateSession } from "./utils/supabase/middleware";
 import { getSupabaseClient } from "./utils/supabase/supabaseClient";
 
 const restrictedPaths: Routes[] = [
-  Routes.AttendanceReport,
   Routes.Digest,
   Routes.AddMember,
   Routes.AddFund,
@@ -20,7 +19,6 @@ const restrictedPathForShiftIncharge: Routes[] = [
 ];
 
 export default async function middleware(request: NextRequest) {
-
   const supabase = await getSupabaseClient();
   const requestedPath = request.nextUrl.pathname as Routes;
 
@@ -42,7 +40,6 @@ export default async function middleware(request: NextRequest) {
     }
   }
 
-  
   const loginUser = await getLoggedInUser();
   const isRestrictedPath = restrictedPaths.includes(requestedPath);
   const isRestrictedPathForShiftIncharge =
@@ -52,21 +49,21 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(Routes.Login, request.url));
   }
 
-  if (session && requestedPath === Routes.Login || session && requestedPath === Routes.Root) {
+  if (
+    (session && requestedPath === Routes.Login) ||
+    (session && requestedPath === Routes.Root)
+  ) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
   }
   if (
     (requestedPath === Routes.AttendanceReport ||
-    requestedPath === Routes.Notification ) && loginUser.role  === MemberRole.Member
+      requestedPath === Routes.Notification) &&
+    loginUser.role === MemberRole.Member
   ) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
   }
 
-  if (
-    session &&
-    loginUser.role === MemberRole.Member &&
-    isRestrictedPath
-  ) {
+  if (session && loginUser.role === MemberRole.Member && isRestrictedPath) {
     return NextResponse.redirect(new URL(Routes.Members, request.url));
   }
 
@@ -89,7 +86,7 @@ export default async function middleware(request: NextRequest) {
 
 // The matcher pattern determines which routes the middleware should apply to.
 // Pattern explanation:
-// - "/((?!.*\\.).*)" ensures the middleware applies to all routes 
+// - "/((?!.*\\.).*)" ensures the middleware applies to all routes
 // - This excludes requests for static files like CSS, or images (e.g., "/styles.css" or "/logo.png").
 // - Examples of routes where the middleware will NOT apply:
 //   - "/styles/main.css"

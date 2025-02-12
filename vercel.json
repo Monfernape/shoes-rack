@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/cron/notifications/monthly-attendance-report",
-      "schedule": "0 6 1 * *"
+      "schedule": "15 0 1 * *"
     }
   ]
 }
