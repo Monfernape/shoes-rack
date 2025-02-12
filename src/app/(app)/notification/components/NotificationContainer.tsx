@@ -7,6 +7,7 @@ import { Notifications, UserDetails } from "@/types";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import moment from "moment";
+import { deleteNotification } from "../actions/delete-notification";
 
 // Later we will get it from api
 export const NotificationContainer = ({
@@ -24,8 +25,8 @@ export const NotificationContainer = ({
     " 00:00:00.000000+00";
   const encodedDate = encodeURIComponent(formattedDate);
 
-  const handleNotification = (notificationId: number) => {
-    return notificationId;
+  const handleDeleteNotification = (notificationId: number) => {
+    return deleteNotification(notificationId);
   };
   return (
     <div className="flex flex-1 h-full flex-col">
@@ -34,7 +35,7 @@ export const NotificationContainer = ({
         {pathname !== Routes.Notification && (
           <div className="flex gap-2">
             <Button
-              onClick={() => handleNotification(Number(notificationId))}
+              onClick={() => handleDeleteNotification(Number(notificationId))}
               variant={"outline"}
               className="text-status-inactive hover:text-status-inactive"
             >
@@ -54,8 +55,8 @@ export const NotificationContainer = ({
         <div className="flex  items-center flex-col gap-2 ">
           <span className="text-sm"> Go to following link: &nbsp;</span>
           <Link
-          href={`${Routes.Digest}?date=${encodedDate}`}
-          className="text-sm font-medium text-blue-500"
+            href={`${Routes.Digest}?date=${encodedDate}`}
+            className="text-sm font-medium text-blue-500"
           >
             {`${Routes.Digest}/?date=${new Date(
               String(notificationDetail?.created_at)

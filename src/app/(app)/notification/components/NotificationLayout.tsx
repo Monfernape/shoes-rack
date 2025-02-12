@@ -6,6 +6,7 @@ import { Routes } from "@/lib/routes";
 import { Notifications } from "@/types";
 import { formatDistance } from "date-fns";
 import { usePathname } from "next/navigation";
+import { updateNotificationStatus } from "../actions/update-notification-status";
 type NotificationLayoutProps = {
   children: React.ReactNode;
   allnotification: Notifications[];
@@ -17,8 +18,8 @@ export default function NotificationLayout({
   const pathname = usePathname();
 
   const notificationId = pathname.split("/")[2];
-  const handleNotificationStatus = () => {
-    return;
+  const handleNotificationStatus = async (id: number) => {
+    await updateNotificationStatus(id);
   };
 
   return (
@@ -39,7 +40,7 @@ export default function NotificationLayout({
               <li className=" border-b " key={notification.id}>
                 <Link
                   onClick={() => {
-                    handleNotificationStatus();
+                    handleNotificationStatus(notification.id);
                   }}
                   key={notification.id}
                   className={` flex items-center  hover:bg-gray-100 px-5 py-3 text-xs ${
