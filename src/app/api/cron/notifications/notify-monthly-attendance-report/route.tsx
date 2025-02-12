@@ -5,7 +5,6 @@ import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { MonthlyAttendancePdf } from "./MonthlyReportPdf";
 import { Tables } from "@/lib/db";
 import { UserStatus } from "@/constant/constant";
-import { error } from "console";
 import { getMonthlyDigest } from "@/app/(app)/digest/actions/get-monthly-digest";
 import { format, startOfMonth, subMonths } from "date-fns";
 
@@ -48,27 +47,27 @@ export async function GET() {
       .neq("status", UserStatus.Inactive);
 
     if (membersError) {
-      return error;
-    } else {
-      const memberToNotify = members.map((member) => {
-        return {
-          title: "Monthly report genrated",
-          system_generated: true,
-          description: "Please monthly attendance report",
-          member_id: member.id,
-          is_read: false,
-        };
-      });
-
-      const { error: insertionError } = await supabase
-        .from(Tables.Notification)
-        .insert([...memberToNotify]);
-      if (insertionError) {
-        throw insertionError;
-      }
+      return NextResponse.json({ error: membersError.message }, { status: 500 });
     }
+
+    const memberToNotify = members.map((member) => ({
+      title: "Monthly report generated",
+      system_generated: true,
+      description: "Please check the monthly attendance report",
+      member_id: member.id,
+      is_read: false,
+    }));
+
+    const { error: insertionError } = await supabase
+      .from(Tables.Notification)
+      .insert([...memberToNotify]);
+
+    if (insertionError) {
+      return NextResponse.json({ error: insertionError.message }, { status: 500 });
+    }
+
     return NextResponse.json({ data: "Success", status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unknown error" }, { status: 500 });
   }
 }
