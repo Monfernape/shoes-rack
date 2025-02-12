@@ -14,8 +14,7 @@ import {
 import {
   BellIcon,
   CalendarIcon,
-  // ChartNoAxesCombinedIcon,
-  // ChartNoAxesCombinedIcon,
+  ChartNoAxesCombinedIcon,
   ClipboardIcon,
   Footprints,
   HandCoinsIcon,
@@ -81,13 +80,12 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
 
   const shiftInchargeRoutes: Route[] = [
     ...membersRoutes,
-   funds
-
-    // {
-    //   name: "Attendance Report",
-    //   route: Routes.AttendanceReport,
-    //   icon: <ChartNoAxesCombinedIcon />,
-    // },
+    {
+      name: "Attendance Report",
+      route: Routes.AttendanceReport,
+      icon: <ChartNoAxesCombinedIcon />,
+    },
+    funds,
   ];
 
   const inchargeRoutes: Route[] = [...shiftInchargeRoutes];

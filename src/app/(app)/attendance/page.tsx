@@ -18,7 +18,7 @@ const Page = async ({ searchParams }: { searchParams: { id: string } }) => {
   return (
     <>
       <AttendanceHeader breadcrumbs={breadcrumbs} />
-      <MemberFilter loginUser={loginUser}  route={Routes.Attendance}/>
+      <MemberFilter loginUser={loginUser} route={Routes.Attendance} />
       <PageLayout>
         <AttendanceList attendance={attendance} loginUser={loginUser} />
       </PageLayout>
