@@ -91,4 +91,4 @@ export default async function middleware(request: NextRequest) {
 // - Examples of routes where the middleware will NOT apply:
 //   - "/styles/main.css"
 //   - "/images/logo.png"
-export const config = { matcher: "/" };
+export const config = { matcher: "/((?!.*\\.).*)" };
