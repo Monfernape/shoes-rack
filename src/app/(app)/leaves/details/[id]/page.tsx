@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import React from "react";
 import FormWrapper from "@/common/FormWrapper";
 import { Breadcrumbs } from "@/types";
@@ -9,24 +9,29 @@ import { LeaveRequestDetails } from "../../components/LeaveRequestDetails";
 import { getUserById } from "@/app/(app)/members/actions/get-user-by-id";
 import { permanentRedirect } from "next/navigation";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
-
+import { MemberRole } from "@/constant/constant";
 type Parameters = {
   params: {
     id: string;
   };
 };
-
 const Page = async ({ params }: Parameters) => {
   const { id: requestId } = params;
   const leaveRequest = await getLeaveRequestById(Number(requestId));
   const userInfo = await getUserById(leaveRequest.memberId);
-    const loginUser = await getLoggedInUser();
-if ( leaveRequest.memberId !== loginUser.id) {
+  const loginUser = await getLoggedInUser();
+  if (
+    leaveRequest.memberId !== loginUser.id &&
+    loginUser.role === MemberRole.Member
+  ) {
     permanentRedirect(Routes.LeaveRequest);
   }
   const breadcrumbs: Breadcrumbs[] = [
     { href: Routes.LeaveRequest, label: "Leaves" },
-    { href: `${Routes.LeaveRequestDetails}/${requestId}`, label: userInfo?.name },
+    {
+      href: `${Routes.LeaveRequestDetails}/${requestId}`,
+      label: userInfo?.name,
+    },
   ];
   return (
     <div>
@@ -40,5 +45,4 @@ if ( leaveRequest.memberId !== loginUser.id) {
     </div>
   );
 };
-
 export default Page;
