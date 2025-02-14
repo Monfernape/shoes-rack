@@ -1,12 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { AlignJustify, Dot as DotIcon } from "lucide-react";
+import { AlignJustify, Dot as DotIcon, Inbox as InboxIcon } from "lucide-react";
 import Link from "next/link";
 import { Routes } from "@/lib/routes";
 import { Notifications } from "@/types";
 import { formatDistance } from "date-fns";
 import { usePathname } from "next/navigation";
-
 import { updateNotificationStatus } from "../actions/update-notification-status";
 import { Sidebar } from "@/app/layout/components/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,6 @@ export default function NotificationLayout({
 }: NotificationLayoutProps) {
   const pathname = usePathname();
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
-
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -30,9 +28,9 @@ export default function NotificationLayout({
   };
 
   return (
-    <div className="flex  h-full">
+    <div className="flex  ">
       <div
-        className={`w-full  lg:w-96  border-r h-full   ${
+        className={`w-full  lg:w-96  border-r h-dvh  ${
           notificationId && "hidden lg:block"
         } `}
       >
@@ -42,7 +40,7 @@ export default function NotificationLayout({
             toggleSidebar={toggleSidebar}
           />
         )}
-        <div className="flex   items-center h-16 py-4 px-5 border-b">
+        <div className="flex items-center  py-4 px-5 shadow-sm">
           <Button
             variant="ghost"
             size="icon"
@@ -51,13 +49,14 @@ export default function NotificationLayout({
           >
             <AlignJustify className="h-4 w-4 text-gray-800" />
           </Button>
-          <h4 className="font-medium text-sm text-center flex items-center">
+          <h4 className="font-medium text-xs text-center flex items-center ">
             Notifications
           </h4>
         </div>
-        <ul className="text-gray-700 overflow-y-scroll h-full  ">
-          {allnotification?.map((notification) => {
-            return (
+
+        {allnotification.length !== 0 ? (
+          <ul className="text-gray-700 overflow-y-auto  ">
+            {allnotification?.map((notification) => (
               <li className=" border-b " key={notification.id}>
                 <Link
                   onClick={() => {
@@ -101,9 +100,19 @@ export default function NotificationLayout({
                   </div>
                 </Link>
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ul>
+        ) : (
+          <div className=" flex flex-col gap-2 items-center h-5/6 justify-center">
+            <InboxIcon />
+            <span
+              className="flex text-gray-700 text-sm"
+              data-testid="description"
+            >
+              No Notifications
+            </span>
+          </div>
+        )}
       </div>
       <div className="flex-1 flex flex-col">{children}</div>
     </div>

@@ -3,16 +3,16 @@ import { Tables } from "@/lib/db";
 import { getLoggedInUser } from "@/utils/getLoggedInUser";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 
-export const getAllNotifications = async () => {
+export const getNotificationsCount = async () => {
   const supabase = await getSupabaseClient();
   const loginUser = await getLoggedInUser();
-  const { data: notifications, error } = await supabase
+  const { count, error: countError } = await supabase
     .from(Tables.Notification)
-    .select(`*`)
-    .eq("member_id", loginUser.id);
-
-  if (error) {
-    throw error;
+    .select("*", { count: "exact" })
+    .eq("member_id", loginUser.id)
+    .eq("is_read", false);
+  if (countError) {
+    throw countError;
   }
-  return notifications;
+  return count;
 };
