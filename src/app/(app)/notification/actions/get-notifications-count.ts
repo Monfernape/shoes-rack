@@ -11,7 +11,6 @@ export const getNotificationsCount = async () => {
     .select("*", { count: "exact" })
     .eq("member_id", loginUser.id)
     .eq("is_read", false);
-  console.log("count****", count);
   if (countError) {
     throw countError;
   }

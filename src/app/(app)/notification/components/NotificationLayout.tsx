@@ -19,7 +19,6 @@ export default function NotificationLayout({
 }: NotificationLayoutProps) {
   const pathname = usePathname();
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  console.log("allNotifications***", allnotification);
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
