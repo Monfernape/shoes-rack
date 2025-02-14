@@ -17,14 +17,12 @@ export type Notifications = {
   member_id: number;
   title: string;
   is_read: boolean;
-  created_at: Date;
+  created_at: string;
   sender_id: null | number;
   system_generated: boolean;
   description: string;
-  type: NotificationType | null;
-  members: null | {
-    name: string;
-  };
+  type: NotificationType;
+ 
 };
 
 export type Digest = {

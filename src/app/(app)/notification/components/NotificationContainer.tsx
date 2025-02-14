@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
-import { TrashIcon } from "lucide-react";
+import React, { useMemo } from "react";
+import { ArrowLeft, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { Routes } from "@/lib/routes";
 import { Notifications, UserDetails } from "@/types";
 import { Button } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import moment from "moment";
+import { deleteNotification } from "../actions/delete-notification";
+import { NotificationType } from "@/constant/constant";
 
 // Later we will get it from api
 export const NotificationContainer = ({
@@ -15,7 +17,7 @@ export const NotificationContainer = ({
   notificationId,
 }: {
   user: UserDetails;
-  notificationDetail: Notifications | undefined;
+  notificationDetail: Notifications;
   notificationId: string | null;
 }) => {
   const pathname = usePathname();
@@ -23,18 +25,54 @@ export const NotificationContainer = ({
     moment(notificationDetail?.created_at).utc().format("YYYY-MM-DD") +
     " 00:00:00.000000+00";
   const encodedDate = encodeURIComponent(formattedDate);
+  const router = useRouter();
+  const navigator = useMemo(() => {
+    switch (notificationDetail?.type) {
+      case NotificationType.Attendance:
+        return {
+          title: `${Routes.Digest}/?date=${new Date(
+            String(notificationDetail?.created_at)
+          ).getTime()}`,
+          href: `${Routes.Digest}?date=${encodedDate}`,
+        };
+      case NotificationType.MonthlyReport:
+        return {
+          title: `${Routes.AttendanceReport}/?date=${new Date(
+            String(notificationDetail?.created_at)
+          ).getTime()}`,
+          href: `${Routes.AttendanceReport}?date=${encodedDate}`,
+        };
+      default:
+        return {
+          title: `${Routes.Members}`,
+          href: `${Routes.Members}`,
+        };
+    }
+  }, [notificationDetail]);
 
-  const handleNotification = (notificationId: number) => {
-    return notificationId;
+  const handleDeleteNotification = (notificationId: number) => {
+    return deleteNotification(notificationId);
+  };
+  const handleBackNavigation = () => {
+    router.back();
   };
   return (
     <div className="flex flex-1 h-full flex-col">
-      <div className="h-16 flex justify-between items-center border-b p-4 px-8  ">
-        <div className=" flex items-center">Title</div>
+      <div className="h-16 flex justify-between items-center border-b p-4 ">
+        <div className="flex gap-2 items-center">
+          <Button
+            onClick={handleBackNavigation}
+            variant={"outline"}
+            className="border-none shadow-none  w-2 lg:hidden"
+          >
+            <ArrowLeft size={12} />
+          </Button>
+          <p>Title</p>
+        </div>
         {pathname !== Routes.Notification && (
           <div className="flex gap-2">
             <Button
-              onClick={() => handleNotification(Number(notificationId))}
+              onClick={() => handleDeleteNotification(Number(notificationId))}
               variant={"outline"}
               className="text-status-inactive hover:text-status-inactive"
             >
@@ -54,12 +92,10 @@ export const NotificationContainer = ({
         <div className="flex  items-center flex-col gap-2 ">
           <span className="text-sm"> Go to following link: &nbsp;</span>
           <Link
-          href={`${Routes.Digest}?date=${encodedDate}`}
-          className="text-sm font-medium text-blue-500"
+            href={`${navigator.href}`}
+            className="text-sm font-medium text-blue-500"
           >
-            {`${Routes.Digest}/?date=${new Date(
-              String(notificationDetail?.created_at)
-            ).getTime()}`}
+            {`${navigator.title}`}
           </Link>
         </div>
       </div>
