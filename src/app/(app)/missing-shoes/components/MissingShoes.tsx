@@ -50,14 +50,13 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
         : missingShoesReports;
       setFilteredShoesReports(filtered);
     });
-  }, [searchQuery, missingShoesReports, startTransition]);
+  }, [searchQuery]);
 
   if (error) {
     toast({
       title: error.message,
     });
   }
-
   const columns: ColumnDef<MissingShoeReport>[] = useMemo(
     () => [
       {
@@ -121,8 +120,6 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     []
   );
 
-  const addMissingShoes = () => {};
-
   const table = useReactTable({
     data: filteredShoesReports,
     columns,
@@ -136,7 +133,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     buttonIcon: <PlusIcon />,
     icon: <ExclamationTriangleIcon />,
     actionButton: true,
-    onAction: addMissingShoes,
+    onAction: () => router.push(Routes.AddMissingShoes),
     labelForActionButton: "Add shoes",
   };
 
@@ -181,7 +178,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
                 <TableRow
                   key={row.id}
                   onClick={() => handleViewDetails(Number(row.id))}
-                   className="cursor-pointer"
+                  className="cursor-pointer"
                 >
                   {table
                     .getRowModel()

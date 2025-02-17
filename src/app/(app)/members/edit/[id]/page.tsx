@@ -30,7 +30,7 @@ const Page = async ({ params }: Parameters) => {
   if (
     (user.role === MemberRole.ShiftIncharge && member.shift !== user.shift) ||
     (user.role === MemberRole.ShiftIncharge &&
-      (member.role === MemberRole.Incharge || MemberRole.ShiftIncharge))
+      member.role === (MemberRole.Incharge || MemberRole.ShiftIncharge))
   ) {
     permanentRedirect(Routes.Members);
   }

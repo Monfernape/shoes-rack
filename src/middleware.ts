@@ -5,6 +5,7 @@ import { getLoggedInUser } from "./utils/getLoggedInUser";
 import { MemberRole } from "./constant/constant";
 import { updateSession } from "./utils/supabase/middleware";
 import { getSupabaseClient } from "./utils/supabase/supabaseClient";
+import { cookies } from "next/headers";
 
 const restrictedPaths: Routes[] = [
   Routes.Digest,
@@ -44,7 +45,11 @@ export default async function middleware(request: NextRequest) {
   const isRestrictedPath = restrictedPaths.includes(requestedPath);
   const isRestrictedPathForShiftIncharge =
     restrictedPathForShiftIncharge.includes(requestedPath);
-
+  const cookieStore = await cookies();
+  if (!session) {
+    // we were facing issue on login , loggedin user was not deleting from cookies in case session expire
+    cookieStore.delete;
+  }
   if (!session && requestedPath !== Routes.Login) {
     return NextResponse.redirect(new URL(Routes.Login, request.url));
   }

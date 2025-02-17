@@ -33,7 +33,7 @@ import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 
-import { useParams} from "next/navigation";
+import { useParams } from "next/navigation";
 import { DatePicker } from "@/components/ui/datepicker";
 import { DataSpinner } from "@/common/Loader/Loader";
 
@@ -95,7 +95,7 @@ type MemberFormBuilder = {
 export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
   const { toast } = useToast();
   const params = useParams();
-  
+
   const [isPending, startTransition] = useTransition();
   const phoneNumberMask = useMask({
     mask: "____-_______",
@@ -143,40 +143,38 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
     startTransition(async () => {
       try {
         const result = member
-          ? await updateUser({ ...values, id: member?.id },user)
+          ? await updateUser({ ...values, id: member?.id }, user)
           : await createUser(values);
 
         if (result) {
           toast({
-            variant:"destructive",
+            variant: "destructive",
             title: result?.error,
-            description: 'Try again' ,
+            description: "Try again",
           });
-          return 
+          return;
         }
         toast({
           title: member?.id
             ? "User updated successfully"
             : "User created successfully",
         });
-
-      } 
-      catch (error) {
+      } catch (error) {
         if (error instanceof Error) {
           toast({
             title: error.message,
             description: "Something went wrong",
           });
         }
-        }
-      })
-    };
-  
+      }
+    });
+  };
+
   return (
     <FormWrapper>
       <Form {...form}>
         <form
-          action={form.handleSubmit(handleSubmission) as unknown as string}
+          action={() => form.handleSubmit(handleSubmission)()}
           className="space-y-4 flex flex-col"
           data-testid="form"
         >
@@ -243,7 +241,11 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
             control={form.control}
             name="date_of_birth"
             label="Date of Birth"
-            defaultDate={member ? new Date(member?.date_of_birth) : new Date()}
+            defaultDate={
+              member
+                ? new Date(member?.date_of_birth)
+                : new Date(Date.now() - 1000 * 60 * 60 * 24 * 1)
+            }
           />
 
           <FormField
@@ -269,7 +271,11 @@ export const MemberFormBuilder = ({ member, user }: MemberFormBuilder) => {
             control={form.control}
             name="ehad_duration"
             label="Ehad duration"
-            defaultDate={member ? new Date(member?.ehad_duration) : new Date()}
+            defaultDate={
+              member
+                ? new Date(member?.ehad_duration)
+                : new Date(Date.now() - 1000 * 60 * 60 * 24 * 1)
+            }
           />
 
           <FormField
