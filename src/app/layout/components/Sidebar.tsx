@@ -17,7 +17,7 @@ import {
   ChartNoAxesCombinedIcon,
   ClipboardIcon,
   Footprints,
-  HandCoinsIcon,
+  // HandCoinsIcon,
 } from "lucide-react";
 import { useUser } from "@/hooks/useGetLoggedinUser";
 import { MemberRole } from "@/constant/constant";
@@ -72,11 +72,11 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
       icon: <Footprints />,
     },
   ];
-  const funds = {
-    name: "Funds",
-    route: Routes.Fund,
-    icon: <HandCoinsIcon />,
-  };
+  // const funds = {
+  //   name: "Funds",
+  //   route: Routes.Fund,
+  //   icon: <HandCoinsIcon />,
+  // };
 
   const shiftInchargeRoutes: Route[] = [
     ...membersRoutes,
@@ -85,7 +85,7 @@ export const Sidebar = ({ isSidebarOpen, toggleSidebar }: Props) => {
       route: Routes.AttendanceReport,
       icon: <ChartNoAxesCombinedIcon />,
     },
-    funds,
+  
   ];
 
   const inchargeRoutes: Route[] = [...shiftInchargeRoutes];

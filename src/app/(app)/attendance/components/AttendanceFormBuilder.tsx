@@ -25,12 +25,12 @@ import { User } from "@/types";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
 import { formatTo12Hour } from "@/common/TimeFormate/12HourFormate";
+import { formatTo24Hour } from "@/common/TimeFormate/24HourFormate";
 
 interface AttendanceFormBuilderProps {
   attendance?: AttendanceFormValues;
   loginUser?: User;
 }
-
 const attendanceSchema = z
   .object({
     memberId: z.string({
@@ -52,16 +52,13 @@ const attendanceSchema = z
       path: ["endTime"],
     }
   );
-
 export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
-
 const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   attendance,
   loginUser,
 }) => {
   const params = useParams();
   const [isPending, startTransition] = useTransition();
-
   const attendanceId = params?.id;
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
@@ -70,19 +67,15 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
         loginUser?.role === MemberRole.Member
           ? loginUser.id.toString()
           : attendance?.memberId.toString(),
-
-      startTime: attendance?.startTime ?? "",
-      endTime: attendance?.endTime || "",
+      startTime: attendance ? formatTo24Hour(attendance.startTime) : "",
+      endTime: attendance ? formatTo24Hour(attendance.endTime) :"",
     },
   });
-
   const onSubmit = async (values: AttendanceFormValues) => {
     const formattedStartTime = formatTo12Hour(values.startTime);
     const formattedEndTime = formatTo12Hour(values.endTime);
-
     const startTime = new Date(`1970-01-01T${values.startTime}:00`);
     const endTime = new Date(`1970-01-01T${values.endTime}:00`);
-
     if (startTime.getTime() === endTime.getTime()) {
       form.setError("endTime", {
         type: "manual",
@@ -90,20 +83,16 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
       });
       return;
     }
-
     const formattedValues = {
       ...values,
       startTime: formattedStartTime,
       endTime: formattedEndTime,
     };
-
     if (isValidParam(attendanceId)) {
       const updatedValue = { id: attendanceId, ...formattedValues };
-
       startTransition(async () => {
         if (attendance?.memberId) {
           const result = await updateAttendance(updatedValue, loginUser);
-
           if (!result) {
             toast({
               title: "Attendance updated successfully",
@@ -117,7 +106,6 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
           }
         } else {
           const error = await createAttendance(formattedValues);
-
           if (!error) {
             toast({
               title: "Attendance submitted successfully",
@@ -128,7 +116,6 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
       });
     }
   };
-
   return (
     <FormWrapper>
       <FormTitle title="Attendance" />
@@ -208,5 +195,4 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
     </FormWrapper>
   );
 };
-
 export default AttendanceFormBuilder;
