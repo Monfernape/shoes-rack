@@ -1,5 +1,4 @@
 "use server";
-
 import { Tables } from "@/lib/db";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
 import { leaveRequestSchema } from "../add/components/LeaveRequestFormBuilder";
@@ -24,16 +23,15 @@ export const updateLeaveRequest = async (
     return { error: "You have not permission" };
   }
   if (loginUser?.role === MemberRole.ShiftIncharge) {
-    const member = await getUserById(String(requestId));
+    const member = await getUserById(String(values.memberId));
 
     if (member.shift !== loginUser.shift) {
       return { error: "You have not permission" };
     }
-    if (member.role === loginUser.role) {
+    if (member.role === loginUser.role && loginUser.id !== member.id) {
       return { error: "You have not permission" };
     }
   }
-
   const { error } = await supabase
     .from(Tables.Leaves)
     .update({
@@ -41,16 +39,14 @@ export const updateLeaveRequest = async (
       leaveType: values.leaveType,
       startDate: values.date.from.toISOString(),
       endDate: values.date.to
-        ? values.date.to.toISOString()
+        ? values.date.to.toISOString() 
         : values.date.from.toISOString(),
       reason: values.reason,
       status: LeaveRequestStatus.Pending,
     })
     .eq("id", requestId);
-
   if (error) {
-    return { error: error.message };
-  } else {
-    redirect(Routes.LeaveRequest);
+    throw error;
   }
+  redirect(Routes.LeaveRequest);
 };
