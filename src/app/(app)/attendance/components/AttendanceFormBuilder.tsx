@@ -24,9 +24,10 @@ import { isValidParam } from "@/utils/utils";
 import { User } from "@/types";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
+import { formatTo12Hour } from "@/common/TimeFormate/12HourFormate";
 
 interface AttendanceFormBuilderProps {
-  attendance?: AttendanceFormValues 
+  attendance?: AttendanceFormValues;
   loginUser?: User;
 }
 
@@ -51,6 +52,7 @@ const attendanceSchema = z
       path: ["endTime"],
     }
   );
+
 export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
 
 const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
@@ -75,6 +77,8 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
+    const formattedStartTime = formatTo12Hour(values.startTime);
+    const formattedEndTime = formatTo12Hour(values.endTime);
 
     const startTime = new Date(`1970-01-01T${values.startTime}:00`);
     const endTime = new Date(`1970-01-01T${values.endTime}:00`);
@@ -86,52 +90,53 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
       });
       return;
     }
-    
+
+    const formattedValues = {
+      ...values,
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
+    };
+
     if (isValidParam(attendanceId)) {
-      const updatedValue = {
-        id: attendanceId,
-        ...values,
-      };
+      const updatedValue = { id: attendanceId, ...formattedValues };
 
       startTransition(async () => {
-          if (attendance?.memberId) {
-            const result = await updateAttendance(updatedValue,loginUser);
+        if (attendance?.memberId) {
+          const result = await updateAttendance(updatedValue, loginUser);
 
-            if (!result) {
-              toast({
-                title: "Attendance updated successfully",
-                description: "The attendance record has been updated.",
-              });
-            }else{
-              toast({
-                variant:"destructive",
-                title: result.error,
-              });
-            }
+          if (!result) {
+            toast({
+              title: "Attendance updated successfully",
+              description: "The attendance record has been updated.",
+            });
           } else {
-            const error = await createAttendance(values);
-
-            if (!error) {
-              toast({
-                title: "Attendance submitted successfully",
-                description: "You will receive a message shortly.",
-              });
-            }
+            toast({
+              variant: "destructive",
+              title: result.error,
+            });
           }
+        } else {
+          const error = await createAttendance(formattedValues);
+
+          if (!error) {
+            toast({
+              title: "Attendance submitted successfully",
+              description: "You will receive a message shortly.",
+            });
+          }
+        }
       });
     }
-    return;
   };
 
   return (
     <FormWrapper>
-      <FormTitle title="Attendance"/>
+      <FormTitle title="Attendance" />
       <Form {...form}>
         <form
           action={form.handleSubmit(onSubmit) as unknown as string}
-        className="space-y-4"
+          className="space-y-4"
         >
-
           <FormField
             control={form.control}
             name={"memberId"}
@@ -187,13 +192,8 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               </FormItem>
             )}
           />
-            <div className="flex justify-end">
-          <Button
-            type="submit"
-           className="text-xs w-24"
-            disabled={isPending}
-          >
-          
+          <div className="flex justify-end">
+            <Button type="submit" className="text-xs w-24" disabled={isPending}>
               {isPending ? (
                 <DataSpinner size="xs" isInputLoader />
               ) : attendance?.memberId ? (
@@ -201,12 +201,12 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
               ) : (
                 "Submit"
               )}
-      
-          </Button>
+            </Button>
           </div>
         </form>
       </Form>
     </FormWrapper>
   );
 };
+
 export default AttendanceFormBuilder;
