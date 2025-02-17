@@ -137,7 +137,7 @@ export const MissingShoes = ({ missingShoesReports, error }: Props) => {
     icon: <ExclamationTriangleIcon />,
     actionButton: true,
     onAction: addMissingShoes,
-    labelForActionButton: "Add shoe",
+    labelForActionButton: "Add shoes",
   };
 
   const handleViewDetails = (id: number) => {
