@@ -1,14 +1,11 @@
 "use client";
 import React from "react";
-import { FormTitle } from "@/common/FormTitle/FormTitle";
 import FormWrapper from "@/common/FormWrapper";
 import { UserAvatar } from "@/common/Avatar/UserAvatar";
 import { Label } from "@/components/ui/label";
 import { UserDetails } from "@/types";
-
 import { localNumberFormat } from "@/utils/formattedPhoneNumber";
 import { dateformatter } from "@/utils/dateFormatter";
-
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -25,12 +22,14 @@ export const Profile = ({ loginUser }: SettingsProps) => {
   return (
     <FormWrapper>
       <div className="space-y-4 pb-10">
-        <div className="flex items-center space-x-2 pr-2 -ml-1">
+        <div className="flex items-center space-x-2 pr-2 -ml-1 mt-2">
           <ArrowLeft
             onClick={handleNavigation}
             className="cursor-pointer text-gray-700 "
           />
-          <FormTitle title="Profile Settings" />
+          <div className="flex justify-center items-start ">
+            <h4>Profile Settings</h4>
+          </div>
         </div>
 
         <UserAvatar userName={loginUser.name} size="large" />
@@ -58,11 +57,11 @@ export const Profile = ({ loginUser }: SettingsProps) => {
         </div>
 
         <div className="space-y-2">
-  <Label>Address</Label>
-  <address className="border rounded-md p-2 bg-gray-50 text-xs not-italic">
-    {loginUser.address}
-  </address>
-</div>
+          <Label>Address</Label>
+          <address className="border rounded-md p-2 bg-gray-50 text-xs not-italic">
+            {loginUser.address}
+          </address>
+        </div>
 
         <div className="space-y-2">
           <Label>Role</Label>
@@ -88,4 +87,3 @@ export const Profile = ({ loginUser }: SettingsProps) => {
     </FormWrapper>
   );
 };
-

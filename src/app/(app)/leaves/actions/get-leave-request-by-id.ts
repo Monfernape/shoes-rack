@@ -14,12 +14,13 @@ export const getLeaveRequestById = async (requestId: number) => {
       `*,
       member:memberId (
         name,
-        shift,role
+        shift,role,id
       )
     `
     )
     .eq("id", requestId)
     .maybeSingle();
+    
   if (error) {
     return "Something went wrong";
   }
@@ -29,11 +30,12 @@ export const getLeaveRequestById = async (requestId: number) => {
       isPermission = leaveDetails.member !== loginUser.id ? false : true;
       break;
     case MemberRole.ShiftIncharge:
-      if (leaveDetails.member.shift === loginUser.shift) {
+      if (
+        leaveDetails.member.shift === loginUser.shift &&
+        leaveDetails.member.id !== loginUser.id
+      ) {
         isPermission =
           leaveDetails.member.role === MemberRole.Member ? true : false;
-      } else {
-        isPermission = false;
       }
       break;
   }
@@ -42,6 +44,3 @@ export const getLeaveRequestById = async (requestId: number) => {
   }
   return leaveDetails;
 };
-
-
-
