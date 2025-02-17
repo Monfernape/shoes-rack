@@ -48,7 +48,7 @@ export default async function middleware(request: NextRequest) {
   const cookieStore = await cookies();
   if (!session) {
     // we were facing issue on login , loggedin user was not deleting from cookies in case session expire
-    cookieStore.delete;
+   await cookieStore.delete;
   }
   if (!session && requestedPath !== Routes.Login) {
     return NextResponse.redirect(new URL(Routes.Login, request.url));
