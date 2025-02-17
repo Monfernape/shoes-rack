@@ -1,26 +1,17 @@
 "use server";
-
-import { MissingShoeStatus } from "@/constant/constant";
 import { Tables } from "@/lib/db";
-import { Routes } from "@/lib/routes";
 import { getSupabaseClient } from "@/utils/supabase/supabaseClient";
-import { permanentRedirect } from "next/navigation";
-
 export const getMissingShoeById = async (requestId: number) => {
   const supabase = await getSupabaseClient();
   const { data: missingShoe, error } = await supabase
     .from(Tables.MissingShoes)
-    .select(`* , members(name)`)
-    .match({ id: requestId })
+    .select(`* , members (name)`)
+    .eq("id", requestId)
     .single();
-
   if (error || !missingShoe) {
-    return null
+    return null;
   }
 
-  if (missingShoe.status === MissingShoeStatus.Found) {
-    permanentRedirect(Routes.MissingShoes); 
-  }
   return {
     id: missingShoe.id,
     status: missingShoe.status,
