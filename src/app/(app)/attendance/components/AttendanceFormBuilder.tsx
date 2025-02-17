@@ -24,7 +24,6 @@ import { isValidParam } from "@/utils/utils";
 import { User } from "@/types";
 import { DataSpinner } from "@/common/Loader/Loader";
 import { FormTitle } from "@/common/FormTitle/FormTitle";
-import { formatTo12Hour } from "@/common/TimeFormate/12HourFormate";
 
 interface AttendanceFormBuilderProps {
   attendance?: AttendanceFormValues;
@@ -61,25 +60,21 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
 }) => {
   const params = useParams();
   const [isPending, startTransition] = useTransition();
-
   const attendanceId = params?.id;
+
   const form = useForm<AttendanceFormValues>({
     resolver: zodResolver(attendanceSchema),
     defaultValues: {
       memberId:
         loginUser?.role === MemberRole.Member
           ? loginUser.id.toString()
-          : attendance?.memberId.toString(),
-
-      startTime: attendance?.startTime ?? "",
-      endTime: attendance?.endTime || "",
+          : attendance?.memberId?.toString() || "",
+      startTime: attendance?.startTime ? attendance.startTime.slice(0, 5) : "",
+      endTime: attendance?.endTime ? attendance.endTime.slice(0, 5) : "",
     },
   });
 
   const onSubmit = async (values: AttendanceFormValues) => {
-    const formattedStartTime = formatTo12Hour(values.startTime);
-    const formattedEndTime = formatTo12Hour(values.endTime);
-
     const startTime = new Date(`1970-01-01T${values.startTime}:00`);
     const endTime = new Date(`1970-01-01T${values.endTime}:00`);
 
@@ -91,18 +86,15 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
       return;
     }
 
-    const formattedValues = {
-      ...values,
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
-    };
-
     if (isValidParam(attendanceId)) {
-      const updatedValue = { id: attendanceId, ...formattedValues };
+      const formattedValues = { ...values };
 
       startTransition(async () => {
         if (attendance?.memberId) {
-          const result = await updateAttendance(updatedValue, loginUser);
+          const result = await updateAttendance(
+            { id: attendanceId, ...formattedValues },
+            loginUser
+          );
 
           if (!result) {
             toast({
@@ -139,7 +131,7 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
         >
           <FormField
             control={form.control}
-            name={"memberId"}
+            name="memberId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>User Name</FormLabel>
@@ -193,14 +185,21 @@ const AttendanceFormBuilder: React.FC<AttendanceFormBuilderProps> = ({
             )}
           />
           <div className="flex justify-end">
-            <Button type="submit" className="text-xs w-24" disabled={isPending}>
-              {isPending ? (
-                <DataSpinner size="xs" isInputLoader />
-              ) : attendance?.memberId ? (
-                "Update"
-              ) : (
-                "Submit"
-              )}
+            <Button
+              type="submit"
+              data-testid="submit"
+              disabled={isPending}
+              className="w-24"
+            >
+              <div className="flex justify-center">
+                {isPending ? (
+                  <DataSpinner size="xs" isInputLoader />
+                ) : attendance?.memberId ? (
+                  "Update"
+                ) : (
+                  "Submit"
+                )}
+              </div>
             </Button>
           </div>
         </form>

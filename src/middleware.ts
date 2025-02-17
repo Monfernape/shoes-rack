@@ -17,6 +17,7 @@ const restrictedPaths: Routes[] = [
 const restrictedPathForShiftIncharge: Routes[] = [
   Routes.AddFund,
   Routes.EditFund,
+  Routes.Fund
 ];
 
 export default async function middleware(request: NextRequest) {
