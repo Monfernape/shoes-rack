@@ -127,7 +127,7 @@ export const FundFormBuilder = ({ funds, loginUser }: Props) => {
               <FormItem>
                 <FormLabel>Amount</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter Amount" {...field} />
+                  <Input placeholder="Enter Amount" type="number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

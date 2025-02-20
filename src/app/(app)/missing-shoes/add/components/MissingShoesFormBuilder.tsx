@@ -148,7 +148,7 @@ export const MissingShoesFormBuilder = ({ missingShoe }: Props) => {
               <FormItem>
                 <FormLabel>Shoes Token</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g., 101, 110, 120" {...field} />
+                  <Input placeholder="e.g., 101, 110, 120" type="number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
