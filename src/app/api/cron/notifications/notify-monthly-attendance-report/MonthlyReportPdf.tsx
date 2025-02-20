@@ -3,7 +3,6 @@ import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
-    padding: 24,
     fontSize: 12,
     backgroundColor: "#ffffff",
     flexDirection: "row",
@@ -11,7 +10,7 @@ const styles = StyleSheet.create({
     orientation: "portrait",
   },
   title: {
-    fontSize: 20,
+    fontSize: 17,
     marginBottom: 16,
     textAlign: "center",
     fontWeight: "bold",
@@ -45,9 +44,9 @@ const styles = StyleSheet.create({
   },
   headerCell: {
     flex: 1,
+    fontSize:17,
     textAlign: "left",
     paddingHorizontal: 8,
-    fontWeight: "bold",
     color: "#1F2937",
     width: "100% !important",
   },
