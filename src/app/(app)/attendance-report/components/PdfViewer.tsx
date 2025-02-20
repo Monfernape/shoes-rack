@@ -5,6 +5,8 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { useState } from "react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+import { DataSpinner } from "@/common/Loader/Loader";
+import { NoDataFound } from "@/common/NoDataFound";
 
 // This sets up the workerSrc for pdf.js
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -17,11 +19,12 @@ interface PdfViewerProps {
 }
 
 const PdfViewer = ({ fileUrl }: PdfViewerProps) => {
+  const [loadError, setLoadError] = useState(false);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
-
   const onLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
+    setLoadError(false);
   };
 
   const goToPrevPage = () => {
@@ -36,12 +39,15 @@ const PdfViewer = ({ fileUrl }: PdfViewerProps) => {
     }
   };
 
-  return (
-    <div className="w-full max-w-3xl flex sm:justify-start md:justify-center">
+  return loadError ? (
+    <NoDataFound/>
+  ) : (
+    <div>
       <Document
         file={fileUrl}
         onLoadSuccess={onLoadSuccess}
-        loading="Loading PDF..."
+        onLoadError={() => setLoadError(true)}
+        loading={<DataSpinner />}
       >
         <Page pageNumber={pageNumber} className="w-full mx-auto" />
       </Document>
@@ -69,5 +75,4 @@ const PdfViewer = ({ fileUrl }: PdfViewerProps) => {
     </div>
   );
 };
-
 export default PdfViewer;
