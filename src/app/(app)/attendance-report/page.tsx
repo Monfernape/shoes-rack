@@ -24,7 +24,7 @@ const Page = async ({ searchParams }: { searchParams: { date: string } }) => {
         <div className="flex justify-end mb-2">
           <DateFilter />
         </div>
-        <div className="w-full flex justify-start md:justify-center overflow-x-auto overflow-y-hidden">
+        <div className="w-full justify-start md:justify-center overflow-x-auto overflow-y-hidden">
           <PdfViewer fileUrl={publicUrl} />
         </div>
       </PageLayout>
