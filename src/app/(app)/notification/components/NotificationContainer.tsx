@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { ArrowLeft, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { Routes } from "@/lib/routes";
@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import moment from "moment";
 import { deleteNotification } from "../actions/delete-notification";
 import { NotificationType } from "@/constant/constant";
+import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 // Later we will get it from api
 export const NotificationContainer = ({
@@ -26,6 +27,7 @@ export const NotificationContainer = ({
     " 00:00:00.000000+00";
   const encodedDate = encodeURIComponent(formattedDate);
   const router = useRouter();
+  const [modalOpen, setIsModalOpen] = useState<boolean>(false);
   const navigator = useMemo(() => {
     switch (notificationDetail?.type) {
       case NotificationType.Attendance:
@@ -72,7 +74,7 @@ export const NotificationContainer = ({
         {pathname !== Routes.Notification && (
           <div className="flex gap-2">
             <Button
-              onClick={() => handleDeleteNotification(Number(notificationId))}
+              onClick={() => setIsModalOpen(true)}
               variant={"outline"}
               className="text-status-inactive hover:text-status-inactive"
             >
@@ -99,6 +101,14 @@ export const NotificationContainer = ({
           </Link>
         </div>
       </div>
+      <ConfirmationModal
+        title={"Delete Notification"}
+        description={"Are you sure you want to delete this notification?"}
+        buttonText={"Delete"}
+        setIsModalOpen={setIsModalOpen}
+        onHandleConfirm={() => handleDeleteNotification(Number(notificationId))}
+        isModalOpen={modalOpen}
+      />
     </div>
   );
 };
