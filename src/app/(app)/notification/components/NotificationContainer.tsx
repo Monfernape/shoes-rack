@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import moment from "moment";
 import { deleteNotification } from "../actions/delete-notification";
-import { NotificationType, UserStatus } from "@/constant/constant";
+import { NotificationType } from "@/constant/constant";
 import { ConfirmationModal } from "@/common/ConfirmationModal/ConfirmationModal";
 
 // Later we will get it from api
